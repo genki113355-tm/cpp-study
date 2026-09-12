@@ -20,48 +20,45 @@ export const UmlClassSvgDiagram: React.FC<UmlClassSvgDiagramProps> = ({
   onSelectMember,
 }) => {
   // クラスボックスの基本寸法
-  const cardWidth = 250;
+  const cardWidth = 240;
   const cardHeight = 230;
-  const colGap = 80;
-  const rowGap = 70;
 
-  // クラス数に応じた列数とキャンバスサイズの自動算出
+  // ガイド（5クラス）用の最適レイアウト判定
   const isSpecialGuideLayout =
     classes.some((c) => c.name === "GameEngine") &&
     classes.some((c) => c.name === "Player") &&
     classes.some((c) => c.name === "Weapon");
 
-  const cols = classes.length <= 2 ? classes.length : 3;
-  const rows = Math.ceil(classes.length / cols);
+  // 余裕を持ったキャンバス寸法（横の隙間: 140px、縦の隙間: 110px）
+  const totalWidth = isSpecialGuideLayout ? 1080 : Math.max(820, 60 + 3 * (cardWidth + 130));
+  const totalHeight = isSpecialGuideLayout ? 670 : Math.max(360, 60 + 2 * (cardHeight + 110));
 
-  const totalWidth = isSpecialGuideLayout ? 1000 : Math.max(760, 60 + cols * (cardWidth + colGap));
-  const totalHeight = isSpecialGuideLayout ? 640 : Math.max(340, 50 + rows * (cardHeight + rowGap));
-
-  // クラス名に基づく固定/スマート座標配置マップ
+  // クラス名に基づく座標配置マップ
   const getNodeLayout = (className: string, idx: number): NodeLayout => {
     if (isSpecialGuideLayout) {
       switch (className) {
         case "GameEngine":
-          return { x: 50, y: 50, width: cardWidth, height: cardHeight };
+          return { x: 40, y: 50, width: cardWidth, height: cardHeight };
         case "Player":
-          return { x: 380, y: 50, width: cardWidth, height: cardHeight };
+          return { x: 420, y: 50, width: cardWidth, height: cardHeight };
         case "Weapon":
-          return { x: 710, y: 50, width: cardWidth, height: cardHeight };
+          return { x: 800, y: 50, width: cardWidth, height: cardHeight };
         case "Enemy":
-          return { x: 380, y: 350, width: cardWidth, height: cardHeight };
+          return { x: 420, y: 390, width: cardWidth, height: cardHeight };
         case "BossEnemy":
-          return { x: 710, y: 350, width: cardWidth, height: cardHeight };
+          return { x: 800, y: 390, width: cardWidth, height: cardHeight };
         default:
           break;
       }
     }
 
     // 汎用グリッド配置
+    const cols = classes.length <= 2 ? classes.length : 3;
     const col = idx % cols;
     const row = Math.floor(idx / cols);
     return {
-      x: 50 + col * (cardWidth + colGap),
-      y: 50 + row * (cardHeight + rowGap),
+      x: 40 + col * (cardWidth + 140),
+      y: 50 + row * (cardHeight + 110),
       width: cardWidth,
       height: cardHeight,
     };
@@ -73,208 +70,345 @@ export const UmlClassSvgDiagram: React.FC<UmlClassSvgDiagramProps> = ({
     nodeMap.set(cls.name, getNodeLayout(cls.name, idx));
   });
 
-  // 2つのノード間の最適な接続点（ポート）と直交/直線パスを計算
-  const calculateConnection = (fromNode: NodeLayout, toNode: NodeLayout) => {
-    const fromCenter = { x: fromNode.x + fromNode.width / 2, y: fromNode.y + fromNode.height / 2 };
-    const toCenter = { x: toNode.x + toNode.width / 2, y: toNode.y + toNode.height / 2 };
-
-    const dx = toCenter.x - fromCenter.x;
-    const dy = toCenter.y - fromCenter.y;
-
-    let startX = fromCenter.x;
-    let startY = fromCenter.y;
-    let endX = toCenter.x;
-    let endY = toCenter.y;
-
-    // 主たる方向（水平 vs 垂直）判定
-    if (Math.abs(dx) > Math.abs(dy)) {
-      if (dx > 0) {
-        startX = fromNode.x + fromNode.width;
-        endX = toNode.x;
-      } else {
-        startX = fromNode.x;
-        endX = toNode.x + toNode.width;
-      }
-      startY = fromCenter.y;
-      endY = toCenter.y;
-    } else {
-      if (dy > 0) {
-        startY = fromNode.y + fromNode.height;
-        endY = toNode.y;
-      } else {
-        startY = fromNode.y;
-        endY = toNode.y + toNode.height;
-      }
-      startX = fromCenter.x;
-      endX = toCenter.x;
-    }
-
-    const midX = (startX + endX) / 2;
-    const midY = (startY + endY) / 2;
-    const pathData = `M ${startX} ${startY} L ${endX} ${endY}`;
-
-    return { startX, startY, endX, endY, midX, midY, pathData };
-  };
-
   return (
     <div className="relative w-full rounded-3xl bg-[#070b14] border border-cyan-500/30 overflow-x-auto shadow-2xl p-4 sm:p-6 backdrop-blur-md">
       <div className="relative mx-auto" style={{ width: totalWidth, height: totalHeight }}>
-        {/* 背景SVGレイヤー：すべてのリレーション線とUML幾何マーカーを描画 */}
+        {/* 背景SVGレイヤー：すべてのリレーション線・矢印ポリゴン・ラベルを描画 */}
         <svg
           width={totalWidth}
           height={totalHeight}
           className="absolute inset-0 pointer-events-none z-10 overflow-visible"
         >
-          <defs>
-            {/* 白抜き三角マーカー (汎化・継承) */}
-            <marker
-              id="class-marker-triangle"
-              viewBox="0 0 16 16"
-              refX="15"
-              refY="8"
-              markerWidth="14"
-              markerHeight="14"
-              orient="auto-start-reverse"
-            >
-              <polygon points="1 1, 15 8, 1 15" fill="#070b14" stroke="#f59e0b" strokeWidth="2" />
-            </marker>
-
-            {/* 黒塗り菱形マーカー (コンポジション) */}
-            <marker
-              id="class-marker-composition"
-              viewBox="0 0 20 12"
-              refX="1"
-              refY="6"
-              markerWidth="16"
-              markerHeight="12"
-              orient="auto"
-            >
-              <polygon points="1 6, 10 1, 19 6, 10 11" fill="#10b981" stroke="#10b981" strokeWidth="1" />
-            </marker>
-
-            {/* 白抜き菱形マーカー (集約) */}
-            <marker
-              id="class-marker-aggregation"
-              viewBox="0 0 20 12"
-              refX="1"
-              refY="6"
-              markerWidth="16"
-              markerHeight="12"
-              orient="auto"
-            >
-              <polygon points="1 6, 10 1, 19 6, 10 11" fill="#070b14" stroke="#06b6d4" strokeWidth="2" />
-            </marker>
-
-            {/* 開いた矢印マーカー (関連) */}
-            <marker
-              id="class-marker-arrow"
-              viewBox="0 0 12 12"
-              refX="10"
-              refY="6"
-              markerWidth="10"
-              markerHeight="10"
-              orient="auto"
-            >
-              <polyline
-                points="2 1, 10 6, 2 11"
-                fill="none"
-                stroke="#38bdf8"
-                strokeWidth="2.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </marker>
-          </defs>
-
-          {/* 各リレーションの幾何ベクトル線 */}
           {relations.map((rel, rIdx) => {
             const fromNode = nodeMap.get(rel.from);
             const toNode = nodeMap.get(rel.to);
             if (!fromNode || !toNode) return null;
 
-            const conn = calculateConnection(fromNode, toNode);
+            const fromCenter = {
+              x: fromNode.x + fromNode.width / 2,
+              y: fromNode.y + fromNode.height / 2,
+            };
+            const toCenter = {
+              x: toNode.x + toNode.width / 2,
+              y: toNode.y + toNode.height / 2,
+            };
 
-            // 線のスタイル & 色
-            let strokeColor = "#38bdf8";
-            let markerStart: string | undefined;
-            let markerEnd: string | undefined;
+            const dx = toCenter.x - fromCenter.x;
+            const dy = toCenter.y - fromCenter.y;
+            const isHorizontal = Math.abs(dx) > Math.abs(dy);
+
+            let strokeColor = "#38bdf8"; // sky
             let isDashed = false;
+            if (rel.type === "generalization") strokeColor = "#f59e0b"; // amber
+            else if (rel.type === "realization") {
+              strokeColor = "#a855f7";
+              isDashed = true;
+            } else if (rel.type === "composition") strokeColor = "#10b981"; // emerald
+            else if (rel.type === "aggregation") strokeColor = "#06b6d4"; // cyan
 
-            switch (rel.type) {
-              case "generalization":
-                strokeColor = "#f59e0b"; // amber
-                markerEnd = "url(#class-marker-triangle)";
-                break;
-              case "realization":
-                strokeColor = "#a855f7"; // purple
-                markerEnd = "url(#class-marker-triangle)";
-                isDashed = true;
-                break;
-              case "composition":
-                strokeColor = "#10b981"; // emerald
-                markerStart = "url(#class-marker-composition)";
-                markerEnd = "url(#class-marker-arrow)";
-                break;
-              case "aggregation":
-                strokeColor = "#06b6d4"; // cyan
-                markerStart = "url(#class-marker-aggregation)";
-                markerEnd = "url(#class-marker-arrow)";
-                break;
-              case "association":
-              default:
-                strokeColor = "#38bdf8"; // sky
-                markerEnd = "url(#class-marker-arrow)";
-                break;
-            }
+            if (isHorizontal) {
+              // 水平方向の接続（左から右、または右から左）
+              const isLeftToRight = dx > 0;
+              const y = fromCenter.y;
 
-            return (
-              <g key={`rel-${rIdx}`}>
-                {/* 影・グロー効果 */}
-                <path
-                  d={conn.pathData}
-                  fill="none"
-                  stroke={strokeColor}
-                  strokeWidth="6"
-                  opacity="0.2"
-                  strokeLinecap="round"
-                />
-                {/* メインの接続線 */}
-                <path
-                  d={conn.pathData}
-                  fill="none"
-                  stroke={strokeColor}
-                  strokeWidth="2.5"
-                  strokeDasharray={isDashed ? "6,5" : undefined}
-                  markerStart={markerStart}
-                  markerEnd={markerEnd}
-                />
-                {/* ラベル & 多重度 */}
-                <g transform={`translate(${conn.midX}, ${conn.midY - 14})`}>
-                  <rect
-                    x="-45"
-                    y="-10"
-                    width="90"
-                    height="20"
-                    rx="6"
-                    fill="#0f172a"
+              const x1 = isLeftToRight ? fromNode.x + fromNode.width : fromNode.x;
+              const x2 = isLeftToRight ? toNode.x : toNode.x + toNode.width;
+
+              // 線分の開始・終了点（マーカーのサイズ分オフセット）
+              let lineStartX = x1;
+              let lineEndX = x2;
+
+              let startMarkerElement: React.ReactNode = null;
+              let endMarkerElement: React.ReactNode = null;
+
+              if (rel.type === "composition") {
+                // 親側に黒塗り菱形 ◆
+                if (isLeftToRight) {
+                  startMarkerElement = (
+                    <polygon
+                      points={`${x1},${y} ${x1 + 8},${y - 5} ${x1 + 16},${y} ${x1 + 8},${y + 5}`}
+                      fill={strokeColor}
+                      stroke={strokeColor}
+                      strokeWidth="1.5"
+                    />
+                  );
+                  lineStartX = x1 + 16;
+                  // 子側に開いた矢印ヘッド
+                  endMarkerElement = (
+                    <polyline
+                      points={`${x2 - 8},${y - 5} ${x2},${y} ${x2 - 8},${y + 5}`}
+                      fill="none"
+                      stroke={strokeColor}
+                      strokeWidth="2.5"
+                      strokeLinecap="round"
+                    />
+                  );
+                  lineEndX = x2 - 2;
+                } else {
+                  startMarkerElement = (
+                    <polygon
+                      points={`${x1},${y} ${x1 - 8},${y - 5} ${x1 - 16},${y} ${x1 - 8},${y + 5}`}
+                      fill={strokeColor}
+                      stroke={strokeColor}
+                      strokeWidth="1.5"
+                    />
+                  );
+                  lineStartX = x1 - 16;
+                  endMarkerElement = (
+                    <polyline
+                      points={`${x2 + 8},${y - 5} ${x2},${y} ${x2 + 8},${y + 5}`}
+                      fill="none"
+                      stroke={strokeColor}
+                      strokeWidth="2.5"
+                      strokeLinecap="round"
+                    />
+                  );
+                  lineEndX = x2 + 2;
+                }
+              } else if (rel.type === "aggregation") {
+                // 親側に白抜き菱形 ◇
+                if (isLeftToRight) {
+                  startMarkerElement = (
+                    <polygon
+                      points={`${x1},${y} ${x1 + 8},${y - 5} ${x1 + 16},${y} ${x1 + 8},${y + 5}`}
+                      fill="#070b14"
+                      stroke={strokeColor}
+                      strokeWidth="2"
+                    />
+                  );
+                  lineStartX = x1 + 16;
+                  endMarkerElement = (
+                    <polyline
+                      points={`${x2 - 8},${y - 5} ${x2},${y} ${x2 - 8},${y + 5}`}
+                      fill="none"
+                      stroke={strokeColor}
+                      strokeWidth="2.5"
+                      strokeLinecap="round"
+                    />
+                  );
+                  lineEndX = x2 - 2;
+                } else {
+                  startMarkerElement = (
+                    <polygon
+                      points={`${x1},${y} ${x1 - 8},${y - 5} ${x1 - 16},${y} ${x1 - 8},${y + 5}`}
+                      fill="#070b14"
+                      stroke={strokeColor}
+                      strokeWidth="2"
+                    />
+                  );
+                  lineStartX = x1 - 16;
+                  endMarkerElement = (
+                    <polyline
+                      points={`${x2 + 8},${y - 5} ${x2},${y} ${x2 + 8},${y + 5}`}
+                      fill="none"
+                      stroke={strokeColor}
+                      strokeWidth="2.5"
+                      strokeLinecap="round"
+                    />
+                  );
+                  lineEndX = x2 + 2;
+                }
+              } else if (rel.type === "generalization" || rel.type === "realization") {
+                // 基底クラス側に白抜き三角 ◁
+                if (isLeftToRight) {
+                  endMarkerElement = (
+                    <polygon
+                      points={`${x2},${y} ${x2 - 14},${y - 7} ${x2 - 14},${y + 7}`}
+                      fill="#070b14"
+                      stroke={strokeColor}
+                      strokeWidth="2"
+                    />
+                  );
+                  lineEndX = x2 - 14;
+                } else {
+                  endMarkerElement = (
+                    <polygon
+                      points={`${x2},${y} ${x2 + 14},${y - 7} ${x2 + 14},${y + 7}`}
+                      fill="#070b14"
+                      stroke={strokeColor}
+                      strokeWidth="2"
+                    />
+                  );
+                  lineEndX = x2 + 14;
+                }
+              } else {
+                // 通常関連 ───>
+                if (isLeftToRight) {
+                  endMarkerElement = (
+                    <polyline
+                      points={`${x2 - 8},${y - 5} ${x2},${y} ${x2 - 8},${y + 5}`}
+                      fill="none"
+                      stroke={strokeColor}
+                      strokeWidth="2.5"
+                      strokeLinecap="round"
+                    />
+                  );
+                  lineEndX = x2 - 2;
+                } else {
+                  endMarkerElement = (
+                    <polyline
+                      points={`${x2 + 8},${y - 5} ${x2},${y} ${x2 + 8},${y + 5}`}
+                      fill="none"
+                      stroke={strokeColor}
+                      strokeWidth="2.5"
+                      strokeLinecap="round"
+                    />
+                  );
+                  lineEndX = x2 + 2;
+                }
+              }
+
+              const midX = (x1 + x2) / 2;
+              // ラベルは線より【20px 上】に配置し、線やマーカーと一切重ならない！
+              const labelY = y - 20;
+
+              return (
+                <g key={`rel-${rIdx}`}>
+                  {/* メイン線 */}
+                  <line
+                    x1={lineStartX}
+                    y1={y}
+                    x2={lineEndX}
+                    y2={y}
                     stroke={strokeColor}
-                    strokeWidth="1"
-                    opacity="0.95"
+                    strokeWidth="2.5"
+                    strokeDasharray={isDashed ? "6,5" : undefined}
                   />
-                  <text
-                    x="0"
-                    y="4"
-                    textAnchor="middle"
-                    fill="#f8fafc"
-                    fontSize="10"
-                    fontFamily="monospace"
-                    fontWeight="bold"
-                  >
-                    {rel.label || rel.type}
-                  </text>
+                  {/* マーカー図形 */}
+                  {startMarkerElement}
+                  {endMarkerElement}
+
+                  {/* ラベルバッジ（線の上に独立して配置） */}
+                  <g transform={`translate(${midX}, ${labelY})`}>
+                    <rect
+                      x="-35"
+                      y="-10"
+                      width="70"
+                      height="20"
+                      rx="6"
+                      fill="#0b1120"
+                      stroke={strokeColor}
+                      strokeWidth="1.2"
+                      filter="drop-shadow(0 2px 4px rgba(0,0,0,0.6))"
+                    />
+                    <text
+                      x="0"
+                      y="4"
+                      textAnchor="middle"
+                      fill="#ffffff"
+                      fontSize="10.5"
+                      fontFamily="monospace"
+                      fontWeight="bold"
+                    >
+                      {rel.label || rel.type}
+                    </text>
+                  </g>
                 </g>
-              </g>
-            );
+              );
+            } else {
+              // 垂直方向の接続（上から下、または下から上）
+              const isTopToBottom = dy > 0;
+              const x = fromCenter.x;
+
+              const y1 = isTopToBottom ? fromNode.y + fromNode.height : fromNode.y;
+              const y2 = isTopToBottom ? toNode.y : toNode.y + toNode.height;
+
+              let lineStartY = y1;
+              let lineEndY = y2;
+              let endMarkerElement: React.ReactNode = null;
+
+              if (rel.type === "generalization" || rel.type === "realization") {
+                if (isTopToBottom) {
+                  endMarkerElement = (
+                    <polygon
+                      points={`${x},${y2} ${x - 7},${y2 - 14} ${x + 7},${y2 - 14}`}
+                      fill="#070b14"
+                      stroke={strokeColor}
+                      strokeWidth="2"
+                    />
+                  );
+                  lineEndY = y2 - 14;
+                } else {
+                  endMarkerElement = (
+                    <polygon
+                      points={`${x},${y2} ${x - 7},${y2 + 14} ${x + 7},${y2 + 14}`}
+                      fill="#070b14"
+                      stroke={strokeColor}
+                      strokeWidth="2"
+                    />
+                  );
+                  lineEndY = y2 + 14;
+                }
+              } else {
+                if (isTopToBottom) {
+                  endMarkerElement = (
+                    <polyline
+                      points={`${x - 5},${y2 - 8} ${x},${y2} ${x + 5},${y2 - 8}`}
+                      fill="none"
+                      stroke={strokeColor}
+                      strokeWidth="2.5"
+                      strokeLinecap="round"
+                    />
+                  );
+                  lineEndY = y2 - 2;
+                } else {
+                  endMarkerElement = (
+                    <polyline
+                      points={`${x - 5},${y2 + 8} ${x},${y2} ${x + 5},${y2 + 8}`}
+                      fill="none"
+                      stroke={strokeColor}
+                      strokeWidth="2.5"
+                      strokeLinecap="round"
+                    />
+                  );
+                  lineEndY = y2 + 2;
+                }
+              }
+
+              const midY = (y1 + y2) / 2;
+
+              return (
+                <g key={`rel-${rIdx}`}>
+                  {/* メイン線 */}
+                  <line
+                    x1={x}
+                    y1={lineStartY}
+                    x2={x}
+                    y2={lineEndY}
+                    stroke={strokeColor}
+                    strokeWidth="2.5"
+                    strokeDasharray={isDashed ? "6,5" : undefined}
+                  />
+                  {endMarkerElement}
+
+                  {/* ラベルバッジ（垂直線の中央にソリッドな背景で重ねる） */}
+                  <g transform={`translate(${x}, ${midY})`}>
+                    <rect
+                      x="-40"
+                      y="-11"
+                      width="80"
+                      height="22"
+                      rx="7"
+                      fill="#070b14"
+                      stroke={strokeColor}
+                      strokeWidth="1.2"
+                      filter="drop-shadow(0 2px 4px rgba(0,0,0,0.6))"
+                    />
+                    <text
+                      x="0"
+                      y="4"
+                      textAnchor="middle"
+                      fill="#ffffff"
+                      fontSize="10.5"
+                      fontFamily="monospace"
+                      fontWeight="bold"
+                    >
+                      {rel.label || rel.type}
+                    </text>
+                  </g>
+                </g>
+              );
+            }
           })}
         </svg>
 
@@ -410,4 +544,3 @@ export const UmlClassSvgDiagram: React.FC<UmlClassSvgDiagramProps> = ({
     </div>
   );
 };
-
