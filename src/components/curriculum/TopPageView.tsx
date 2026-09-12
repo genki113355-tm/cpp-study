@@ -19,7 +19,8 @@ import {
   Boxes,
   Workflow,
   BookOpen,
-  Clock
+  Clock,
+  ExternalLink
 } from 'lucide-react';
 import { ALL_CHAPTERS, CLASSIC_CHAPTERS, MODERN_CHAPTERS, READING_CHAPTERS, UPCOMING_CHAPTERS } from '../../data/chapters';
 import { CourseTrack } from '../../types/curriculum';
@@ -1353,6 +1354,42 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
             <span>🚀 モダン【M】第1章から開始</span>
             <ArrowRight className="w-4 h-4" />
           </button>
+        </div>
+      </section>
+
+      {/* 姉妹メディア案内セクション */}
+      <section className="rounded-3xl border border-blue-500/30 bg-gradient-to-br from-slate-950 via-[#0a1528] to-slate-950 p-6 sm:p-8 shadow-2xl relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-80 h-80 bg-blue-500/10 rounded-full blur-3xl pointer-events-none" />
+        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 relative z-10">
+          <div className="flex items-start sm:items-center gap-4">
+            <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-blue-600 to-cyan-500 flex items-center justify-center text-3xl shadow-lg shadow-blue-500/20 flex-shrink-0">
+              🌊
+            </div>
+            <div className="space-y-1.5">
+              <div className="flex items-center gap-2 flex-wrap">
+                <span className="text-xs font-mono font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-blue-950 text-blue-300 border border-blue-500/40">
+                  姉妹メディア
+                </span>
+                <span className="text-xs font-mono text-slate-400">sonar-guide.jp</span>
+              </div>
+              <h3 className="text-xl sm:text-2xl font-bold text-white font-sans">
+                水中音響・ソナー技術入門
+              </h3>
+              <p className="text-xs sm:text-sm text-slate-300 font-sans leading-relaxed max-w-2xl">
+                シロクマ先生がナビゲート！波の物理からFFT・LOFAR・TMA信号処理まで、音・動的グラフ・物理シミュレーターで直感的に学べる本格技術教育サイトです。
+              </p>
+            </div>
+          </div>
+
+          <a
+            href="https://sonar-guide.jp/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-5 py-3 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 text-white font-bold font-mono text-xs sm:text-sm transition shadow-lg shadow-blue-500/20 active:scale-95 flex items-center gap-2 flex-shrink-0"
+          >
+            <span>サイトを見る</span>
+            <ExternalLink className="w-4 h-4" />
+          </a>
         </div>
       </section>
     </div>
