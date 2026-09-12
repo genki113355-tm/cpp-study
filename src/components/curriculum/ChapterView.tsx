@@ -103,10 +103,29 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
         <div className={`absolute top-0 right-0 w-96 h-96 rounded-full blur-3xl pointer-events-none ${getGlowColor()}`} />
 
         <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-8">
-          <div className="flex-1">
-            <div className="flex items-center gap-2.5 mb-3.5 flex-wrap">
+          <div className="flex-1 space-y-4">
+            {/* メインタイトル */}
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black text-white tracking-tight leading-tight">
+              {chapter.title}
+            </h1>
+
+            <p className="text-lg sm:text-xl md:text-2xl text-cyan-300 font-medium leading-snug">
+              {chapter.subtitle}
+            </p>
+
+            {/* パンくずリスト & カテゴリバッジ（タイトルの下に配置） */}
+            <nav aria-label="パンくずリスト" className="flex items-center gap-2 text-xs sm:text-sm font-mono flex-wrap pt-1">
+              <button
+                onClick={() => onNavigate('top')}
+                className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-slate-800/90 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700 transition shadow-sm"
+                title="トップページへ戻る"
+              >
+                <span>🏠</span>
+                <span>TOP</span>
+              </button>
+              <span className="text-slate-600">/</span>
               {getTrackBadge()}
-              <span className="text-sm font-mono text-slate-300 font-semibold px-2 py-0.5 rounded bg-slate-800/80 border border-slate-700">
+              <span className="text-xs sm:text-sm font-mono text-slate-300 font-semibold px-2.5 py-1 rounded-lg bg-slate-800/80 border border-slate-700">
                 {chapter.badge}
               </span>
               {isCompleted && (
@@ -115,17 +134,9 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
                   <span>完了済み</span>
                 </span>
               )}
-            </div>
+            </nav>
 
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-tight">
-              {chapter.title}
-            </h1>
-
-            <p className="text-lg sm:text-xl md:text-2xl text-cyan-300 font-medium mt-3.5 leading-snug">
-              {chapter.subtitle}
-            </p>
-
-            <p className="text-base sm:text-lg md:text-xl text-slate-300 mt-4 leading-relaxed font-sans">
+            <p className="text-base sm:text-lg md:text-xl text-slate-300 pt-2 leading-relaxed font-sans">
               {chapter.description}
             </p>
           </div>

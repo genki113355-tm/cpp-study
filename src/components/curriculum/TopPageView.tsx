@@ -162,21 +162,42 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
         <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
           {/* 左側：キャッチコピー ＆ 概要説明 */}
           <div className="lg:col-span-7 space-y-6">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-950/70 border border-cyan-500/40 text-cyan-300 font-mono text-xs sm:text-sm font-semibold shadow-inner">
-              <span className="text-base leading-none">🐻‍❄️</span>
-              <span className="font-bold">シロクマC++ラボ</span>
-              <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
-              <span className="text-cyan-600">|</span>
-              <span className="text-cyan-400 font-normal">shirokuma-cpp.jp</span>
+            {/* メインタイトル */}
+            <div className="space-y-3">
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-black tracking-tight text-white font-sans leading-[1.1]">
+                <span className="inline-flex items-center gap-3">
+                  <span>🐻‍❄️</span>
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-100 to-slate-300">
+                    シロクマC++ラボ
+                  </span>
+                </span>
+              </h1>
+
+              <p className="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-cyan-400 to-emerald-400 leading-snug">
+                ゲーム開発で学ぶオブジェクト指向開発
+                <span className="block text-slate-300 text-lg sm:text-xl lg:text-2xl font-bold mt-1">
+                  〜レガシー設計からモダン設計まで〜
+                </span>
+              </p>
             </div>
 
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-white font-sans leading-tight">
-              ゲーム開発で学ぶオブジェクト指向開発
-              <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-cyan-400 to-emerald-400">
-                レガシー設計からモダン設計まで。
+            {/* パンくずリスト & メディアタグ（タイトルの下） */}
+            <nav aria-label="パンくずリスト" className="flex items-center gap-2 text-xs sm:text-sm font-mono text-slate-400 flex-wrap">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-slate-800/90 border border-slate-700 text-cyan-400 font-bold shadow-sm">
+                <span>🏠</span>
+                <span>TOP</span>
               </span>
-            </h1>
+              <span className="text-slate-600">/</span>
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-cyan-950/70 border border-cyan-500/40 text-cyan-200 shadow-sm">
+                <span>🐻‍❄️ シロクマC++ラボ</span>
+                <span className="text-slate-400 text-xs font-normal">| shirokuma-cpp.jp</span>
+              </span>
+              <span className="text-slate-600">•</span>
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-950/80 border border-emerald-500/40 text-emerald-300 text-xs font-semibold shadow-sm">
+                <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
+                <span>公式技術実践メディア</span>
+              </span>
+            </nav>
 
             <p className="text-base sm:text-lg text-slate-300 font-sans leading-relaxed">
               「データを引数で回すC言語の書き方」で苦しんできたすべてのエンジニアへ。
