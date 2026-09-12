@@ -163,15 +163,18 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
           {/* 左側：キャッチコピー ＆ 概要説明 */}
           <div className="lg:col-span-7 space-y-6">
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-950/70 border border-cyan-500/40 text-cyan-300 font-mono text-xs sm:text-sm font-semibold shadow-inner">
-              <Sparkles className="w-4 h-4 text-cyan-400" />
-              <span>C++ オブジェクト指向＆実践ゲームアーキテクチャ講座</span>
+              <span className="text-base leading-none">🐻‍❄️</span>
+              <span className="font-bold">シロクマC++ラボ</span>
+              <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
+              <span className="text-cyan-600">|</span>
+              <span className="text-cyan-400 font-normal">shirokuma-cpp.jp</span>
             </div>
 
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-white font-sans leading-tight">
-              「レガシーC++」と「モダンC++」
+              ゲーム開発で学ぶオブジェクト指向開発
               <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-cyan-400 to-emerald-400">
-                2つの視点で極めるC++の真髄。
+                レガシー設計からモダン設計まで。
               </span>
             </h1>
 

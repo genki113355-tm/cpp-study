@@ -1,5 +1,7 @@
 {
   "name": "cpp-invader-study",
+  "displayName": "シロクマC++ラボ",
+  "description": "シロクマC++ラボ 〜ゲーム開発で学ぶオブジェクト指向開発 レガシー設計からモダン設計まで〜",
   "private": true,
   "version": "1.0.0",
   "type": "module",

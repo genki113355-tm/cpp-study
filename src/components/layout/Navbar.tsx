@@ -30,17 +30,17 @@ export const Navbar: React.FC<NavbarProps> = ({
 
           <div className="flex items-center gap-3 cursor-pointer select-none" onClick={() => onSelectChapter('top')}>
             <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-600 to-blue-500 flex items-center justify-center text-white shadow-lg shadow-cyan-500/30">
-              <span className="text-xl">👾</span>
+              <span className="text-xl">🐻‍❄️</span>
             </div>
             <div>
               <span className="font-bold text-base sm:text-lg text-white tracking-tight flex items-center gap-2 font-sans">
-                <span>C++ OOP Invader</span>
+                <span>シロクマC++ラボ</span>
                 <span className="text-xs uppercase font-mono px-2 py-0.5 rounded bg-cyan-950 text-cyan-400 border border-cyan-500/30 font-bold">
                   Lab
                 </span>
               </span>
               <span className="text-xs text-slate-400 block -mt-0.5">
-                インベーダー育成型オブジェクト指向講座
+                〜ゲーム開発で学ぶオブジェクト指向開発〜
               </span>
             </div>
           </div>
