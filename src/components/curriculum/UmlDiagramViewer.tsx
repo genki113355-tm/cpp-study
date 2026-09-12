@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import {
   UmlDiagramDoc,
   UmlRelation,
@@ -11,7 +11,7 @@ import { Layers, Share2, Sparkles, CheckCircle } from "lucide-react";
 import { UmlClassSvgDiagram } from "./uml/UmlClassSvgDiagram";
 import { UmlSequenceSvgDiagram } from "./uml/UmlSequenceSvgDiagram";
 import { UmlStateSvgDiagram } from "./uml/UmlStateSvgDiagram";
-import { MemberCodeModal } from "./uml/MemberCodeModal";
+import { UmlCodeInspector } from "./uml/UmlCodeInspector";
 
 interface UmlDiagramViewerProps {
   data: UmlDiagramDoc;
@@ -26,10 +26,25 @@ export const UmlDiagramViewer: React.FC<UmlDiagramViewerProps> = ({
   onSelectMember,
   onJumpToEditor,
 }) => {
+  // 初期表示時：最初にコード参照を持つメンバを自動選択して並列表示
+  const defaultSelection = useMemo(() => {
+    if (!data.classes || data.classes.length === 0) return null;
+    for (const c of data.classes) {
+      const opWithRef = c.operations.find((o) => o.codeLineRef);
+      if (opWithRef) return { cls: c, member: opWithRef };
+      const attrWithRef = c.attributes.find((a) => a.codeLineRef);
+      if (attrWithRef) return { cls: c, member: attrWithRef };
+    }
+    const firstCls = data.classes[0];
+    const firstMember = firstCls.operations[0] || firstCls.attributes[0];
+    if (firstCls && firstMember) return { cls: firstCls, member: firstMember };
+    return null;
+  }, [data.classes]);
+
   const [selectedMemberInfo, setSelectedMemberInfo] = useState<{
     member: UmlClassMember;
     cls: UmlClassItem;
-  } | null>(null);
+  } | null>(defaultSelection);
 
   const handleSelectMember = (member: UmlClassMember, cls: UmlClassItem) => {
     setSelectedMemberInfo({ member, cls });
@@ -95,7 +110,7 @@ export const UmlDiagramViewer: React.FC<UmlDiagramViewerProps> = ({
           )}
         </div>
         <span className="text-xs font-mono text-cyan-400 bg-cyan-950/80 px-3 py-1.5 rounded-xl border border-cyan-500/30 self-start sm:self-auto shadow-sm">
-          幾何ベクトル描画 ＆ C++コード完全同期
+          幾何ベクトル描画 ＆ C++コード並列同期
         </span>
       </div>
 
@@ -112,16 +127,27 @@ export const UmlDiagramViewer: React.FC<UmlDiagramViewerProps> = ({
             <div className="flex items-center justify-between text-xs text-cyan-300 bg-cyan-950/40 border border-cyan-500/30 px-3.5 py-2.5 rounded-xl">
               <span className="flex items-center gap-2">
                 <Sparkles className="w-4 h-4 text-cyan-400 animate-pulse" />
-                <span>💡 クラス図内の属性・操作をクリックすると、その場で該当するC++ソースコードをポップアップ表示します</span>
+                <span>💡 クラス図内の属性・操作をクリックすると、すぐ下のインスペクタにC++コードが並んで表示されます</span>
               </span>
-              <span className="text-[11px] font-mono text-cyan-400/80 hidden sm:inline">UML ↔ Code Sync</span>
+              <span className="text-[11px] font-mono text-cyan-400/80 hidden sm:inline">UML ↔ Live Code</span>
             </div>
 
-            {/* 幾何座標計算によるSVGクラス図 */}
+            {/* 幾何座標計算によるSVGクラス図（選択メンバが視覚的に強調） */}
             <UmlClassSvgDiagram
               classes={data.classes}
               relations={data.relations || []}
+              selectedMember={selectedMemberInfo?.member}
+              selectedClass={selectedMemberInfo?.cls}
               onSelectMember={handleSelectMember}
+            />
+
+            {/* クラス図と並べて見られるインライン・コードインスペクタ（クラス図を隠さない） */}
+            <UmlCodeInspector
+              member={selectedMemberInfo?.member || null}
+              cls={selectedMemberInfo?.cls || null}
+              codeFiles={codeFiles}
+              onClose={() => setSelectedMemberInfo(null)}
+              onJumpToEditor={onJumpToEditor}
             />
 
             {/* クラス間の関係性リスト (Relations & C++ Mapping) */}
@@ -205,16 +231,6 @@ export const UmlDiagramViewer: React.FC<UmlDiagramViewerProps> = ({
           </div>
         )}
       </div>
-
-      {/* メンバのソースコードポップアップモーダル（ページスクロールなし） */}
-      <MemberCodeModal
-        isOpen={!!selectedMemberInfo}
-        onClose={() => setSelectedMemberInfo(null)}
-        member={selectedMemberInfo?.member || null}
-        cls={selectedMemberInfo?.cls || null}
-        codeFiles={codeFiles}
-        onJumpToEditor={onJumpToEditor}
-      />
     </div>
   );
 };

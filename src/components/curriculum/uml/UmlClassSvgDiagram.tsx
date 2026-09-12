@@ -4,6 +4,8 @@ import { UmlClassItem, UmlRelation, UmlClassMember } from "../../../types/curric
 interface UmlClassSvgDiagramProps {
   classes: UmlClassItem[];
   relations: UmlRelation[];
+  selectedMember?: UmlClassMember | null;
+  selectedClass?: UmlClassItem | null;
   onSelectMember?: (member: UmlClassMember, cls: UmlClassItem) => void;
 }
 
@@ -17,6 +19,8 @@ interface NodeLayout {
 export const UmlClassSvgDiagram: React.FC<UmlClassSvgDiagramProps> = ({
   classes,
   relations,
+  selectedMember,
+  selectedClass,
   onSelectMember,
 }) => {
   // クラスボックスの基本寸法（300pxで長い型名や引数付きメソッドも余裕を持って収める）
@@ -526,44 +530,70 @@ export const UmlClassSvgDiagram: React.FC<UmlClassSvgDiagramProps> = ({
                   Attributes
                 </span>
                 {cls.attributes.length > 0 ? (
-                  cls.attributes.map((attr, aIdx) => (
-                    <div
-                      key={aIdx}
-                      onClick={() => onSelectMember?.(attr, cls)}
-                      className="text-[11px] font-mono flex items-center justify-between gap-1.5 px-1.5 py-1 rounded-lg cursor-pointer hover:bg-cyan-950/80 hover:border-cyan-500/40 border border-transparent transition-all group"
-                      title={
-                        attr.codeLineRef
-                          ? `クリックでC++実装（L${attr.codeLineRef.line}）をポップアップ表示`
-                          : `クリックでメンバ詳細を表示`
-                      }
-                    >
-                      <div className="flex items-center gap-1.5 min-w-0 flex-1">
-                        <span
-                          className={`w-3.5 h-3.5 rounded flex items-center justify-center text-[9px] font-bold shrink-0 ${
-                            attr.visibility === "-"
-                              ? "text-red-400 bg-red-950/90 border border-red-800/50"
-                              : attr.visibility === "+"
-                              ? "text-emerald-400 bg-emerald-950/90 border border-emerald-800/50"
-                              : "text-amber-400 bg-amber-950/90 border border-amber-800/50"
-                          }`}
-                        >
-                          {attr.visibility}
-                        </span>
-                        <span className="text-slate-200 font-medium group-hover:text-cyan-200 transition-colors shrink-0">
-                          {attr.name}
-                        </span>
-                        <span className="text-slate-500 shrink-0">:</span>
-                        <span className="text-cyan-400 font-normal truncate group-hover:text-cyan-300">
-                          {attr.type}
-                        </span>
+                  cls.attributes.map((attr, aIdx) => {
+                    const isSelected =
+                      selectedClass?.name === cls.name &&
+                      selectedMember?.name === attr.name;
+
+                    return (
+                      <div
+                        key={aIdx}
+                        onClick={() => onSelectMember?.(attr, cls)}
+                        className={`text-[11px] font-mono flex items-center justify-between gap-1.5 px-1.5 py-1 rounded-lg cursor-pointer transition-all group ${
+                          isSelected
+                            ? "bg-cyan-950/90 border border-cyan-400 text-white shadow-lg shadow-cyan-950/50 ring-1 ring-cyan-400"
+                            : "hover:bg-cyan-950/80 hover:border-cyan-500/40 border border-transparent"
+                        }`}
+                        title={
+                          attr.codeLineRef
+                            ? `クリックでC++実装（L${attr.codeLineRef.line}）を並列表示`
+                            : `クリックでメンバ詳細を並列表示`
+                        }
+                      >
+                        <div className="flex items-center gap-1.5 min-w-0 flex-1">
+                          <span
+                            className={`w-3.5 h-3.5 rounded flex items-center justify-center text-[9px] font-bold shrink-0 ${
+                              attr.visibility === "-"
+                                ? "text-red-400 bg-red-950/90 border border-red-800/50"
+                                : attr.visibility === "+"
+                                ? "text-emerald-400 bg-emerald-950/90 border border-emerald-800/50"
+                                : "text-amber-400 bg-amber-950/90 border border-amber-800/50"
+                            }`}
+                          >
+                            {attr.visibility}
+                          </span>
+                          <span
+                            className={`font-medium transition-colors shrink-0 ${
+                              isSelected
+                                ? "text-cyan-200 font-bold"
+                                : "text-slate-200 group-hover:text-cyan-200"
+                            }`}
+                          >
+                            {attr.name}
+                          </span>
+                          <span className="text-slate-500 shrink-0">:</span>
+                          <span className="text-cyan-400 font-normal truncate group-hover:text-cyan-300">
+                            {attr.type}
+                          </span>
+                        </div>
+                        {attr.codeLineRef && (
+                          <span
+                            className={`text-[9px] font-mono shrink-0 px-1.5 py-0.5 rounded border transition-all flex items-center gap-1 ${
+                              isSelected
+                                ? "bg-cyan-500 text-slate-950 font-bold border-cyan-400"
+                                : "bg-cyan-950/60 text-cyan-400 border-cyan-800/40 group-hover:bg-cyan-900 group-hover:border-cyan-400"
+                            }`}
+                          >
+                            {isSelected && (
+                              <span className="w-1.5 h-1.5 rounded-full bg-slate-950 animate-pulse" />
+                            )}
+                            <span>L{attr.codeLineRef.line}</span>
+                            {isSelected && <span>表示中</span>}
+                          </span>
+                        )}
                       </div>
-                      {attr.codeLineRef && (
-                        <span className="text-[9px] text-cyan-400 font-mono shrink-0 bg-cyan-950/60 px-1.5 py-0.5 rounded border border-cyan-800/40 group-hover:bg-cyan-900 group-hover:border-cyan-400 transition-all">
-                          L{attr.codeLineRef.line}
-                        </span>
-                      )}
-                    </div>
-                  ))
+                    );
+                  })
                 ) : (
                   <span className="text-[10px] text-slate-600 italic block py-0.5">（なし）</span>
                 )}
@@ -575,48 +605,70 @@ export const UmlClassSvgDiagram: React.FC<UmlClassSvgDiagramProps> = ({
                   Operations
                 </span>
                 {cls.operations.length > 0 ? (
-                  cls.operations.map((op, oIdx) => (
-                    <div
-                      key={oIdx}
-                      onClick={() => onSelectMember?.(op, cls)}
-                      className="text-[11px] font-mono flex items-center justify-between gap-1.5 px-1.5 py-1 rounded-lg cursor-pointer hover:bg-cyan-950/80 hover:border-cyan-500/40 border border-transparent transition-all group"
-                      title={
-                        op.codeLineRef
-                          ? `クリックでC++実装（L${op.codeLineRef.line}）をポップアップ表示`
-                          : `クリックでメンバ詳細を表示`
-                      }
-                    >
-                      <div className="flex items-center gap-1.5 min-w-0 flex-1">
-                        <span
-                          className={`w-3.5 h-3.5 rounded flex items-center justify-center text-[9px] font-bold shrink-0 ${
-                            op.visibility === "+"
-                              ? "text-emerald-400 bg-emerald-950/90 border border-emerald-800/50"
-                              : op.visibility === "-"
-                              ? "text-red-400 bg-red-950/90 border border-red-800/50"
-                              : "text-amber-400 bg-amber-950/90 border border-amber-800/50"
-                          }`}
-                        >
-                          {op.visibility}
-                        </span>
-                        <span
-                          className={`text-slate-200 font-medium group-hover:text-cyan-200 transition-colors shrink-0 ${
-                            op.isVirtual ? "italic text-amber-200" : ""
-                          }`}
-                        >
-                          {op.name}
-                        </span>
-                        <span className="text-slate-500 shrink-0">:</span>
-                        <span className="text-cyan-400 font-normal truncate group-hover:text-cyan-300">
-                          {op.type}
-                        </span>
+                  cls.operations.map((op, oIdx) => {
+                    const isSelected =
+                      selectedClass?.name === cls.name &&
+                      selectedMember?.name === op.name;
+
+                    return (
+                      <div
+                        key={oIdx}
+                        onClick={() => onSelectMember?.(op, cls)}
+                        className={`text-[11px] font-mono flex items-center justify-between gap-1.5 px-1.5 py-1 rounded-lg cursor-pointer transition-all group ${
+                          isSelected
+                            ? "bg-cyan-950/90 border border-cyan-400 text-white shadow-lg shadow-cyan-950/50 ring-1 ring-cyan-400"
+                            : "hover:bg-cyan-950/80 hover:border-cyan-500/40 border border-transparent"
+                        }`}
+                        title={
+                          op.codeLineRef
+                            ? `クリックでC++実装（L${op.codeLineRef.line}）を並列表示`
+                            : `クリックでメンバ詳細を並列表示`
+                        }
+                      >
+                        <div className="flex items-center gap-1.5 min-w-0 flex-1">
+                          <span
+                            className={`w-3.5 h-3.5 rounded flex items-center justify-center text-[9px] font-bold shrink-0 ${
+                              op.visibility === "+"
+                                ? "text-emerald-400 bg-emerald-950/90 border border-emerald-800/50"
+                                : op.visibility === "-"
+                                ? "text-red-400 bg-red-950/90 border border-red-800/50"
+                                : "text-amber-400 bg-amber-950/90 border border-amber-800/50"
+                            }`}
+                          >
+                            {op.visibility}
+                          </span>
+                          <span
+                            className={`font-medium transition-colors shrink-0 ${
+                              isSelected
+                                ? "text-cyan-200 font-bold"
+                                : "text-slate-200 group-hover:text-cyan-200"
+                            } ${op.isVirtual ? "italic text-amber-200" : ""}`}
+                          >
+                            {op.name}
+                          </span>
+                          <span className="text-slate-500 shrink-0">:</span>
+                          <span className="text-cyan-400 font-normal truncate group-hover:text-cyan-300">
+                            {op.type}
+                          </span>
+                        </div>
+                        {op.codeLineRef && (
+                          <span
+                            className={`text-[9px] font-mono shrink-0 px-1.5 py-0.5 rounded border transition-all flex items-center gap-1 ${
+                              isSelected
+                                ? "bg-cyan-500 text-slate-950 font-bold border-cyan-400"
+                                : "bg-cyan-950/60 text-cyan-400 border-cyan-800/40 group-hover:bg-cyan-900 group-hover:border-cyan-400"
+                            }`}
+                          >
+                            {isSelected && (
+                              <span className="w-1.5 h-1.5 rounded-full bg-slate-950 animate-pulse" />
+                            )}
+                            <span>L{op.codeLineRef.line}</span>
+                            {isSelected && <span>表示中</span>}
+                          </span>
+                        )}
                       </div>
-                      {op.codeLineRef && (
-                        <span className="text-[9px] text-cyan-400 font-mono shrink-0 bg-cyan-950/60 px-1.5 py-0.5 rounded border border-cyan-800/40 group-hover:bg-cyan-900 group-hover:border-cyan-400 transition-all">
-                          L{op.codeLineRef.line}
-                        </span>
-                      )}
-                    </div>
-                  ))
+                    );
+                  })
                 ) : (
                   <span className="text-[10px] text-slate-600 italic block py-0.5">（なし）</span>
                 )}
