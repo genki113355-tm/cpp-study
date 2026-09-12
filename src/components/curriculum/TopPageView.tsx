@@ -164,18 +164,19 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
           <div className="lg:col-span-7 space-y-6">
             {/* メインタイトル */}
             <div className="space-y-3">
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-black tracking-tight text-white font-sans leading-[1.1]">
-                <span className="inline-flex items-center gap-3">
-                  <span>🐻‍❄️</span>
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-100 to-slate-300">
+              <h1 className="text-3xl sm:text-5xl lg:text-6xl xl:text-7xl font-black tracking-tight text-white font-sans leading-[1.15]">
+                <span className="inline-flex items-center gap-2.5 sm:gap-3 flex-wrap">
+                  <span className="inline-block">🐻‍❄️</span>
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-100 to-slate-300 whitespace-nowrap">
                     シロクマC++ラボ
                   </span>
                 </span>
               </h1>
 
-              <p className="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-cyan-400 to-emerald-400 leading-snug">
-                ゲーム開発で学ぶオブジェクト指向開発
-                <span className="block text-slate-300 text-lg sm:text-xl lg:text-2xl font-bold mt-1">
+              <p className="text-xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-cyan-400 to-emerald-400 leading-snug">
+                <span className="inline-block whitespace-nowrap">ゲーム開発で学ぶ</span>
+                <span className="inline-block whitespace-nowrap">オブジェクト指向開発</span>
+                <span className="block text-slate-300 text-base sm:text-xl lg:text-2xl font-bold mt-1">
                   〜レガシー設計からモダン設計まで〜
                 </span>
               </p>

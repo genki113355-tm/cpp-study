@@ -28,19 +28,26 @@ export const Navbar: React.FC<NavbarProps> = ({
             <Menu className="w-6 h-6" />
           </button>
 
-          <div className="flex items-center gap-3 cursor-pointer select-none" onClick={() => onSelectChapter('top')}>
-            <div className="w-11 h-11 rounded-xl bg-gradient-to-tr from-cyan-600 to-blue-500 flex items-center justify-center text-white shadow-lg shadow-cyan-500/30 flex-shrink-0">
-              <span className="text-2xl">🐻‍❄️</span>
+          <div className="flex items-center gap-2.5 sm:gap-3 cursor-pointer select-none flex-shrink-0" onClick={() => onSelectChapter('top')}>
+            <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-gradient-to-tr from-cyan-600 to-blue-500 flex items-center justify-center text-white shadow-lg shadow-cyan-500/30 flex-shrink-0">
+              <span className="text-xl sm:text-2xl">🐻‍❄️</span>
             </div>
-            <div>
-              <span className="font-extrabold text-base sm:text-xl text-white tracking-tight flex items-center gap-2 font-sans">
-                <span>シロクマC++ラボ</span>
-                <span className="text-xs uppercase font-mono px-2 py-0.5 rounded bg-cyan-950 text-cyan-400 border border-cyan-500/30 font-bold">
+            <div className="flex flex-col justify-center min-w-0">
+              <div className="flex items-center gap-1.5 sm:gap-2 whitespace-nowrap leading-tight">
+                <span className="font-extrabold text-base sm:text-lg lg:text-xl text-white tracking-tight whitespace-nowrap">
+                  シロクマC++ラボ
+                </span>
+                <span className="text-[10px] sm:text-xs uppercase font-mono px-1.5 py-0.5 rounded bg-cyan-950 text-cyan-400 border border-cyan-500/30 font-bold leading-none flex-shrink-0">
                   Lab
                 </span>
-              </span>
-              <span className="text-xs text-slate-400 block -mt-0.5">
+              </div>
+              {/* PC・タブレット向けフルタイトル（改行なし） */}
+              <span className="hidden sm:block text-xs text-slate-400 whitespace-nowrap leading-none mt-1">
                 〜ゲーム開発で学ぶオブジェクト指向開発〜
+              </span>
+              {/* スマホ向けコンパクトキャッチコピー（1行に収まり改行ゼロ） */}
+              <span className="block sm:hidden text-[10px] text-slate-400 whitespace-nowrap leading-none mt-0.5">
+                ゲーム開発で学ぶOOP設計
               </span>
             </div>
           </div>

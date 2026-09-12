@@ -105,11 +105,11 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
         <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-8">
           <div className="flex-1 space-y-4">
             {/* メインタイトル */}
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black text-white tracking-tight leading-tight">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black text-white tracking-tight leading-tight break-keep">
               {chapter.title}
             </h1>
 
-            <p className="text-lg sm:text-xl md:text-2xl text-cyan-300 font-medium leading-snug">
+            <p className="text-lg sm:text-xl md:text-2xl text-cyan-300 font-medium leading-snug break-keep">
               {chapter.subtitle}
             </p>
 

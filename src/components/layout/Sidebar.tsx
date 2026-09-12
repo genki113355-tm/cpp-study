@@ -12,6 +12,16 @@ interface SidebarProps {
   onToggleComplete: (id: number) => void;
 }
 
+const getCleanSidebarTitle = (title: string): string => {
+  // 1. 先頭の「レガシー第1章：」や「モダン第1章：」などのプレフィックスを除去（最初のコロンまで）
+  let clean = title.replace(/^[^：:]+[：:]\s*/, '');
+  // 2. （ビフォー：...）や（アフター：...）の注記を除去して本質的なタイトルを残す
+  clean = clean.replace(/（(?:ビフォー|アフター)[：:].*?）/g, '');
+  // 3. （豪華さアップ...）や（敵のバリエーション...）など冗長な括弧注記を除去
+  clean = clean.replace(/（(?:豪華さアップ|敵のバリエーション).*?）/g, '');
+  return clean.trim();
+};
+
 export const Sidebar: React.FC<SidebarProps> = ({
   currentChapterSlug,
   onSelectChapter,
@@ -210,11 +220,11 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
                     <div className="mt-1 pl-6">
                       <p
-                        className={`text-xs font-medium leading-relaxed line-clamp-2 ${
+                        className={`text-xs font-medium leading-snug line-clamp-2 break-keep ${
                           isActive ? 'text-white font-bold' : 'text-slate-300 group-hover:text-slate-100'
                         }`}
                       >
-                        {ch.title.replace(/^.*[：:]\s*/, '')}
+                        {getCleanSidebarTitle(ch.title)}
                       </p>
                     </div>
                   </div>
@@ -275,11 +285,11 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
                     <div className="mt-1 pl-6">
                       <p
-                        className={`text-xs font-medium leading-relaxed line-clamp-2 ${
+                        className={`text-xs font-medium leading-snug line-clamp-2 break-keep ${
                           isActive ? 'text-white font-bold' : 'text-slate-300 group-hover:text-slate-100'
                         }`}
                       >
-                        {ch.title.replace(/^.*[：:]\s*/, '')}
+                        {getCleanSidebarTitle(ch.title)}
                       </p>
                     </div>
                   </div>
@@ -342,11 +352,11 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
                     <div className="mt-1 pl-6">
                       <p
-                        className={`text-xs font-medium leading-relaxed line-clamp-2 ${
+                        className={`text-xs font-medium leading-snug line-clamp-2 break-keep ${
                           isActive ? 'text-white font-bold' : 'text-slate-300 group-hover:text-slate-100'
                         }`}
                       >
-                        {ch.title.replace(/^.*[：:]\s*/, '')}
+                        {getCleanSidebarTitle(ch.title)}
                       </p>
                     </div>
                   </div>
