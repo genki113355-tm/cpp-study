@@ -1,5 +1,5 @@
 import React from 'react';
-import { X, Folder, Terminal, Check, Copy } from 'lucide-react';
+import { X, Folder, Terminal, Check, Copy, Download } from 'lucide-react';
 
 interface SourceModalProps {
   isOpen: boolean;
@@ -36,9 +36,33 @@ g++ -std=c++17 main.cpp Game.cpp Player.cpp Item.cpp BitDrone.cpp Bullet.cpp Par
           <h2 className="text-xl font-bold font-mono text-white">ローカル実行用 C++ プロジェクト一式</h2>
         </div>
 
-        <p className="text-sm text-slate-300 mb-5 leading-relaxed font-sans">
-          本教材のC++コードは、本Webサイトのリポジトリ内の <code className="text-cyan-400 bg-slate-900 px-1.5 py-0.5 rounded font-mono">cpp-projects/</code> フォルダに、実際のコンパイル可能なソースコードとして同梱されています。
+        <p className="text-sm text-slate-300 mb-4 leading-relaxed font-sans">
+          本教材のC++コードは、実際のコンパイルおよびローカル実行が可能なソースコード一式として配布しています。以下のボタンからZIPファイルをダウンロードしてご自由にお使いいただけます。
         </p>
+
+        {/* ダウンロードCTAカード */}
+        <div className="p-4 rounded-2xl bg-gradient-to-r from-cyan-950/70 via-slate-900 to-blue-950/70 border border-cyan-500/40 mb-5 shadow-lg flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="space-y-1 text-center sm:text-left">
+            <div className="text-sm font-bold text-white flex items-center justify-center sm:justify-start gap-2 flex-wrap">
+              <span className="text-base">📦</span>
+              <span>全7章のC++実機ソースコード一式</span>
+              <span className="text-[11px] font-mono px-2 py-0.5 rounded-full bg-cyan-950 text-cyan-300 border border-cyan-500/30">
+                ZIP形式 (約55KB)
+              </span>
+            </div>
+            <p className="text-xs text-slate-300">
+              各章のCMakeLists.txt、ヘッダー、実装、Windows用起動バッチ（run.bat）を完全収録。
+            </p>
+          </div>
+          <a
+            href="/downloads/cpp-projects.zip"
+            download="cpp-projects.zip"
+            className="w-full sm:w-auto px-5 py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-400 hover:to-blue-400 text-slate-950 font-bold font-mono text-sm transition shadow-lg shadow-cyan-500/30 active:scale-95 flex items-center justify-center gap-2 flex-shrink-0"
+          >
+            <Download className="w-4 h-4 text-slate-950" />
+            <span>ZIPをダウンロード</span>
+          </a>
+        </div>
 
         {/* ファイルツリー */}
         <div className="p-4 rounded-xl bg-slate-950 border border-slate-800 font-mono text-sm text-slate-300 space-y-2 mb-5">
@@ -81,7 +105,7 @@ g++ -std=c++17 main.cpp Game.cpp Player.cpp Item.cpp BitDrone.cpp Bullet.cpp Par
         {/* ワンクリックコンパイルコマンド */}
         <div className="space-y-2.5">
           <div className="flex items-center justify-between text-xs sm:text-sm font-mono text-slate-400">
-            <span>第4章のワンライナーコンパイルコマンド (g++ / clang++):</span>
+            <span>第5章（スマートポインタ＆RAII版）のワンライナーコンパイルコマンド:</span>
             <button
               onClick={handleCopyCmd}
               className="flex items-center gap-1.5 text-cyan-400 hover:text-cyan-300 font-sans font-medium"
@@ -95,10 +119,18 @@ g++ -std=c++17 main.cpp Game.cpp Player.cpp Item.cpp BitDrone.cpp Bullet.cpp Par
           </div>
         </div>
 
-        <div className="mt-6 flex justify-end">
+        <div className="mt-6 flex flex-wrap items-center justify-between gap-3 pt-4 border-t border-slate-800">
+          <a
+            href="/downloads/cpp-projects.zip"
+            download="cpp-projects.zip"
+            className="inline-flex items-center gap-2 text-cyan-400 hover:text-cyan-300 text-xs sm:text-sm font-mono font-bold transition"
+          >
+            <Download className="w-4 h-4" />
+            <span>cpp-projects.zip を直接ダウンロード</span>
+          </a>
           <button
             onClick={onClose}
-            className="px-5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-sm font-mono font-bold transition"
+            className="px-5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-sm font-mono font-bold transition ml-auto"
           >
             閉じる
           </button>
