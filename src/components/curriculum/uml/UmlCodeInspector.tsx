@@ -15,6 +15,7 @@ import {
   X,
   ArrowLeftRight,
   Minus,
+  GripHorizontal,
 } from "lucide-react";
 import Prism from "prismjs";
 import "prismjs/components/prism-c";
@@ -42,6 +43,94 @@ export const UmlCodeInspector: React.FC<UmlCodeInspectorProps> = ({
   const [copied, setCopied] = useState(false);
   const [isMinimized, setIsMinimized] = useState(false);
   const codeContainerRef = useRef<HTMLDivElement>(null);
+
+  // ドラッグ移動管理
+  const [dragOffset, setDragOffset] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
+  const [isDragging, setIsDragging] = useState(false);
+  const dragStartRef = useRef<{
+    startX: number;
+    startY: number;
+    initialOffsetX: number;
+    initialOffsetY: number;
+  } | null>(null);
+
+  // 基準位置または選択メンバが変わった時はオフセットを初期位置へリセット
+  useEffect(() => {
+    setDragOffset({ x: 0, y: 0 });
+  }, [position?.left, position?.top, member?.name]);
+
+  // マウスドラッグ開始
+  const handleMouseDown = (e: React.MouseEvent) => {
+    // 操作ボタン等のクリック時はドラッグしない
+    if ((e.target as HTMLElement).closest("button, input, pre, code")) return;
+
+    e.preventDefault();
+    setIsDragging(true);
+    dragStartRef.current = {
+      startX: e.clientX,
+      startY: e.clientY,
+      initialOffsetX: dragOffset.x,
+      initialOffsetY: dragOffset.y,
+    };
+  };
+
+  // タッチドラッグ開始（スマホ・タブレット対応）
+  const handleTouchStart = (e: React.TouchEvent) => {
+    if ((e.target as HTMLElement).closest("button, input, pre, code")) return;
+    if (e.touches.length !== 1) return;
+
+    setIsDragging(true);
+    const touch = e.touches[0];
+    dragStartRef.current = {
+      startX: touch.clientX,
+      startY: touch.clientY,
+      initialOffsetX: dragOffset.x,
+      initialOffsetY: dragOffset.y,
+    };
+  };
+
+  // グローバルなマウス/タッチ移動リスナー
+  useEffect(() => {
+    if (!isDragging) return;
+
+    const handleMouseMove = (e: MouseEvent) => {
+      if (!dragStartRef.current) return;
+      const dx = e.clientX - dragStartRef.current.startX;
+      const dy = e.clientY - dragStartRef.current.startY;
+      setDragOffset({
+        x: dragStartRef.current.initialOffsetX + dx,
+        y: dragStartRef.current.initialOffsetY + dy,
+      });
+    };
+
+    const handleTouchMove = (e: TouchEvent) => {
+      if (!dragStartRef.current || e.touches.length !== 1) return;
+      const touch = e.touches[0];
+      const dx = touch.clientX - dragStartRef.current.startX;
+      const dy = touch.clientY - dragStartRef.current.startY;
+      setDragOffset({
+        x: dragStartRef.current.initialOffsetX + dx,
+        y: dragStartRef.current.initialOffsetY + dy,
+      });
+    };
+
+    const handleEnd = () => {
+      setIsDragging(false);
+      dragStartRef.current = null;
+    };
+
+    window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("mouseup", handleEnd);
+    window.addEventListener("touchmove", handleTouchMove, { passive: false });
+    window.addEventListener("touchend", handleEnd);
+
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("mouseup", handleEnd);
+      window.removeEventListener("touchmove", handleTouchMove);
+      window.removeEventListener("touchend", handleEnd);
+    };
+  }, [isDragging]);
 
   // 対象クラスに関連するファイル群を抽出（例: Playerなら Player.h, Player.cpp）
   const relevantFiles = useMemo(() => {
@@ -194,27 +283,45 @@ export const UmlCodeInspector: React.FC<UmlCodeInspectorProps> = ({
 
   const vis = getVisBadge(member.visibility);
 
-  // 最小化状態のピル表示
+  // 現在の計算座標（ドラッグ移動量を加算）
+  const baseLeft = position ? position.left : 40;
+  const baseTop = position ? position.top : 40;
+  const currentLeft = Math.max(10, baseLeft + dragOffset.x);
+  const currentTop = Math.max(10, baseTop + dragOffset.y);
+
+  // 最小化状態のピル表示（ドラッグ移動可能）
   if (isMinimized) {
     return (
       <div
-        className="absolute z-40 rounded-xl bg-slate-900/95 border border-cyan-500/60 shadow-xl px-3 py-1.5 flex items-center gap-2 font-mono text-xs text-white"
+        onMouseDown={handleMouseDown}
+        onTouchStart={handleTouchStart}
+        className={`absolute z-40 rounded-xl bg-slate-900/95 border border-cyan-500/60 shadow-xl px-3 py-1.5 flex items-center gap-2 font-mono text-xs text-white select-none ${
+          isDragging ? "cursor-grabbing shadow-cyan-500/30" : "cursor-grab"
+        }`}
         style={{
-          left: position ? position.left : 40,
-          top: position ? position.top : 40,
+          left: currentLeft,
+          top: currentTop,
         }}
+        title="ドラッグして自由に移動できます"
       >
+        <GripHorizontal className="w-3.5 h-3.5 text-cyan-400/60" />
         <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
         <span className="text-cyan-300 font-bold">{cls.name}::{member.name}</span>
         <button
-          onClick={() => setIsMinimized(false)}
-          className="px-2 py-0.5 rounded bg-cyan-950 hover:bg-cyan-900 border border-cyan-500/40 text-[11px] text-cyan-200 ml-1"
+          onClick={(e) => {
+            e.stopPropagation();
+            setIsMinimized(false);
+          }}
+          className="px-2 py-0.5 rounded bg-cyan-950 hover:bg-cyan-900 border border-cyan-500/40 text-[11px] text-cyan-200 ml-1 transition-colors"
         >
           展開 ⤢
         </button>
         {onClose && (
           <button
-            onClick={onClose}
+            onClick={(e) => {
+              e.stopPropagation();
+              onClose();
+            }}
             className="text-slate-400 hover:text-white p-0.5"
             title="閉じる"
           >
@@ -227,17 +334,30 @@ export const UmlCodeInspector: React.FC<UmlCodeInspectorProps> = ({
 
   return (
     <div
-      className="absolute z-40 rounded-2xl border border-cyan-500/60 bg-[#090e1a]/95 backdrop-blur-md shadow-2xl shadow-black/80 flex flex-col overflow-hidden transition-all duration-200"
+      className={`absolute z-40 rounded-2xl border bg-[#090e1a]/95 backdrop-blur-md shadow-2xl flex flex-col overflow-hidden transition-shadow duration-150 ${
+        isDragging
+          ? "border-cyan-400 shadow-cyan-500/30 shadow-[0_12px_40px_rgba(0,0,0,0.9)] scale-[1.005]"
+          : "border-cyan-500/60 shadow-black/80"
+      }`}
       style={{
-        left: position ? position.left : 40,
-        top: position ? position.top : 40,
+        left: currentLeft,
+        top: currentTop,
         width: position ? position.width : 460,
         maxHeight: "380px",
       }}
     >
-      {/* ポップアップヘッダー */}
-      <div className="p-3 bg-gradient-to-r from-slate-900 via-slate-900/95 to-slate-950 border-b border-slate-800 flex items-center justify-between gap-2 shrink-0">
+      {/* ポップアップヘッダー（ドラッグハンドル兼務） */}
+      <div
+        onMouseDown={handleMouseDown}
+        onTouchStart={handleTouchStart}
+        className={`p-3 bg-gradient-to-r from-slate-900 via-slate-900/95 to-slate-950 border-b border-slate-800 flex items-center justify-between gap-2 shrink-0 select-none ${
+          isDragging ? "cursor-grabbing" : "cursor-grab"
+        }`}
+        title="ドラッグして自由に移動できます"
+      >
         <div className="flex items-center gap-1.5 flex-wrap min-w-0 flex-1">
+          <GripHorizontal className="w-4 h-4 text-cyan-400/70 shrink-0 mr-0.5" />
+
           <span
             className={`px-1.5 py-0.5 rounded text-[10px] font-mono font-bold border ${vis.bg}`}
           >
@@ -258,20 +378,26 @@ export const UmlCodeInspector: React.FC<UmlCodeInspectorProps> = ({
           )}
         </div>
 
-        {/* コントロールボタン群 */}
+        {/* コントロールボタン群（ドラッグを阻害しないよう stopPropagation） */}
         <div className="flex items-center gap-1 shrink-0">
           {onFlipPosition && (
             <button
-              onClick={onFlipPosition}
+              onClick={(e) => {
+                e.stopPropagation();
+                onFlipPosition();
+              }}
               className="p-1 rounded text-slate-400 hover:text-cyan-300 hover:bg-slate-800 transition-colors"
-              title="ポップアップの位置を反対側へ反転"
+              title="位置を左右反対側にフリップ"
             >
               <ArrowLeftRight className="w-3.5 h-3.5" />
             </button>
           )}
 
           <button
-            onClick={() => setIsMinimized(true)}
+            onClick={(e) => {
+              e.stopPropagation();
+              setIsMinimized(true);
+            }}
             className="p-1 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
             title="最小化"
           >
@@ -280,7 +406,10 @@ export const UmlCodeInspector: React.FC<UmlCodeInspectorProps> = ({
 
           {onClose && (
             <button
-              onClick={onClose}
+              onClick={(e) => {
+                e.stopPropagation();
+                onClose();
+              }}
               className="p-1 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
               title="閉じる"
             >
@@ -417,7 +546,7 @@ export const UmlCodeInspector: React.FC<UmlCodeInspectorProps> = ({
         </div>
 
         <span className="text-[10px] text-slate-500">
-          別のメンバをクリックで切替
+          ヘッダーをドラッグして自由に移動可能
         </span>
       </div>
     </div>
