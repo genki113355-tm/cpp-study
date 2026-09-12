@@ -19,9 +19,10 @@ export const UmlClassSvgDiagram: React.FC<UmlClassSvgDiagramProps> = ({
   relations,
   onSelectMember,
 }) => {
-  // クラスボックスの基本寸法
-  const cardWidth = 240;
-  const cardHeight = 230;
+  // クラスボックスの基本寸法（300pxで長い型名や引数付きメソッドも余裕を持って収める）
+  const cardWidth = 300;
+  const colSpacing = 130;
+  const rowGap = 130;
 
   // ガイド（5クラス）用の最適レイアウト判定
   const isSpecialGuideLayout =
@@ -29,38 +30,99 @@ export const UmlClassSvgDiagram: React.FC<UmlClassSvgDiagramProps> = ({
     classes.some((c) => c.name === "Player") &&
     classes.some((c) => c.name === "Weapon");
 
-  // 余裕を持ったキャンバス寸法（横の隙間: 140px、縦の隙間: 110px）
-  const totalWidth = isSpecialGuideLayout ? 1080 : Math.max(820, 60 + 3 * (cardWidth + 130));
-  const totalHeight = isSpecialGuideLayout ? 670 : Math.max(360, 60 + 2 * (cardHeight + 110));
+  // 各クラスの必要高さを動的計算
+  const calculateClassCardHeight = (cls: UmlClassItem) => {
+    const headerH = cls.stereotype ? 58 : 46;
+    const attrCount = cls.attributes.length;
+    const attrH = 24 + (attrCount > 0 ? attrCount * 28 : 24) + 12;
+    const opCount = cls.operations.length;
+    const opH = 24 + (opCount > 0 ? opCount * 28 : 24) + 12;
+    return headerH + attrH + opH + 16;
+  };
+
+  // スペシャルガイド用の行高さ計算
+  const guideRow0Classes = classes.filter((c) =>
+    ["GameEngine", "Player", "Weapon"].includes(c.name)
+  );
+  const guideRow1Classes = classes.filter((c) =>
+    ["Enemy", "BossEnemy"].includes(c.name)
+  );
+  const guideRow0Height = Math.max(
+    240,
+    ...(guideRow0Classes.length > 0
+      ? guideRow0Classes.map(calculateClassCardHeight)
+      : [240])
+  );
+  const guideRow1Height = Math.max(
+    240,
+    ...(guideRow1Classes.length > 0
+      ? guideRow1Classes.map(calculateClassCardHeight)
+      : [240])
+  );
+
+  // 汎用グリッド配置用の計算
+  const cols = classes.length <= 2 ? classes.length : 3;
+  const rowCount = Math.ceil(classes.length / cols);
+  const rowHeights: number[] = [];
+
+  for (let r = 0; r < rowCount; r++) {
+    const classesInThisRow = classes.slice(r * cols, (r + 1) * cols);
+    const maxH = Math.max(
+      240,
+      ...classesInThisRow.map(calculateClassCardHeight)
+    );
+    rowHeights.push(maxH);
+  }
+
+  const rowYPositions: number[] = [];
+  let curY = 50;
+  for (let r = 0; r < rowCount; r++) {
+    rowYPositions.push(curY);
+    curY += rowHeights[r] + rowGap;
+  }
+
+  // キャンバス寸法（横幅・縦幅）
+  const totalWidth = isSpecialGuideLayout
+    ? 40 + 3 * cardWidth + 2 * colSpacing + 40 // 1260px
+    : Math.max(840, 40 + cols * cardWidth + (cols - 1) * colSpacing + 40);
+
+  const totalHeight = isSpecialGuideLayout
+    ? 50 + guideRow0Height + rowGap + guideRow1Height + 60
+    : curY - rowGap + 60;
 
   // クラス名に基づく座標配置マップ
   const getNodeLayout = (className: string, idx: number): NodeLayout => {
     if (isSpecialGuideLayout) {
+      const x0 = 40;
+      const x1 = 40 + cardWidth + colSpacing;
+      const x2 = 40 + 2 * (cardWidth + colSpacing);
+      const y0 = 50;
+      const y1 = 50 + guideRow0Height + rowGap;
+
       switch (className) {
         case "GameEngine":
-          return { x: 40, y: 50, width: cardWidth, height: cardHeight };
+          return { x: x0, y: y0, width: cardWidth, height: guideRow0Height };
         case "Player":
-          return { x: 420, y: 50, width: cardWidth, height: cardHeight };
+          return { x: x1, y: y0, width: cardWidth, height: guideRow0Height };
         case "Weapon":
-          return { x: 800, y: 50, width: cardWidth, height: cardHeight };
+          return { x: x2, y: y0, width: cardWidth, height: guideRow0Height };
         case "Enemy":
-          return { x: 420, y: 390, width: cardWidth, height: cardHeight };
+          return { x: x1, y: y1, width: cardWidth, height: guideRow1Height };
         case "BossEnemy":
-          return { x: 800, y: 390, width: cardWidth, height: cardHeight };
+          return { x: x2, y: y1, width: cardWidth, height: guideRow1Height };
         default:
           break;
       }
     }
 
     // 汎用グリッド配置
-    const cols = classes.length <= 2 ? classes.length : 3;
     const col = idx % cols;
     const row = Math.floor(idx / cols);
     return {
-      x: 40 + col * (cardWidth + 140),
-      y: 50 + row * (cardHeight + 110),
+      x: 40 + col * (cardWidth + colSpacing),
+      y: rowYPositions[row],
       width: cardWidth,
-      height: cardHeight,
+      height: rowHeights[row],
     };
   };
 
@@ -95,7 +157,8 @@ export const UmlClassSvgDiagram: React.FC<UmlClassSvgDiagramProps> = ({
 
             const dx = toCenter.x - fromCenter.x;
             const dy = toCenter.y - fromCenter.y;
-            const isHorizontal = Math.abs(dx) > Math.abs(dy);
+            // 同じ行にある場合は水平接続、行が異なる場合は垂直／ステップ接続
+            const isHorizontal = Math.abs(fromNode.y - toNode.y) < 30;
 
             let strokeColor = "#38bdf8"; // sky
             let isDashed = false;
@@ -209,7 +272,7 @@ export const UmlClassSvgDiagram: React.FC<UmlClassSvgDiagramProps> = ({
                   lineEndX = x2 + 2;
                 }
               } else if (rel.type === "generalization" || rel.type === "realization") {
-                // 基底クラス側に白抜き三角 ◁
+                // 白抜き三角 ◁───
                 if (isLeftToRight) {
                   endMarkerElement = (
                     <polygon
@@ -259,7 +322,6 @@ export const UmlClassSvgDiagram: React.FC<UmlClassSvgDiagramProps> = ({
               }
 
               const midX = (x1 + x2) / 2;
-              // ラベルは線より【20px 上】に配置し、線やマーカーと一切重ならない！
               const labelY = y - 20;
 
               return (
@@ -281,9 +343,9 @@ export const UmlClassSvgDiagram: React.FC<UmlClassSvgDiagramProps> = ({
                   {/* ラベルバッジ（線の上に独立して配置） */}
                   <g transform={`translate(${midX}, ${labelY})`}>
                     <rect
-                      x="-35"
+                      x="-38"
                       y="-10"
-                      width="70"
+                      width="76"
                       height="20"
                       rx="6"
                       fill="#0b1120"
@@ -306,10 +368,10 @@ export const UmlClassSvgDiagram: React.FC<UmlClassSvgDiagramProps> = ({
                 </g>
               );
             } else {
-              // 垂直方向の接続（上から下、または下から上）
+              // 垂直／ステップ接続（異なる行間）
               const isTopToBottom = dy > 0;
-              const x = fromCenter.x;
-
+              const x1 = fromCenter.x;
+              const x2 = toCenter.x;
               const y1 = isTopToBottom ? fromNode.y + fromNode.height : fromNode.y;
               const y2 = isTopToBottom ? toNode.y : toNode.y + toNode.height;
 
@@ -321,7 +383,7 @@ export const UmlClassSvgDiagram: React.FC<UmlClassSvgDiagramProps> = ({
                 if (isTopToBottom) {
                   endMarkerElement = (
                     <polygon
-                      points={`${x},${y2} ${x - 7},${y2 - 14} ${x + 7},${y2 - 14}`}
+                      points={`${x2},${y2} ${x2 - 7},${y2 - 14} ${x2 + 7},${y2 - 14}`}
                       fill="#070b14"
                       stroke={strokeColor}
                       strokeWidth="2"
@@ -331,7 +393,7 @@ export const UmlClassSvgDiagram: React.FC<UmlClassSvgDiagramProps> = ({
                 } else {
                   endMarkerElement = (
                     <polygon
-                      points={`${x},${y2} ${x - 7},${y2 + 14} ${x + 7},${y2 + 14}`}
+                      points={`${x2},${y2} ${x2 - 7},${y2 + 14} ${x2 + 7},${y2 + 14}`}
                       fill="#070b14"
                       stroke={strokeColor}
                       strokeWidth="2"
@@ -343,7 +405,7 @@ export const UmlClassSvgDiagram: React.FC<UmlClassSvgDiagramProps> = ({
                 if (isTopToBottom) {
                   endMarkerElement = (
                     <polyline
-                      points={`${x - 5},${y2 - 8} ${x},${y2} ${x + 5},${y2 - 8}`}
+                      points={`${x2 - 5},${y2 - 8} ${x2},${y2} ${x2 + 5},${y2 - 8}`}
                       fill="none"
                       stroke={strokeColor}
                       strokeWidth="2.5"
@@ -354,7 +416,7 @@ export const UmlClassSvgDiagram: React.FC<UmlClassSvgDiagramProps> = ({
                 } else {
                   endMarkerElement = (
                     <polyline
-                      points={`${x - 5},${y2 + 8} ${x},${y2} ${x + 5},${y2 + 8}`}
+                      points={`${x2 - 5},${y2 + 8} ${x2},${y2} ${x2 + 5},${y2 + 8}`}
                       fill="none"
                       stroke={strokeColor}
                       strokeWidth="2.5"
@@ -366,23 +428,27 @@ export const UmlClassSvgDiagram: React.FC<UmlClassSvgDiagramProps> = ({
               }
 
               const midY = (y1 + y2) / 2;
+              const isStraight = Math.abs(x1 - x2) < 5;
+              const pathD = isStraight
+                ? `M ${x1} ${lineStartY} V ${lineEndY}`
+                : `M ${x1} ${lineStartY} V ${midY} H ${x2} V ${lineEndY}`;
+
+              const labelX = (x1 + x2) / 2;
 
               return (
                 <g key={`rel-${rIdx}`}>
-                  {/* メイン線 */}
-                  <line
-                    x1={x}
-                    y1={lineStartY}
-                    x2={x}
-                    y2={lineEndY}
+                  {/* メイン線（直角ステップまたは垂直直線） */}
+                  <path
+                    d={pathD}
+                    fill="none"
                     stroke={strokeColor}
                     strokeWidth="2.5"
                     strokeDasharray={isDashed ? "6,5" : undefined}
                   />
                   {endMarkerElement}
 
-                  {/* ラベルバッジ（垂直線の中央にソリッドな背景で重ねる） */}
-                  <g transform={`translate(${x}, ${midY})`}>
+                  {/* ラベルバッジ */}
+                  <g transform={`translate(${labelX}, ${midY})`}>
                     <rect
                       x="-40"
                       y="-11"
@@ -420,7 +486,7 @@ export const UmlClassSvgDiagram: React.FC<UmlClassSvgDiagramProps> = ({
           return (
             <div
               key={cls.name}
-              className={`absolute rounded-2xl border bg-slate-900/95 overflow-hidden shadow-2xl transition-all duration-200 hover:scale-[1.02] hover:z-30 z-20 ${
+              className={`absolute rounded-2xl border bg-slate-900/95 shadow-2xl transition-all duration-200 hover:scale-[1.01] hover:z-30 z-20 flex flex-col overflow-hidden ${
                 cls.isAbstract
                   ? "border-amber-500/60 shadow-amber-950/30"
                   : "border-slate-700/80 hover:border-cyan-500/70"
@@ -434,19 +500,19 @@ export const UmlClassSvgDiagram: React.FC<UmlClassSvgDiagramProps> = ({
             >
               {/* 1段目：クラス名ヘッダー */}
               <div
-                className={`p-2.5 text-center border-b font-mono ${
+                className={`p-2.5 text-center border-b font-mono shrink-0 ${
                   cls.isAbstract
                     ? "bg-amber-950/40 border-amber-500/40"
                     : "bg-slate-800/90 border-slate-700"
                 }`}
               >
                 {cls.stereotype && (
-                  <span className="text-[9px] text-cyan-300 block uppercase tracking-wider font-sans">
+                  <span className="text-[9.5px] text-cyan-300 block uppercase tracking-wider font-sans font-bold">
                     &laquo;{cls.stereotype}&raquo;
                   </span>
                 )}
                 <h4
-                  className={`text-sm font-bold text-white ${
+                  className={`text-sm font-bold text-white tracking-wide ${
                     cls.isAbstract ? "italic text-amber-300" : ""
                   }`}
                 >
@@ -455,8 +521,8 @@ export const UmlClassSvgDiagram: React.FC<UmlClassSvgDiagramProps> = ({
               </div>
 
               {/* 2段目：属性 (Attributes) */}
-              <div className="p-2 border-b border-slate-800/80 bg-slate-950/60 space-y-1 h-[84px] overflow-y-auto">
-                <span className="text-[9px] font-mono text-slate-500 uppercase tracking-wider block">
+              <div className="p-2.5 border-b border-slate-800/80 bg-slate-950/60 space-y-1 shrink-0">
+                <span className="text-[9px] font-mono text-slate-500 uppercase tracking-wider block font-bold">
                   Attributes
                 </span>
                 {cls.attributes.length > 0 ? (
@@ -464,78 +530,96 @@ export const UmlClassSvgDiagram: React.FC<UmlClassSvgDiagramProps> = ({
                     <div
                       key={aIdx}
                       onClick={() => onSelectMember?.(attr, cls)}
-                      className="text-[11px] font-mono flex items-center justify-between gap-1 p-0.5 rounded cursor-pointer hover:bg-cyan-950/80 transition-colors"
-                      title={attr.codeLineRef ? `コード行へジャンプ: L${attr.codeLineRef.line}` : undefined}
+                      className="text-[11px] font-mono flex items-center justify-between gap-1.5 px-1.5 py-1 rounded-lg cursor-pointer hover:bg-cyan-950/80 hover:border-cyan-500/40 border border-transparent transition-all group"
+                      title={
+                        attr.codeLineRef
+                          ? `クリックでC++実装（L${attr.codeLineRef.line}）をポップアップ表示`
+                          : `クリックでメンバ詳細を表示`
+                      }
                     >
-                      <div className="flex items-center gap-1 truncate">
+                      <div className="flex items-center gap-1.5 min-w-0 flex-1">
                         <span
-                          className={`w-3 h-3 rounded flex items-center justify-center text-[9px] font-bold shrink-0 ${
+                          className={`w-3.5 h-3.5 rounded flex items-center justify-center text-[9px] font-bold shrink-0 ${
                             attr.visibility === "-"
-                              ? "text-red-400 bg-red-950"
+                              ? "text-red-400 bg-red-950/90 border border-red-800/50"
                               : attr.visibility === "+"
-                              ? "text-emerald-400 bg-emerald-950"
-                              : "text-amber-400 bg-amber-950"
+                              ? "text-emerald-400 bg-emerald-950/90 border border-emerald-800/50"
+                              : "text-amber-400 bg-amber-950/90 border border-amber-800/50"
                           }`}
                         >
                           {attr.visibility}
                         </span>
-                        <span className="text-slate-200 truncate">{attr.name}</span>
-                        <span className="text-slate-500">:</span>
-                        <span className="text-cyan-400 truncate">{attr.type}</span>
+                        <span className="text-slate-200 font-medium group-hover:text-cyan-200 transition-colors shrink-0">
+                          {attr.name}
+                        </span>
+                        <span className="text-slate-500 shrink-0">:</span>
+                        <span className="text-cyan-400 font-normal truncate group-hover:text-cyan-300">
+                          {attr.type}
+                        </span>
                       </div>
                       {attr.codeLineRef && (
-                        <span className="text-[9px] text-cyan-400 font-mono shrink-0">
+                        <span className="text-[9px] text-cyan-400 font-mono shrink-0 bg-cyan-950/60 px-1.5 py-0.5 rounded border border-cyan-800/40 group-hover:bg-cyan-900 group-hover:border-cyan-400 transition-all">
                           L{attr.codeLineRef.line}
                         </span>
                       )}
                     </div>
                   ))
                 ) : (
-                  <span className="text-[10px] text-slate-600 italic">（なし）</span>
+                  <span className="text-[10px] text-slate-600 italic block py-0.5">（なし）</span>
                 )}
               </div>
 
               {/* 3段目：操作 (Operations) */}
-              <div className="p-2 bg-slate-950/30 space-y-1 h-[86px] overflow-y-auto">
-                <span className="text-[9px] font-mono text-slate-500 uppercase tracking-wider block">
+              <div className="p-2.5 bg-slate-950/30 space-y-1 flex-1">
+                <span className="text-[9px] font-mono text-slate-500 uppercase tracking-wider block font-bold">
                   Operations
                 </span>
-                {cls.operations.map((op, oIdx) => (
-                  <div
-                    key={oIdx}
-                    onClick={() => onSelectMember?.(op, cls)}
-                    className="text-[11px] font-mono flex items-center justify-between gap-1 p-0.5 rounded cursor-pointer hover:bg-cyan-950/80 transition-colors"
-                    title={op.codeLineRef ? `コード行へジャンプ: L${op.codeLineRef.line}` : undefined}
-                  >
-                    <div className="flex items-center gap-1 truncate">
-                      <span
-                        className={`w-3 h-3 rounded flex items-center justify-center text-[9px] font-bold shrink-0 ${
-                          op.visibility === "+"
-                            ? "text-emerald-400 bg-emerald-950"
-                            : op.visibility === "-"
-                            ? "text-red-400 bg-red-950"
-                            : "text-amber-400 bg-amber-950"
-                        }`}
-                      >
-                        {op.visibility}
-                      </span>
-                      <span
-                        className={`text-slate-200 truncate ${
-                          op.isVirtual ? "italic text-amber-200" : ""
-                        }`}
-                      >
-                        {op.name}
-                      </span>
-                      <span className="text-slate-500">:</span>
-                      <span className="text-cyan-400 truncate">{op.type}</span>
+                {cls.operations.length > 0 ? (
+                  cls.operations.map((op, oIdx) => (
+                    <div
+                      key={oIdx}
+                      onClick={() => onSelectMember?.(op, cls)}
+                      className="text-[11px] font-mono flex items-center justify-between gap-1.5 px-1.5 py-1 rounded-lg cursor-pointer hover:bg-cyan-950/80 hover:border-cyan-500/40 border border-transparent transition-all group"
+                      title={
+                        op.codeLineRef
+                          ? `クリックでC++実装（L${op.codeLineRef.line}）をポップアップ表示`
+                          : `クリックでメンバ詳細を表示`
+                      }
+                    >
+                      <div className="flex items-center gap-1.5 min-w-0 flex-1">
+                        <span
+                          className={`w-3.5 h-3.5 rounded flex items-center justify-center text-[9px] font-bold shrink-0 ${
+                            op.visibility === "+"
+                              ? "text-emerald-400 bg-emerald-950/90 border border-emerald-800/50"
+                              : op.visibility === "-"
+                              ? "text-red-400 bg-red-950/90 border border-red-800/50"
+                              : "text-amber-400 bg-amber-950/90 border border-amber-800/50"
+                          }`}
+                        >
+                          {op.visibility}
+                        </span>
+                        <span
+                          className={`text-slate-200 font-medium group-hover:text-cyan-200 transition-colors shrink-0 ${
+                            op.isVirtual ? "italic text-amber-200" : ""
+                          }`}
+                        >
+                          {op.name}
+                        </span>
+                        <span className="text-slate-500 shrink-0">:</span>
+                        <span className="text-cyan-400 font-normal truncate group-hover:text-cyan-300">
+                          {op.type}
+                        </span>
+                      </div>
+                      {op.codeLineRef && (
+                        <span className="text-[9px] text-cyan-400 font-mono shrink-0 bg-cyan-950/60 px-1.5 py-0.5 rounded border border-cyan-800/40 group-hover:bg-cyan-900 group-hover:border-cyan-400 transition-all">
+                          L{op.codeLineRef.line}
+                        </span>
+                      )}
                     </div>
-                    {op.codeLineRef && (
-                      <span className="text-[9px] text-cyan-400 font-mono shrink-0">
-                        L{op.codeLineRef.line}
-                      </span>
-                    )}
-                  </div>
-                ))}
+                  ))
+                ) : (
+                  <span className="text-[10px] text-slate-600 italic block py-0.5">（なし）</span>
+                )}
               </div>
             </div>
           );

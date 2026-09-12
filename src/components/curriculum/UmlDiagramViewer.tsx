@@ -1,16 +1,41 @@
-import React from "react";
-import { UmlDiagramDoc, UmlRelation, UmlClassMember, UmlClassItem } from "../../types/curriculum";
+import React, { useState } from "react";
+import {
+  UmlDiagramDoc,
+  UmlRelation,
+  UmlClassMember,
+  UmlClassItem,
+  CodeFile,
+  CodeHighlightTarget,
+} from "../../types/curriculum";
 import { Layers, Share2, Sparkles, CheckCircle } from "lucide-react";
 import { UmlClassSvgDiagram } from "./uml/UmlClassSvgDiagram";
 import { UmlSequenceSvgDiagram } from "./uml/UmlSequenceSvgDiagram";
 import { UmlStateSvgDiagram } from "./uml/UmlStateSvgDiagram";
+import { MemberCodeModal } from "./uml/MemberCodeModal";
 
 interface UmlDiagramViewerProps {
   data: UmlDiagramDoc;
+  codeFiles?: CodeFile[];
   onSelectMember?: (member: UmlClassMember, cls: UmlClassItem) => void;
+  onJumpToEditor?: (target: CodeHighlightTarget) => void;
 }
 
-export const UmlDiagramViewer: React.FC<UmlDiagramViewerProps> = ({ data, onSelectMember }) => {
+export const UmlDiagramViewer: React.FC<UmlDiagramViewerProps> = ({
+  data,
+  codeFiles = [],
+  onSelectMember,
+  onJumpToEditor,
+}) => {
+  const [selectedMemberInfo, setSelectedMemberInfo] = useState<{
+    member: UmlClassMember;
+    cls: UmlClassItem;
+  } | null>(null);
+
+  const handleSelectMember = (member: UmlClassMember, cls: UmlClassItem) => {
+    setSelectedMemberInfo({ member, cls });
+    onSelectMember?.(member, cls);
+  };
+
   const getRelationBadge = (relation: UmlRelation) => {
     switch (relation.type) {
       case "composition":
@@ -27,13 +52,13 @@ export const UmlDiagramViewer: React.FC<UmlDiagramViewerProps> = ({ data, onSele
         };
       case "generalization":
         return {
-          symbol: "?───",
+          symbol: "◁───",
           label: "汎化・継承 (is-a 関係)",
           color: "bg-amber-950 text-amber-300 border-amber-500/40",
         };
       case "realization":
         return {
-          symbol: "?- - -",
+          symbol: "◁- - -",
           label: "実現 (インターフェース実装)",
           color: "bg-purple-950 text-purple-300 border-purple-500/40",
         };
@@ -55,9 +80,9 @@ export const UmlDiagramViewer: React.FC<UmlDiagramViewerProps> = ({ data, onSele
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-950 text-cyan-300 border border-cyan-500/30 text-xs font-mono font-bold mb-2">
             <Layers className="w-3.5 h-3.5 text-cyan-400" />
             <span>
-              {data.diagramType === "class" && "UML CLASS DIAGRAM : クラス設計図 (SVG幾何描画)"}
-              {data.diagramType === "sequence" && "UML SEQUENCE DIAGRAM : 時系列呼び出し設計図 (SVG幾何描画)"}
-              {data.diagramType === "state" && "UML STATE MACHINE : 状態遷移設計図 (SVG幾何描画)"}
+              {data.diagramType === "class" && "UML CLASS DIAGRAM : クラス設計図 (幾何描画)"}
+              {data.diagramType === "sequence" && "UML SEQUENCE DIAGRAM : 時系列呼び出し設計図 (幾何描画)"}
+              {data.diagramType === "state" && "UML STATE MACHINE : 状態遷移設計図 (幾何描画)"}
             </span>
           </div>
           <h3 className="text-xl sm:text-2xl font-extrabold text-white font-sans">
@@ -70,7 +95,7 @@ export const UmlDiagramViewer: React.FC<UmlDiagramViewerProps> = ({ data, onSele
           )}
         </div>
         <span className="text-xs font-mono text-cyan-400 bg-cyan-950/80 px-3 py-1.5 rounded-xl border border-cyan-500/30 self-start sm:self-auto shadow-sm">
-          座標計算ベクトル描画 ? C++コード完全同期
+          幾何ベクトル描画 ＆ C++コード完全同期
         </span>
       </div>
 
@@ -87,16 +112,16 @@ export const UmlDiagramViewer: React.FC<UmlDiagramViewerProps> = ({ data, onSele
             <div className="flex items-center justify-between text-xs text-cyan-300 bg-cyan-950/40 border border-cyan-500/30 px-3.5 py-2.5 rounded-xl">
               <span className="flex items-center gap-2">
                 <Sparkles className="w-4 h-4 text-cyan-400 animate-pulse" />
-                <span>?? クラス図内の属性・操作をクリックすると、該当するC++ソースコードへジャンプ＆点滅します</span>
+                <span>💡 クラス図内の属性・操作をクリックすると、その場で該当するC++ソースコードをポップアップ表示します</span>
               </span>
-              <span className="text-[11px] font-mono text-cyan-400/80 hidden sm:inline">UML ? Code Sync</span>
+              <span className="text-[11px] font-mono text-cyan-400/80 hidden sm:inline">UML ↔ Code Sync</span>
             </div>
 
             {/* 幾何座標計算によるSVGクラス図 */}
             <UmlClassSvgDiagram
               classes={data.classes}
               relations={data.relations || []}
-              onSelectMember={onSelectMember}
+              onSelectMember={handleSelectMember}
             />
 
             {/* クラス間の関係性リスト (Relations & C++ Mapping) */}
@@ -162,7 +187,7 @@ export const UmlDiagramViewer: React.FC<UmlDiagramViewerProps> = ({ data, onSele
           </div>
         )}
 
-        {/* ?? 設計書とC++コードの対応ポイント解説 (Code Mapping Notes) */}
+        {/* ④ 設計書とC++コードの対応ポイント解説 (Code Mapping Notes) */}
         {data.codeMappingNotes && data.codeMappingNotes.length > 0 && (
           <div className="p-5 sm:p-6 rounded-2xl bg-gradient-to-r from-cyan-950/40 via-slate-900/60 to-slate-950 border border-cyan-500/30 space-y-3">
             <div className="flex items-center gap-2 text-xs font-mono font-bold text-cyan-300 uppercase tracking-wider">
@@ -180,7 +205,16 @@ export const UmlDiagramViewer: React.FC<UmlDiagramViewerProps> = ({ data, onSele
           </div>
         )}
       </div>
+
+      {/* メンバのソースコードポップアップモーダル（ページスクロールなし） */}
+      <MemberCodeModal
+        isOpen={!!selectedMemberInfo}
+        onClose={() => setSelectedMemberInfo(null)}
+        member={selectedMemberInfo?.member || null}
+        cls={selectedMemberInfo?.cls || null}
+        codeFiles={codeFiles}
+        onJumpToEditor={onJumpToEditor}
+      />
     </div>
   );
 };
-

@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Chapter, CodeHighlightTarget } from '../../types/curriculum';
+import React, { useState, useMemo } from 'react';
+import { Chapter, CodeHighlightTarget, CodeFile } from '../../types/curriculum';
 import { CLASSIC_CHAPTERS, MODERN_CHAPTERS } from '../../data/chapters';
 import { DialogueBubble } from './DialogueBubble';
 import { CodeViewer } from './CodeViewer';
@@ -29,6 +29,21 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
   const [selectedAnswers, setSelectedAnswers] = useState<Record<string, number>>({});
   const [showExplanations, setShowExplanations] = useState<Record<string, boolean>>({});
   const [codeHighlight, setCodeHighlight] = useState<CodeHighlightTarget | undefined>();
+
+  // この章に含まれるすべての教材コードファイルを抽出
+  const allCodeFiles = useMemo(() => {
+    const files: CodeFile[] = [];
+    const seen = new Set<string>();
+    chapter.sections.forEach((s) => {
+      (s.codeFiles || []).forEach((f) => {
+        if (!seen.has(f.filename)) {
+          seen.add(f.filename);
+          files.push(f);
+        }
+      });
+    });
+    return files;
+  }, [chapter]);
 
   const handleSelectOption = (quizId: string, optionIndex: number, correctIndex: number) => {
     setSelectedAnswers((prev) => ({ ...prev, [quizId]: optionIndex }));
@@ -179,21 +194,8 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
         <section>
           <UmlDiagramViewer
             data={chapter.umlDiagram}
-            onSelectMember={(member) => {
-              if (member.codeLineRef) {
-                setCodeHighlight({
-                  filename: member.codeLineRef.filename,
-                  line: member.codeLineRef.line,
-                  keyword: member.codeLineRef.keyword || member.name,
-                  timestamp: Date.now(),
-                });
-              } else {
-                setCodeHighlight({
-                  keyword: member.name,
-                  timestamp: Date.now(),
-                });
-              }
-            }}
+            codeFiles={allCodeFiles}
+            onJumpToEditor={(target) => setCodeHighlight(target)}
           />
         </section>
       )}
@@ -313,21 +315,8 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
           {section.umlDiagram && (
             <UmlDiagramViewer
               data={section.umlDiagram}
-              onSelectMember={(member) => {
-                if (member.codeLineRef) {
-                  setCodeHighlight({
-                    filename: member.codeLineRef.filename,
-                    line: member.codeLineRef.line,
-                    keyword: member.codeLineRef.keyword || member.name,
-                    timestamp: Date.now(),
-                  });
-                } else {
-                  setCodeHighlight({
-                    keyword: member.name,
-                    timestamp: Date.now(),
-                  });
-                }
-              }}
+              codeFiles={section.codeFiles && section.codeFiles.length > 0 ? section.codeFiles : allCodeFiles}
+              onJumpToEditor={(target) => setCodeHighlight(target)}
             />
           )}
 
