@@ -11,7 +11,6 @@ import { Layers, Share2, Sparkles, CheckCircle } from "lucide-react";
 import { UmlClassSvgDiagram } from "./uml/UmlClassSvgDiagram";
 import { UmlSequenceSvgDiagram } from "./uml/UmlSequenceSvgDiagram";
 import { UmlStateSvgDiagram } from "./uml/UmlStateSvgDiagram";
-import { UmlCodeInspector } from "./uml/UmlCodeInspector";
 
 interface UmlDiagramViewerProps {
   data: UmlDiagramDoc;
@@ -127,26 +126,20 @@ export const UmlDiagramViewer: React.FC<UmlDiagramViewerProps> = ({
             <div className="flex items-center justify-between text-xs text-cyan-300 bg-cyan-950/40 border border-cyan-500/30 px-3.5 py-2.5 rounded-xl">
               <span className="flex items-center gap-2">
                 <Sparkles className="w-4 h-4 text-cyan-400 animate-pulse" />
-                <span>💡 クラス図内の属性・操作をクリックすると、すぐ下のインスペクタにC++コードが並んで表示されます</span>
+                <span>💡 クラス図内の属性・操作をクリックすると、該当クラスの横にコードがポップアップし並べて確認できます</span>
               </span>
-              <span className="text-[11px] font-mono text-cyan-400/80 hidden sm:inline">UML ↔ Live Code</span>
+              <span className="text-[11px] font-mono text-cyan-400/80 hidden sm:inline">UML ↔ Live Popover</span>
             </div>
 
-            {/* 幾何座標計算によるSVGクラス図（選択メンバが視覚的に強調） */}
+            {/* 幾何座標計算によるSVGクラス図（押下したクラスの横にスマート・ポップアップ） */}
             <UmlClassSvgDiagram
               classes={data.classes}
               relations={data.relations || []}
               selectedMember={selectedMemberInfo?.member}
               selectedClass={selectedMemberInfo?.cls}
-              onSelectMember={handleSelectMember}
-            />
-
-            {/* クラス図と並べて見られるインライン・コードインスペクタ（クラス図を隠さない） */}
-            <UmlCodeInspector
-              member={selectedMemberInfo?.member || null}
-              cls={selectedMemberInfo?.cls || null}
               codeFiles={codeFiles}
-              onClose={() => setSelectedMemberInfo(null)}
+              onSelectMember={handleSelectMember}
+              onCloseInspector={() => setSelectedMemberInfo(null)}
               onJumpToEditor={onJumpToEditor}
             />
 

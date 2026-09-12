@@ -5,7 +5,17 @@ import {
   CodeFile,
   CodeHighlightTarget,
 } from "../../../types/curriculum";
-import { Copy, Check, FileCode, FileText, ArrowDownRight, Sparkles, X, Code2, ChevronDown, ChevronUp } from "lucide-react";
+import {
+  Copy,
+  Check,
+  FileCode,
+  FileText,
+  ArrowDownRight,
+  Sparkles,
+  X,
+  ArrowLeftRight,
+  Minus,
+} from "lucide-react";
 import Prism from "prismjs";
 import "prismjs/components/prism-c";
 import "prismjs/components/prism-cpp";
@@ -14,7 +24,9 @@ interface UmlCodeInspectorProps {
   member: UmlClassMember | null;
   cls: UmlClassItem | null;
   codeFiles?: CodeFile[];
+  position?: { left: number; top: number; width: number } | null;
   onClose?: () => void;
+  onFlipPosition?: () => void;
   onJumpToEditor?: (target: CodeHighlightTarget) => void;
 }
 
@@ -22,11 +34,13 @@ export const UmlCodeInspector: React.FC<UmlCodeInspectorProps> = ({
   member,
   cls,
   codeFiles = [],
+  position,
   onClose,
+  onFlipPosition,
   onJumpToEditor,
 }) => {
   const [copied, setCopied] = useState(false);
-  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isMinimized, setIsMinimized] = useState(false);
   const codeContainerRef = useRef<HTMLDivElement>(null);
 
   // 対象クラスに関連するファイル群を抽出（例: Playerなら Player.h, Player.cpp）
@@ -116,14 +130,14 @@ export const UmlCodeInspector: React.FC<UmlCodeInspectorProps> = ({
 
     const timer = setTimeout(() => {
       const targetElement = document.getElementById(
-        `inspector-line-${targetLineNumber}`
+        `popover-line-${targetLineNumber}`
       );
       if (targetElement && codeContainerRef.current) {
         const container = codeContainerRef.current;
         const targetTop = targetElement.offsetTop;
         const containerHeight = container.clientHeight;
         container.scrollTo({
-          top: Math.max(0, targetTop - containerHeight / 2 + 20),
+          top: Math.max(0, targetTop - containerHeight / 2 + 15),
           behavior: "smooth",
         });
       }
@@ -176,214 +190,236 @@ export const UmlCodeInspector: React.FC<UmlCodeInspectorProps> = ({
     }
   };
 
-  if (!member || !cls) {
+  if (!member || !cls) return null;
+
+  const vis = getVisBadge(member.visibility);
+
+  // 最小化状態のピル表示
+  if (isMinimized) {
     return (
-      <div className="rounded-2xl border border-cyan-500/30 bg-slate-900/60 p-4 text-center text-xs font-mono text-cyan-300 flex items-center justify-center gap-2">
-        <Sparkles className="w-4 h-4 text-cyan-400 animate-pulse" />
-        <span>上のクラス図内の属性や操作をクリックすると、ここにC++コードが並んで表示されます</span>
+      <div
+        className="absolute z-40 rounded-xl bg-slate-900/95 border border-cyan-500/60 shadow-xl px-3 py-1.5 flex items-center gap-2 font-mono text-xs text-white"
+        style={{
+          left: position ? position.left : 40,
+          top: position ? position.top : 40,
+        }}
+      >
+        <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
+        <span className="text-cyan-300 font-bold">{cls.name}::{member.name}</span>
+        <button
+          onClick={() => setIsMinimized(false)}
+          className="px-2 py-0.5 rounded bg-cyan-950 hover:bg-cyan-900 border border-cyan-500/40 text-[11px] text-cyan-200 ml-1"
+        >
+          展開 ⤢
+        </button>
+        {onClose && (
+          <button
+            onClick={onClose}
+            className="text-slate-400 hover:text-white p-0.5"
+            title="閉じる"
+          >
+            <X className="w-3.5 h-3.5" />
+          </button>
+        )}
       </div>
     );
   }
 
-  const vis = getVisBadge(member.visibility);
-
   return (
-    <div className="rounded-2xl border border-cyan-500/50 bg-[#090d18] shadow-2xl overflow-hidden transition-all duration-200">
-      {/* インスペクタヘッダー */}
-      <div className="p-3.5 sm:p-4 bg-gradient-to-r from-slate-900 via-slate-900/95 to-slate-950 border-b border-slate-800 flex items-center justify-between gap-3 flex-wrap">
-        <div className="flex items-center gap-2.5 flex-wrap min-w-0">
-          <div className="flex items-center gap-1.5 bg-cyan-950/80 text-cyan-300 px-2.5 py-1 rounded-lg border border-cyan-500/40 text-xs font-mono font-bold">
-            <Code2 className="w-3.5 h-3.5 text-cyan-400" />
-            <span>コード並列インスペクタ</span>
-          </div>
-
+    <div
+      className="absolute z-40 rounded-2xl border border-cyan-500/60 bg-[#090e1a]/95 backdrop-blur-md shadow-2xl shadow-black/80 flex flex-col overflow-hidden transition-all duration-200"
+      style={{
+        left: position ? position.left : 40,
+        top: position ? position.top : 40,
+        width: position ? position.width : 460,
+        maxHeight: "380px",
+      }}
+    >
+      {/* ポップアップヘッダー */}
+      <div className="p-3 bg-gradient-to-r from-slate-900 via-slate-900/95 to-slate-950 border-b border-slate-800 flex items-center justify-between gap-2 shrink-0">
+        <div className="flex items-center gap-1.5 flex-wrap min-w-0 flex-1">
           <span
-            className={`px-2 py-0.5 rounded text-[11px] font-mono font-bold border ${vis.bg}`}
+            className={`px-1.5 py-0.5 rounded text-[10px] font-mono font-bold border ${vis.bg}`}
           >
             {vis.label}
           </span>
 
-          <div className="flex items-baseline gap-1.5 font-mono text-xs sm:text-sm">
+          <div className="flex items-baseline gap-1 font-mono text-xs">
             <span className="text-cyan-400 font-bold">{cls.name}::</span>
-            <span className="text-white font-bold">{member.name}</span>
-            <span className="text-slate-400">:</span>
-            <span className="text-emerald-300">{member.type}</span>
+            <span className="text-white font-bold truncate">{member.name}</span>
+            <span className="text-slate-500">:</span>
+            <span className="text-emerald-300 text-[11px]">{member.type}</span>
           </div>
 
           {member.codeLineRef?.line && (
-            <span className="text-[11px] font-mono text-cyan-300 bg-cyan-950 px-2 py-0.5 rounded border border-cyan-500/30">
+            <span className="text-[10px] font-mono text-cyan-300 bg-cyan-950 px-1.5 py-0.5 rounded border border-cyan-500/40 shrink-0">
               L{member.codeLineRef.line}
             </span>
           )}
         </div>
 
-        <div className="flex items-center gap-1.5 shrink-0">
+        {/* コントロールボタン群 */}
+        <div className="flex items-center gap-1 shrink-0">
+          {onFlipPosition && (
+            <button
+              onClick={onFlipPosition}
+              className="p-1 rounded text-slate-400 hover:text-cyan-300 hover:bg-slate-800 transition-colors"
+              title="ポップアップの位置を反対側へ反転"
+            >
+              <ArrowLeftRight className="w-3.5 h-3.5" />
+            </button>
+          )}
+
           <button
-            onClick={() => setIsCollapsed(!isCollapsed)}
-            className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors text-xs font-mono flex items-center gap-1"
-            title={isCollapsed ? "展開する" : "折りたたむ"}
+            onClick={() => setIsMinimized(true)}
+            className="p-1 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+            title="最小化"
           >
-            {isCollapsed ? (
-              <>
-                <span>展開</span>
-                <ChevronDown className="w-4 h-4" />
-              </>
-            ) : (
-              <>
-                <span>最小化</span>
-                <ChevronUp className="w-4 h-4" />
-              </>
-            )}
+            <Minus className="w-3.5 h-3.5" />
           </button>
 
           {onClose && (
             <button
               onClick={onClose}
-              className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+              className="p-1 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
               title="閉じる"
             >
-              <X className="w-4 h-4" />
+              <X className="w-3.5 h-3.5" />
             </button>
           )}
         </div>
       </div>
 
-      {!isCollapsed && (
-        <>
-          {/* ファイルタブバー */}
-          {relevantFiles.length > 0 && (
-            <div className="flex items-center justify-between bg-slate-950/90 border-b border-slate-800/90 px-3.5 py-1.5 flex-wrap gap-2">
-              <div className="flex items-center gap-1.5 overflow-x-auto max-w-full">
-                {relevantFiles.map((file, idx) => {
-                  const isActive = idx === activeFileIndex;
-                  const isHeader = file.filename.endsWith(".h");
-                  const isTarget = member.codeLineRef?.filename === file.filename;
+      {/* ファイルタブバー */}
+      {relevantFiles.length > 0 && (
+        <div className="flex items-center justify-between bg-slate-950/90 border-b border-slate-800/90 px-3 py-1 flex-wrap gap-1.5 shrink-0">
+          <div className="flex items-center gap-1 overflow-x-auto max-w-full">
+            {relevantFiles.map((file, idx) => {
+              const isActive = idx === activeFileIndex;
+              const isHeader = file.filename.endsWith(".h");
+              const isTarget = member.codeLineRef?.filename === file.filename;
 
-                  return (
-                    <button
-                      key={file.filename}
-                      onClick={() => setActiveFileIndex(idx)}
-                      className={`flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-mono transition-all ${
-                        isActive
-                          ? "bg-cyan-950 text-cyan-300 border border-cyan-500/60 font-bold shadow-sm"
-                          : "text-slate-400 hover:text-slate-200 hover:bg-slate-900"
-                      }`}
-                    >
-                      {isHeader ? (
-                        <FileText className="w-3.5 h-3.5 text-purple-400" />
-                      ) : (
-                        <FileCode className="w-3.5 h-3.5 text-cyan-400" />
-                      )}
-                      <span>{file.filename}</span>
-                      {isTarget && (
-                        <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
-                      )}
-                    </button>
-                  );
-                })}
-              </div>
-
-              {targetLineNumber && (
-                <span className="text-[11px] font-mono text-cyan-400/90 flex items-center gap-1 hidden sm:flex">
-                  <Sparkles className="w-3 h-3 text-cyan-400 animate-pulse" />
-                  <span>該当コード（L{targetLineNumber}）へ自動フォーカス中</span>
-                </span>
-              )}
-            </div>
-          )}
-
-          {/* ソースコード表示エリア */}
-          <div
-            ref={codeContainerRef}
-            className="overflow-y-auto font-mono text-xs sm:text-[13px] bg-[#060911] p-3 sm:p-5"
-            style={{ maxHeight: "320px", minHeight: "180px" }}
-          >
-            {currentFile ? (
-              <pre className="!bg-transparent !p-0 !m-0">
-                <code>
-                  {highlightedLines.map((line) => (
-                    <div
-                      key={line.lineNum}
-                      id={`inspector-line-${line.lineNum}`}
-                      className={`flex items-start px-2 py-0.5 rounded transition-all ${
-                        line.isTarget
-                          ? "bg-cyan-950/70 border-l-4 border-cyan-400 text-white font-bold shadow-md shadow-cyan-950/40"
-                          : "hover:bg-slate-900/60 text-slate-300"
-                      }`}
-                    >
-                      {/* 行番号 */}
-                      <span
-                        className={`w-9 sm:w-11 shrink-0 select-none text-right pr-3.5 ${
-                          line.isTarget
-                            ? "text-cyan-400 font-bold"
-                            : "text-slate-600"
-                        }`}
-                      >
-                        {line.lineNum}
-                      </span>
-
-                      {/* コード行 */}
-                      <span
-                        className="flex-1 overflow-x-auto whitespace-pre leading-relaxed"
-                        dangerouslySetInnerHTML={{ __html: line.html }}
-                      />
-                    </div>
-                  ))}
-                </code>
-              </pre>
-            ) : (
-              <div className="py-8 text-center text-slate-400 font-mono text-xs space-y-2">
-                <p>このメンバのソースコードファイルは現在準備中です。</p>
-                <div className="p-3 rounded-lg bg-slate-900 border border-slate-800 inline-block text-left text-xs text-emerald-300 mt-1">
-                  <code>
-                    {member.visibility === "+" ? "public" : "private"}:
-                    <br />
-                    &nbsp;&nbsp;{member.type} {member.name};
-                  </code>
-                </div>
-              </div>
-            )}
-          </div>
-
-          {/* インスペクタフッター */}
-          <div className="p-2.5 sm:p-3 bg-slate-950/90 border-t border-slate-800 flex items-center justify-between flex-wrap gap-2 text-xs font-mono">
-            <div className="flex items-center gap-2">
-              <button
-                onClick={handleCopy}
-                disabled={!currentFile}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-300 hover:text-white transition-all disabled:opacity-50"
-              >
-                {copied ? (
-                  <>
-                    <Check className="w-3.5 h-3.5 text-emerald-400" />
-                    <span className="text-emerald-400">コピー完了</span>
-                  </>
-                ) : (
-                  <>
-                    <Copy className="w-3.5 h-3.5 text-slate-400" />
-                    <span>ファイルをコピー</span>
-                  </>
-                )}
-              </button>
-
-              {onJumpToEditor && currentFile && (
+              return (
                 <button
-                  onClick={handleJumpToBottomEditor}
-                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-cyan-950/60 hover:bg-cyan-900/80 border border-cyan-500/40 text-cyan-300 hover:text-cyan-100 transition-all"
-                  title="ページ下の全体エディタへスクロール移動します"
+                  key={file.filename}
+                  onClick={() => setActiveFileIndex(idx)}
+                  className={`flex items-center gap-1 px-2.5 py-1 rounded text-[11px] font-mono transition-all ${
+                    isActive
+                      ? "bg-cyan-950 text-cyan-300 border border-cyan-500/60 font-bold shadow-sm"
+                      : "text-slate-400 hover:text-slate-200 hover:bg-slate-900"
+                  }`}
                 >
-                  <ArrowDownRight className="w-3.5 h-3.5 text-cyan-400" />
-                  <span>下の全体エディタで確認 ↓</span>
+                  {isHeader ? (
+                    <FileText className="w-3 h-3 text-purple-400" />
+                  ) : (
+                    <FileCode className="w-3 h-3 text-cyan-400" />
+                  )}
+                  <span>{file.filename}</span>
+                  {isTarget && (
+                    <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
+                  )}
                 </button>
-              )}
-            </div>
-
-            <span className="text-[11px] text-slate-400 hidden sm:inline">
-              クラス図の別のメンバをクリックすると、即座にコードが切り替わります
-            </span>
+              );
+            })}
           </div>
-        </>
+
+          {targetLineNumber && (
+            <span className="text-[10px] font-mono text-cyan-400/90 flex items-center gap-1 hidden sm:flex">
+              <Sparkles className="w-3 h-3 text-cyan-400 animate-pulse" />
+              <span>L{targetLineNumber} 該当行</span>
+            </span>
+          )}
+        </div>
       )}
+
+      {/* ソースコード表示エリア */}
+      <div
+        ref={codeContainerRef}
+        className="flex-1 overflow-y-auto font-mono text-xs bg-[#060911] p-3"
+        style={{ minHeight: "150px", maxHeight: "230px" }}
+      >
+        {currentFile ? (
+          <pre className="!bg-transparent !p-0 !m-0">
+            <code>
+              {highlightedLines.map((line) => (
+                <div
+                  key={line.lineNum}
+                  id={`popover-line-${line.lineNum}`}
+                  className={`flex items-start px-1.5 py-0.5 rounded transition-all ${
+                    line.isTarget
+                      ? "bg-cyan-950/80 border-l-4 border-cyan-400 text-white font-bold shadow-md shadow-cyan-950/40"
+                      : "hover:bg-slate-900/60 text-slate-300"
+                  }`}
+                >
+                  {/* 行番号 */}
+                  <span
+                    className={`w-8 shrink-0 select-none text-right pr-2.5 ${
+                      line.isTarget ? "text-cyan-400 font-bold" : "text-slate-600"
+                    }`}
+                  >
+                    {line.lineNum}
+                  </span>
+
+                  {/* コード行 */}
+                  <span
+                    className="flex-1 overflow-x-auto whitespace-pre leading-relaxed"
+                    dangerouslySetInnerHTML={{ __html: line.html }}
+                  />
+                </div>
+              ))}
+            </code>
+          </pre>
+        ) : (
+          <div className="py-6 text-center text-slate-400 font-mono text-xs space-y-1">
+            <p>このメンバのソースコードファイルは現在準備中です。</p>
+            <div className="p-2 rounded bg-slate-900 border border-slate-800 inline-block text-left text-xs text-emerald-300 mt-1">
+              <code>
+                {member.visibility === "+" ? "public" : "private"}:
+                <br />
+                &nbsp;&nbsp;{member.type} {member.name};
+              </code>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* ポップアップフッター */}
+      <div className="p-2 bg-slate-950/90 border-t border-slate-800 flex items-center justify-between flex-wrap gap-1.5 text-[11px] font-mono shrink-0">
+        <div className="flex items-center gap-1.5">
+          <button
+            onClick={handleCopy}
+            disabled={!currentFile}
+            className="flex items-center gap-1 px-2 py-1 rounded bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-300 hover:text-white transition-all disabled:opacity-50"
+          >
+            {copied ? (
+              <>
+                <Check className="w-3 h-3 text-emerald-400" />
+                <span className="text-emerald-400">コピー完了</span>
+              </>
+            ) : (
+              <>
+                <Copy className="w-3 h-3 text-slate-400" />
+                <span>コピー</span>
+              </>
+            )}
+          </button>
+
+          {onJumpToEditor && currentFile && (
+            <button
+              onClick={handleJumpToBottomEditor}
+              className="flex items-center gap-1 px-2 py-1 rounded bg-cyan-950/60 hover:bg-cyan-900/80 border border-cyan-500/40 text-cyan-300 hover:text-cyan-100 transition-all"
+              title="ページ下の全体エディタへ移動します"
+            >
+              <ArrowDownRight className="w-3 h-3 text-cyan-400" />
+              <span>エディタで確認 ↓</span>
+            </button>
+          )}
+        </div>
+
+        <span className="text-[10px] text-slate-500">
+          別のメンバをクリックで切替
+        </span>
+      </div>
     </div>
   );
 };
