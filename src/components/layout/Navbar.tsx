@@ -79,6 +79,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 L4: '継承・多態',
                 L5: 'パターン',
                 L6: 'ベクトル',
+                L7: 'バイナリ',
               };
               const code = (ch.courseChapterCode || `C${ch.id}`).replace(/^C/, 'L');
               return (

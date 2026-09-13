@@ -923,7 +923,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
 
             {/* 学べる章一覧 */}
             <div className="space-y-2 pt-2 border-t border-slate-800">
-              <span className="text-xs font-mono font-bold text-amber-300 block">カリキュラム構成 (L1〜L6) :</span>
+              <span className="text-xs font-mono font-bold text-amber-300 block">カリキュラム構成 (L1〜L7) :</span>
               <ul className="text-xs sm:text-sm text-slate-300 space-y-1.5 font-mono">
                 <li className="flex items-center gap-2">
                   <span className="text-amber-400 font-bold">L1:</span> 構造化設計の限界（巨大スパゲティコードの解剖）
@@ -942,6 +942,9 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
                 </li>
                 <li className="flex items-center gap-2">
                   <span className="text-amber-400 font-bold">L6:</span> 演算子オーバーロードと値オブジェクト（Math & 2Dベクトル）
+                </li>
+                <li className="flex items-center gap-2">
+                  <span className="text-amber-400 font-bold">L7:</span> ポインタ演算と手動メモリアライメント（バイナリ通信・セーブデータ）
                 </li>
               </ul>
             </div>
