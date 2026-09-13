@@ -25,9 +25,7 @@ interface UmlCodeInspectorProps {
   member: UmlClassMember | null;
   cls: UmlClassItem | null;
   codeFiles?: CodeFile[];
-  position?: { left: number; top: number; width: number } | null;
   onClose?: () => void;
-  onFlipPosition?: () => void;
   onJumpToEditor?: (target: CodeHighlightTarget) => void;
 }
 
@@ -35,13 +33,12 @@ export const UmlCodeInspector: React.FC<UmlCodeInspectorProps> = ({
   member,
   cls,
   codeFiles = [],
-  position,
   onClose,
-  onFlipPosition,
   onJumpToEditor,
 }) => {
   const [copied, setCopied] = useState(false);
   const [isMinimized, setIsMinimized] = useState(false);
+  const [isDockedRight, setIsDockedRight] = useState(false);
   const codeContainerRef = useRef<HTMLDivElement>(null);
 
   // ドラッグ移動管理
@@ -54,14 +51,8 @@ export const UmlCodeInspector: React.FC<UmlCodeInspectorProps> = ({
     initialOffsetY: number;
   } | null>(null);
 
-  // 基準位置または選択メンバが変わった時はオフセットを初期位置へリセット
-  useEffect(() => {
-    setDragOffset({ x: 0, y: 0 });
-  }, [position?.left, position?.top, member?.name]);
-
   // マウスドラッグ開始
   const handleMouseDown = (e: React.MouseEvent) => {
-    // 操作ボタン等のクリック時はドラッグしない
     if ((e.target as HTMLElement).closest("button, input, pre, code")) return;
 
     e.preventDefault();
@@ -283,20 +274,23 @@ export const UmlCodeInspector: React.FC<UmlCodeInspectorProps> = ({
 
   const vis = getVisBadge(member.visibility);
 
-  // 現在の計算座標（ドラッグ移動量を加算）
-  const baseLeft = position ? position.left : 40;
-  const baseTop = position ? position.top : 40;
-  const currentLeft = Math.max(10, baseLeft + dragOffset.x);
-  const currentTop = Math.max(10, baseTop + dragOffset.y);
+  // 画面左端（サイドバー上）または右端の基準座標
+  const windowW = typeof window !== "undefined" ? window.innerWidth : 1200;
+  const inspectorW = 430;
+  const baseLeft = isDockedRight ? Math.max(16, windowW - inspectorW - 20) : 16;
+  const baseTop = 84; // ナビゲーションバー直下
 
-  // 最小化状態のピル表示（ドラッグ移動可能）
+  const currentLeft = Math.max(8, baseLeft + dragOffset.x);
+  const currentTop = Math.max(8, baseTop + dragOffset.y);
+
+  // 最小化状態のピル表示（画面端でコンパクトに待機）
   if (isMinimized) {
     return (
       <div
         onMouseDown={handleMouseDown}
         onTouchStart={handleTouchStart}
-        className={`absolute z-40 rounded-xl bg-slate-900/95 border border-cyan-500/60 shadow-xl px-3 py-1.5 flex items-center gap-2 font-mono text-xs text-white select-none ${
-          isDragging ? "cursor-grabbing shadow-cyan-500/30" : "cursor-grab"
+        className={`fixed z-50 rounded-xl bg-slate-900/95 border border-cyan-500/70 shadow-2xl px-3 py-1.5 flex items-center gap-2 font-mono text-xs text-white select-none backdrop-blur-md ${
+          isDragging ? "cursor-grabbing shadow-cyan-500/40" : "cursor-grab"
         }`}
         style={{
           left: currentLeft,
@@ -322,7 +316,7 @@ export const UmlCodeInspector: React.FC<UmlCodeInspectorProps> = ({
               e.stopPropagation();
               onClose();
             }}
-            className="text-slate-400 hover:text-white p-0.5"
+            className="text-slate-400 hover:text-white p-0.5 ml-0.5"
             title="閉じる"
           >
             <X className="w-3.5 h-3.5" />
@@ -334,16 +328,17 @@ export const UmlCodeInspector: React.FC<UmlCodeInspectorProps> = ({
 
   return (
     <div
-      className={`absolute z-40 rounded-2xl border bg-[#090e1a]/95 backdrop-blur-md shadow-2xl flex flex-col overflow-hidden transition-shadow duration-150 ${
+      className={`fixed z-50 rounded-2xl border bg-[#090e1a]/95 backdrop-blur-md shadow-2xl flex flex-col overflow-hidden transition-shadow duration-150 ${
         isDragging
-          ? "border-cyan-400 shadow-cyan-500/30 shadow-[0_12px_40px_rgba(0,0,0,0.9)] scale-[1.005]"
-          : "border-cyan-500/60 shadow-black/80"
+          ? "border-cyan-400 shadow-cyan-500/30 shadow-[0_16px_48px_rgba(0,0,0,0.95)] scale-[1.005]"
+          : "border-cyan-500/60 shadow-[0_12px_40px_rgba(0,0,0,0.85)]"
       }`}
       style={{
         left: currentLeft,
         top: currentTop,
-        width: position ? position.width : 460,
-        maxHeight: "380px",
+        width: `${inspectorW}px`,
+        maxWidth: "calc(100vw - 32px)",
+        maxHeight: "calc(100vh - 110px)",
       }}
     >
       {/* ポップアップヘッダー（ドラッグハンドル兼務） */}
@@ -353,7 +348,7 @@ export const UmlCodeInspector: React.FC<UmlCodeInspectorProps> = ({
         className={`p-3 bg-gradient-to-r from-slate-900 via-slate-900/95 to-slate-950 border-b border-slate-800 flex items-center justify-between gap-2 shrink-0 select-none ${
           isDragging ? "cursor-grabbing" : "cursor-grab"
         }`}
-        title="ドラッグして自由に移動できます"
+        title="ヘッダーを掴んで画面内の好きな位置へドラッグできます"
       >
         <div className="flex items-center gap-1.5 flex-wrap min-w-0 flex-1">
           <GripHorizontal className="w-4 h-4 text-cyan-400/70 shrink-0 mr-0.5" />
@@ -378,20 +373,19 @@ export const UmlCodeInspector: React.FC<UmlCodeInspectorProps> = ({
           )}
         </div>
 
-        {/* コントロールボタン群（ドラッグを阻害しないよう stopPropagation） */}
+        {/* コントロールボタン群 */}
         <div className="flex items-center gap-1 shrink-0">
-          {onFlipPosition && (
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                onFlipPosition();
-              }}
-              className="p-1 rounded text-slate-400 hover:text-cyan-300 hover:bg-slate-800 transition-colors"
-              title="位置を左右反対側にフリップ"
-            >
-              <ArrowLeftRight className="w-3.5 h-3.5" />
-            </button>
-          )}
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              setIsDockedRight(!isDockedRight);
+              setDragOffset({ x: 0, y: 0 });
+            }}
+            className="p-1 rounded text-slate-400 hover:text-cyan-300 hover:bg-slate-800 transition-colors"
+            title={isDockedRight ? "画面左端へ移動" : "画面右端へ移動"}
+          >
+            <ArrowLeftRight className="w-3.5 h-3.5" />
+          </button>
 
           <button
             onClick={(e) => {
@@ -465,7 +459,7 @@ export const UmlCodeInspector: React.FC<UmlCodeInspectorProps> = ({
       <div
         ref={codeContainerRef}
         className="flex-1 overflow-y-auto font-mono text-xs bg-[#060911] p-3"
-        style={{ minHeight: "150px", maxHeight: "230px" }}
+        style={{ minHeight: "180px", maxHeight: "380px" }}
       >
         {currentFile ? (
           <pre className="!bg-transparent !p-0 !m-0">
@@ -545,8 +539,8 @@ export const UmlCodeInspector: React.FC<UmlCodeInspectorProps> = ({
           )}
         </div>
 
-        <span className="text-[10px] text-slate-500">
-          ヘッダーをドラッグして自由に移動可能
+        <span className="text-[10px] text-slate-400 hidden sm:inline">
+          ドラッグ移動可 / ⇄ で左右切替
         </span>
       </div>
     </div>

@@ -1,22 +1,16 @@
-import React, { useState, useMemo } from "react";
+import React, { useMemo } from "react";
 import {
   UmlClassItem,
   UmlRelation,
   UmlClassMember,
-  CodeFile,
-  CodeHighlightTarget,
 } from "../../../types/curriculum";
-import { UmlCodeInspector } from "./UmlCodeInspector";
 
 interface UmlClassSvgDiagramProps {
   classes: UmlClassItem[];
   relations: UmlRelation[];
   selectedMember?: UmlClassMember | null;
   selectedClass?: UmlClassItem | null;
-  codeFiles?: CodeFile[];
   onSelectMember?: (member: UmlClassMember, cls: UmlClassItem) => void;
-  onCloseInspector?: () => void;
-  onJumpToEditor?: (target: CodeHighlightTarget) => void;
 }
 
 interface NodeLayout {
@@ -31,12 +25,8 @@ export const UmlClassSvgDiagram: React.FC<UmlClassSvgDiagramProps> = ({
   relations,
   selectedMember,
   selectedClass,
-  codeFiles = [],
   onSelectMember,
-  onCloseInspector,
-  onJumpToEditor,
 }) => {
-  const [isFlipped, setIsFlipped] = useState(false);
 
   // クラスボックスの基本寸法（300pxで長い型名や引数付きメソッドも余裕を持って収める）
   const cardWidth = 300;
@@ -158,32 +148,7 @@ export const UmlClassSvgDiagram: React.FC<UmlClassSvgDiagramProps> = ({
     return map;
   }, [classes, totalWidth, totalHeight]);
 
-  // 選択中のクラス座標に基づくスマート・ポップオーバー配置計算
-  const popupLayout = useMemo(() => {
-    if (!selectedClass || !selectedMember) return null;
-    const layout = nodeMap.get(selectedClass.name);
-    if (!layout) return null;
 
-    const popupWidth = 460;
-    // クラス中心がキャンバスの左半分にあるかどうか
-    const isLeftSide = (layout.x + layout.width / 2) < (totalWidth / 2);
-    // 反転フラグに応じて左右を切り替え
-    const placeRight = isFlipped ? !isLeftSide : isLeftSide;
-
-    let left: number;
-    if (placeRight) {
-      // 右隣に配置（右端を超えないよう制限）
-      left = Math.min(totalWidth - popupWidth - 20, layout.x + layout.width + 25);
-    } else {
-      // 左隣に配置（左端を超えないよう制限）
-      left = Math.max(20, layout.x - popupWidth - 25);
-    }
-
-    // 縦位置はクリックしたクラスのY座標に揃える
-    const top = Math.max(20, layout.y - 10);
-
-    return { left, top, width: popupWidth };
-  }, [selectedClass, selectedMember, nodeMap, totalWidth, isFlipped]);
 
   return (
     <div className="relative w-full rounded-3xl bg-[#070b14] border border-cyan-500/30 overflow-x-auto shadow-2xl p-4 sm:p-6 backdrop-blur-md">
@@ -726,18 +691,7 @@ export const UmlClassSvgDiagram: React.FC<UmlClassSvgDiagramProps> = ({
           );
         })}
 
-        {/* クラス図と並べて見られるスマート・コードポップオーバー（押下したクラスを絶対に隠さない） */}
-        {selectedMember && selectedClass && popupLayout && (
-          <UmlCodeInspector
-            member={selectedMember}
-            cls={selectedClass}
-            codeFiles={codeFiles}
-            position={popupLayout}
-            onClose={onCloseInspector}
-            onFlipPosition={() => setIsFlipped(!isFlipped)}
-            onJumpToEditor={onJumpToEditor}
-          />
-        )}
+
       </div>
     </div>
   );

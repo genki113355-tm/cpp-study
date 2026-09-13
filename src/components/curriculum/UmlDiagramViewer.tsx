@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState } from "react";
 import {
   UmlDiagramDoc,
   UmlRelation,
@@ -9,6 +9,7 @@ import {
 } from "../../types/curriculum";
 import { Layers, Share2, Sparkles, CheckCircle } from "lucide-react";
 import { UmlClassSvgDiagram } from "./uml/UmlClassSvgDiagram";
+import { UmlCodeInspector } from "./uml/UmlCodeInspector";
 import { UmlSequenceSvgDiagram } from "./uml/UmlSequenceSvgDiagram";
 import { UmlStateSvgDiagram } from "./uml/UmlStateSvgDiagram";
 
@@ -25,25 +26,10 @@ export const UmlDiagramViewer: React.FC<UmlDiagramViewerProps> = ({
   onSelectMember,
   onJumpToEditor,
 }) => {
-  // 初期表示時：最初にコード参照を持つメンバを自動選択して並列表示
-  const defaultSelection = useMemo(() => {
-    if (!data.classes || data.classes.length === 0) return null;
-    for (const c of data.classes) {
-      const opWithRef = c.operations.find((o) => o.codeLineRef);
-      if (opWithRef) return { cls: c, member: opWithRef };
-      const attrWithRef = c.attributes.find((a) => a.codeLineRef);
-      if (attrWithRef) return { cls: c, member: attrWithRef };
-    }
-    const firstCls = data.classes[0];
-    const firstMember = firstCls.operations[0] || firstCls.attributes[0];
-    if (firstCls && firstMember) return { cls: firstCls, member: firstMember };
-    return null;
-  }, [data.classes]);
-
   const [selectedMemberInfo, setSelectedMemberInfo] = useState<{
     member: UmlClassMember;
     cls: UmlClassItem;
-  } | null>(defaultSelection);
+  } | null>(null);
 
   const handleSelectMember = (member: UmlClassMember, cls: UmlClassItem) => {
     setSelectedMemberInfo({ member, cls });
@@ -126,22 +112,30 @@ export const UmlDiagramViewer: React.FC<UmlDiagramViewerProps> = ({
             <div className="flex items-center justify-between text-xs text-cyan-300 bg-cyan-950/40 border border-cyan-500/30 px-3.5 py-2.5 rounded-xl">
               <span className="flex items-center gap-2">
                 <Sparkles className="w-4 h-4 text-cyan-400 animate-pulse" />
-                <span>💡 クラス図内の属性・操作をクリックすると、該当クラスの横にコードがポップアップし並べて確認できます</span>
+                <span>💡 クラス図内の属性・操作をクリックすると、画面左端（サイドメニュー上）にC++コードが並んでポップアップします</span>
               </span>
-              <span className="text-[11px] font-mono text-cyan-400/80 hidden sm:inline">UML ↔ Live Popover</span>
+              <span className="text-[11px] font-mono text-cyan-400/80 hidden sm:inline">UML ↔ Floating Inspector</span>
             </div>
 
-            {/* 幾何座標計算によるSVGクラス図（押下したクラスの横にスマート・ポップアップ） */}
+            {/* 幾何座標計算によるSVGクラス図 */}
             <UmlClassSvgDiagram
               classes={data.classes}
               relations={data.relations || []}
               selectedMember={selectedMemberInfo?.member}
               selectedClass={selectedMemberInfo?.cls}
-              codeFiles={codeFiles}
               onSelectMember={handleSelectMember}
-              onCloseInspector={() => setSelectedMemberInfo(null)}
-              onJumpToEditor={onJumpToEditor}
             />
+
+            {/* クラス図に重ねず、画面左端（サイドメニュー上）にフロートするC++コードインスペクタ */}
+            {selectedMemberInfo && (
+              <UmlCodeInspector
+                member={selectedMemberInfo.member}
+                cls={selectedMemberInfo.cls}
+                codeFiles={codeFiles}
+                onClose={() => setSelectedMemberInfo(null)}
+                onJumpToEditor={onJumpToEditor}
+              />
+            )}
 
             {/* クラス間の関係性リスト (Relations & C++ Mapping) */}
             {data.relations && data.relations.length > 0 && (
