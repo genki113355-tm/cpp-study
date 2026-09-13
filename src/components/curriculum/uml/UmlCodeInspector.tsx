@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, useMemo } from "react";
+import { createPortal } from "react-dom";
 import {
   UmlClassMember,
   UmlClassItem,
@@ -276,20 +277,22 @@ export const UmlCodeInspector: React.FC<UmlCodeInspectorProps> = ({
 
   // 画面左端（サイドバー上）または右端の基準座標
   const windowW = typeof window !== "undefined" ? window.innerWidth : 1200;
-  const inspectorW = 430;
+  const inspectorW = 380; // サイドバー（320px）の上にフィットし、中央のクラス図を遮らない幅
   const baseLeft = isDockedRight ? Math.max(16, windowW - inspectorW - 20) : 16;
-  const baseTop = 84; // ナビゲーションバー直下
+  const baseTop = 76; // ナビゲーションバー直下の最適位置
 
   const currentLeft = Math.max(8, baseLeft + dragOffset.x);
   const currentTop = Math.max(8, baseTop + dragOffset.y);
 
+  if (typeof document === "undefined") return null;
+
   // 最小化状態のピル表示（画面端でコンパクトに待機）
   if (isMinimized) {
-    return (
+    const pill = (
       <div
         onMouseDown={handleMouseDown}
         onTouchStart={handleTouchStart}
-        className={`fixed z-50 rounded-xl bg-slate-900/95 border border-cyan-500/70 shadow-2xl px-3 py-1.5 flex items-center gap-2 font-mono text-xs text-white select-none backdrop-blur-md ${
+        className={`fixed z-[100] rounded-xl bg-slate-900/95 border border-cyan-500/70 shadow-2xl px-3 py-1.5 flex items-center gap-2 font-mono text-xs text-white select-none backdrop-blur-md ${
           isDragging ? "cursor-grabbing shadow-cyan-500/40" : "cursor-grab"
         }`}
         style={{
@@ -324,11 +327,12 @@ export const UmlCodeInspector: React.FC<UmlCodeInspectorProps> = ({
         )}
       </div>
     );
+    return createPortal(pill, document.body);
   }
 
-  return (
+  const content = (
     <div
-      className={`fixed z-50 rounded-2xl border bg-[#090e1a]/95 backdrop-blur-md shadow-2xl flex flex-col overflow-hidden transition-shadow duration-150 ${
+      className={`fixed z-[100] rounded-2xl border bg-[#090e1a]/95 backdrop-blur-md shadow-2xl flex flex-col overflow-hidden transition-shadow duration-150 ${
         isDragging
           ? "border-cyan-400 shadow-cyan-500/30 shadow-[0_16px_48px_rgba(0,0,0,0.95)] scale-[1.005]"
           : "border-cyan-500/60 shadow-[0_12px_40px_rgba(0,0,0,0.85)]"
@@ -338,7 +342,7 @@ export const UmlCodeInspector: React.FC<UmlCodeInspectorProps> = ({
         top: currentTop,
         width: `${inspectorW}px`,
         maxWidth: "calc(100vw - 32px)",
-        maxHeight: "calc(100vh - 110px)",
+        maxHeight: "calc(100vh - 100px)",
       }}
     >
       {/* ポップアップヘッダー（ドラッグハンドル兼務） */}
@@ -545,4 +549,6 @@ export const UmlCodeInspector: React.FC<UmlCodeInspectorProps> = ({
       </div>
     </div>
   );
+
+  return createPortal(content, document.body);
 };
