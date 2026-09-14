@@ -12,6 +12,7 @@ import { RichExplanation } from './RichExplanation';
 import { UmlDiagramViewer } from './UmlDiagramViewer';
 import { CheckCircle, AlertCircle, ArrowRight, ArrowLeft, Lightbulb, HelpCircle, GitCommit } from 'lucide-react';
 import confetti from 'canvas-confetti';
+import { AffiliatePromoBanner } from '../affiliate/AffiliatePromoBanner';
 
 interface ChapterViewProps {
   chapter: Chapter;
@@ -201,14 +202,18 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
       )}
 
       {/* 各セクションの展開 */}
-      {chapter.sections.map((section) => {
+      {chapter.sections.map((section, sIdx) => {
         // "1.1 タイトル" 形式の分解
         const titleMatch = section.title.match(/^(\d+\.\d+)\s*(.*)/);
         const sectionNum = titleMatch ? titleMatch[1] : null;
         const sectionTitle = titleMatch ? titleMatch[2] : section.title;
 
+        // セクション中間判定（セクションが2つ以上ある場合は中間に時短PRを挿入）
+        const isMiddleSection = sIdx === Math.floor((chapter.sections.length - 1) / 2);
+
         return (
-          <section key={section.id} className="space-y-6 pt-12 pb-8 border-t border-slate-800/80">
+          <React.Fragment key={section.id}>
+            <section className="space-y-6 pt-12 pb-8 border-t border-slate-800/80">
             <div>
               <div className="flex items-center gap-3.5 flex-wrap">
                 {sectionNum && (
@@ -365,8 +370,12 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
             </div>
           )}
         </section>
-      );
-    })}
+        {isMiddleSection && (
+          <AffiliatePromoBanner type="busy" />
+        )}
+      </React.Fragment>
+    );
+  })}
 
       {/* 理解度確認クイズ */}
       {chapter.quiz && chapter.quiz.length > 0 && (
@@ -454,6 +463,9 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
           })}
         </section>
       )}
+
+      {/* 学習完了・達成のご褒美PRバナー（最下部） */}
+      <AffiliatePromoBanner type="reward" limit={3} />
 
       {/* 章ナビゲーションフッター */}
       <div className="pt-8 border-t border-slate-800 flex items-center justify-between gap-4 flex-wrap">

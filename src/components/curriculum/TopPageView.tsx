@@ -24,6 +24,7 @@ import {
 } from 'lucide-react';
 import { ALL_CHAPTERS, CLASSIC_CHAPTERS, MODERN_CHAPTERS, READING_CHAPTERS, UPCOMING_CHAPTERS } from '../../data/chapters';
 import { CourseTrack } from '../../types/curriculum';
+import { AffiliatePromoBanner } from '../affiliate/AffiliatePromoBanner';
 
 interface TopPageViewProps {
   onSelectChapter: (slug: string) => void;
@@ -1070,6 +1071,9 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
         </div>
       </section>
 
+      {/* 忙しいあなたへの時短宅食・ミールキットPR（中間） */}
+      <AffiliatePromoBanner type="busy" />
+
       {/* カリキュラムロードマップ ＆ コース切り替えタブ */}
       <section id="roadmap" className="space-y-8 scroll-mt-24">
         <div className="text-center max-w-3xl mx-auto space-y-3">
@@ -1359,6 +1363,9 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
           </button>
         </div>
       </section>
+
+      {/* 勉強を頑張った自分へのご褒美・お取り寄せグルメPR（最下部） */}
+      <AffiliatePromoBanner type="reward" limit={3} />
 
       {/* 姉妹メディア案内セクション */}
       <section className="rounded-3xl border border-blue-500/30 bg-gradient-to-br from-slate-950 via-[#0a1528] to-slate-950 p-6 sm:p-8 shadow-2xl relative overflow-hidden">
