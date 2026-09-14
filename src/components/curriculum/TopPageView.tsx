@@ -25,6 +25,9 @@ import {
 import { ALL_CHAPTERS, CLASSIC_CHAPTERS, MODERN_CHAPTERS, READING_CHAPTERS, UPCOMING_CHAPTERS } from '../../data/chapters';
 import { CourseTrack } from '../../types/curriculum';
 import { AffiliatePromoBanner } from '../affiliate/AffiliatePromoBanner';
+import { PersonaTrackSelector } from './PersonaTrackSelector';
+import { GameEvolutionRoadmap } from './GameEvolutionRoadmap';
+import { BeforeAfterShowcase } from './BeforeAfterShowcase';
 
 interface TopPageViewProps {
   onSelectChapter: (slug: string) => void;
@@ -312,6 +315,15 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
           </div>
         </div>
       </section>
+
+      {/* 🧭 あなたの現在地はどこですか？ 2大ペルソナ別・学習ナビゲーション */}
+      <PersonaTrackSelector onSelectChapter={onSelectChapter} />
+
+      {/* 🚀 1つのゲームが育つ C++設計進化の全10段階物語 */}
+      <GameEvolutionRoadmap onSelectChapter={onSelectChapter} />
+
+      {/* ⚔️ 圧倒的進化を比較。「最初のコード」vs「10ステージ後のコード」 */}
+      <BeforeAfterShowcase />
 
       {/* 📚 新規参入者・テスター・実践者向け：特集ガイド＆品質保証 */}
       <section className="space-y-6">
