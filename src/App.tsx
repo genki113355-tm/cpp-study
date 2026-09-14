@@ -37,6 +37,24 @@ export const App: React.FC = () => {
     }
   }, [currentSlug]);
 
+  // Google アナリティクス (GA4) ページビュー送信 ＆ ページタイトル動的更新
+  useEffect(() => {
+    const siteBaseTitle = 'シロクマC++ラボ 〜ゲーム開発で学ぶオブジェクト指向開発 レガシー設計からモダン設計まで〜';
+    const currentChapter = getChapterBySlug(currentSlug);
+    const pageTitle = currentSlug === 'top' || !currentChapter
+      ? siteBaseTitle
+      : `${currentChapter.title} | シロクマC++ラボ`;
+    document.title = pageTitle;
+
+    if (typeof window !== 'undefined' && typeof (window as any).gtag === 'function') {
+      (window as any).gtag('event', 'page_view', {
+        page_title: pageTitle,
+        page_location: window.location.href,
+        page_path: window.location.pathname + (currentSlug === 'top' ? '' : '#' + currentSlug),
+      });
+    }
+  }, [currentSlug]);
+
   useEffect(() => {
     const handleHashChange = () => {
       const hash = window.location.hash.replace('#', '');
