@@ -198,14 +198,35 @@ export const PersonaTrackSelector: React.FC<PersonaTrackSelectorProps> = ({ onSe
                 </p>
               </div>
 
-              <div className="pt-2">
+              {/* 診断結果のX(Twitter)共有ボタン */}
+              <div className="flex flex-wrap items-center gap-3 pt-1">
                 <button
                   onClick={() => onSelectChapter('chapter-1-spaghetti-to-oop')}
-                  className="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-slate-950 font-bold font-mono text-sm flex items-center justify-center gap-2 transition shadow-lg shadow-amber-500/20 active:scale-98"
+                  className="flex-1 sm:flex-initial px-5 py-3 rounded-xl bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-slate-950 font-bold font-mono text-xs sm:text-sm flex items-center justify-center gap-2 transition shadow-lg shadow-amber-500/20 active:scale-98"
                 >
-                  <span>🏛️ レガシー脱却・リファクタリングの旅へ (Stage 1へ)</span>
+                  <span>🏛️ レガシー脱却の旅へ (Stage 1へ)</span>
                   <ArrowRight className="w-4 h-4" />
                 </button>
+
+                {(() => {
+                  const rankName = smellCount >= 3 ? '🚨 重度レガシー警戒級' : smellCount > 0 ? '⚠️ 潜伏負債あり級' : '✨ クリーンアーキテクト級';
+                  const tweetText = `シロクマC++ラボの【現場C++コードスメル診断】を受けました！\n危険度スコア: ${smellCount} / 5 項目該当\n判定: 【${rankName}】\nあなたの現場のコードは大丈夫？`;
+                  const shareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(tweetText)}&url=${encodeURIComponent('https://shirokuma-cpp.jp/')}&hashtags=${encodeURIComponent('シロクマcpp,cpp,オブジェクト指向,ゲーム開発')}`;
+                  return (
+                    <a
+                      href={shareUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-black hover:bg-slate-900 text-white font-semibold text-xs border border-slate-700 transition shadow-md active:scale-98"
+                      title="診断結果をXでポスト"
+                    >
+                      <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
+                        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                      </svg>
+                      <span>結果をXでポスト</span>
+                    </a>
+                  );
+                })()}
               </div>
             </div>
 

@@ -240,6 +240,28 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
               2大コースをご用意しました。
             </p>
 
+            {/* 新着・注目特集ピックアップバー */}
+            <div className="flex flex-wrap items-center gap-2 pt-1">
+              <span className="text-xs font-mono font-bold text-amber-400 bg-amber-950/80 px-2.5 py-1 rounded-lg border border-amber-500/40 flex items-center gap-1.5 shadow-sm">
+                <Sparkles className="w-3.5 h-3.5 text-amber-400 animate-pulse" />
+                NEW 特集
+              </span>
+              <button
+                onClick={() => onSelectChapter('guide-cpp-syntax-reference')}
+                className="text-xs font-mono px-3 py-1 rounded-lg bg-slate-800 hover:bg-cyan-950 text-cyan-300 hover:text-cyan-200 border border-slate-700 hover:border-cyan-500/50 transition flex items-center gap-1.5 shadow-sm"
+              >
+                <span>📖 C++基本文法チートシート総覧</span>
+                <ArrowRight className="w-3 h-3" />
+              </button>
+              <button
+                onClick={() => onSelectChapter('column-why-cpp-is-great')}
+                className="text-xs font-mono px-3 py-1 rounded-lg bg-slate-800 hover:bg-rose-950 text-rose-300 hover:text-rose-200 border border-slate-700 hover:border-rose-500/50 transition flex items-center gap-1.5 shadow-sm"
+              >
+                <span>🔥 特別コラム: それでもC++を愛する理由</span>
+                <ArrowRight className="w-3 h-3" />
+              </button>
+            </div>
+
             {/* キャラクター対話ミニボックス */}
             <div className="flex items-start gap-4 p-4 rounded-2xl bg-slate-950/80 border border-slate-800 shadow-inner">
               <div className="w-12 h-12 rounded-xl overflow-hidden border-2 border-cyan-400/60 flex-shrink-0 shadow-md">
@@ -366,10 +388,126 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
             </h2>
           </div>
           <span className="text-xs text-slate-400 font-mono">
-            単体テスト・TDD・読解・環境構築・言語思想・UML設計
+            基本文法チートシート・C++の魅力・品質保証・読解術・環境構築・UML
           </span>
         </div>
 
+        {/* 🔥 最注目：新規追加の2大キラーコンテンツ（大型カード2連） */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* キラー1: C++基本文法＆チートシート総覧 */}
+          <div
+            onClick={() => onSelectChapter('guide-cpp-syntax-reference')}
+            className="p-6 sm:p-7 rounded-3xl bg-gradient-to-br from-slate-900/95 via-[#081720] to-slate-950 border-2 border-cyan-500/40 hover:border-cyan-400 shadow-2xl transition-all duration-300 cursor-pointer group flex flex-col justify-between relative overflow-hidden"
+          >
+            <div className="absolute top-0 right-0 w-64 h-64 bg-cyan-500/10 rounded-full blur-2xl pointer-events-none" />
+            <div className="space-y-4 relative z-10">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <span className="w-12 h-12 rounded-2xl bg-cyan-950 text-cyan-300 border border-cyan-500/40 flex items-center justify-center font-bold text-2xl shadow-lg shadow-cyan-950/50 group-hover:scale-110 transition-transform">
+                    📖
+                  </span>
+                  <div>
+                    <span className="text-xs font-mono font-bold text-cyan-400 uppercase tracking-wider block">
+                      付録・永久保存版
+                    </span>
+                    <span className="text-[11px] text-slate-400 font-mono">
+                      全C++学習者の座右の書
+                    </span>
+                  </div>
+                </div>
+                <span className="text-xs font-mono px-3 py-1 rounded-full bg-cyan-950 text-cyan-300 border border-cyan-500/40 font-bold shadow-sm">
+                  ✨ 必携チートシート
+                </span>
+              </div>
+
+              <div>
+                <h3 className="text-xl sm:text-2xl font-black text-white group-hover:text-cyan-300 transition-colors font-sans tracking-tight">
+                  C++基本文法＆チートシート総覧
+                </h3>
+                <p className="text-sm text-cyan-400/90 font-mono mt-1 font-semibold">
+                  〜型・制御構文・ポインタ/参照・クラス・STL・キャスト〜
+                </p>
+              </div>
+
+              <p className="text-sm text-slate-300 leading-relaxed font-sans">
+                「ポインタと参照ってどう使い分ける？」「vectorのeraseの注意点は？」「static_castとdynamic_castの違いは？」など、設計カリキュラムを学ぶ上で必要なC++文法の急所を網羅した逆引きリファレンス！
+              </p>
+
+              <div className="flex flex-wrap gap-2 pt-2 text-xs font-mono text-slate-300">
+                <span className="px-2.5 py-1 rounded-lg bg-slate-950/90 border border-cyan-500/30 text-cyan-300">#基本型とauto</span>
+                <span className="px-2.5 py-1 rounded-lg bg-slate-950/90 border border-cyan-500/30 text-cyan-300">#ポインタと参照</span>
+                <span className="px-2.5 py-1 rounded-lg bg-slate-950/90 border border-cyan-500/30 text-cyan-300">#ラムダ式</span>
+                <span className="px-2.5 py-1 rounded-lg bg-slate-950/90 border border-cyan-500/30 text-cyan-300">#STLコンテナ</span>
+                <span className="px-2.5 py-1 rounded-lg bg-slate-950/90 border border-cyan-500/30 text-cyan-300">#キャスト4種</span>
+              </div>
+            </div>
+
+            <div className="mt-6 pt-4 border-t border-slate-800 flex items-center justify-between text-sm font-mono text-cyan-400 group-hover:translate-x-1 transition-transform relative z-10">
+              <span className="font-bold flex items-center gap-1.5">
+                <span>文法チートシートを開く</span>
+              </span>
+              <ArrowRight className="w-5 h-5" />
+            </div>
+          </div>
+
+          {/* キラー2: それでも私たちがC++を愛する理由 */}
+          <div
+            onClick={() => onSelectChapter('column-why-cpp-is-great')}
+            className="p-6 sm:p-7 rounded-3xl bg-gradient-to-br from-slate-900/95 via-[#1a0c18] to-slate-950 border-2 border-rose-500/40 hover:border-rose-400 shadow-2xl transition-all duration-300 cursor-pointer group flex flex-col justify-between relative overflow-hidden"
+          >
+            <div className="absolute top-0 right-0 w-64 h-64 bg-rose-500/10 rounded-full blur-2xl pointer-events-none" />
+            <div className="space-y-4 relative z-10">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <span className="w-12 h-12 rounded-2xl bg-rose-950 text-rose-300 border border-rose-500/40 flex items-center justify-center font-bold text-2xl shadow-lg shadow-rose-950/50 group-hover:scale-110 transition-transform">
+                    🔥
+                  </span>
+                  <div>
+                    <span className="text-xs font-mono font-bold text-rose-400 uppercase tracking-wider block">
+                      特別コラム・言語思想
+                    </span>
+                    <span className="text-[11px] text-slate-400 font-mono">
+                      情熱のエンジニアリング
+                    </span>
+                  </div>
+                </div>
+                <span className="text-xs font-mono px-3 py-1 rounded-full bg-rose-950 text-rose-300 border border-rose-500/40 font-bold shadow-sm">
+                  🚀 激動の40年と未来
+                </span>
+              </div>
+
+              <div>
+                <h3 className="text-xl sm:text-2xl font-black text-white group-hover:text-rose-300 transition-colors font-sans tracking-tight">
+                  それでも私たちがC++を愛する理由
+                </h3>
+                <p className="text-sm text-rose-400/90 font-mono mt-1 font-semibold">
+                  〜なぜ世界は今もC++で動き続けるのか？〜
+                </p>
+              </div>
+
+              <p className="text-sm text-slate-300 leading-relaxed font-sans">
+                Unreal Engine、火星探査機、Googleの検索基盤、LLM推論基盤、ブラウザエンジン。シリコンの極限性能と最高度の数学的抽象化を両立する「ゼロオーバーヘッド原則」と「決定論的宇宙（RAII）」の美学を熱く語る！
+              </p>
+
+              <div className="flex flex-wrap gap-2 pt-2 text-xs font-mono text-slate-300">
+                <span className="px-2.5 py-1 rounded-lg bg-slate-950/90 border border-rose-500/30 text-rose-300">#ゼロコスト抽象化</span>
+                <span className="px-2.5 py-1 rounded-lg bg-slate-950/90 border border-rose-500/30 text-rose-300">#決定論的寿命(RAII)</span>
+                <span className="px-2.5 py-1 rounded-lg bg-slate-950/90 border border-rose-500/30 text-rose-300">#UnrealEngine</span>
+                <span className="px-2.5 py-1 rounded-lg bg-slate-950/90 border border-rose-500/30 text-rose-300">#AI推論基盤</span>
+                <span className="px-2.5 py-1 rounded-lg bg-slate-950/90 border border-rose-500/30 text-rose-300">#泥臭いシリコン制御</span>
+              </div>
+            </div>
+
+            <div className="mt-6 pt-4 border-t border-slate-800 flex items-center justify-between text-sm font-mono text-rose-400 group-hover:translate-x-1 transition-transform relative z-10">
+              <span className="font-bold flex items-center gap-1.5">
+                <span>特別コラムを読む</span>
+              </span>
+              <ArrowRight className="w-5 h-5" />
+            </div>
+          </div>
+        </div>
+
+        {/* 🛠️ 実践手引き・品質保証・設計ツール（5連グリッド） */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
           {/* 特集0: GoogleTest & TDD実践 */}
           <div

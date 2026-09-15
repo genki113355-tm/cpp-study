@@ -16,9 +16,11 @@ import { chapterM4 } from './chapters/modern4';
 
 import { CODE_READING_GUIDE } from './guides/codeReading';
 import { WHY_CPP_IS_HARD_COLUMN } from './guides/whyCppIsHard';
+import { WHY_CPP_IS_GREAT_COLUMN } from './guides/whyCppIsGreat';
 import { ENVIRONMENT_SETUP_GUIDE } from './guides/environmentSetup';
 import { UML_DESIGN_GUIDE } from './guides/umlDesignGuide';
 import { GOOGLE_TEST_TDD_GUIDE } from './guides/googleTestTdd';
+import { CPP_SYNTAX_REFERENCE_GUIDE } from './guides/cppSyntaxReference';
 
 import { CODE_READING_STEP_1 } from './guides/codeReadingStep1';
 import { CODE_READING_STEP_2 } from './guides/codeReadingStep2';
@@ -55,9 +57,11 @@ export const READING_CHAPTERS: Chapter[] = [
 
 /** 📚 特集ガイド＆実践コラム（品質保証・読解術・言語思想・環境構築・UML設計） */
 export const SPECIAL_GUIDES: Chapter[] = [
+  CPP_SYNTAX_REFERENCE_GUIDE, // 付録: C++基本文法＆チートシート総覧
   GOOGLE_TEST_TDD_GUIDE,   // G4: 品質保証特集（GoogleTest & TDD実践）
   CODE_READING_GUIDE,      // G1: 現場コード読解術総合ガイド
   UML_DESIGN_GUIDE,        // G3: UML設計手法とC++相互変換
+  WHY_CPP_IS_GREAT_COLUMN, // 特別コラム: それでも私たちがC++を愛する理由
   WHY_CPP_IS_HARD_COLUMN,  // コラム: C++が難しい理由
   ENVIRONMENT_SETUP_GUIDE, // G2: C++環境構築ガイド
 ];

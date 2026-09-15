@@ -11,6 +11,8 @@ export const App: React.FC = () => {
   const [currentSlug, setCurrentSlug] = useState<string>(() => {
     const hash = window.location.hash.replace('#', '');
     if (hash && getChapterBySlug(hash)) return hash;
+    const pathSlug = window.location.pathname.replace(/^\/+/, '').replace(/\/+$/, '');
+    if (pathSlug && getChapterBySlug(pathSlug)) return pathSlug;
     return 'top';
   });
 

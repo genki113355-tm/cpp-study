@@ -80,6 +80,9 @@ export const Navbar: React.FC<NavbarProps> = ({
                 L5: 'パターン',
                 L6: 'ベクトル',
                 L7: 'バイナリ',
+                L8: '関数ポインタ',
+                L9: '多重継承',
+                L10: '静的多態',
               };
               const code = (ch.courseChapterCode || `C${ch.id}`).replace(/^C/, 'L');
               return (
@@ -171,6 +174,8 @@ export const Navbar: React.FC<NavbarProps> = ({
             {SPECIAL_GUIDES.map((guide) => {
               const isActive = guide.id === currentChapterId;
               const guideShortNames: Record<string, string> = {
+                'guide-cpp-syntax-reference': '文法総覧',
+                'column-why-cpp-is-great': 'C++の魅力',
                 'guide-googletest-tdd': '品質・TDD',
                 'guide-code-reading': '読解術',
                 'column-why-cpp-is-hard': '思想コラム',

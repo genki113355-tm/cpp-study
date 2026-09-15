@@ -13,6 +13,7 @@ import { UmlDiagramViewer } from './UmlDiagramViewer';
 import { CheckCircle, AlertCircle, ArrowRight, ArrowLeft, Lightbulb, HelpCircle, GitCommit } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { AffiliatePromoBanner } from '../affiliate/AffiliatePromoBanner';
+import { ShareButtons } from '../common/ShareButtons';
 
 interface ChapterViewProps {
   chapter: Chapter;
@@ -129,28 +130,36 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
               {chapter.subtitle}
             </p>
 
-            {/* パンくずリスト & カテゴリバッジ（タイトルの下に配置） */}
-            <nav aria-label="パンくずリスト" className="flex items-center gap-2 text-xs sm:text-sm font-mono flex-wrap pt-1">
-              <button
-                onClick={() => onNavigate('top')}
-                className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-slate-800/90 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700 transition shadow-sm"
-                title="トップページへ戻る"
-              >
-                <span>🏠</span>
-                <span>TOP</span>
-              </button>
-              <span className="text-slate-600">/</span>
-              {getTrackBadge()}
-              <span className="text-xs sm:text-sm font-mono text-slate-300 font-semibold px-2.5 py-1 rounded-lg bg-slate-800/80 border border-slate-700">
-                {chapter.badge}
-              </span>
-              {isCompleted && (
-                <span className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-mono px-3 py-1 rounded-full bg-emerald-950 text-emerald-400 border border-emerald-500/40 font-bold">
-                  <CheckCircle className="w-4 h-4" />
-                  <span>完了済み</span>
+            {/* パンくずリスト & シェアボタン（タイトルの下に配置） */}
+            <div className="flex flex-wrap items-center justify-between gap-3 pt-1">
+              <nav aria-label="パンくずリスト" className="flex items-center gap-2 text-xs sm:text-sm font-mono flex-wrap">
+                <button
+                  onClick={() => onNavigate('top')}
+                  className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-slate-800/90 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700 transition shadow-sm"
+                  title="トップページへ戻る"
+                >
+                  <span>🏠</span>
+                  <span>TOP</span>
+                </button>
+                <span className="text-slate-600">/</span>
+                {getTrackBadge()}
+                <span className="text-xs sm:text-sm font-mono text-slate-300 font-semibold px-2.5 py-1 rounded-lg bg-slate-800/80 border border-slate-700">
+                  {chapter.badge}
                 </span>
-              )}
-            </nav>
+                {isCompleted && (
+                  <span className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-mono px-3 py-1 rounded-full bg-emerald-950 text-emerald-400 border border-emerald-500/40 font-bold">
+                    <CheckCircle className="w-4 h-4" />
+                    <span>完了済み</span>
+                  </span>
+                )}
+              </nav>
+
+              <ShareButtons
+                title={`${chapter.title} - ${chapter.subtitle} | シロクマC++ラボ`}
+                text={`C++オブジェクト指向設計カリキュラム：${chapter.description.slice(0, 60)}...`}
+                variant="compact"
+              />
+            </div>
 
             <p className="text-base sm:text-lg md:text-xl text-slate-300 pt-2 leading-relaxed font-sans">
               {chapter.description}
@@ -454,6 +463,16 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
                           {isCorrect ? '🎉 正解！シロクマ先生とハイタッチ！' : '❌ おしい！'}
                         </div>
                         <div className="text-slate-200 leading-relaxed">{q.explanation}</div>
+                        {isCorrect && (
+                          <div className="pt-2 flex items-center gap-2 flex-wrap">
+                            <span className="text-xs text-emerald-300 font-mono font-bold">正解成果をシェア:</span>
+                            <ShareButtons
+                              title={`【正解クリア！】シロクマC++ラボ「${chapter.title}」のクイズを突破しました！`}
+                              text={`シロクマ先生＆先輩ペンギンと一緒にオブジェクト指向ゲーム開発を修行中！`}
+                              variant="compact"
+                            />
+                          </div>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -463,6 +482,13 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
           })}
         </section>
       )}
+
+      {/* 記事シェアカード */}
+      <ShareButtons
+        title={`${chapter.title} - ${chapter.subtitle} | シロクマC++ラボ`}
+        text={`インベーダーゲーム開発を通じて学ぶC++オブジェクト指向設計カリキュラム！\n${chapter.description.slice(0, 80)}...`}
+        variant="card"
+      />
 
       {/* 学習完了・達成のご褒美PRバナー（最下部） */}
       <AffiliatePromoBanner type="reward" limit={3} />
