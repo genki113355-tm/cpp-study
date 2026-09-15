@@ -715,5 +715,7 @@ int main() {
       correctIndex: 1,
       explanation: '正解は「インスタンスポインタとメンバ関数ポインタをクラステンプレートでペアとして保持し、共通の抽象基底（IActionDelegate）を介して呼び出す委譲（Delegate）パターン」です。本章で実装した MemberDelegate<T> のように、インスタンスとメンバ関数ポインタをカプセル化して型消滅（Type Erasure）を行うことで、void* を1行も使わずに完全な型安全性と疎結合性を両立させていました。'
     }
-  ]
+  ],
+  prevChapterSlug: 'chapter-7-pointer-alignment-endian',
+  nextChapterSlug: undefined
 };

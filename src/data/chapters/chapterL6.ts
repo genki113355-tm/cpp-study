@@ -349,6 +349,6 @@ void updateBullets(std::vector<Vec2>& positions, const std::vector<Vec2>& veloci
     }
   ],
   prevChapterSlug: 'chapter-6-design-patterns',
-  nextChapterSlug: undefined
+  nextChapterSlug: 'chapter-7-pointer-alignment-endian'
 };
 
