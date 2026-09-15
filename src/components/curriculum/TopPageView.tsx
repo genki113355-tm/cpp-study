@@ -132,6 +132,13 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
       gameEvolution: 'UIボタンクリック、自機ボム発動、BGM再生が型安全な委譲システムで完全疎結合に連動！',
       techKeywords: ['関数ポインタ', 'メンバ関数ポインタ', 'Delegateパターン', '型安全コールバック'],
     },
+    13: {
+      architecturalRole: '多重継承の解剖＆thisポインタ調整オフセット・合成シフト',
+      beforePain: 'ボスに飛行と射撃を多重継承させたらEntityが2重実体化し菱形継承で大炎上。ポインタのアドレスが勝手にズレる怪現象。',
+      afterSkill: '多重継承時の物理メモリレイアウト（this調整）の解明。仮想継承の重い代償と「継承より合成（has-a）」への転換。',
+      gameEvolution: '飛行・射撃・シールド能力を独立コンポーネントとして合成した最強の母艦ボスが誕生！',
+      techKeywords: ['多重継承', '菱形継承 (Diamond)', 'thisポインタ調整', '仮想基底クラス (virtual)', '継承より合成'],
+    },
     201: {
       architecturalRole: '手続き型データフロー＆状態変数ライフサイクルの解読',
       beforePain: '何百行もある手続き型コードで、変数がどこで宣言され、ループ内でどう書き換わっているか見失う。',

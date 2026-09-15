@@ -717,5 +717,5 @@ int main() {
     }
   ],
   prevChapterSlug: 'chapter-7-pointer-alignment-endian',
-  nextChapterSlug: undefined
+  nextChapterSlug: 'chapter-9-multiple-inheritance-diamond'
 };

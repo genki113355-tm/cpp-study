@@ -137,9 +137,9 @@ for (auto& enemy : enemies) enemy->update();`
       stage: 5,
       title: '「継承、これ本当に必要？」多重継承の罠',
       subtitle: 'ボスを作ろうとして継承を重ねた結果、「菱形継承の死」に直面する',
-      tag: '言語思想・設計の壁',
-      chapterSlug: 'column-why-cpp-is-hard',
-      chapterLabel: '思想コラムへ進む',
+      tag: 'C9: 多重継承・菱形継承',
+      chapterSlug: 'chapter-9-multiple-inheritance-diamond',
+      chapterLabel: 'Ch.9 (L9) へ進む',
       beforePain: 'Flyable（飛べる）と Shootable（撃てる）を多重継承したら基底クラスが2重実体化！親クラスの変更で全派生クラスが崩壊。',
       afterSkill: '「is-a関係」の過信への反省。継承はコード再利用の道具ではなく「型による抽象化」のためだけにあると知る。',
       storyQuote: {
