@@ -9,6 +9,7 @@ import { chapter6 } from './chapters/chapter6';
 import { chapter7 } from './chapters/chapter7';
 import { chapterL6 } from './chapters/chapterL6';
 import { chapterL7 } from './chapters/chapterL7';
+import { chapterL8 } from './chapters/chapterL8';
 import { chapterM4 } from './chapters/modern4';
 
 import { CODE_READING_GUIDE } from './guides/codeReading';
@@ -30,6 +31,7 @@ export const CLASSIC_CHAPTERS: Chapter[] = [
   chapter6,  // C5: ゲームデザインパターン (State & Observer)
   chapterL6, // C6: 演算子オーバーロードと値オブジェクト
   chapterL7, // C7: ポインタ演算と手動メモリアライメントの深淵
+  chapterL8, // C8: 関数ポインタとコールバック設計
 ];
 
 /** 🚀 モダンコース（C++11〜C++17 / モダンC++・新世代設計編） */
@@ -88,7 +90,6 @@ export interface FutureChapterPreview {
 
 export const UPCOMING_CHAPTERS: FutureChapterPreview[] = [
   // レガシーC++コース 拡張予定
-  { id: 1008, slug: 'upcoming-l8', title: '【L8】関数ポインタとコールバック設計', subtitle: 'C言語スタイルのイベント処理とC++メンバ関数ポインタの怪', badge: 'レガシーC++ L8（準備中）', isUpcoming: true },
   { id: 1009, slug: 'upcoming-l9', title: '【L9】多重継承の闇と仮想基底クラス（菱形継承）', subtitle: 'メモリレイアウトの解剖とMIアンチパターン回避', badge: 'レガシーC++ L9（準備中）', isUpcoming: true },
   { id: 1010, slug: 'upcoming-l10', title: '【L10】静的ポリモーフィズム入門（CRTPとクラシックTemplate）', subtitle: '仮想関数のオーバーヘッドをゼロにするC++98メタプログラミング', badge: 'レガシーC++ L10（準備中）', isUpcoming: true },
   { id: 1011, slug: 'upcoming-l11', title: '【L11】独自メモリアロケータと固定長プール管理', subtitle: 'ゲーム現場のnew/delete禁止令とフラグメンテーション撲滅', badge: 'レガシーC++ L11（準備中）', isUpcoming: true },

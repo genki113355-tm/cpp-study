@@ -118,6 +118,20 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
       gameEvolution: 'パワーアップ・シールド・全体ボムなど多彩なドロップアイテム取得効果をパターンマッチングで超高速ディスパッチ！',
       techKeywords: ['std::optional', 'std::variant', 'std::visit', 'constexpr コンパイル時計算'],
     },
+    11: {
+      architecturalRole: 'ポインタ演算＆ハードウェア境界・バイナリシリアライザ',
+      beforePain: '構造体をそのまま fwrite / send してパディングやエンディアンの差異でセーブデータやパケットが壊れる。',
+      afterSkill: 'メモリ配置（境界整列/アライメント）の理解。固定長ビットシフトによる移植性100%のバイナリパッキング。',
+      gameEvolution: 'ハイスコアや自機座標をバイナリセーブデータとして破損なく安全に永続化！',
+      techKeywords: ['構造体パディング', 'アライメント境界', 'エンディアン変換', 'バイナリシリアライズ'],
+    },
+    12: {
+      architecturalRole: 'イベント駆動委譲＆メンバ関数ポインタ・Type Erasure',
+      beforePain: 'C言語流 void* コールバックで型チェックが消滅しキャストミスで即死。メンバ関数の代入コンパイルエラー。',
+      afterSkill: 'メンバ関数ポインタの物理構造（this調整オフセット）の解明。Delegateパターンによる型安全なイベント通知。',
+      gameEvolution: 'UIボタンクリック、自機ボム発動、BGM再生が型安全な委譲システムで完全疎結合に連動！',
+      techKeywords: ['関数ポインタ', 'メンバ関数ポインタ', 'Delegateパターン', '型安全コールバック'],
+    },
     201: {
       architecturalRole: '手続き型データフロー＆状態変数ライフサイクルの解読',
       beforePain: '何百行もある手続き型コードで、変数がどこで宣言され、ループ内でどう書き換わっているか見失う。',
