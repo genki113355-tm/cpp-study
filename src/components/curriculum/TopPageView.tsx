@@ -139,6 +139,13 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
       gameEvolution: '飛行・射撃・シールド能力を独立コンポーネントとして合成した最強の母艦ボスが誕生！',
       techKeywords: ['多重継承', '菱形継承 (Diamond)', 'thisポインタ調整', '仮想基底クラス (virtual)', '継承より合成'],
     },
+    14: {
+      architecturalRole: 'ゼロオーバーヘッド静的多態性＆CRTP・Mix-inエンジン',
+      beforePain: '弾幕1万発やパーティクルで virtual を使ったら、vtable間接ジャンプとインライン展開阻害でFPSが壊滅。',
+      afterSkill: 'CRTP（奇妙に再帰したテンプレート）によるコンパイル時ポリモーフィズム。vptr完全消滅と100%インライン展開。',
+      gameEvolution: '超高密度な10万発の弾幕ストームが、関数呼び出しオーバーヘッドゼロで滑らかに乱舞！',
+      techKeywords: ['CRTP', '静的ポリモーフィズム', 'インライン展開 (Inlining)', '静的Mix-in', 'ゼロオーバーヘッド'],
+    },
     201: {
       architecturalRole: '手続き型データフロー＆状態変数ライフサイクルの解読',
       beforePain: '何百行もある手続き型コードで、変数がどこで宣言され、ループ内でどう書き換わっているか見失う。',

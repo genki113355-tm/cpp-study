@@ -587,5 +587,5 @@ int main() {
     }
   ],
   prevChapterSlug: 'chapter-8-function-pointers-callbacks',
-  nextChapterSlug: undefined
+  nextChapterSlug: 'chapter-10-static-polymorphism-crtp'
 };
