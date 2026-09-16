@@ -12,6 +12,7 @@ import { chapterL7 } from './chapters/chapterL7';
 import { chapterL8 } from './chapters/chapterL8';
 import { chapterL9 } from './chapters/chapterL9';
 import { chapterL10 } from './chapters/chapterL10';
+import { chapterL11 } from './chapters/chapterL11';
 import { chapterM4 } from './chapters/modern4';
 
 import { CODE_READING_GUIDE } from './guides/codeReading';
@@ -38,6 +39,7 @@ export const CLASSIC_CHAPTERS: Chapter[] = [
   chapterL8,  // C8: 関数ポインタとコールバック設計
   chapterL9,  // C9: 多重継承の闇と仮想基底クラス（菱形継承）
   chapterL10, // C10: 静的ポリモーフィズム入門（CRTPとクラシックTemplate）
+  chapterL11, // C11: 独自メモリアロケータと固定長プール管理
 ];
 
 /** 🚀 モダンコース（C++11〜C++17 / モダンC++・新世代設計編） */
@@ -98,7 +100,6 @@ export interface FutureChapterPreview {
 
 export const UPCOMING_CHAPTERS: FutureChapterPreview[] = [
   // レガシーC++コース 拡張予定
-  { id: 1011, slug: 'upcoming-l11', title: '【L11】独自メモリアロケータと固定長プール管理', subtitle: 'ゲーム現場のnew/delete禁止令とフラグメンテーション撲滅', badge: 'レガシーC++ L11（準備中）', isUpcoming: true },
   { id: 1012, slug: 'upcoming-l12', title: '【L12】レガシーゲームエンジン統合開発実務', subtitle: 'メインループ・レンダラ・物理・サウンドの疎結合オーケストレーション', badge: 'レガシーC++ L12（準備中）', isUpcoming: true },
 
   // モダンC++コース 拡張予定

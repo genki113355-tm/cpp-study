@@ -6,6 +6,7 @@ import { Footer } from './components/layout/Footer';
 import { ChapterView } from './components/curriculum/ChapterView';
 import { TopPageView } from './components/curriculum/TopPageView';
 import { SourceModal } from './components/layout/SourceModal';
+import { useSEO } from './hooks/useSEO';
 
 export const App: React.FC = () => {
   const [currentSlug, setCurrentSlug] = useState<string>(() => {
@@ -39,14 +40,17 @@ export const App: React.FC = () => {
     }
   }, [currentSlug]);
 
-  // Google アナリティクス (GA4) ページビュー送信 ＆ ページタイトル動的更新
+  const currentChapter = getChapterBySlug(currentSlug);
+
+  // SEOメタ情報（title, description, OGP, canonical, JSON-LD）の動的同期
+  useSEO({ currentSlug, chapter: currentChapter });
+
+  // Google アナリティクス (GA4) ページビュー送信
   useEffect(() => {
     const siteBaseTitle = 'シロクマC++ラボ 〜ゲーム開発で学ぶオブジェクト指向開発 レガシー設計からモダン設計まで〜';
-    const currentChapter = getChapterBySlug(currentSlug);
     const pageTitle = currentSlug === 'top' || !currentChapter
       ? siteBaseTitle
       : `${currentChapter.title} | シロクマC++ラボ`;
-    document.title = pageTitle;
 
     if (typeof window !== 'undefined' && typeof (window as any).gtag === 'function') {
       (window as any).gtag('event', 'page_view', {
@@ -55,7 +59,7 @@ export const App: React.FC = () => {
         page_path: window.location.pathname + (currentSlug === 'top' ? '' : '#' + currentSlug),
       });
     }
-  }, [currentSlug]);
+  }, [currentSlug, currentChapter]);
 
   useEffect(() => {
     const handleHashChange = () => {
@@ -98,8 +102,8 @@ export const App: React.FC = () => {
     });
   };
 
-  const currentChapter = getChapterBySlug(currentSlug) || ALL_CHAPTERS[0];
-  const currentChapterId = currentSlug === 'top' ? 0 : currentChapter.id;
+  const activeChapter = currentChapter || ALL_CHAPTERS[0];
+  const currentChapterId = currentSlug === 'top' ? 0 : activeChapter.id;
 
   const handleSelectChapter = (slug: string) => {
     setCurrentSlug(slug);
@@ -135,10 +139,10 @@ export const App: React.FC = () => {
             />
           ) : (
             <ChapterView
-              chapter={currentChapter}
+              chapter={activeChapter}
               onNavigate={handleSelectChapter}
               onComplete={handleMarkComplete}
-              isCompleted={completedChapters.includes(currentChapter.id)}
+              isCompleted={completedChapters.includes(activeChapter.id)}
             />
           )}
         </main>

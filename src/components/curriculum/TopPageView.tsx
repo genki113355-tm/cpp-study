@@ -246,20 +246,22 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
                 <Sparkles className="w-3.5 h-3.5 text-amber-400 animate-pulse" />
                 NEW 特集
               </span>
-              <button
-                onClick={() => onSelectChapter('guide-cpp-syntax-reference')}
-                className="text-xs font-mono px-3 py-1 rounded-lg bg-slate-800 hover:bg-cyan-950 text-cyan-300 hover:text-cyan-200 border border-slate-700 hover:border-cyan-500/50 transition flex items-center gap-1.5 shadow-sm"
+              <a
+                href="/guide-cpp-syntax-reference"
+                onClick={(e) => { e.preventDefault(); onSelectChapter('guide-cpp-syntax-reference'); }}
+                className="text-xs font-mono px-3 py-1 rounded-lg bg-slate-800 hover:bg-cyan-950 text-cyan-300 hover:text-cyan-200 border border-slate-700 hover:border-cyan-500/50 transition flex items-center gap-1.5 shadow-sm no-underline"
               >
                 <span>📖 C++基本文法チートシート総覧</span>
                 <ArrowRight className="w-3 h-3" />
-              </button>
-              <button
-                onClick={() => onSelectChapter('column-why-cpp-is-great')}
-                className="text-xs font-mono px-3 py-1 rounded-lg bg-slate-800 hover:bg-rose-950 text-rose-300 hover:text-rose-200 border border-slate-700 hover:border-rose-500/50 transition flex items-center gap-1.5 shadow-sm"
+              </a>
+              <a
+                href="/column-why-cpp-is-great"
+                onClick={(e) => { e.preventDefault(); onSelectChapter('column-why-cpp-is-great'); }}
+                className="text-xs font-mono px-3 py-1 rounded-lg bg-slate-800 hover:bg-rose-950 text-rose-300 hover:text-rose-200 border border-slate-700 hover:border-rose-500/50 transition flex items-center gap-1.5 shadow-sm no-underline"
               >
                 <span>🔥 特別コラム: それでもC++を愛する理由</span>
                 <ArrowRight className="w-3 h-3" />
-              </button>
+              </a>
             </div>
 
             {/* キャラクター対話ミニボックス */}
@@ -395,9 +397,10 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
         {/* 🔥 最注目：新規追加の2大キラーコンテンツ（大型カード2連） */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* キラー1: C++基本文法＆チートシート総覧 */}
-          <div
-            onClick={() => onSelectChapter('guide-cpp-syntax-reference')}
-            className="p-6 sm:p-7 rounded-3xl bg-gradient-to-br from-slate-900/95 via-[#081720] to-slate-950 border-2 border-cyan-500/40 hover:border-cyan-400 shadow-2xl transition-all duration-300 cursor-pointer group flex flex-col justify-between relative overflow-hidden"
+          <a
+            href="/guide-cpp-syntax-reference"
+            onClick={(e) => { e.preventDefault(); onSelectChapter('guide-cpp-syntax-reference'); }}
+            className="p-6 sm:p-7 rounded-3xl bg-gradient-to-br from-slate-900/95 via-[#081720] to-slate-950 border-2 border-cyan-500/40 hover:border-cyan-400 shadow-2xl transition-all duration-300 cursor-pointer group flex flex-col justify-between relative overflow-hidden no-underline text-inherit"
           >
             <div className="absolute top-0 right-0 w-64 h-64 bg-cyan-500/10 rounded-full blur-2xl pointer-events-none" />
             <div className="space-y-4 relative z-10">
@@ -448,12 +451,13 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
               </span>
               <ArrowRight className="w-5 h-5" />
             </div>
-          </div>
+          </a>
 
           {/* キラー2: それでも私たちがC++を愛する理由 */}
-          <div
-            onClick={() => onSelectChapter('column-why-cpp-is-great')}
-            className="p-6 sm:p-7 rounded-3xl bg-gradient-to-br from-slate-900/95 via-[#1a0c18] to-slate-950 border-2 border-rose-500/40 hover:border-rose-400 shadow-2xl transition-all duration-300 cursor-pointer group flex flex-col justify-between relative overflow-hidden"
+          <a
+            href="/column-why-cpp-is-great"
+            onClick={(e) => { e.preventDefault(); onSelectChapter('column-why-cpp-is-great'); }}
+            className="p-6 sm:p-7 rounded-3xl bg-gradient-to-br from-slate-900/95 via-[#1a0c18] to-slate-950 border-2 border-rose-500/40 hover:border-rose-400 shadow-2xl transition-all duration-300 cursor-pointer group flex flex-col justify-between relative overflow-hidden no-underline text-inherit"
           >
             <div className="absolute top-0 right-0 w-64 h-64 bg-rose-500/10 rounded-full blur-2xl pointer-events-none" />
             <div className="space-y-4 relative z-10">
@@ -504,15 +508,16 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
               </span>
               <ArrowRight className="w-5 h-5" />
             </div>
-          </div>
+          </a>
         </div>
 
         {/* 🛠️ 実践手引き・品質保証・設計ツール（5連グリッド） */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
           {/* 特集0: GoogleTest & TDD実践 */}
-          <div
-            onClick={() => onSelectChapter('guide-googletest-tdd')}
-            className="p-5 rounded-3xl bg-gradient-to-b from-slate-900/90 via-[#0a1815] to-slate-950 border border-emerald-500/40 hover:border-emerald-400 shadow-xl transition-all duration-200 cursor-pointer group flex flex-col justify-between"
+          <a
+            href="/guide-googletest-tdd"
+            onClick={(e) => { e.preventDefault(); onSelectChapter('guide-googletest-tdd'); }}
+            className="p-5 rounded-3xl bg-gradient-to-b from-slate-900/90 via-[#0a1815] to-slate-950 border border-emerald-500/40 hover:border-emerald-400 shadow-xl transition-all duration-200 cursor-pointer group flex flex-col justify-between no-underline text-inherit"
           >
             <div className="space-y-3.5">
               <div className="flex items-center justify-between">
@@ -548,11 +553,12 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
               <span className="font-bold">テスト特集を見る</span>
               <ArrowRight className="w-4 h-4" />
             </div>
-          </div>
+          </a>
           {/* ガイド1: コード読解術 */}
-          <div
-            onClick={() => onSelectChapter('guide-code-reading')}
-            className="p-6 rounded-3xl bg-gradient-to-b from-slate-900/90 via-[#0a131a] to-slate-950 border border-emerald-500/30 hover:border-emerald-400/60 shadow-xl transition-all duration-200 cursor-pointer group flex flex-col justify-between"
+          <a
+            href="/guide-code-reading"
+            onClick={(e) => { e.preventDefault(); onSelectChapter('guide-code-reading'); }}
+            className="p-6 rounded-3xl bg-gradient-to-b from-slate-900/90 via-[#0a131a] to-slate-950 border border-emerald-500/30 hover:border-emerald-400/60 shadow-xl transition-all duration-200 cursor-pointer group flex flex-col justify-between no-underline text-inherit"
           >
             <div className="space-y-4">
               <div className="flex items-center justify-between">
@@ -588,12 +594,13 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
               <span className="font-bold">読解手引きを読む</span>
               <ArrowRight className="w-4 h-4" />
             </div>
-          </div>
+          </a>
 
           {/* ガイド2: なぜC++は難しいのか */}
-          <div
-            onClick={() => onSelectChapter('column-why-cpp-is-hard')}
-            className="p-6 rounded-3xl bg-gradient-to-b from-slate-900/90 via-[#130a1f] to-slate-950 border border-purple-500/30 hover:border-purple-400/60 shadow-xl transition-all duration-200 cursor-pointer group flex flex-col justify-between"
+          <a
+            href="/column-why-cpp-is-hard"
+            onClick={(e) => { e.preventDefault(); onSelectChapter('column-why-cpp-is-hard'); }}
+            className="p-6 rounded-3xl bg-gradient-to-b from-slate-900/90 via-[#130a1f] to-slate-950 border border-purple-500/30 hover:border-purple-400/60 shadow-xl transition-all duration-200 cursor-pointer group flex flex-col justify-between no-underline text-inherit"
           >
             <div className="space-y-4">
               <div className="flex items-center justify-between">
@@ -629,12 +636,13 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
               <span className="font-bold">思想コラムを読む</span>
               <ArrowRight className="w-4 h-4" />
             </div>
-          </div>
+          </a>
 
           {/* ガイド3: 環境構築 */}
-          <div
-            onClick={() => onSelectChapter('guide-environment-setup')}
-            className="p-6 rounded-3xl bg-gradient-to-b from-slate-900/90 via-[#0c161d] to-slate-950 border border-cyan-500/30 hover:border-cyan-400/60 shadow-xl transition-all duration-200 cursor-pointer group flex flex-col justify-between"
+          <a
+            href="/guide-environment-setup"
+            onClick={(e) => { e.preventDefault(); onSelectChapter('guide-environment-setup'); }}
+            className="p-6 rounded-3xl bg-gradient-to-b from-slate-900/90 via-[#0c161d] to-slate-950 border border-cyan-500/30 hover:border-cyan-400/60 shadow-xl transition-all duration-200 cursor-pointer group flex flex-col justify-between no-underline text-inherit"
           >
             <div className="space-y-4">
               <div className="flex items-center justify-between">
@@ -670,12 +678,13 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
               <span className="font-bold">環境構築手順を見る</span>
               <ArrowRight className="w-4 h-4" />
             </div>
-          </div>
+          </a>
 
           {/* ガイド4: UML設計書入門 */}
-          <div
-            onClick={() => onSelectChapter('guide-uml-design')}
-            className="p-6 rounded-3xl bg-gradient-to-b from-slate-900/90 via-[#0d1624] to-slate-950 border border-blue-500/30 hover:border-blue-400/60 shadow-xl transition-all duration-200 cursor-pointer group flex flex-col justify-between"
+          <a
+            href="/guide-uml-design"
+            onClick={(e) => { e.preventDefault(); onSelectChapter('guide-uml-design'); }}
+            className="p-6 rounded-3xl bg-gradient-to-b from-slate-900/90 via-[#0d1624] to-slate-950 border border-blue-500/30 hover:border-blue-400/60 shadow-xl transition-all duration-200 cursor-pointer group flex flex-col justify-between no-underline text-inherit"
           >
             <div className="space-y-4">
               <div className="flex items-center justify-between">
@@ -711,7 +720,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
               <span className="font-bold">UML設計入門を読む</span>
               <ArrowRight className="w-4 h-4" />
             </div>
-          </div>
+          </a>
         </div>
       </section>
 

@@ -690,5 +690,5 @@ int main() {
     }
   ],
   prevChapterSlug: 'chapter-9-multiple-inheritance-diamond',
-  nextChapterSlug: undefined
+  nextChapterSlug: 'chapter-11-memory-pool-allocator'
 };

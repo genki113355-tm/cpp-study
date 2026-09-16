@@ -83,6 +83,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 L8: '関数ポインタ',
                 L9: '多重継承',
                 L10: '静的多態',
+                L11: 'メモリプール',
               };
               const code = (ch.courseChapterCode || `C${ch.id}`).replace(/^C/, 'L');
               return (

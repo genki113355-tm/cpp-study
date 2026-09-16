@@ -126,5 +126,14 @@ export const REWARD_BANNERS: BannerGroup = {
       width: 300,
       height: 250,
     },
+    {
+      id: 'reward-8',
+      category: 'reward',
+      linkUrl: 'https://px.a8.net/svt/ejp?a8mat=4BCAZ8+9SGMWI+4OBG+626XT',
+      bannerImgUrl: 'https://www24.a8.net/svt/bgt?aid=260914580592&wid=001&eno=01&mid=s00000021814001018000&mc=1',
+      trackingPixelUrl: 'https://www10.a8.net/0.gif?a8mat=4BCAZ8+9SGMWI+4OBG+626XT',
+      width: 300,
+      height: 250,
+    },
   ],
 };
