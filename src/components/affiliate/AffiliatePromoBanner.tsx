@@ -19,7 +19,7 @@ export const AffiliatePromoBanner: React.FC<AffiliatePromoBannerProps> = ({
 
   return (
     <div
-      className={`my-10 rounded-3xl border bg-gradient-to-b from-[#0b1322]/90 via-[#070c18]/95 to-[#050811] p-5 sm:p-7 shadow-2xl backdrop-blur-md relative overflow-hidden ${
+      className={`my-10 rounded-3xl border bg-gradient-to-b from-[#0b1322]/90 via-[#070c18]/95 to-[#050811] p-3.5 sm:p-7 shadow-2xl backdrop-blur-md relative overflow-hidden ${
         isBusy
           ? 'border-cyan-500/30 shadow-cyan-950/20'
           : 'border-amber-500/30 shadow-amber-950/20'
@@ -88,23 +88,22 @@ export const AffiliatePromoBanner: React.FC<AffiliatePromoBannerProps> = ({
           {displayedBanners.map((banner) => (
             <div
               key={banner.id}
-              className="flex flex-col items-center justify-center rounded-2xl bg-[#090e1a] p-2.5 border border-slate-800 hover:border-slate-700 transition-all duration-200 shadow-lg hover:shadow-2xl hover:scale-[1.01] group"
-              style={{ width: '320px' }}
+              className="flex flex-col items-center justify-center rounded-2xl bg-[#090e1a] p-2 sm:p-2.5 border border-slate-800 hover:border-slate-700 transition-all duration-200 shadow-lg hover:shadow-2xl hover:scale-[1.01] group w-full max-w-[320px]"
             >
-              <div className="w-[300px] h-[250px] overflow-hidden rounded-xl bg-slate-950 flex items-center justify-center relative">
+              <div className="w-[300px] max-w-full h-[250px] overflow-hidden rounded-xl bg-slate-950 flex items-center justify-center relative">
                 {/* A8.net公式アフィリエイトリンク ＆ バナー画像 */}
                 <a
                   href={banner.linkUrl}
                   target="_blank"
                   rel="nofollow noopener noreferrer"
-                  className="block w-[300px] h-[250px]"
+                  className="block w-[300px] max-w-full h-[250px] flex items-center justify-center"
                 >
                   <img
                     src={banner.bannerImgUrl}
                     width={banner.width}
                     height={banner.height}
                     alt="スポンサー広告"
-                    className="w-[300px] h-[250px] object-cover transition-opacity duration-200 group-hover:opacity-95"
+                    className="w-[300px] max-w-full h-[250px] object-cover transition-opacity duration-200 group-hover:opacity-95"
                     style={{ border: 0 }}
                   />
                 </a>

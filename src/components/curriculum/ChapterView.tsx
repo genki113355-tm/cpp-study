@@ -115,18 +115,18 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
   return (
     <div className="w-full max-w-[1500px] mx-auto py-6 sm:py-8 space-y-12">
       {/* 章ヘッダーバナー（司令室イラスト付き） */}
-      <div className={`relative rounded-3xl bg-gradient-to-br from-slate-900 via-[#0c121e] to-slate-950 p-6 sm:p-8 md:p-10 border shadow-2xl overflow-hidden ${getBorderColor()}`}>
+      <div className={`relative rounded-3xl bg-gradient-to-br from-slate-900 via-[#0c121e] to-slate-950 p-4 sm:p-8 md:p-10 border shadow-2xl overflow-hidden ${getBorderColor()}`}>
         {/* 背景の淡いグロー */}
         <div className={`absolute top-0 right-0 w-96 h-96 rounded-full blur-3xl pointer-events-none ${getGlowColor()}`} />
 
         <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-8">
           <div className="flex-1 space-y-4">
             {/* メインタイトル */}
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black text-white tracking-tight leading-tight break-keep">
+            <h1 className="text-2xl min-[400px]:text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black text-white tracking-tight leading-tight break-words sm:break-keep">
               {chapter.title}
             </h1>
 
-            <p className="text-lg sm:text-xl md:text-2xl text-cyan-300 font-medium leading-snug break-keep">
+            <p className="text-base sm:text-xl md:text-2xl text-cyan-300 font-medium leading-snug break-words sm:break-keep">
               {chapter.subtitle}
             </p>
 

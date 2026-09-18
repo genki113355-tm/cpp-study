@@ -111,7 +111,7 @@ export const App: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#090d16] text-slate-100 flex flex-col font-sans">
+    <div className="min-h-screen bg-[#090d16] text-slate-100 flex flex-col font-sans overflow-x-hidden">
       {/* ナビゲーションバー */}
       <Navbar
         currentChapterId={currentChapterId}
@@ -121,7 +121,7 @@ export const App: React.FC = () => {
       />
 
       {/* メインエリア：サイドバー ＋ 広々としたカリキュラム本文 */}
-      <div className="flex-1 flex w-full">
+      <div className="flex-1 flex w-full min-w-0">
         <Sidebar
           currentChapterSlug={currentSlug}
           onSelectChapter={handleSelectChapter}

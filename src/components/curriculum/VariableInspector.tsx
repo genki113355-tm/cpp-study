@@ -112,7 +112,7 @@ export const VariableInspector: React.FC<VariableInspectorProps> = ({ variables 
         </div>
       ) : (
         /* テーブル表示モード（大文字・折れ防止・均等幅配分） */
-        <div className="overflow-x-auto">
+        <div className="w-full max-w-full overflow-x-auto">
           <table className="w-full text-left border-collapse table-fixed min-w-[900px]">
             <thead>
               <tr className="border-b border-slate-800 bg-slate-950 text-slate-300 font-mono text-sm">

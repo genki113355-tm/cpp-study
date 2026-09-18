@@ -930,34 +930,36 @@ export const GameEmulator: React.FC<GameEmulatorProps> = ({ version }) => {
           </div>
         )}
 
-        {/* 画面テキスト（大きめのフォントで視認性抜群） */}
-        <div className="text-sm sm:text-base md:text-lg lg:text-xl leading-none font-bold tracking-widest text-center whitespace-pre font-mono py-2">
-          {grid.map((row, y) => (
-            <div key={y} className="flex justify-center">
-              {row.map((ch, x) => {
-                let colorClass = 'text-slate-600';
-                if (ch === '#') colorClass = version === 'v1_spaghetti' ? 'text-slate-500' : 'text-cyan-900';
-                else if (ch === 'A' || ch === '_') colorClass = version === 'v1_spaghetti' ? 'text-slate-200' : 'text-cyan-400 text-glow-cyan';
-                else if (ch === '|') colorClass = version === 'v1_spaghetti' ? 'text-slate-300' : 'text-amber-400';
-                else if (ch === 'V') colorClass = version === 'v1_spaghetti' ? 'text-slate-400' : 'text-rose-400';
-                else if (ch === 'S') colorClass = 'text-emerald-300 font-black text-glow-green';
-                else if (ch === 's') colorClass = 'text-emerald-500 font-bold';
-                else if (ch === 'E') colorClass = 'text-purple-300 font-black text-glow-cyan animate-pulse';
-                else if (ch === 'X') colorClass = 'text-amber-400 font-black animate-pulse';
-                else if (ch === 'B' || ch === '[' || ch === ']') colorClass = 'text-rose-400 font-black text-glow-red animate-pulse';
-                else if (ch === 'U') colorClass = 'text-amber-300 font-black text-glow-yellow animate-pulse';
-                else if (ch === 'b') colorClass = 'text-cyan-300 font-bold animate-pulse text-glow-cyan';
-                else if (ch === 'P') colorClass = 'text-pink-400 font-black text-glow-yellow animate-bounce';
-                else if (['*', '+', '.', 'x', '✦', '★', '✨'].includes(ch)) colorClass = 'text-emerald-400 text-glow-green animate-pulse';
+        {/* 画面テキスト（スマホ幅で切れないようスケーリング ＆ スクロール対応） */}
+        <div className="w-full max-w-full overflow-x-auto flex justify-center py-2">
+          <div className="text-[11px] min-[360px]:text-xs min-[400px]:text-sm sm:text-base md:text-lg lg:text-xl leading-none font-bold tracking-wider sm:tracking-widest text-center whitespace-pre font-mono">
+            {grid.map((row, y) => (
+              <div key={y} className="flex justify-center">
+                {row.map((ch, x) => {
+                  let colorClass = 'text-slate-600';
+                  if (ch === '#') colorClass = version === 'v1_spaghetti' ? 'text-slate-500' : 'text-cyan-900';
+                  else if (ch === 'A' || ch === '_') colorClass = version === 'v1_spaghetti' ? 'text-slate-200' : 'text-cyan-400 text-glow-cyan';
+                  else if (ch === '|') colorClass = version === 'v1_spaghetti' ? 'text-slate-300' : 'text-amber-400';
+                  else if (ch === 'V') colorClass = version === 'v1_spaghetti' ? 'text-slate-400' : 'text-rose-400';
+                  else if (ch === 'S') colorClass = 'text-emerald-300 font-black text-glow-green';
+                  else if (ch === 's') colorClass = 'text-emerald-500 font-bold';
+                  else if (ch === 'E') colorClass = 'text-purple-300 font-black text-glow-cyan animate-pulse';
+                  else if (ch === 'X') colorClass = 'text-amber-400 font-black animate-pulse';
+                  else if (ch === 'B' || ch === '[' || ch === ']') colorClass = 'text-rose-400 font-black text-glow-red animate-pulse';
+                  else if (ch === 'U') colorClass = 'text-amber-300 font-black text-glow-yellow animate-pulse';
+                  else if (ch === 'b') colorClass = 'text-cyan-300 font-bold animate-pulse text-glow-cyan';
+                  else if (ch === 'P') colorClass = 'text-pink-400 font-black text-glow-yellow animate-bounce';
+                  else if (['*', '+', '.', 'x', '✦', '★', '✨'].includes(ch)) colorClass = 'text-emerald-400 text-glow-green animate-pulse';
 
-                return (
-                  <span key={x} className={`inline-block w-[1.15ch] text-center ${colorClass}`}>
-                    {ch}
-                  </span>
-                );
-              })}
-            </div>
-          ))}
+                  return (
+                    <span key={x} className={`inline-block w-[1.15ch] text-center ${colorClass}`}>
+                      {ch}
+                    </span>
+                  );
+                })}
+              </div>
+            ))}
+          </div>
         </div>
 
         {/* HUDステータスライン */}
@@ -1175,7 +1177,7 @@ export const GameEmulator: React.FC<GameEmulatorProps> = ({ version }) => {
                     stopMove();
                   }}
                   onTouchCancel={stopMove}
-                  className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-b from-slate-800 to-slate-900 border-2 border-slate-700 active:border-cyan-400 active:from-cyan-900 active:to-slate-900 text-white font-mono text-xl sm:text-2xl flex flex-col items-center justify-center transition shadow-lg active:scale-95 cursor-pointer touch-none"
+                  className="w-12 h-12 min-[380px]:w-14 min-[380px]:h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-b from-slate-800 to-slate-900 border-2 border-slate-700 active:border-cyan-400 active:from-cyan-900 active:to-slate-900 text-white font-mono text-lg sm:text-2xl flex flex-col items-center justify-center transition shadow-lg active:scale-95 cursor-pointer touch-none"
                   aria-label="左移動（長押し対応）"
                 >
                   <span>◀</span>
@@ -1195,7 +1197,7 @@ export const GameEmulator: React.FC<GameEmulatorProps> = ({ version }) => {
                     stopMove();
                   }}
                   onTouchCancel={stopMove}
-                  className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-b from-slate-800 to-slate-900 border-2 border-slate-700 active:border-cyan-400 active:from-cyan-900 active:to-slate-900 text-white font-mono text-xl sm:text-2xl flex flex-col items-center justify-center transition shadow-lg active:scale-95 cursor-pointer touch-none"
+                  className="w-12 h-12 min-[380px]:w-14 min-[380px]:h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-b from-slate-800 to-slate-900 border-2 border-slate-700 active:border-cyan-400 active:from-cyan-900 active:to-slate-900 text-white font-mono text-lg sm:text-2xl flex flex-col items-center justify-center transition shadow-lg active:scale-95 cursor-pointer touch-none"
                   aria-label="右移動（長押し対応）"
                 >
                   <span>▶</span>
@@ -1248,7 +1250,7 @@ export const GameEmulator: React.FC<GameEmulatorProps> = ({ version }) => {
                     e.preventDefault();
                     shoot();
                   }}
-                  className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-gradient-to-b from-cyan-500 to-cyan-600 hover:from-cyan-400 hover:to-cyan-500 active:from-cyan-300 active:to-cyan-400 text-slate-950 font-black font-mono text-sm sm:text-base flex flex-col items-center justify-center transition shadow-lg shadow-cyan-500/40 border-2 border-cyan-300 active:scale-90 cursor-pointer touch-none"
+                  className="w-14 h-14 min-[380px]:w-16 min-[380px]:h-16 sm:w-20 sm:h-20 rounded-2xl bg-gradient-to-b from-cyan-500 to-cyan-600 hover:from-cyan-400 hover:to-cyan-500 active:from-cyan-300 active:to-cyan-400 text-slate-950 font-black font-mono text-xs min-[380px]:text-sm sm:text-base flex flex-col items-center justify-center transition shadow-lg shadow-cyan-500/40 border-2 border-cyan-300 active:scale-90 cursor-pointer touch-none"
                   aria-label="発射ボタン"
                 >
                   <span className="text-lg sm:text-xl">🚀</span>

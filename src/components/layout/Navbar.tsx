@@ -174,11 +174,13 @@ export const Navbar: React.FC<NavbarProps> = ({
             <span className="text-[10px] text-emerald-400/80 font-bold px-1 select-none">📚 特集</span>
             {SPECIAL_GUIDES.map((guide) => {
               const isActive = guide.id === currentChapterId;
+              const isColumn = guide.category === 'column';
               const guideShortNames: Record<string, string> = {
                 'guide-cpp-syntax-reference': '文法総覧',
                 'column-why-cpp-is-great': 'C++の魅力',
                 'guide-googletest-tdd': '品質・TDD',
                 'guide-code-reading': '読解術',
+                'column-design-patterns': 'デザインパターン',
                 'column-why-cpp-is-hard': '思想コラム',
                 'guide-environment-setup': '環境構築',
                 'guide-uml-design': 'UML設計',
@@ -189,8 +191,12 @@ export const Navbar: React.FC<NavbarProps> = ({
                   onClick={() => onSelectChapter(guide.slug)}
                   className={`px-2 py-1.5 rounded-xl transition-all flex items-center gap-1 text-[11px] font-sans ${
                     isActive
-                      ? 'bg-emerald-500 text-slate-950 font-bold shadow-md shadow-emerald-500/30'
-                      : 'text-slate-400 hover:text-emerald-200 hover:bg-slate-800'
+                      ? isColumn
+                        ? 'bg-purple-600 text-white font-bold shadow-md shadow-purple-500/30'
+                        : 'bg-emerald-500 text-slate-950 font-bold shadow-md shadow-emerald-500/30'
+                      : isColumn
+                        ? 'text-slate-400 hover:text-purple-200 hover:bg-slate-800'
+                        : 'text-slate-400 hover:text-emerald-200 hover:bg-slate-800'
                   }`}
                   title={guide.title}
                 >

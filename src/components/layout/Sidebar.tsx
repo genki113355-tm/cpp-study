@@ -381,8 +381,12 @@ export const Sidebar: React.FC<SidebarProps> = ({
                   ? '🧪'
                   : guide.slug === 'guide-code-reading' 
                   ? '🧭' 
+                  : guide.slug === 'column-design-patterns'
+                  ? '🧩'
                   : guide.slug === 'column-why-cpp-is-hard'
                   ? '🧠' 
+                  : guide.slug === 'column-why-cpp-is-great'
+                  ? '🔥'
                   : guide.slug === 'guide-uml-design'
                   ? '📐'
                   : '🛠️';
