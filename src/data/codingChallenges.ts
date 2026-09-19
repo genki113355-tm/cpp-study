@@ -20,7 +20,11 @@ export interface PlaygroundTemplate {
   id: string;
   name: string;
   badge: string;
+  category: '基礎・ゲームループ' | 'クラシックOOP設計' | 'モダンC++実践' | '現場最適化・アーキテクチャ';
   description: string;
+  summary: string;
+  points: string[];
+  experimentTips: string[];
   code: string;
 }
 
@@ -2175,22 +2179,87 @@ CODING_CHALLENGES['chapter-l11-custom-allocator-memory-pool'] = CODING_CHALLENGE
 export const PLAYGROUND_TEMPLATES: PlaygroundTemplate[] = [
   {
     id: 'template-basic',
-    name: 'C++23 基本テンプレート',
+    name: 'ミニインベーダー ASCII戦闘シミュレータ',
     badge: 'Basic',
-    description: 'std::println や auto など最新C++23構文を試せる標準テンプレートです。',
+    category: '基礎・ゲームループ',
+    description: 'C++の基本出力とゲームループを体感できるレトロASCII戦闘シミュレーションです。',
+    summary: 'プレイヤー宇宙船とインベーダー編隊の戦闘を、3ステップのASCIIゲーム画面とステータスゲージでリアルタイム風に描画・シミュレーションします。',
+    points: [
+      'C++標準入出力（std::cout）による画面フォーマット描画',
+      '構造体（struct Entity）による座標・HP・グラフィック文字の統合管理',
+      'ゲームループ（状態更新 Update → 画面描画 Render）の基礎構造',
+    ],
+    experimentTips: [
+      '38行目の player.hp を 200 に増やして耐久力を2倍にしてみよう',
+      '40行目の enemies 配列に新しい敵 {"中ボスM", 5, 120, \'M\'} を追加してみよう',
+      'ASCII描画の文字（▲ や 👾）を自分の好きな絵文字や記号に変えてみよう',
+    ],
     code: `#include <iostream>
 #include <vector>
 #include <string>
-#include <numeric>
+
+struct Entity {
+    std::string name;
+    int x;
+    int hp;
+    char icon;
+};
+
+void renderScreen(int frame, const Entity& player, const std::vector<Entity>& enemies, int score) {
+    std::cout << "==================================================\\n";
+    std::cout << "  🐻‍❄️ SHIROKUMA SPACE DEFENDER v2.3 [FRAME " << frame << "]\\n";
+    std::cout << "==================================================\\n";
+    
+    // 敵編隊の描画
+    std::cout << "  ENEMY RADAR: ";
+    for (const auto& e : enemies) {
+        if (e.hp > 0) std::cout << " [" << e.icon << "] ";
+        else std::cout << " 💥 ";
+    }
+    std::cout << "\\n  --------------------------------------------------\\n";
+    
+    // プレイヤー位置の描画
+    std::cout << "  ";
+    for (int i = 0; i < player.x; ++i) std::cout << "  ";
+    std::cout << player.icon << " [PLAYER SHIP]\\n\\n";
+
+    // ステータスゲージ
+    std::string hpBar = "";
+    int bars = player.hp / 10;
+    for (int i = 0; i < 10; ++i) hpBar += (i < bars ? "█" : "░");
+
+    std::cout << "  [SHIELD: " << hpBar << " " << player.hp << "%]  [SCORE: " << score << " pts]\\n";
+    std::cout << "==================================================\\n";
+}
 
 int main() {
-    std::cout << "🐻❄️ シロクマC++ラボ オンライン実行環境へようこそ！" << std::endl;
+    Entity player{"シロクマ1号", 5, 100, '^'};
+    std::vector<Entity> enemies = {
+        {"雑魚A", 1, 30, 'x'},
+        {"雑魚B", 3, 30, 'x'},
+        {"隊長C", 5, 80, 'X'},
+        {"雑魚D", 7, 30, 'x'},
+        {"雑魚E", 9, 30, 'x'}
+    };
+    int score = 0;
 
-    std::vector<int> numbers = {10, 20, 30, 40, 50};
-    int sum = std::accumulate(numbers.begin(), numbers.end(), 0);
+    // STEP 1: 索敵・遭遇
+    renderScreen(1, player, enemies, score);
+    std::cout << ">> 敵編隊を捕捉！ツインレーザー装填完了！\\n\\n";
 
-    std::cout << "合計値: " << sum << std::endl;
-    std::cout << "C++バージョン: " << __cplusplus << std::endl;
+    // STEP 2: 射撃と命中
+    player.x = 5;
+    enemies[2].hp -= 80; // 隊長機に直撃
+    score += 500;
+    renderScreen(2, player, enemies, score);
+    std::cout << ">> ⚡⚡ ビビビッ！隊長機 (X) に直撃！ 💥 爆散！ (+500 pts)\\n";
+    std::cout << ">> 🚨 敵の反撃レーザーがシールドをかすめた！ (-15%)\\n\\n";
+    player.hp -= 15;
+
+    // STEP 3: ボス警告
+    renderScreen(3, player, enemies, score);
+    std::cout << ">> 🛸 警告：巨大ボス [マザーシップ HP: 5000] がワープアウト！\\n";
+    std::cout << ">> ⭐ C++23 ゲームループシミュレーション完了！\\n";
 
     return 0;
 }
@@ -2198,177 +2267,621 @@ int main() {
   },
   {
     id: 'template-encapsulation',
-    name: 'クラスとカプセル化 (L2)',
+    name: '自律防御宇宙船と境界値ガード',
     badge: 'L2',
-    description: 'privateメンバ変数とpublicメソッドによる防御的プログラミングのサンプルです。',
+    category: 'クラシックOOP設計',
+    description: 'privateメンバ変数とメソッドによる自己境界防衛とカプセル化の真価を体感します。',
+    summary: '外部から直接 hp = -999; と不正改変されるバグを防ぎ、シールド減衰と被弾処理をクラス内部で安全に完結させるカプセル化の威力を視覚的に実証します。',
+    points: [
+      'privateメンバ変数による不正アクセス・意図せぬ状態破壊の完全遮断',
+      'メンバ初期化子リスト（: name_(std::move(name)), ...）による高効率な初期化',
+      '安全境界ガード（HPが0未満にならない、シールドがマイナスにならないクランプ処理）',
+    ],
+    experimentTips: [
+      'main関数内で player.hp_ = -9999; と直接代入を追記して、コンパイルエラー（private保護）を確認してみよう',
+      'takeDamage のシールド吸収率を変更して、装甲強化型宇宙船を作ってみよう',
+      'isAlive() だけでなく、残りシールドがあるかを返す hasShield() メソッドを追加してみよう',
+    ],
     code: `#include <iostream>
 #include <string>
+#include <algorithm>
 
 class SpaceShip {
 private:
     std::string name_;
-    int shield_{100};
+    int hp_{100};
+    int shield_{50};
 
 public:
-    SpaceShip(std::string name) : name_(std::move(name)) {}
+    SpaceShip(std::string name, int hp, int shield)
+        : name_(std::move(name)), hp_(hp), shield_(shield) {}
 
-    void takeHit(int damage) {
-        shield_ -= damage;
-        if (shield_ < 0) shield_ = 0;
-        std::cout << name_ << " は " << damage << " ダメージを受けた！ (残シールド: " << shield_ << ")\\n";
+    // 攻撃を受けた時のカプセル化防御ロジック
+    void takeDamage(int rawDamage) {
+        std::cout << "\\n>> 🚨 敵の攻撃着弾！ (被ダメージ: " << rawDamage << ")\\n";
+        
+        int damageToHp = rawDamage;
+        if (shield_ > 0) {
+            int absorbed = std::min(shield_, rawDamage);
+            shield_ -= absorbed;
+            damageToHp -= absorbed;
+            std::cout << "   🛡️ シールドが " << absorbed << " ダメージを吸収！ (残シールド: " << shield_ << ")\\n";
+        }
+
+        if (damageToHp > 0) {
+            hp_ = std::max(0, hp_ - damageToHp); // 境界値ガード：0未満にしない
+            std::cout << "   💥 船体装甲に " << damageToHp << " の直撃！ (残HP: " << hp_ << ")\\n";
+        }
     }
 
-    bool isAlive() const { return shield_ > 0; }
+    void printStatus() const {
+        std::string hpBar = "";
+        int bars = hp_ / 10;
+        for (int i = 0; i < 10; ++i) hpBar += (i < bars ? "█" : "░");
+
+        std::cout << "   [" << name_ << "] HP: [" << hpBar << "] " << hp_ << "/100 | シールド: " << shield_ << "\\n";
+    }
+
+    bool isAlive() const { return hp_ > 0; }
 };
 
 int main() {
-    SpaceShip player("シロクマ1号");
-    player.takeHit(35);
-    player.takeHit(80);
-    std::cout << "生存状態: " << (player.isAlive() ? "戦闘可能" : "大破！") << std::endl;
+    std::cout << "==================================================\\n";
+    std::cout << "  🛡️ カプセル化防御シミュレーション (PlayerShip)\\n";
+    std::cout << "==================================================\\n";
+
+    SpaceShip player("シロクマ護衛艦", 100, 50);
+    player.printStatus();
+
+    // 1回目の攻撃（シールドで大半を吸収）
+    player.takeDamage(40);
+    player.printStatus();
+
+    // 2回目の攻撃（シールド貫通＆船体被弾）
+    player.takeDamage(60);
+    player.printStatus();
+
+    // 3回目の攻撃（撃沈テスト）
+    player.takeDamage(80);
+    player.printStatus();
+
+    std::cout << "\\n[生存判定] " << (player.isAlive() ? "✅ 作戦行動可能" : "❌ 撃沈・救命ポッド射出！") << "\\n";
+    std::cout << "==================================================\\n";
+    std::cout << "💡 POINT: private変数により外部からの不正書き換え（hp = -9999等）を完全防止！\\n";
+
     return 0;
 }
 `,
   },
   {
     id: 'template-polymorphism',
-    name: '仮想関数と多態性 (L4)',
+    name: '多態的武器システムの一斉斉射',
     badge: 'L4',
-    description: '純粋仮想関数、override、基底クラスポインタによる動的ディスパッチのサンプルです。',
+    category: 'クラシックOOP設計',
+    description: '基底クラスポインタ（Weapon*）経由で異なる武器の固有挙動を動的ディスパッチします。',
+    summary: '純粋仮想関数（= 0）と仮想デストラクタを持つ基底クラスWeaponから、レーザー・散弾・重力プラズマ弾を派生させ、武器インベントリから一斉斉射する多態性（Polymorphism）の実践例です。',
+    points: [
+      'virtual ~Weapon() = default;（仮想デストラクタ）による安全な多態的破棄',
+      '純粋仮想関数（virtual void fire() const = 0;）によるインターフェース契約',
+      'std::vector<std::unique_ptr<Weapon>> による異種武器コレクションの統一操作',
+    ],
+    experimentTips: [
+      '新しい武器クラス「HomingMissile : public Weapon」を追加し、inventory に登録してみよう',
+      'Weaponクラスの仮想デストラクタから virtual を外すと何が起きるか（警告）を確認してみよう',
+      '各武器に getCoolDown() を追加して発射間隔の概念を拡張してみよう',
+    ],
     code: `#include <iostream>
 #include <vector>
 #include <memory>
+#include <string>
 
+// 基底武器クラス（純粋仮想関数を持つ抽象インターフェース）
 class Weapon {
+protected:
+    std::string name_;
+    int power_;
+
 public:
-    virtual ~Weapon() = default;
+    Weapon(std::string name, int power) : name_(std::move(name)), power_(power) {}
+    virtual ~Weapon() {
+        std::cout << "   [FREE] 武器 [" << name_ << "] をアンロードしました\\n";
+    }
+
+    // 純粋仮想関数：派生クラスに実装を強制
     virtual void fire() const = 0;
+    
+    const std::string& getName() const { return name_; }
 };
 
-class LaserGun : public Weapon {
+// 派生武器1: 直線ビーム
+class LaserCannon : public Weapon {
 public:
+    LaserCannon() : Weapon("ハイパーレーザー砲", 120) {}
     void fire() const override {
-        std::cout << "⚡ ビビビッ！高速レーザー光線！" << std::endl;
+        std::cout << "⚡ [レーザー] ギュイィィン！一直線の貫通光線が敵装甲を融解！ (威力: " << power_ << ")\\n";
     }
 };
 
+// 派生武器2: 拡散弾
+class SpreadShot : public Weapon {
+public:
+    SpreadShot() : Weapon("スプレッド散弾", 45) {}
+    void fire() const override {
+        std::cout << "💥 [散弾] バババッ！ 5方向の拡散ペレットが広範囲の雑魚敵を掃討！ (威力: " << power_ << " x 5)\\n";
+    }
+};
+
+// 派生武器3: 重力弾
 class PlasmaBomb : public Weapon {
 public:
+    PlasmaBomb() : Weapon("重力崩壊プラズマ弾", 450) {}
     void fire() const override {
-        std::cout << "💥 ドゴォォン！広範囲プラズマ爆発！" << std::endl;
+        std::cout << "🌌 [プラズマ] ドゴォォン！空間が歪み、爆心地の敵部隊を消滅！ (威力: " << power_ << ")\\n";
     }
 };
 
 int main() {
-    std::vector<std::unique_ptr<Weapon>> inventory;
-    inventory.push_back(std::make_unique<LaserGun>());
-    inventory.push_back(std::make_unique<PlasmaBomb>());
+    std::cout << "==================================================\\n";
+    std::cout << "  ⚔️ 多態性（Polymorphism）一斉斉射シミュレーション\\n";
+    std::cout << "==================================================\\n";
 
-    for (const auto& w : inventory) {
-        w->fire();
-    }
-    return 0;
-}
-`,
-  },
-  {
-    id: 'template-smart-ptr',
-    name: 'スマートポインタとRAII (M1)',
-    badge: 'M1',
-    description: 'std::unique_ptr と std::shared_ptr による所有権モデルと自動寿命管理のサンプルです。',
-    code: `#include <iostream>
-#include <memory>
+    // 基底型ポインタ（std::unique_ptr<Weapon>）のコレクション
+    std::vector<std::unique_ptr<Weapon>> weaponSlots;
+    weaponSlots.push_back(std::make_unique<LaserCannon>());
+    weaponSlots.push_back(std::make_unique<SpreadShot>());
+    weaponSlots.push_back(std::make_unique<PlasmaBomb>());
 
-struct Resource {
-    std::string tag;
-    Resource(std::string t) : tag(std::move(t)) {
-        std::cout << "[ALLOC] " << tag << " が確保されました\\n";
+    std::cout << "[全武器スロット装填完了] 一斉掃射開始！\\n--------------------------------------------------\\n";
+    for (size_t i = 0; i < weaponSlots.size(); ++i) {
+        std::cout << "SLOT " << (i + 1) << " [" << weaponSlots[i]->getName() << "]:\\n";
+        weaponSlots[i]->fire(); // vtable動的ディスパッチ！
     }
-    ~Resource() {
-        std::cout << "[FREE] " << tag << " が安全に破棄されました（RAII）\\n";
-    }
-    void use() const {
-        std::cout << "-> " << tag << " を使用中...\\n";
-    }
-};
 
-int main() {
-    std::cout << "--- スコープ開始 ---\\n";
-    {
-        auto uptr = std::make_unique<Resource>("独占リソースA");
-        uptr->use();
+    std::cout << "--------------------------------------------------\\n";
+    std::cout << "[戦闘終了] メモリ解放シーケンス（仮想デストラクタ呼び出し）:\\n";
+    weaponSlots.clear(); // 全武器のデストラクタが安全に連鎖
 
-        auto sptr1 = std::make_shared<Resource>("共有リソースB");
-        {
-            auto sptr2 = sptr1;
-            std::cout << "共有リソースBの参照カウント: " << sptr1.use_count() << std::endl;
-        }
-        std::cout << "内側スコープ脱出後の参照カウント: " << sptr1.use_count() << std::endl;
-    }
-    std::cout << "--- スコープ終了 ---\\n";
+    std::cout << "==================================================\\n";
+    std::cout << "💡 POINT: if/switch文ゼロ！基底ポインタを回すだけで各武器の独自挙動が実行される！\\n";
+
     return 0;
 }
 `,
   },
   {
     id: 'template-crtp',
-    name: 'CRTP 静的多態性 (L10)',
+    name: 'CRTP 静的多態性（vtableゼロコスト）',
     badge: 'L10',
-    description: '仮想関数テーブルのコストを完全ゼロにするコンパイル時ポリモーフィズムのサンプルです。',
+    category: 'クラシックOOP設計',
+    description: '仮想関数テーブルのオーバーヘッドをゼロにするコンパイル時ポリモーフィズムです。',
+    summary: '奇妙に再帰したテンプレートパターン（CRTP）により、vtableポインタ（8B）と関数間接ジャンプのコストを一切払わずに多態性を実現します。',
+    points: [
+      'template <typename Derived> class Base による静的ポリモーフィズム',
+      'static_cast<Derived*>(this) によるインライン展開可能なメソッドディスパッチ',
+      'sizeof(SparkParticle) が vtable ポインタを持たないため極小メモリで済む証明',
+    ],
+    experimentTips: [
+      'SparkParticle のサイズと通常仮想関数クラスのサイズ（sizeof）を比較してみよう',
+      '新しいパーティクル「RingParticle」を CRTP 経由で定義してみよう',
+      '更新関数 update() に引数を追加して挙動をカスタマイズしてみよう',
+    ],
     code: `#include <iostream>
 
+// CRTP（Curiously Recurring Template Pattern）基底クラス
 template <typename Derived>
-class BaseProcessor {
+class PhysicsParticle {
 public:
-    void process() {
-        std::cout << "[Pre-process] メモリ事前準備\\n";
-        static_cast<Derived*>(this)->executeImpl();
-        std::cout << "[Post-process] キャッシュフラッシュ\\n";
+    void update(float dt) {
+        // コンパイル時に派生クラスの updateImpl をインライン展開
+        static_cast<Derived*>(this)->updateImpl(dt);
     }
 };
 
-class FastEngine : public BaseProcessor<FastEngine> {
+// 派生クラス1: 高速弾道パーティクル（vtableなし・サイズ極小）
+class SparkParticle : public PhysicsParticle<SparkParticle> {
 public:
-    void executeImpl() {
-        std::cout << "🚀 超高速インライン演算実行（vtableオーバーヘッド0B）\\n";
+    float x = 0.0f;
+    float vx = 100.0f;
+
+    void updateImpl(float dt) {
+        x += vx * dt;
+        std::cout << "  ✨ [火花] 座標更新: X=" << x << " (インライン超高速更新)\\n";
+    }
+};
+
+// 派生クラス2: 煙パーティクル
+class SmokeParticle : public PhysicsParticle<SmokeParticle> {
+public:
+    float alpha = 1.0f;
+
+    void updateImpl(float dt) {
+        alpha -= 0.2f * dt;
+        std::cout << "  💨 [煙] 拡散透過: Alpha=" << alpha << "\\n";
     }
 };
 
 int main() {
-    FastEngine engine;
-    engine.process();
+    std::cout << "==================================================\\n";
+    std::cout << "  ⚡ CRTP 静的多態性（vtableオーバーヘッド完全0B）\\n";
+    std::cout << "==================================================\\n";
+
+    SparkParticle spark;
+    SmokeParticle smoke;
+
+    std::cout << "[メモリ監査]\\n";
+    std::cout << "  SparkParticle のメモリサイズ: " << sizeof(spark) << " バイト\\n";
+    std::cout << "  (通常の仮想関数クラスにある vtable ポインタ 8B が一切存在しません！)\\n\\n";
+
+    std::cout << "[フレーム更新シミュレーション (dt = 0.016s)]\\n";
+    for (int frame = 1; frame <= 3; ++frame) {
+        std::cout << "FRAME " << frame << ":\\n";
+        spark.update(0.016f);
+        smoke.update(0.016f);
+    }
+
+    std::cout << "==================================================\\n";
+    std::cout << "💡 POINT: 関数ポインタ間接参照なし。コンパイラが完全にインライン展開可能！\\n";
+
     return 0;
 }
 `,
   },
   {
     id: 'template-memory-pool',
-    name: '固定長メモリプール (L11)',
+    name: '固定長メモリプールと弾幕生成',
     badge: 'L11',
-    description: '配列バッファとプレースメントnewによるヒープ断片化ゼロの高速アロケータです。',
+    category: '現場最適化・アーキテクチャ',
+    description: 'ヒープ断片化ゼロ！生メモリ領域に placement new で超高速にオブジェクトを構築します。',
+    summary: 'ゲームの弾幕やパーティクル生成において、new/deleteの連続呼び出しによるメモリ断片化と速度低下を防ぐため、スタック上に事前確保した連続メモリへ placement new で直接実体化します。',
+    points: [
+      'alignas(T) char pool[...] によるアライメントを保証した事前メモリ確保',
+      'placement new（new (address) Type(...)）による既存メモリへのコンストラクタ実行',
+      '明示的デストラクタ呼び出し（ptr->~Type()）によるメモリ領域の再利用',
+    ],
+    experimentTips: [
+      'POOL_SIZE を 5 に増やして、5発の弾丸を管理できるように拡張してみよう',
+      'Bullet に damage メンバ変数を追加して初期化してみよう',
+      '明示的デストラクタ呼び出しをコメントアウトするとどうなるか考えてみよう',
+    ],
     code: `#include <iostream>
 #include <new>
 
-struct Particle {
-    float x, y, vx, vy;
-    int life;
-    Particle(float px, float py) : x(px), y(py), vx(1.0f), vy(0.5f), life(60) {
-        std::cout << "パーティクル生成 (" << x << ", " << y << ")\\n";
+struct Bullet {
+    int id;
+    float x, y;
+    float speed;
+
+    Bullet(int id, float x, float y, float speed)
+        : id(id), x(x), y(y), speed(speed) {
+        std::cout << "   🟢 [CONSTRUCT] 弾 #" << id << " をプール内構築 (" << x << ", " << y << ")\\n";
     }
-    ~Particle() {
-        std::cout << "パーティクル消滅\\n";
+
+    ~Bullet() {
+        std::cout << "   🔴 [DESTRUCT]  弾 #" << id << " のライフ消滅\\n";
+    }
+
+    void fly() {
+        y -= speed;
+        std::cout << "      🚀 弾 #" << id << " 飛行中 -> Y=" << y << "\\n";
     }
 };
 
 int main() {
-    // 連続メモリプール（スタック事前確保）
-    alignas(Particle) char pool[sizeof(Particle) * 3];
+    std::cout << "==================================================\\n";
+    std::cout << "  🛡️ 固定長メモリプールと placement new (ヒープ断片化0)\\n";
+    std::cout << "==================================================\\n";
 
-    // 1つ目のスロットに placement new で構築
-    Particle* p1 = new (&pool[sizeof(Particle) * 0]) Particle(100.0f, 200.0f);
+    // 1. スタック上に弾丸3発分の生メモリ領域を事前確保（アライメント適合）
+    constexpr int POOL_SIZE = 3;
+    alignas(Bullet) char memoryPool[sizeof(Bullet) * POOL_SIZE];
 
-    // 明示的デストラクタ呼び出し
-    p1->~Particle();
+    std::cout << "[初期化] " << sizeof(memoryPool) << " バイトの連続メモリを事前アロケート完了\\n\\n";
+
+    // 2. placement new による構築（ヒープ new を使わないためアロケーションコスト0）
+    std::cout << ">> 弾幕発射開始！\\n";
+    Bullet* b0 = new (&memoryPool[sizeof(Bullet) * 0]) Bullet(1, 100.0f, 500.0f, 25.0f);
+    Bullet* b1 = new (&memoryPool[sizeof(Bullet) * 1]) Bullet(2, 120.0f, 500.0f, 30.0f);
+
+    b0->fly();
+    b1->fly();
+
+    // 3. 明示的デストラクタ呼び出し（メモリ返却ではなくオブジェクト終了）
+    std::cout << "\\n>> 弾丸の画面外消滅（スロット解放）:\\n";
+    b0->~Bullet();
+
+    // 4. 空いた第0スロットに新しい弾を再構築（メモリ再利用）
+    std::cout << "\\n>> 空きスロット0へ新弾丸を即座に再利用構築:\\n";
+    Bullet* b2 = new (&memoryPool[sizeof(Bullet) * 0]) Bullet(3, 200.0f, 480.0f, 40.0f);
+    b2->fly();
+
+    // 残りの解放
+    b1->~Bullet();
+    b2->~Bullet();
+
+    std::cout << "==================================================\\n";
+    std::cout << "💡 POINT: OSのmalloc/freeを一切呼ばないため、毎秒数万発の弾幕でもカクつかない！\\n";
+
+    return 0;
+}
+`,
+  },
+  {
+    id: 'template-smart-ptr',
+    name: 'RAIIとスマートポインタ自動回収',
+    badge: 'M1',
+    category: 'モダンC++実践',
+    description: '生ポインタ追放！std::unique_ptr と std::shared_ptr によるメモリ完全自動解放です。',
+    summary: 'RAII（Resource Acquisition Is Initialization）の哲学に基づき、スコープを抜けた瞬間にデストラクタが走り、例外や早期リターンがあっても1バイトもメモリリークさせない現代の王道設計です。',
+    points: [
+      'std::unique_ptr による単独所有権（コピー不可・ムーブのみ可能）',
+      'std::shared_ptr と use_count() による参照カウント共有所有権',
+      'スコープ終了時に自動的にデストラクタが呼ばれる「リーク監査ログ」の観察',
+    ],
+    experimentTips: [
+      'unique_ptr を別の変数にコピーしようとして（auto p2 = uptr;）コンパイルエラーになることを確認しよう',
+      'std::move(uptr) で所有権を移動させて、元の uptr が nullptr になる挙動を観察してみよう',
+      'shared_ptr をさらにもう1つの変数で参照し、use_count() が 3 になるか確認してみよう',
+    ],
+    code: `#include <iostream>
+#include <memory>
+#include <string>
+
+// ゲーム内アセット（サウンド、テクスチャ、モデル等）
+class GameResource {
+private:
+    std::string name_;
+    size_t sizeBytes_;
+
+public:
+    GameResource(std::string name, size_t sizeBytes)
+        : name_(std::move(name)), sizeBytes_(sizeBytes) {
+        std::cout << "   🟢 [ALLOC] " << name_ << " (" << sizeBytes_ << "B) をヒープ確保\\n";
+    }
+
+    ~GameResource() {
+        std::cout << "   🔴 [FREE]  " << name_ << " が安全に自動破棄されました (RAII完全解放)\\n";
+    }
+
+    void execute() const {
+        std::cout << "      ▶ " << name_ << " を再生/描画中...\\n";
+    }
+};
+
+void runGameScene() {
+    std::cout << "\\n>> [SCENE START] バトルシーン開始\\n";
+
+    // 1. unique_ptr: 単独所有（プレイヤー専用エフェクト）
+    auto playerShieldEffect = std::make_unique<GameResource>("PlayerShield_VFX", 4096);
+    playerShieldEffect->execute();
+
+    // 2. shared_ptr: 複数オブジェクト間で共有される巨大BGMデータ
+    auto bgmAudio = std::make_shared<GameResource>("BGM_BossBattle.wav", 1048576);
+    std::cout << "   📊 BGM参照カウント: " << bgmAudio.use_count() << "\\n";
+
+    {
+        std::cout << "\\n   >> [SUB-SYSTEM] 音響マネージャーがBGMを参照\\n";
+        auto soundManagerRef = bgmAudio; // 参照カウントが2に増加
+        std::cout << "   📊 BGM参照カウント: " << bgmAudio.use_count() << "\\n";
+        soundManagerRef->execute();
+        std::cout << "   >> [SUB-SYSTEM END] 音響マネージャーのスコープ終了\\n";
+    } // soundManagerRef が破棄され、参照カウントが1に戻る
+
+    std::cout << "   📊 BGM参照カウント: " << bgmAudio.use_count() << "\\n";
+    std::cout << "\\n>> [SCENE END] バトル終了（関数スコープ脱出！）\\n";
+} // ここで playerShieldEffect と bgmAudio が自動破棄！
+
+int main() {
+    std::cout << "==================================================\\n";
+    std::cout << "  🚀 RAIIとスマートポインタ自動回収（ゼロリーク実証）\\n";
+    std::cout << "==================================================\\n";
+
+    runGameScene();
+
+    std::cout << "==================================================\\n";
+    std::cout << "✨ [MEMORY AUDIT] リーク検出数: 0 件 (完全安全)\\n";
+    std::cout << "💡 POINT: deleteの記述は一切不要！例外やreturnがあっても100%自動回収される！\\n";
+
+    return 0;
+}
+`,
+  },
+  {
+    id: 'template-move-semantics',
+    name: '移動セマンティクスと巨大バッファ転送',
+    badge: 'M4',
+    category: 'モダンC++実践',
+    description: 'std::move と右辺値参照（&&）により、巨大ゲームバッファをゼロコピーで爆速譲渡します。',
+    summary: '巨大なサウンドデータやメッシュバッファを関数から返す際、従来の深層コピー（数千ミリ秒）ではなく、内部ポインタのすげ替えだけで0マイクロ秒で瞬時移動する移動セマンティクスを実演します。',
+    points: [
+      '右辺値参照（Type&&）と移動コンストラクタ（Move Constructor）',
+      'std::move による左辺値から右辺値へのキャスト',
+      'コピー（メモリ再確保＋全走査） vs ムーブ（ポインタ付け替えのみ）の圧倒的な効率差',
+    ],
+    experimentTips: [
+      'std::move を使わずに通常コピーした場合と、move した場合でコンソールログの違いを比べてみよう',
+      'バッファサイズ（要素数）を 1,000,000 個に増やして動作を確認してみよう',
+      '移動代入演算子（operator=(MassiveBuffer&&)）を追加実装してみよう',
+    ],
+    code: `#include <iostream>
+#include <vector>
+#include <string>
+#include <utility>
+
+class MassiveBuffer {
+private:
+    std::string name_;
+    size_t size_;
+    int* data_;
+
+public:
+    MassiveBuffer(std::string name, size_t size)
+        : name_(std::move(name)), size_(size), data_(new int[size]) {
+        std::cout << "   🟢 [NEW] " << name_ << " メモリ確保 (" << size_ << "要素 / " << (size_ * sizeof(int)) << "B)\\n";
+    }
+
+    ~MassiveBuffer() {
+        if (data_) {
+            delete[] data_;
+            std::cout << "   🔴 [DELETE] " << name_ << " メモリ解放\\n";
+        } else {
+            std::cout << "   ⚪ [EMPTY] " << name_ << " は所有権移譲済み（解放コスト0B）\\n";
+        }
+    }
+
+    // コピーコンストラクタ（低速：新しいメモリを確保して全走査コピー）
+    MassiveBuffer(const MassiveBuffer& other)
+        : name_(other.name_ + "_Copy"), size_(other.size_), data_(new int[other.size_]) {
+        std::copy(other.data_, other.data_ + size_, data_);
+        std::cout << "   ⚠️ [DEEP COPY] " << name_ << " の全要素をディープコピー（低速！）\\n";
+    }
+
+    // 移動コンストラクタ（爆速：内部ポインタをすげ替えるだけ）
+    MassiveBuffer(MassiveBuffer&& other) noexcept
+        : name_(other.name_ + "_Moved"), size_(other.size_), data_(other.data_) {
+        // 元のオブジェクトを空にする
+        other.data_ = nullptr;
+        other.size_ = 0;
+        std::cout << "   ⚡ [MOVE] ポインタ所有権のみを瞬時に奪取！ (0ミリ秒！)\\n";
+    }
+};
+
+int main() {
+    std::cout << "==================================================\\n";
+    std::cout << "  💨 移動セマンティクス (std::move) 爆速性能実演\\n";
+    std::cout << "==================================================\\n";
+
+    // 1. オリジナルの巨大バッファ
+    MassiveBuffer original("BossTextureAtlas", 100000);
+
+    // 2. コピー操作（無駄なヒープ確保と全データ複写が発生）
+    std::cout << "\\n>> 【実験1】通常のコピーを実行:\\n";
+    MassiveBuffer copied = original;
+
+    // 3. ムーブ操作（ポインタ付け替えのみで瞬時に完了）
+    std::cout << "\\n>> 【実験2】std::move で所有権を移動:\\n";
+    MassiveBuffer moved = std::move(original);
+
+    std::cout << "\\n>> スコープ終了時の解放シーケンス:\\n";
+    return 0;
+}
+`,
+  },
+  {
+    id: 'template-state-pattern',
+    name: 'GoF Stateパターン ゲーム状態遷移',
+    badge: 'M6',
+    category: 'モダンC++実践',
+    description: '巨大な switch(state) を追放し、オブジェクトとして状態を切り替える王道デザインです。',
+    summary: 'TitleState（タイトル）→ PlayingState（戦闘中）→ GameOverState（ゲームオーバー）の遷移を、クラス多態性とスマートポインタで美しく制御します。',
+    points: [
+      'ゲームループ内の巨大な switch(gameState) 分岐スパゲティを完全根絶',
+      '各状態が自身の遷移ロジック（update / handleInput）をカプセル化',
+      'std::unique_ptr<GameState> による状態オブジェクトの安全な差し替え',
+    ],
+    experimentTips: [
+      '新しい状態「ClearState（ステージクリア画面）」を定義して状態マシンに追加してみよう',
+      'PlayingState でスコアが 2000 点を超えたら ClearState に遷移させてみよう',
+      'GameState に onExit() メソッドを追加して状態終了ログを出力してみよう',
+    ],
+    code: `#include <iostream>
+#include <memory>
+#include <string>
+
+// 前方宣言
+class GameContext;
+
+// 抽象ステートクラス
+class GameState {
+public:
+    virtual ~GameState() = default;
+    virtual void enter(GameContext& ctx) = 0;
+    virtual void update(GameContext& ctx) = 0;
+    virtual std::string getName() const = 0;
+};
+
+// ゲームコンテキスト（現在の状態を保持し駆動する）
+class GameContext {
+private:
+    std::unique_ptr<GameState> currentState_;
+    int score_ = 0;
+
+public:
+    void changeState(std::unique_ptr<GameState> newState);
+    void update() {
+        if (currentState_) currentState_->update(*this);
+    }
+    void addScore(int pts) { score_ += pts; }
+    int getScore() const { return score_; }
+};
+
+// 状態1: タイトル画面
+class TitleState : public GameState {
+public:
+    void enter(GameContext&) override {
+        std::cout << "  🎮 [TITLE] 「シロクマ・インベーダー」 スタート画面表示中\\n";
+    }
+    void update(GameContext& ctx) override;
+    std::string getName() const override { return "タイトル画面"; }
+};
+
+// 状態2: バトル中
+class PlayingState : public GameState {
+private:
+    int wave_ = 1;
+public:
+    void enter(GameContext&) override {
+        std::cout << "  🚀 [PLAYING] 戦闘開始！第" << wave_ << "波迎撃ミッション\\n";
+    }
+    void update(GameContext& ctx) override;
+    std::string getName() const override { return "戦闘プレイ中"; }
+};
+
+// 状態3: ゲームオーバー
+class GameOverState : public GameState {
+public:
+    void enter(GameContext& ctx) override {
+        std::cout << "  💀 [GAME OVER] 全艦大破... 最終スコア: " << ctx.getScore() << " pts\\n";
+    }
+    void update(GameContext&) override {
+        std::cout << "  🔄 コンティニュー待機中...\\n";
+    }
+    std::string getName() const override { return "ゲームオーバー"; }
+};
+
+void GameContext::changeState(std::unique_ptr<GameState> newState) {
+    currentState_ = std::move(newState);
+    std::cout << "\\n>> 🔄 状態遷移 -> [" << currentState_->getName() << "]\\n";
+    currentState_->enter(*this);
+}
+
+void TitleState::update(GameContext& ctx) {
+    std::cout << "  -> プレイヤーがSPACEキー（出撃）を押下！\\n";
+    ctx.changeState(std::make_unique<PlayingState>());
+}
+
+void PlayingState::update(GameContext& ctx) {
+    std::cout << "  -> インベーダー撃破！ (+1000 pts)\\n";
+    ctx.addScore(1000);
+    std::cout << "  -> 被弾して母艦のHPがゼロに！\\n";
+    ctx.changeState(std::make_unique<GameOverState>());
+}
+
+int main() {
+    std::cout << "==================================================\\n";
+    std::cout << "  🎯 GoF Stateパターンによるゲーム状態遷移マシン\\n";
+    std::cout << "==================================================\\n";
+
+    GameContext game;
+    // タイトルから開始
+    game.changeState(std::make_unique<TitleState>());
+
+    // フレーム更新シミュレーション
+    game.update(); // Title -> Playing
+    game.update(); // Playing -> GameOver
+    game.update(); // GameOver update
+
+    std::cout << "==================================================\\n";
+    std::cout << "💡 POINT: switch(state) の巨大ネストを追放し、状態ごとにクラスを完全独立化！\\n";
 
     return 0;
 }

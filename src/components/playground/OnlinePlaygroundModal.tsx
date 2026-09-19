@@ -4,7 +4,13 @@ import {
   Play, 
   Terminal, 
   ExternalLink, 
-  Layers
+  Layers,
+  ChevronLeft,
+  ChevronRight,
+  ChevronUp,
+  Sparkles,
+  Code2,
+  BookOpen,
 } from 'lucide-react';
 import { PLAYGROUND_TEMPLATES, PlaygroundTemplate } from '../../data/codingChallenges';
 import { compileCppCode, createGodboltUrl, CompileResult } from '../../services/cppCompilerService';
@@ -27,6 +33,14 @@ export const OnlinePlaygroundModal: React.FC<OnlinePlaygroundModalProps> = ({
   const [showStdin, setShowStdin] = useState<boolean>(false);
   const [isRunning, setIsRunning] = useState<boolean>(false);
   const [result, setResult] = useState<CompileResult | null>(null);
+  const [showExplanation, setShowExplanation] = useState<boolean>(true);
+
+  const currentIndex = PLAYGROUND_TEMPLATES.findIndex((t) => t.id === selectedTemplateId);
+  const currentTemplate = PLAYGROUND_TEMPLATES[currentIndex] || PLAYGROUND_TEMPLATES[0];
+  const isFirst = currentIndex <= 0;
+  const isLast = currentIndex >= PLAYGROUND_TEMPLATES.length - 1;
+
+  const categories = Array.from(new Set(PLAYGROUND_TEMPLATES.map((t) => t.category)));
 
   if (!isOpen) return null;
 
@@ -34,6 +48,18 @@ export const OnlinePlaygroundModal: React.FC<OnlinePlaygroundModalProps> = ({
     setSelectedTemplateId(template.id);
     setCode(template.code);
     setResult(null);
+  };
+
+  const handlePrevTemplate = () => {
+    if (!isFirst) {
+      handleSelectTemplate(PLAYGROUND_TEMPLATES[currentIndex - 1]);
+    }
+  };
+
+  const handleNextTemplate = () => {
+    if (!isLast) {
+      handleSelectTemplate(PLAYGROUND_TEMPLATES[currentIndex + 1]);
+    }
   };
 
   const handleRun = async () => {
@@ -116,44 +142,150 @@ export const OnlinePlaygroundModal: React.FC<OnlinePlaygroundModalProps> = ({
           </div>
         </div>
 
-        {/* テンプレート選択ピルバー */}
-        <div className="px-4 sm:px-6 py-2 bg-[#040812] border-b border-slate-800/80 flex items-center gap-2 overflow-x-auto no-scrollbar select-none">
-          <span className="text-xs font-mono text-slate-400 font-bold whitespace-nowrap flex items-center gap-1">
-            <Layers className="w-3.5 h-3.5 text-cyan-400" />
-            <span>演習テンプレート:</span>
-          </span>
-          <div className="flex items-center gap-1.5">
-            {PLAYGROUND_TEMPLATES.map((tmpl) => {
-              const isSelected = tmpl.id === selectedTemplateId;
-              return (
-                <button
-                  key={tmpl.id}
-                  onClick={() => handleSelectTemplate(tmpl)}
-                  className={`px-2.5 py-1 rounded-lg text-xs font-mono whitespace-nowrap transition-all flex items-center gap-1.5 ${
-                    isSelected
-                      ? 'bg-cyan-500 text-slate-950 font-bold shadow-md shadow-cyan-500/20'
-                      : 'bg-slate-900/80 text-slate-400 hover:text-slate-200 hover:bg-slate-800 border border-slate-800'
-                  }`}
-                  title={tmpl.description}
-                >
-                  <span className="text-[10px] opacity-75">[{tmpl.badge}]</span>
-                  <span>{tmpl.name}</span>
-                </button>
-              );
-            })}
+        {/* 演習テンプレート選択バー（カテゴリ別プルダウン ＋ 前後ナビ ＋ 解説トグル） */}
+        <div className="px-4 sm:px-6 py-2.5 bg-[#040812] border-b border-slate-800/80 flex items-center justify-between gap-3 flex-wrap select-none">
+          <div className="flex items-center gap-2 flex-wrap flex-1 min-w-0">
+            <span className="text-xs font-mono text-slate-300 font-bold whitespace-nowrap flex items-center gap-1.5 flex-shrink-0">
+              <Layers className="w-4 h-4 text-cyan-400" />
+              <span>演習テンプレート:</span>
+            </span>
+
+            {/* カテゴリ別プルダウンメニュー */}
+            <div className="relative flex-1 min-w-[240px] max-w-full sm:max-w-md">
+              <select
+                value={selectedTemplateId}
+                onChange={(e) => {
+                  const tmpl = PLAYGROUND_TEMPLATES.find((t) => t.id === e.target.value);
+                  if (tmpl) handleSelectTemplate(tmpl);
+                }}
+                className="w-full bg-slate-900 border border-cyan-500/40 hover:border-cyan-400 text-cyan-200 text-xs font-mono rounded-xl px-3 py-1.5 focus:outline-none focus:ring-1 focus:ring-cyan-400 cursor-pointer shadow-sm appearance-none pr-8 transition"
+              >
+                {categories.map((cat) => (
+                  <optgroup key={cat} label={`【${cat}】`} className="bg-slate-900 text-cyan-400 font-bold font-mono">
+                    {PLAYGROUND_TEMPLATES.filter((t) => t.category === cat).map((tmpl) => (
+                      <option key={tmpl.id} value={tmpl.id} className="bg-slate-950 text-slate-200 font-normal">
+                        [{tmpl.badge}] {tmpl.name}
+                      </option>
+                    ))}
+                  </optgroup>
+                ))}
+              </select>
+              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2.5 text-cyan-400 text-xs">
+                ▼
+              </div>
+            </div>
+
+            {/* 前後ナビゲーションボタン */}
+            <div className="flex items-center gap-1 bg-slate-900 rounded-xl p-0.5 border border-slate-800 flex-shrink-0">
+              <button
+                onClick={handlePrevTemplate}
+                disabled={isFirst}
+                className="p-1 rounded-lg text-slate-400 hover:text-white disabled:opacity-25 disabled:hover:text-slate-400 transition cursor-pointer"
+                title="前の演習へ"
+              >
+                <ChevronLeft className="w-4 h-4" />
+              </button>
+              <span className="text-[10.5px] font-mono text-slate-400 px-1.5 font-bold">
+                {currentIndex + 1} / {PLAYGROUND_TEMPLATES.length}
+              </span>
+              <button
+                onClick={handleNextTemplate}
+                disabled={isLast}
+                className="p-1 rounded-lg text-slate-400 hover:text-white disabled:opacity-25 disabled:hover:text-slate-400 transition cursor-pointer"
+                title="次の演習へ"
+              >
+                <ChevronRight className="w-4 h-4" />
+              </button>
+            </div>
           </div>
+
+          {/* 解説パネル表示切り替えボタン */}
+          <button
+            onClick={() => setShowExplanation((prev) => !prev)}
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-mono font-bold transition border cursor-pointer flex-shrink-0 ${
+              showExplanation
+                ? 'bg-cyan-950/60 text-cyan-300 border-cyan-500/40 shadow-sm shadow-cyan-500/10'
+                : 'bg-slate-900 hover:bg-slate-800 text-slate-300 border-slate-700 hover:border-slate-600'
+            }`}
+          >
+            <BookOpen className="w-3.5 h-3.5" />
+            <span>{showExplanation ? '解説パネルを閉じる' : '📋 コードの解説・実験ヒントを見る'}</span>
+          </button>
         </div>
 
         {/* メインエリア：エディタ ＆ コンソール（デスクトップ2カラム、モバイル縦並び） */}
         <div className="flex-1 flex flex-col lg:flex-row min-h-0 overflow-hidden">
-          {/* 左側：エディタ */}
+          {/* 左側：エディタ ＆ コード解説パネル */}
           <div className="flex-1 flex flex-col min-w-0 border-b lg:border-b-0 lg:border-r border-slate-800/80 overflow-hidden">
+            {/* コード解説 ＆ 実験のヒントパネル */}
+            {showExplanation && (
+              <div className="bg-[#080e1d] border-b border-slate-800 p-3.5 sm:p-4 text-xs space-y-3 overflow-y-auto max-h-[36vh] select-text animate-fadeIn">
+                <div className="flex items-center justify-between gap-2 flex-wrap">
+                  <div className="flex items-center gap-2">
+                    <span className="px-2 py-0.5 rounded-md bg-cyan-950 text-cyan-300 border border-cyan-500/40 font-mono font-bold text-[11px]">
+                      [{currentTemplate.badge}] {currentTemplate.category}
+                    </span>
+                    <h3 className="font-bold text-white text-xs sm:text-sm font-sans">
+                      {currentTemplate.name}
+                    </h3>
+                  </div>
+
+                  <button
+                    onClick={() => setShowExplanation(false)}
+                    className="text-slate-400 hover:text-slate-200 text-[11px] font-mono flex items-center gap-1 cursor-pointer"
+                  >
+                    <span>閉じる</span>
+                    <ChevronUp className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+
+                {/* 目的サマリー */}
+                <div className="p-2.5 rounded-xl bg-slate-900/80 border border-slate-800 text-slate-300 text-[11.5px] leading-relaxed">
+                  <span className="text-cyan-400 font-bold font-mono mr-1.5">🎯 このコードの目的:</span>
+                  <span>{currentTemplate.summary}</span>
+                </div>
+
+                {/* 着眼点 & 実験ヒント */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-2.5">
+                  <div className="p-2.5 rounded-xl bg-slate-950/60 border border-slate-800/80 space-y-1.5">
+                    <div className="text-[11px] font-mono font-bold text-cyan-300 flex items-center gap-1.5">
+                      <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
+                      <span>C++学習の注目ポイント:</span>
+                    </div>
+                    <ul className="space-y-1 text-[11px] text-slate-300 font-sans">
+                      {currentTemplate.points.map((point, idx) => (
+                        <li key={idx} className="flex items-start gap-1.5">
+                          <span className="text-cyan-400 font-mono mt-0.5">•</span>
+                          <span>{point}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  <div className="p-2.5 rounded-xl bg-amber-950/20 border border-amber-500/30 space-y-1.5">
+                    <div className="text-[11px] font-mono font-bold text-amber-300 flex items-center gap-1.5">
+                      <Code2 className="w-3.5 h-3.5 text-amber-400" />
+                      <span>やってみよう！実験ヒント:</span>
+                    </div>
+                    <ul className="space-y-1 text-[11px] text-amber-200/90 font-sans">
+                      {currentTemplate.experimentTips.map((tip, idx) => (
+                        <li key={idx} className="flex items-start gap-1.5">
+                          <span className="text-amber-400 font-mono mt-0.5">▶</span>
+                          <span>{tip}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            )}
+
             <InteractiveCodeEditor
               value={code}
               onChange={setCode}
               onReset={handleReset}
-              className="border-0 rounded-none h-full"
-              minHeight="280px"
+              className="border-0 rounded-none flex-1 min-h-0"
+              minHeight="260px"
             />
           </div>
 
