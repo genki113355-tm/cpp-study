@@ -1588,7 +1588,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
                 今後予定している長期拡張カリキュラム（順次執筆・公開予定）
               </h3>
               <p className="text-xs sm:text-sm text-slate-400 font-sans mt-1 max-w-3xl leading-relaxed">
-                現行の基礎・実践編（L1〜L11、M1〜M4）から、さらに現場低レイヤ・自作ゲームエンジン統合・最新C++20規格へ。現場のあらゆる課題を制覇する総合学習プラットフォームへと継続拡充していきます。
+                現行の本格カリキュラム（レガシーL1〜L16、モダンM1〜M14、読解演習R1〜R3）から、さらに現場低レイヤ・自作ゲームエンジン統合・C++23/26次世代規格へ。現場のあらゆる課題を制覇する総合学習プラットフォームへと継続拡充していきます。
               </p>
             </div>
             <div className="flex items-center gap-2 shrink-0">
@@ -1636,7 +1636,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
                   : 'bg-slate-900 text-slate-400 hover:text-cyan-300 border border-slate-800'
               }`}
             >
-              <span>🚀 モダン拡張 (M9〜M15)</span>
+              <span>🚀 モダン拡張 (M6〜M22)</span>
               <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-slate-800 text-cyan-300">
                 {UPCOMING_CHAPTERS.filter((c) => c.track === 'modern').length}
               </span>
