@@ -1539,6 +1539,232 @@ int main() {
 `,
   },
 
+  // M6: 【C++17】ゼロコピー文字列革命：std::string_view
+  'chapter-modern-6-string-view': {
+    id: 'challenge-m6-string-view',
+    chapterSlug: 'chapter-modern-6-string-view',
+    chapterBadge: 'M6',
+    title: '演習M6：std::string_view でゼロコピー文字列切り出しと拡張子判定を実装せよ！',
+    missionObjective: 'std::string_view を引数にとり、文字列のコピー（ヒープ確保）を一切行わずに末尾の拡張子を切り出して判定する isTargetExtension(filepath, ext) 関数を完成させてください。',
+    mentorAdvice: 'std::string_view の substr() は文字をコピーせずポインタと長さをズラすだけじゃ！O(1) の高速スライスを体感するのじゃ！',
+    initialCode: `#include <iostream>
+#include <string_view>
+
+// TODO: std::string_view を使って、filepath の末尾が targetExt と一致するか判定する関数を実装してください
+// 1. filepath の長さが targetExt の長さ未満なら false
+// 2. filepath.substr(filepath.length() - targetExt.length()) と targetExt を比較
+bool isTargetExtension(std::string_view filepath, std::string_view targetExt) {
+    // ここに実装
+    return false;
+}
+
+int main() {
+    std::cout << "--- M6 std::string_view ゼロコピー判定テスト ---" << std::endl;
+    
+    // 文字列リテラル（malloc 0）
+    bool test1 = isTargetExtension("assets/textures/boss_ship.png", ".png");
+    bool test2 = isTargetExtension("sounds/bgm/battle.wav", ".png");
+    bool test3 = isTargetExtension("short", ".toolongextension");
+
+    std::cout << "test1 (true expected): " << std::boolalpha << test1 << std::endl;
+    std::cout << "test2 (false expected): " << std::boolalpha << test2 << std::endl;
+    std::cout << "test3 (false expected): " << std::boolalpha << test3 << std::endl;
+
+    if (test1 && !test2 && !test3) {
+        std::cout << "[CLEAR] M6_MISSION_SUCCESS" << std::endl;
+    } else {
+        std::cout << "[FAIL] 判定ロジックが不正です" << std::endl;
+    }
+    return 0;
+}
+`,
+    expectedOutputPattern: '[CLEAR] M6_MISSION_SUCCESS',
+    successMessage: '🎉 お見事！std::string_view によるゼロコピー＆ゼロアロケーションな高速文字列判定をマスターしました！',
+    hint: 'if (filepath.length() < targetExt.length()) return false; return filepath.substr(filepath.length() - targetExt.length()) == targetExt; と記述します。',
+    solutionCode: `#include <iostream>
+#include <string_view>
+
+bool isTargetExtension(std::string_view filepath, std::string_view targetExt) {
+    if (filepath.length() < targetExt.length()) return false;
+    return filepath.substr(filepath.length() - targetExt.length()) == targetExt;
+}
+
+int main() {
+    bool test1 = isTargetExtension("assets/textures/boss_ship.png", ".png");
+    bool test2 = isTargetExtension("sounds/bgm/battle.wav", ".png");
+    bool test3 = isTargetExtension("short", ".toolongextension");
+
+    if (test1 && !test2 && !test3) {
+        std::cout << "[CLEAR] M6_MISSION_SUCCESS" << std::endl;
+    }
+    return 0;
+}
+`,
+  },
+
+  // M8: 【C++17】テンプレート革命：if constexpr と構造化束縛
+  'chapter-modern-8-if-constexpr': {
+    id: 'challenge-m8-if-constexpr',
+    chapterSlug: 'chapter-modern-8-if-constexpr',
+    chapterBadge: 'M8',
+    title: '演習M8：if constexpr と構造化束縛で汎用ダメージ計算を実装せよ！',
+    missionObjective: 'if constexpr を用いて浮動小数点（倍率計算）と整数型（固定加減算）をコンパイル時に分岐し、さらに戻り値を構造化束縛 auto [finalDmg, isCrit] で受け取るシステムを完成させてください。',
+    mentorAdvice: 'if constexpr (std::is_floating_point_v<T>) を使うのじゃ！合致しない方のブランチはコンパイラが綺麗に消滅させてくれるぞ！',
+    initialCode: `#include <iostream>
+#include <type_traits>
+#include <tuple>
+
+struct CombatReport {
+    int finalDamage;
+    bool isCritical;
+};
+
+// TODO: if constexpr を用いて、引数 mod の型に応じたダメージ計算を行ってください
+// - T が浮動小数点数（std::is_floating_point_v<T>）の場合:
+//     finalDamage = static_cast<int>(baseDmg * mod)
+//     isCritical = (mod >= 1.5)
+// - それ以外（整数等）の場合:
+//     finalDamage = baseDmg + static_cast<int>(mod)
+//     isCritical = (mod >= 50)
+template <typename T>
+CombatReport computeDamage(int baseDmg, T mod) {
+    // ここに if constexpr による分岐を実装
+    return {0, false};
+}
+
+int main() {
+    std::cout << "--- M8 if constexpr & 構造化束縛テスト ---" << std::endl;
+
+    // 1. 浮動小数点倍率（1.5倍クリティカル）
+    auto [dmg1, crit1] = computeDamage(100, 1.5);
+    std::cout << "計算1: " << dmg1 << ", クリティカル: " << std::boolalpha << crit1 << std::endl;
+
+    // 2. 整数固定ボーナス（+60クリティカル）
+    auto [dmg2, crit2] = computeDamage(100, 60);
+    std::cout << "計算2: " << dmg2 << ", クリティカル: " << std::boolalpha << crit2 << std::endl;
+
+    if (dmg1 == 150 && crit1 && dmg2 == 160 && crit2) {
+        std::cout << "[CLEAR] M8_MISSION_SUCCESS" << std::endl;
+    } else {
+        std::cout << "[FAIL] ダメージ計算結果が不正です" << std::endl;
+    }
+    return 0;
+}
+`,
+    expectedOutputPattern: '[CLEAR] M8_MISSION_SUCCESS',
+    successMessage: '🎉 完璧です！if constexpr によるコンパイル時型分岐と、構造化束縛による多値受け取りを完全攻略しました！',
+    hint: 'if constexpr (std::is_floating_point_v<T>) { return {static_cast<int>(baseDmg * mod), mod >= 1.5}; } else { return {baseDmg + static_cast<int>(mod), mod >= 50}; } と記述します。',
+    solutionCode: `#include <iostream>
+#include <type_traits>
+#include <tuple>
+
+struct CombatReport {
+    int finalDamage;
+    bool isCritical;
+};
+
+template <typename T>
+CombatReport computeDamage(int baseDmg, T mod) {
+    if constexpr (std::is_floating_point_v<T>) {
+        return {static_cast<int>(baseDmg * mod), mod >= 1.5};
+    } else {
+        return {baseDmg + static_cast<int>(mod), mod >= 50};
+    }
+}
+
+int main() {
+    auto [dmg1, crit1] = computeDamage(100, 1.5);
+    auto [dmg2, crit2] = computeDamage(100, 60);
+
+    if (dmg1 == 150 && crit1 && dmg2 == 160 && crit2) {
+        std::cout << "[CLEAR] M8_MISSION_SUCCESS" << std::endl;
+    }
+    return 0;
+}
+`,
+  },
+
+  // M9: 【C++17】クロスプラットフォームファイル操作：std::filesystem
+  'chapter-modern-9-filesystem': {
+    id: 'challenge-m9-filesystem',
+    chapterSlug: 'chapter-modern-9-filesystem',
+    chapterBadge: 'M9',
+    title: '演習M9：std::filesystem::path でクロスプラットフォームパスを結合・抽出せよ！',
+    missionObjective: 'std::filesystem::path の / 演算子を用いて親ディレクトリ・サブフォルダ・ファイル名を結合し、.extension() や .stem() を正しく抽出する AssetPathResolver を完成させてください。',
+    mentorAdvice: 'OSごとの \\\\ や / の違いに悩む日々は終わったのじゃ！path::operator/ のスマートな結合を体感するのじゃ！',
+    initialCode: `#include <iostream>
+#include <filesystem>
+#include <string>
+
+namespace fs = std::filesystem;
+
+class AssetPathResolver {
+public:
+    // TODO: baseDir, category, filename を / 演算子で結合して正規化パスを返す
+    static fs::path buildPath(const std::string& baseDir, const std::string& category, const std::string& filename) {
+        // ここに実装
+        return {};
+    }
+
+    // TODO: 与えられた path の拡張子が targetExt と等しいか判定する
+    static bool hasExtension(const fs::path& p, const std::string& targetExt) {
+        // ここに実装
+        return false;
+    }
+};
+
+int main() {
+    std::cout << "--- M9 std::filesystem パス操作テスト ---" << std::endl;
+    
+    fs::path resolved = AssetPathResolver::buildPath("game_root", "textures", "boss.png");
+    std::cout << "生成パス: " << resolved.string() << std::endl;
+    std::cout << "ファイル名本体: " << resolved.stem().string() << std::endl;
+
+    bool isPng = AssetPathResolver::hasExtension(resolved, ".png");
+    bool isWav = AssetPathResolver::hasExtension(resolved, ".wav");
+
+    if (resolved.filename() == "boss.png" && resolved.stem() == "boss" && isPng && !isWav) {
+        std::cout << "[CLEAR] M9_MISSION_SUCCESS" << std::endl;
+    } else {
+        std::cout << "[FAIL] パス解決結果が期待値と異なります" << std::endl;
+    }
+    return 0;
+}
+`,
+    expectedOutputPattern: '[CLEAR] M9_MISSION_SUCCESS',
+    successMessage: '🎉 お見事！std::filesystem によるスマートなパス構築と拡張子解析を完全に体得しました！',
+    hint: 'buildPath では fs::path p = fs::path(baseDir) / category / filename; return p.lexically_normal();、hasExtension では return p.extension() == targetExt; と記述します。',
+    solutionCode: `#include <iostream>
+#include <filesystem>
+#include <string>
+
+namespace fs = std::filesystem;
+
+class AssetPathResolver {
+public:
+    static fs::path buildPath(const std::string& baseDir, const std::string& category, const std::string& filename) {
+        fs::path p = fs::path(baseDir) / category / filename;
+        return p.lexically_normal();
+    }
+
+    static bool hasExtension(const fs::path& p, const std::string& targetExt) {
+        return p.extension() == targetExt;
+    }
+};
+
+int main() {
+    fs::path resolved = AssetPathResolver::buildPath("game_root", "textures", "boss.png");
+    bool isPng = AssetPathResolver::hasExtension(resolved, ".png");
+    bool isWav = AssetPathResolver::hasExtension(resolved, ".wav");
+
+    if (resolved.filename() == "boss.png" && resolved.stem() == "boss" && isPng && !isWav) {
+        std::cout << "[CLEAR] M9_MISSION_SUCCESS" << std::endl;
+    }
+    return 0;
+}
+`,
+  },
+
   // M12: C++20 コルーチン
   'chapter-modern-5-coroutines': {
     id: 'challenge-m12',

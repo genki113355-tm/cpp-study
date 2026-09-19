@@ -1636,7 +1636,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
                   : 'bg-slate-900 text-slate-400 hover:text-cyan-300 border border-slate-800'
               }`}
             >
-              <span>🚀 モダン拡張 (M6〜M22)</span>
+              <span>🚀 モダン拡張 (M15〜M22)</span>
               <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-slate-800 text-cyan-300">
                 {UPCOMING_CHAPTERS.filter((c) => c.track === 'modern').length}
               </span>

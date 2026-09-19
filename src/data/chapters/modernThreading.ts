@@ -11,7 +11,7 @@ export const chapterModernThreading: Chapter = {
   gameVersion: 'v5_smart_pointers',
   description: '現代のすべてのCPUはマルチコア（8コア、16コア）が当たり前であり、1本のメインスレッドだけでゲームや高負荷システムを動かすのはCPUリソースの大半をドブに捨てるようなものです。しかし、かつてのC++03時代は言語仕様にスレッドの概念が存在せず、OS依存の泥臭いAPI（POSIX pthreadsやWin32 API）を直接叩かなければなりませんでした。C++11で初めて言語仕様として組み込まれた【標準スレッドライブラリ（std::thread）】と【メモリモデル】は、クロスプラットフォームで安全・高速な並行処理への扉を開きました。本章では、非同期タスクの起動・待機（join / detach）から、未定義動作を引き起こす「データ競合（Data Race）」のメカニズム、RAIIによる排他制御（std::mutex, std::lock_guard）、そして極限の低オーバーヘッドを実現する「ロックフリー原子的操作（std::atomic）」までを徹底解説します。',
   prevChapterSlug: 'chapter-modern-4-variadic-templates',
-  nextChapterSlug: 'chapter-modern-4-modern-type-system',
+  nextChapterSlug: 'chapter-modern-6-string-view',
   sections: [
     {
       id: 'sec-m5-os-thread-to-std',

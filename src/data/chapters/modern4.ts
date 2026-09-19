@@ -293,7 +293,7 @@ void applyItemEffect(PlayerShip& player, const ItemData& item) {
       explanation: 'constexpr は「定数式（Constant Expression）」を意味し、コンパイラがビルド時に式の値を計算してバイナリに定数として埋め込みます。これにより、ゲーム実行時の計算負荷や初期化の遅延がゼロになります。'
     }
   ],
-  prevChapterSlug: 'chapter-modern-5-multithreading',
-  nextChapterSlug: 'chapter-7-modern-cpp-ecs'
+  prevChapterSlug: 'chapter-modern-6-string-view',
+  nextChapterSlug: 'chapter-modern-8-if-constexpr'
 };
 

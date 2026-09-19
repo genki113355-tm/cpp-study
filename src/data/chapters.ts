@@ -26,6 +26,9 @@ import { chapterM8 } from './chapters/modern8';
 import { chapterModernLambda } from './chapters/modernLambda';
 import { chapterModernVariadic } from './chapters/modernVariadic';
 import { chapterModernThreading } from './chapters/modernThreading';
+import { chapterModernStringView } from './chapters/modernStringView';
+import { chapterModernIfConstexpr } from './chapters/modernIfConstexpr';
+import { chapterModernFilesystem } from './chapters/modernFilesystem';
 
 import { CODE_READING_GUIDE } from './guides/codeReading';
 import { WHY_CPP_IS_HARD_COLUMN } from './guides/whyCppIsHard';
@@ -62,17 +65,20 @@ export const CLASSIC_CHAPTERS: Chapter[] = [
 
 /** 🚀 モダンコース（C++11〜C++20 / モダンC++・新世代設計編） */
 export const MODERN_CHAPTERS: Chapter[] = [
-  chapter5,              // M1【C++11】: スマートポインタとRAII
-  chapterM2,             // M2【C++11/14】: ムーブセマンティクス
-  chapterModernLambda,    // M3【C++11/14】: ラムダ式と関数オブジェクト
-  chapterModernVariadic,  // M4【C++11/14】: 可変引数テンプレートと完全転送
-  chapterModernThreading, // M5【C++11/14】: 標準マルチスレッドと並行処理
-  chapterM4,             // M7【C++17】: 現代的型システム (variant, optional, constexpr)
-  chapter7,              // M10【C++17】: 継承より合成とECS
-  chapterM6,             // M11【C++20】: コンセプトと型制約
-  chapterM5,             // M12【C++20】: コルーチンによる非同期ゲームループ
-  chapterM7,             // M13【C++20】: Ranges & Views による関数型パイプライン
-  chapterM8,             // M14【C++20】: モジュール完全移行ガイド
+  chapter5,                  // M1【C++11】: スマートポインタとRAII
+  chapterM2,                 // M2【C++11/14】: ムーブセマンティクス
+  chapterModernLambda,       // M3【C++11/14】: ラムダ式と関数オブジェクト
+  chapterModernVariadic,     // M4【C++11/14】: 可変引数テンプレートと完全転送
+  chapterModernThreading,    // M5【C++11/14】: 標準マルチスレッドと並行処理
+  chapterModernStringView,   // M6【C++17】: ゼロコピー文字列革命：std::string_view
+  chapterM4,                 // M7【C++17】: 現代的型システム (variant, optional, constexpr)
+  chapterModernIfConstexpr,  // M8【C++17】: if constexpr と構造化束縛
+  chapterModernFilesystem,   // M9【C++17】: クロスプラットフォームファイル操作：std::filesystem
+  chapter7,                  // M10【C++17】: 継承より合成とECS
+  chapterM6,                 // M11【C++20】: コンセプトと型制約
+  chapterM5,                 // M12【C++20】: コルーチンによる非同期ゲームループ
+  chapterM7,                 // M13【C++20】: Ranges & Views による関数型パイプライン
+  chapterM8,                 // M14【C++20】: モジュール完全移行ガイド
 ];
 
 /** 🧭 コード読解演習トラック（段階的実践読解編） */
@@ -184,46 +190,7 @@ export const UPCOMING_CHAPTERS: FutureChapterPreview[] = [
     techKeywords: ['自作ゲームエンジンアーキテクチャ', '全サブシステム統合', 'C++03の集大成', 'モダンC++への架け橋'],
   },
 
-  // 🚀 モダンC++コース 拡張予定（実務黄金世代 C++17 補完 ＆ C++20/23/26次世代編）
-  {
-    id: 2006,
-    slug: 'upcoming-m6',
-    title: '【M6】ゼロコピー文字列革命：std::string_view',
-    subtitle: '文字列を関数に渡すたびに発生するヒープアロケーション（malloc/new）の撲滅',
-    badge: 'モダンC++ M6【C++17】（準備中）',
-    isUpcoming: true,
-    track: 'modern',
-    beforePain: 'アセットパスや敵の名前を関数に渡すたびに std::string のコピーが走り、激しいヒープ断片化とフレーム落ちが発生。',
-    afterSkill: 'ポインタと長さだけの軽量ビュー std::string_view を駆使し、メモリコピーゼロで文字列探索や部分切り出しを爆速実行。',
-    gameEvolution: '何万回のアセットパス照合やテキスト解析がメモリ割り当てゼロで一瞬で完了！',
-    techKeywords: ['std::string_view', 'ゼロコピー', 'ヒープ削減', 'C++17'],
-  },
-  {
-    id: 2008,
-    slug: 'upcoming-m8',
-    title: '【M8】テンプレート革命：if constexpr と構造化束縛',
-    subtitle: 'SFINAE（enable_if）の魔術を葬り去るコンパイル時分岐とタプル展開',
-    badge: 'モダンC++ M8【C++17】（準備中）',
-    isUpcoming: true,
-    track: 'modern',
-    beforePain: '型ごとに処理を分けるために何十行もの難解な enable_if を書き、コンパイルエラーで日が暮れる。',
-    afterSkill: 'if constexpr による1行の直感的なコンパイル時型分岐と、auto [x, y, hp] = ... による直感的な複数値受け取り。',
-    gameEvolution: 'メタプログラミングコードが普通の if 文と同じ読みやすさになり、保守性が劇的に向上！',
-    techKeywords: ['if constexpr', '構造化束縛', 'SFINAE撤廃', 'C++17'],
-  },
-  {
-    id: 2009,
-    slug: 'upcoming-m9',
-    title: '【M9】クロスプラットフォームファイル操作：std::filesystem',
-    subtitle: 'Windowsの「\\」とUnixの「/」問題の終焉！OSネイティブAPI依存からの完全脱却',
-    badge: 'モダンC++ M9【C++17】（準備中）',
-    isUpcoming: true,
-    track: 'modern',
-    beforePain: 'セーブデータやアセットディレクトリの走査で、Windows用（FindFirstFile）とMac/Linux用（opendir）を別々に実装。',
-    afterSkill: '標準ライブラリ std::filesystem によるパス操作、ファイル存在確認、ディレクトリ走査、セーブデータ安全書き出し。',
-    gameEvolution: 'Steam / Switch / PS5 / PC で100%同一のセーブ＆アセット探索コードが稼働！',
-    techKeywords: ['std::filesystem', 'クロスプラットフォーム', 'パストラバース', 'C++17'],
-  },
+  // 🚀 モダンC++コース 拡張予定（C++20発展・C++23/26次世代編）
   {
     id: 2015,
     slug: 'upcoming-m15',

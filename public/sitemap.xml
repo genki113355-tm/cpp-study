@@ -133,7 +133,25 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://shirokuma-cpp.jp/chapter-modern-6-string-view</loc>
+    <lastmod>2026-09-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://shirokuma-cpp.jp/chapter-modern-4-modern-type-system</loc>
+    <lastmod>2026-09-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://shirokuma-cpp.jp/chapter-modern-8-if-constexpr</loc>
+    <lastmod>2026-09-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://shirokuma-cpp.jp/chapter-modern-9-filesystem</loc>
     <lastmod>2026-09-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>

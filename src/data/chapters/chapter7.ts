@@ -278,6 +278,6 @@ player->addComponent<ShooterComponent>(3, true);            // 3WAY弾`,
       explanation: '正解は「malloc/free や巨大switchのような『プログラマの注意力に依存した手作業』を排除し、RAII・カプセル化・型システム・疎結合設計によって『バグの発生を構造的に不可能にする』こと」です。モダンC++の設計とは、人間がミスをする余地をアーキテクチャの力で撲滅することにあります。全7章の完結、心からおめでとうございます！'
     }
   ],
-  prevChapterSlug: 'chapter-modern-4-modern-type-system',
+  prevChapterSlug: 'chapter-modern-9-filesystem',
   nextChapterSlug: 'chapter-modern-6-concepts'
 };
