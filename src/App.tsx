@@ -4,6 +4,10 @@ import { Navbar } from './components/layout/Navbar';
 import { Sidebar } from './components/layout/Sidebar';
 import { Footer } from './components/layout/Footer';
 import { useSEO } from './hooks/useSEO';
+import { loadCompletedChapters, saveCompletedChapters } from './utils/progressManager';
+
+// カリキュラムに実在する有効な章ID一覧（不整合防御用）
+const VALID_CHAPTER_IDS = ALL_CHAPTERS.map((c) => c.id);
 
 // コード分割（Code Splitting）による初期読み込みの超軽量化
 const TopPageView = React.lazy(() => 
@@ -43,12 +47,7 @@ export const App: React.FC = () => {
   });
 
   const [completedChapters, setCompletedChapters] = useState<number[]>(() => {
-    try {
-      const saved = localStorage.getItem('cpp_completed_chapters');
-      return saved ? JSON.parse(saved) : [];
-    } catch {
-      return [];
-    }
+    return loadCompletedChapters(VALID_CHAPTER_IDS);
   });
 
   const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
@@ -107,18 +106,13 @@ export const App: React.FC = () => {
     }
   }, [currentSlug, currentChapter]);
 
-  // 完了状態の保存
+  // 完了状態の保存（実在性バリデーション＆サニタイズ適用）
   const handleToggleComplete = (id: number) => {
     setCompletedChapters((prev) => {
       const next = prev.includes(id)
         ? prev.filter((item) => item !== id)
         : [...prev, id];
-      try {
-        localStorage.setItem('cpp_completed_chapters', JSON.stringify(next));
-      } catch (e) {
-        console.error(e);
-      }
-      return next;
+      return saveCompletedChapters(next, VALID_CHAPTER_IDS);
     });
   };
 
@@ -126,12 +120,7 @@ export const App: React.FC = () => {
     setCompletedChapters((prev) => {
       if (prev.includes(id)) return prev;
       const next = [...prev, id];
-      try {
-        localStorage.setItem('cpp_completed_chapters', JSON.stringify(next));
-      } catch (e) {
-        console.error(e);
-      }
-      return next;
+      return saveCompletedChapters(next, VALID_CHAPTER_IDS);
     });
   };
 
@@ -222,6 +211,14 @@ export const App: React.FC = () => {
             isOpen={isMilestoneModalOpen}
             onClose={() => setIsMilestoneModalOpen(false)}
             completedChapters={completedChapters}
+            onImportProgress={(imported) => {
+              const saved = saveCompletedChapters(imported, VALID_CHAPTER_IDS);
+              setCompletedChapters(saved);
+            }}
+            onResetProgress={() => {
+              const saved = saveCompletedChapters([], VALID_CHAPTER_IDS);
+              setCompletedChapters(saved);
+            }}
           />
         </React.Suspense>
       )}

@@ -138,7 +138,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
                 className="py-3 px-4 rounded-2xl bg-gradient-to-r from-amber-500 to-yellow-400 hover:from-amber-400 hover:to-yellow-300 text-slate-950 font-bold font-mono text-xs sm:text-sm transition flex items-center justify-center gap-2 shadow-lg shadow-amber-500/20 active:scale-95 cursor-pointer flex-shrink-0"
               >
                 <Trophy className="w-4 h-4 text-slate-950" />
-                <span>🏆 公式修了証・バッジを確認</span>
+                <span>🏆 公式修了証・進捗引継ぎ</span>
               </button>
             </div>
           )}

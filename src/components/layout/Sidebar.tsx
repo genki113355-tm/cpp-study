@@ -94,7 +94,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
               className="mt-3 w-full py-1.5 px-2.5 rounded-xl bg-gradient-to-r from-amber-500/20 to-yellow-500/20 hover:from-amber-500/30 hover:to-yellow-500/30 text-amber-300 border border-amber-500/40 text-xs font-mono font-bold transition flex items-center justify-center gap-1.5 shadow-sm active:scale-95 cursor-pointer"
             >
               <Trophy className="w-3.5 h-3.5 text-amber-400" />
-              <span>🏆 修了証・マイルストーン</span>
+              <span>🏆 修了証・進捗引継ぎ</span>
             </button>
           )}
         </div>

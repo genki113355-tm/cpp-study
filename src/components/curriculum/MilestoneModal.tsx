@@ -1,12 +1,30 @@
 import React, { useState } from 'react';
-import { X, Award, CheckCircle2, Share2, Sparkles, Shield, ChevronRight, Lock } from 'lucide-react';
+import {
+  X,
+  Award,
+  CheckCircle2,
+  Share2,
+  Sparkles,
+  Shield,
+  ChevronRight,
+  Lock,
+  Copy,
+  Check,
+  Upload,
+  Download,
+  AlertCircle,
+  RotateCcw,
+} from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { CLASSIC_CHAPTERS, MODERN_CHAPTERS, READING_CHAPTERS, SPECIAL_GUIDES, ALL_CHAPTERS } from '../../data/chapters';
+import { generateBackupCode, restoreFromBackupCode } from '../../utils/progressManager';
 
 interface MilestoneModalProps {
   isOpen: boolean;
   onClose: () => void;
   completedChapters: number[];
+  onImportProgress?: (completed: number[]) => void;
+  onResetProgress?: () => void;
 }
 
 interface Milestone {
@@ -27,9 +45,65 @@ export const MilestoneModal: React.FC<MilestoneModalProps> = ({
   isOpen,
   onClose,
   completedChapters,
+  onImportProgress,
+  onResetProgress,
 }) => {
   const [selectedMilestoneId, setSelectedMilestoneId] = useState<string | null>(null);
   const [userName, setUserName] = useState<string>('シロクマ研究生');
+  const [backupInput, setBackupInput] = useState<string>('');
+  const [copyFeedback, setCopyFeedback] = useState<boolean>(false);
+  const [backupMessage, setBackupMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+  const [showResetConfirm, setShowResetConfirm] = useState<boolean>(false);
+  const [showCodePreview, setShowCodePreview] = useState<boolean>(false);
+
+  const validChapterIds = ALL_CHAPTERS.map((c) => c.id);
+  const currentBackupCode = generateBackupCode(completedChapters, validChapterIds);
+
+  const handleCopyBackupCode = async () => {
+    try {
+      if (navigator?.clipboard?.writeText) {
+        await navigator.clipboard.writeText(currentBackupCode);
+      } else {
+        const ta = document.createElement('textarea');
+        ta.value = currentBackupCode;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+      }
+      setCopyFeedback(true);
+      setTimeout(() => setCopyFeedback(false), 3000);
+    } catch {
+      setShowCodePreview(true);
+    }
+  };
+
+  const handleRestore = () => {
+    setBackupMessage(null);
+    const result = restoreFromBackupCode(backupInput, validChapterIds);
+    if (result.success && result.chapters) {
+      if (onImportProgress) {
+        onImportProgress(result.chapters);
+      }
+      setBackupMessage({ type: 'success', text: result.message });
+      setBackupInput('');
+      confetti({
+        particleCount: 80,
+        spread: 70,
+        origin: { y: 0.6 },
+      });
+    } else {
+      setBackupMessage({ type: 'error', text: result.message });
+    }
+  };
+
+  const handleConfirmReset = () => {
+    if (onResetProgress) {
+      onResetProgress();
+      setShowResetConfirm(false);
+      setBackupMessage({ type: 'success', text: '進捗データをすべて初期化しました。' });
+    }
+  };
 
   if (!isOpen) return null;
 
@@ -315,8 +389,9 @@ export const MilestoneModal: React.FC<MilestoneModalProps> = ({
               </div>
             </div>
           ) : (
-            /* 4大マイルストーンカード一覧 */
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-6">
+              {/* 4大マイルストーンカード一覧 */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {milestones.map((m) => {
                 const percent = Math.min(100, Math.round((m.completedCount / m.total) * 100));
 
@@ -389,6 +464,172 @@ export const MilestoneModal: React.FC<MilestoneModalProps> = ({
                 );
               })}
             </div>
+
+            {/* 💾 進捗データの保存・端末引き継ぎ（バックアップ／復元） */}
+            <div className="p-5 sm:p-6 rounded-3xl bg-slate-900/80 border border-slate-800 space-y-4">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-800/80 pb-3">
+                <div className="flex items-center gap-2.5">
+                  <div className="w-8 h-8 rounded-xl bg-cyan-500/20 border border-cyan-500/30 flex items-center justify-center text-cyan-400">
+                    <Download className="w-4 h-4" />
+                  </div>
+                  <div>
+                    <h3 className="text-sm sm:text-base font-bold text-white font-sans flex items-center gap-2">
+                      <span>進捗データの保存・端末引き継ぎ（バックアップ / 復元）</span>
+                    </h3>
+                    <p className="text-xs text-slate-400 font-mono mt-0.5">
+                      ログイン不要。引継ぎコードをコピー＆ペーストするだけで別ブラウザやスマホへ進捗を移行できます。
+                    </p>
+                  </div>
+                </div>
+
+                {onResetProgress && (
+                  <div>
+                    {!showResetConfirm ? (
+                      <button
+                        onClick={() => setShowResetConfirm(true)}
+                        className="text-[11px] font-mono text-slate-400 hover:text-rose-400 transition cursor-pointer flex items-center gap-1"
+                        title="進捗をリセット"
+                      >
+                        <RotateCcw className="w-3 h-3" />
+                        <span>進捗を初期化</span>
+                      </button>
+                    ) : (
+                      <div className="flex items-center gap-2 text-xs font-mono">
+                        <span className="text-rose-400">全リセットしますか？</span>
+                        <button
+                          onClick={handleConfirmReset}
+                          className="px-2 py-1 rounded bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 border border-rose-500/40 text-[11px] font-bold cursor-pointer"
+                        >
+                          はい
+                        </button>
+                        <button
+                          onClick={() => setShowResetConfirm(false)}
+                          className="px-2 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 text-[11px] cursor-pointer"
+                        >
+                          キャンセル
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+
+              {/* フィードバックメッセージ表示 */}
+              {backupMessage && (
+                <div
+                  className={`p-3 rounded-xl border text-xs font-mono flex items-start gap-2.5 animate-fadeIn ${
+                    backupMessage.type === 'success'
+                      ? 'bg-emerald-950/40 border-emerald-500/40 text-emerald-300'
+                      : 'bg-rose-950/40 border-rose-500/40 text-rose-300'
+                  }`}
+                >
+                  {backupMessage.type === 'success' ? (
+                    <CheckCircle2 className="w-4 h-4 text-emerald-400 flex-shrink-0 mt-0.5" />
+                  ) : (
+                    <AlertCircle className="w-4 h-4 text-rose-400 flex-shrink-0 mt-0.5" />
+                  )}
+                  <span className="flex-1">{backupMessage.text}</span>
+                  <button
+                    onClick={() => setBackupMessage(null)}
+                    className="text-slate-400 hover:text-white cursor-pointer"
+                  >
+                    <X className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+              )}
+
+              {/* 2カラム：書き出し ＆ 読み込み */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {/* 1. 書き出し（エクスポート） */}
+                <div className="p-4 rounded-2xl bg-slate-950/60 border border-slate-800/80 flex flex-col justify-between gap-3">
+                  <div className="space-y-1.5">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[11px] font-mono font-bold text-cyan-400 uppercase tracking-wider flex items-center gap-1.5">
+                        <Download className="w-3.5 h-3.5" />
+                        <span>進捗を書き出し（エクスポート）</span>
+                      </span>
+                      <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-cyan-950/60 text-cyan-300 border border-cyan-500/30">
+                        {totalCount}章完了
+                      </span>
+                    </div>
+                    <p className="text-xs text-slate-400 font-sans leading-relaxed">
+                      現在の学習進捗をテキストコードに変換します。PCからスマートフォンへの引き継ぎや、バックアップ保存に利用できます。
+                    </p>
+                  </div>
+
+                  <div className="space-y-2">
+                    <button
+                      onClick={handleCopyBackupCode}
+                      className={`w-full py-2.5 px-4 rounded-xl text-xs font-mono font-bold transition flex items-center justify-center gap-2 cursor-pointer shadow-sm active:scale-95 ${
+                        copyFeedback
+                          ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/50 shadow-emerald-500/10'
+                          : 'bg-cyan-500/20 hover:bg-cyan-500/30 text-cyan-300 border border-cyan-500/40'
+                      }`}
+                    >
+                      {copyFeedback ? (
+                        <>
+                          <Check className="w-4 h-4 text-emerald-400" />
+                          <span>引継ぎコードをコピーしました！</span>
+                        </>
+                      ) : (
+                        <>
+                          <Copy className="w-4 h-4" />
+                          <span>引継ぎコードをワンクリックコピー</span>
+                        </>
+                      )}
+                    </button>
+
+                    <div className="flex items-center justify-between text-[11px] font-mono">
+                      <button
+                        onClick={() => setShowCodePreview((prev) => !prev)}
+                        className="text-slate-400 hover:text-cyan-400 underline cursor-pointer"
+                      >
+                        {showCodePreview ? 'コードプレビューを閉じる' : 'コード文字列を表示して直接確認'}
+                      </button>
+                    </div>
+
+                    {showCodePreview && (
+                      <div className="p-2 rounded-xl bg-slate-900 border border-slate-800 text-[10px] font-mono text-slate-300 break-all select-all animate-fadeIn">
+                        {currentBackupCode}
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* 2. 読み込み（インポート） */}
+                <div className="p-4 rounded-2xl bg-slate-950/60 border border-slate-800/80 flex flex-col justify-between gap-3">
+                  <div className="space-y-1.5">
+                    <span className="text-[11px] font-mono font-bold text-amber-400 uppercase tracking-wider flex items-center gap-1.5">
+                      <Upload className="w-3.5 h-3.5" />
+                      <span>進捗を復元（インポート）</span>
+                    </span>
+                    <p className="text-xs text-slate-400 font-sans leading-relaxed">
+                      別ブラウザや端末で発行した引継ぎコード（SKCP-V1:...）を貼り付けて、進捗を現在のブラウザに安全に復元します。
+                    </p>
+                  </div>
+
+                  <div className="space-y-2">
+                    <input
+                      type="text"
+                      value={backupInput}
+                      onChange={(e) => setBackupInput(e.target.value)}
+                      placeholder="SKCP-V1:..."
+                      className="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs font-mono text-slate-200 placeholder-slate-500 focus:outline-none focus:border-amber-400 transition"
+                    />
+
+                    <button
+                      onClick={handleRestore}
+                      disabled={!backupInput.trim()}
+                      className="w-full py-2.5 px-4 rounded-xl text-xs font-mono font-bold transition flex items-center justify-center gap-2 cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/40 shadow-sm active:scale-95"
+                    >
+                      <Upload className="w-4 h-4" />
+                      <span>進捗データを復元する</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
           )}
         </div>
 
