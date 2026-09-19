@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import { Download, Menu, BookOpen, Play } from 'lucide-react';
 import { CLASSIC_CHAPTERS, MODERN_CHAPTERS, READING_CHAPTERS, SPECIAL_GUIDES } from '../../data/chapters';
 
@@ -17,11 +17,32 @@ export const Navbar: React.FC<NavbarProps> = ({
   onOpenSourceModal,
   onOpenPlaygroundModal,
 }) => {
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const activeItemRef = useRef<HTMLButtonElement>(null);
+
+  // 章切り替え時にアクティブボタンが中央に見えるようにスムーズスクロール
+  useEffect(() => {
+    if (activeItemRef.current && scrollContainerRef.current) {
+      activeItemRef.current.scrollIntoView({
+        behavior: 'smooth',
+        inline: 'center',
+        block: 'nearest',
+      });
+    }
+  }, [currentChapterId]);
+
+  // マウスホイールの縦回転で横スクロール可能にするUX向上
+  const handleWheel = (e: React.WheelEvent<HTMLDivElement>) => {
+    if (e.deltaY !== 0) {
+      e.currentTarget.scrollLeft += e.deltaY;
+    }
+  };
+
   return (
     <header className="sticky top-0 z-40 w-full border-b border-slate-800 bg-[#090d16]/90 backdrop-blur-md">
       <div className="w-full px-4 sm:px-8 lg:px-12 h-18 py-3 flex items-center justify-between gap-4">
         {/* 左側：サイドバートグル & ロゴ */}
-        <div className="flex items-center gap-3.5">
+        <div className="flex items-center gap-3.5 flex-shrink-0">
           <button
             onClick={onToggleSidebar}
             className="md:hidden p-2 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800"
@@ -56,10 +77,15 @@ export const Navbar: React.FC<NavbarProps> = ({
         </div>
 
         {/* 中央：章クイック切り替えボタン（デスクトップ） */}
-        <div className="hidden xl:flex items-center gap-1 bg-slate-900/90 p-1.5 rounded-2xl border border-slate-800 font-mono text-xs">
+        <div
+          ref={scrollContainerRef}
+          onWheel={handleWheel}
+          className="hidden xl:flex items-center gap-1.5 bg-slate-900/90 p-1.5 rounded-2xl border border-slate-800 font-mono text-xs overflow-x-auto no-scrollbar min-w-0 flex-1 max-w-[calc(100vw-540px)] whitespace-nowrap select-none"
+        >
           <button
+            ref={currentChapterId === 0 ? activeItemRef : undefined}
             onClick={() => onSelectChapter('top')}
-            className={`px-3 py-1.5 rounded-xl transition-all flex items-center gap-1.5 ${
+            className={`px-2.5 py-1.5 rounded-xl transition-all flex items-center gap-1.5 flex-shrink-0 whitespace-nowrap ${
               currentChapterId === 0
                 ? 'bg-cyan-500 text-slate-950 font-bold shadow-md shadow-cyan-500/30'
                 : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800'
@@ -70,139 +96,110 @@ export const Navbar: React.FC<NavbarProps> = ({
           </button>
 
           {/* レガシーC++コースグループ */}
-          <div className="flex items-center gap-1 pl-1 border-l border-slate-800">
-            <span className="text-[10px] text-amber-400/80 font-bold px-1 select-none">🏛️ レガシー</span>
+          <div className="flex items-center gap-1 pl-1.5 border-l border-slate-800 flex-shrink-0">
+            <span className="text-[10px] text-amber-400/80 font-bold px-1 select-none flex-shrink-0 whitespace-nowrap">🏛️ レガシー</span>
             {CLASSIC_CHAPTERS.map((ch) => {
               const isActive = ch.id === currentChapterId;
-              const chapterShortNames: Record<string, string> = {
-                L1: 'スパゲティ',
-                L2: 'クラス化',
-                L3: '寿命管理',
-                L4: '継承・多態',
-                L5: 'パターン',
-                L6: 'ベクトル',
-                L7: 'バイナリ',
-                L8: '関数ポインタ',
-                L9: '多重継承',
-                L10: '静的多態',
-                L11: 'メモリプール',
-              };
               const code = (ch.courseChapterCode || `C${ch.id}`).replace(/^C/, 'L');
               return (
                 <button
                   key={ch.id}
+                  ref={isActive ? activeItemRef : undefined}
                   onClick={() => onSelectChapter(ch.slug)}
-                  className={`px-2 py-1.5 rounded-xl transition-all flex items-center gap-1 ${
+                  className={`px-2 py-1 rounded-lg transition-all flex items-center justify-center min-w-[32px] flex-shrink-0 whitespace-nowrap font-bold ${
                     isActive
-                      ? 'bg-amber-500 text-slate-950 font-bold shadow-md shadow-amber-500/30'
+                      ? 'bg-amber-500 text-slate-950 shadow-md shadow-amber-500/30'
                       : 'text-slate-400 hover:text-amber-200 hover:bg-slate-800'
                   }`}
                   title={ch.title}
                 >
-                  <span className="font-bold">{code}</span>
-                  <span className="text-[10px] opacity-80 font-sans hidden 2xl:inline">
-                    {chapterShortNames[code] || ''}
-                  </span>
+                  {code}
                 </button>
               );
             })}
           </div>
 
           {/* モダンコースグループ */}
-          <div className="flex items-center gap-1 pl-1 border-l border-slate-800">
-            <span className="text-[10px] text-cyan-400/80 font-bold px-1 select-none">🚀 モダン</span>
+          <div className="flex items-center gap-1 pl-1.5 border-l border-slate-800 flex-shrink-0">
+            <span className="text-[10px] text-cyan-400/80 font-bold px-1 select-none flex-shrink-0 whitespace-nowrap">🚀 モダン</span>
             {MODERN_CHAPTERS.map((ch) => {
               const isActive = ch.id === currentChapterId;
-              const chapterShortNames: Record<string, string> = {
-                M1: 'スマポ',
-                M2: 'ムーブ',
-                M3: 'ECS合成',
-                M4: '型安全',
-              };
               const code = ch.courseChapterCode || `M${ch.id}`;
               return (
                 <button
                   key={ch.id}
+                  ref={isActive ? activeItemRef : undefined}
                   onClick={() => onSelectChapter(ch.slug)}
-                  className={`px-2 py-1.5 rounded-xl transition-all flex items-center gap-1 ${
+                  className={`px-2 py-1 rounded-lg transition-all flex items-center justify-center min-w-[32px] flex-shrink-0 whitespace-nowrap font-bold ${
                     isActive
-                      ? 'bg-cyan-500 text-slate-950 font-bold shadow-md shadow-cyan-500/30'
+                      ? 'bg-cyan-500 text-slate-950 shadow-md shadow-cyan-500/30'
                       : 'text-slate-400 hover:text-cyan-200 hover:bg-slate-800'
                   }`}
                   title={ch.title}
                 >
-                  <span className="font-bold">{code}</span>
-                  <span className="text-[10px] opacity-80 font-sans hidden 2xl:inline">
-                    {chapterShortNames[code] || ''}
-                  </span>
+                  {code}
                 </button>
               );
             })}
           </div>
 
           {/* 読解演習トラックグループ */}
-          <div className="flex items-center gap-1 pl-1 border-l border-slate-800">
-            <span className="text-[10px] text-purple-400/80 font-bold px-1 select-none">🧭 読解</span>
+          <div className="flex items-center gap-1 pl-1.5 border-l border-slate-800 flex-shrink-0">
+            <span className="text-[10px] text-purple-400/80 font-bold px-1 select-none flex-shrink-0 whitespace-nowrap">🧭 読解</span>
             {READING_CHAPTERS.map((ch) => {
               const isActive = ch.id === currentChapterId;
-              const chapterShortNames: Record<string, string> = {
-                R1: '初級フロー',
-                R2: '中級ヘッダ',
-                R3: '上級多態性',
-              };
               const code = ch.courseChapterCode || `R${ch.id}`;
               return (
                 <button
                   key={ch.id}
+                  ref={isActive ? activeItemRef : undefined}
                   onClick={() => onSelectChapter(ch.slug)}
-                  className={`px-2 py-1.5 rounded-xl transition-all flex items-center gap-1 ${
+                  className={`px-2 py-1 rounded-lg transition-all flex items-center justify-center min-w-[32px] flex-shrink-0 whitespace-nowrap font-bold ${
                     isActive
-                      ? 'bg-purple-500 text-slate-950 font-bold shadow-md shadow-purple-500/30'
+                      ? 'bg-purple-500 text-slate-950 shadow-md shadow-purple-500/30'
                       : 'text-slate-400 hover:text-purple-200 hover:bg-slate-800'
                   }`}
                   title={ch.title}
                 >
-                  <span className="font-bold">{code}</span>
-                  <span className="text-[10px] opacity-80 font-sans hidden 2xl:inline">
-                    {chapterShortNames[code] || ''}
-                  </span>
+                  {code}
                 </button>
               );
             })}
           </div>
 
           {/* 特集・品質保証グループ */}
-          <div className="flex items-center gap-1 pl-1 border-l border-slate-800">
-            <span className="text-[10px] text-emerald-400/80 font-bold px-1 select-none">📚 特集</span>
+          <div className="flex items-center gap-1 pl-1.5 border-l border-slate-800 flex-shrink-0">
+            <span className="text-[10px] text-emerald-400/80 font-bold px-1 select-none flex-shrink-0 whitespace-nowrap">📚 特集</span>
             {SPECIAL_GUIDES.map((guide) => {
               const isActive = guide.id === currentChapterId;
               const isColumn = guide.category === 'column';
               const guideShortNames: Record<string, string> = {
-                'guide-cpp-syntax-reference': '文法総覧',
-                'column-why-cpp-is-great': 'C++の魅力',
-                'guide-googletest-tdd': '品質・TDD',
+                'guide-cpp-syntax-reference': '文法',
+                'guide-googletest-tdd': 'TDD',
                 'guide-code-reading': '読解術',
-                'column-design-patterns': 'デザインパターン',
-                'column-why-cpp-is-hard': '思想コラム',
-                'guide-environment-setup': '環境構築',
-                'guide-uml-design': 'UML設計',
+                'column-design-patterns': 'DP',
+                'guide-uml-design': 'UML',
+                'column-why-cpp-is-great': '魅力',
+                'column-why-cpp-is-hard': '思想',
+                'guide-environment-setup': '環境',
               };
               return (
                 <button
                   key={guide.id}
+                  ref={isActive ? activeItemRef : undefined}
                   onClick={() => onSelectChapter(guide.slug)}
-                  className={`px-2 py-1.5 rounded-xl transition-all flex items-center gap-1 text-[11px] font-sans ${
+                  className={`px-2 py-1 rounded-lg transition-all flex items-center justify-center flex-shrink-0 whitespace-nowrap text-[11px] font-sans font-bold ${
                     isActive
                       ? isColumn
-                        ? 'bg-purple-600 text-white font-bold shadow-md shadow-purple-500/30'
-                        : 'bg-emerald-500 text-slate-950 font-bold shadow-md shadow-emerald-500/30'
+                        ? 'bg-purple-600 text-white shadow-md shadow-purple-500/30'
+                        : 'bg-emerald-500 text-slate-950 shadow-md shadow-emerald-500/30'
                       : isColumn
                         ? 'text-slate-400 hover:text-purple-200 hover:bg-slate-800'
                         : 'text-slate-400 hover:text-emerald-200 hover:bg-slate-800'
                   }`}
                   title={guide.title}
                 >
-                  <span>{guideShortNames[guide.slug] || guide.badge}</span>
+                  {guideShortNames[guide.slug] || guide.badge}
                 </button>
               );
             })}
@@ -210,7 +207,7 @@ export const Navbar: React.FC<NavbarProps> = ({
         </div>
 
         {/* 右側：コード実行ラボ ＆ ソースコードダウンロード & ガイド */}
-        <div className="flex items-center gap-2 sm:gap-3">
+        <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
           {/* C++オンライン実行ラボ（Playground） */}
           {onOpenPlaygroundModal && (
             <button
