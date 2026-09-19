@@ -67,8 +67,12 @@ export const Navbar: React.FC<NavbarProps> = ({
           </button>
 
           <div className="flex items-center gap-2.5 sm:gap-3 cursor-pointer select-none flex-shrink-0" onClick={() => onSelectChapter('top')}>
-            <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-gradient-to-tr from-cyan-600 to-blue-500 flex items-center justify-center text-white shadow-lg shadow-cyan-500/30 flex-shrink-0">
-              <span className="text-xl sm:text-2xl">🐻‍❄️</span>
+            <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-full border-2 border-cyan-400/80 overflow-hidden bg-slate-900 shadow-lg shadow-cyan-500/25 flex-shrink-0">
+              <img
+                src="/images/polar-bear-guide-pointing.png"
+                alt="シロクマ先生"
+                className="w-full h-full object-cover"
+              />
             </div>
             <div className="flex flex-col justify-center min-w-0">
               <div className="flex items-center gap-1.5 sm:gap-2 whitespace-nowrap leading-tight">

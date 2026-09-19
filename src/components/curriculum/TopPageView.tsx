@@ -106,8 +106,15 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
             <span>ゲーム開発で学ぶ C++ オブジェクト指向＆実践設計メディア</span>
           </div>
 
-          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight text-white font-sans leading-tight">
-            🐻‍❄️ シロクマC++ラボ
+          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight text-white font-sans leading-tight flex items-center gap-3.5 sm:gap-5 flex-wrap">
+            <span className="w-12 h-12 sm:w-16 sm:h-16 lg:w-20 lg:h-20 rounded-full border-2 sm:border-3 border-cyan-400/80 bg-slate-900 shadow-[0_0_25px_rgba(6,182,212,0.4)] shrink-0 inline-flex items-center justify-center overflow-hidden">
+              <img
+                src="/images/polar-bear-guide-pointing.png"
+                alt="シロクマ先生"
+                className="w-full h-full object-cover"
+              />
+            </span>
+            <span>シロクマC++ラボ</span>
           </h1>
 
           <p className="text-lg sm:text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-cyan-300 to-emerald-300 leading-snug">

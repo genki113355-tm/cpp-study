@@ -10,7 +10,14 @@ export const Footer: React.FC = () => {
       <footer className="border-t border-slate-800 bg-[#070b14] py-10 text-center text-sm text-slate-400 font-mono">
         <div className="max-w-4xl mx-auto px-4 space-y-3">
           <div className="flex items-center justify-center gap-2 text-slate-300 font-semibold flex-wrap">
-            <span>🐻‍❄️ シロクマC++ラボ</span>
+            <span className="inline-flex items-center gap-2">
+              <img
+                src="/images/polar-bear-guide-pointing.png"
+                alt="シロクマ先生"
+                className="w-5 h-5 rounded-full border border-cyan-400/60 object-cover inline-block shadow-sm"
+              />
+              <span>シロクマC++ラボ</span>
+            </span>
             <span>•</span>
             <span className="text-slate-400 font-normal">〜ゲーム開発で学ぶオブジェクト指向開発 レガシー設計からモダン設計まで〜</span>
           </div>
