@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { BUSY_BANNERS, REWARD_BANNERS, A8BannerItem } from '../../data/affiliateBanners';
-import { Sparkles, Utensils, HeartHandshake } from 'lucide-react';
+import { Sparkles, Utensils, HeartHandshake, X } from 'lucide-react';
 
 interface AffiliatePromoBannerProps {
   type: 'busy' | 'reward';
@@ -13,9 +13,30 @@ export const AffiliatePromoBanner: React.FC<AffiliatePromoBannerProps> = ({
   className = '',
   limit,
 }) => {
+  const [isClosed, setIsClosed] = useState<boolean>(false);
+
+  useEffect(() => {
+    try {
+      if (sessionStorage.getItem(`promo_banner_closed_${type}`) === 'true') {
+        setIsClosed(true);
+      }
+    } catch {}
+  }, [type]);
+
+  const handleClose = () => {
+    setIsClosed(true);
+    try {
+      sessionStorage.setItem(`promo_banner_closed_${type}`, 'true');
+    } catch {}
+  };
+
   const group = type === 'busy' ? BUSY_BANNERS : REWARD_BANNERS;
   const isBusy = type === 'busy';
   const displayedBanners: A8BannerItem[] = limit ? group.banners.slice(0, limit) : group.banners;
+
+  if (isClosed) {
+    return null;
+  }
 
   return (
     <div
@@ -32,7 +53,7 @@ export const AffiliatePromoBanner: React.FC<AffiliatePromoBannerProps> = ({
         }`}
       />
 
-      {/* ヘッダーエリア：PR表記 ＆ タイトル */}
+      {/* ヘッダーエリア：PR表記 ＆ タイトル ＆ 閉じるボタン */}
       <div className="relative z-10 space-y-3 pb-5 border-b border-slate-800/80">
         <div className="flex items-center justify-between gap-3 flex-wrap">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono font-bold shadow-sm border bg-slate-900/90 text-slate-300 border-slate-700">
@@ -44,9 +65,21 @@ export const AffiliatePromoBanner: React.FC<AffiliatePromoBannerProps> = ({
             <span>{isBusy ? '開発・学習サポート特集' : '学習達成ご褒美セレクション'}</span>
           </div>
 
-          <span className="text-[10px] font-mono tracking-wider text-slate-400 px-2 py-0.5 rounded bg-slate-900 border border-slate-800">
-            [PR] スポンサーリンク
-          </span>
+          <div className="flex items-center gap-2">
+            <span className="text-[10px] font-mono tracking-wider text-slate-400 px-2 py-0.5 rounded bg-slate-900 border border-slate-800">
+              [PR] スポンサーリンク
+            </span>
+
+            <button
+              onClick={handleClose}
+              className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-lg text-xs font-sans text-slate-400 hover:text-rose-300 bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-rose-500/40 transition active:scale-95 cursor-pointer shadow-sm group"
+              title="この広告を閉じる"
+              aria-label="広告を閉じる"
+            >
+              <X className="w-3.5 h-3.5 text-slate-400 group-hover:text-rose-400 transition-colors" />
+              <span className="text-[11px] group-hover:text-rose-200 transition-colors">広告を閉じる</span>
+            </button>
+          </div>
         </div>
 
         <div>
@@ -129,6 +162,19 @@ export const AffiliatePromoBanner: React.FC<AffiliatePromoBannerProps> = ({
               </div>
             </div>
           ))}
+        </div>
+
+        {/* 下部：広告を閉じるリンク */}
+        <div className="mt-5 pt-3 border-t border-slate-800/60 flex items-center justify-end">
+          <button
+            onClick={handleClose}
+            className="inline-flex items-center gap-1.5 text-xs font-mono text-slate-400 hover:text-rose-300 transition-colors cursor-pointer group"
+            title="この広告を閉じる"
+            aria-label="広告を閉じる"
+          >
+            <X className="w-3.5 h-3.5 text-slate-400 group-hover:text-rose-400 transition-colors" />
+            <span className="text-[11px] group-hover:underline">広告を閉じる</span>
+          </button>
         </div>
       </div>
     </div>
