@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { CheckCircle2, Circle, Clock, X, ChevronDown, ChevronUp } from 'lucide-react';
+import { CheckCircle2, Circle, Clock, X, ChevronDown, ChevronUp, Trophy } from 'lucide-react';
 import { ALL_CHAPTERS, CLASSIC_CHAPTERS, MODERN_CHAPTERS, READING_CHAPTERS, SPECIAL_GUIDES, UPCOMING_CHAPTERS } from '../../data/chapters';
 import { CourseTrack } from '../../types/curriculum';
 
@@ -10,6 +10,7 @@ interface SidebarProps {
   onClose: () => void;
   completedChapters: number[];
   onToggleComplete: (id: number) => void;
+  onOpenMilestoneModal?: () => void;
 }
 
 const getCleanSidebarTitle = (title: string): string => {
@@ -29,6 +30,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   onClose,
   completedChapters,
   onToggleComplete,
+  onOpenMilestoneModal,
 }) => {
   const [activeTab, setActiveTab] = useState<'all' | CourseTrack>('all');
   const [isUpcomingExpanded, setIsUpcomingExpanded] = useState<boolean>(false);
@@ -85,6 +87,16 @@ export const Sidebar: React.FC<SidebarProps> = ({
             <span className="bg-slate-900/80 py-1 rounded border border-slate-800">🚀 {modernCount}/{MODERN_CHAPTERS.length}</span>
             <span className="bg-slate-900/80 py-1 rounded border border-slate-800">🧭 {readingCount}/{READING_CHAPTERS.length}</span>
           </div>
+
+          {onOpenMilestoneModal && (
+            <button
+              onClick={onOpenMilestoneModal}
+              className="mt-3 w-full py-1.5 px-2.5 rounded-xl bg-gradient-to-r from-amber-500/20 to-yellow-500/20 hover:from-amber-500/30 hover:to-yellow-500/30 text-amber-300 border border-amber-500/40 text-xs font-mono font-bold transition flex items-center justify-center gap-1.5 shadow-sm active:scale-95 cursor-pointer"
+            >
+              <Trophy className="w-3.5 h-3.5 text-amber-400" />
+              <span>🏆 修了証・マイルストーン</span>
+            </button>
+          )}
         </div>
 
         {/* カリキュラム章リスト */}

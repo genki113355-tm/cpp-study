@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Chapter, CodeHighlightTarget, CodeFile } from '../../types/curriculum';
 import { CLASSIC_CHAPTERS, MODERN_CHAPTERS, READING_CHAPTERS } from '../../data/chapters';
 import { DialogueBubble } from './DialogueBubble';
@@ -21,6 +21,8 @@ import { CodeChallengeRunner } from '../playground/CodeChallengeRunner';
 import { CODING_CHALLENGES } from '../../data/codingChallenges';
 import { getChapterEvolution } from '../../data/chapterEvolution';
 
+type ViewMode = 'all' | 'learn' | 'code' | 'practice';
+
 interface ChapterViewProps {
   chapter: Chapter;
   onNavigate: (slug: string) => void;
@@ -39,6 +41,12 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
   const [codeHighlight, setCodeHighlight] = useState<CodeHighlightTarget | undefined>();
   const [isGameModalOpen, setIsGameModalOpen] = useState<boolean>(false);
   const [showInlineGame, setShowInlineGame] = useState<boolean>(false);
+  const [viewMode, setViewMode] = useState<ViewMode>('all');
+
+  // 章切り替え時に表示モードをデフォルト（すべて表示）にリセット
+  useEffect(() => {
+    setViewMode('all');
+  }, [chapter.slug]);
 
   // この章に含まれるすべての教材コードファイルを抽出
   const allCodeFiles = useMemo(() => {
@@ -204,8 +212,76 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
         </div>
       </div>
 
+      {/* 🧭 表示モード切替タブ（長大な縦スクロールを解消し、目的に応じて絞り込み） */}
+      <div className="sticky top-18 z-30 -my-4 py-3 bg-[#090d16]/95 backdrop-blur-md border-y border-slate-800/80">
+        <div className="flex items-center justify-between gap-3 flex-wrap">
+          <div className="flex items-center gap-1.5 p-1 bg-slate-900/90 rounded-2xl border border-slate-800 text-xs font-mono">
+            <button
+              onClick={() => setViewMode('all')}
+              className={`px-3 py-2 rounded-xl font-bold transition flex items-center gap-1.5 cursor-pointer ${
+                viewMode === 'all'
+                  ? 'bg-cyan-500 text-slate-950 shadow-md shadow-cyan-500/20'
+                  : 'text-slate-400 hover:text-white hover:bg-slate-800'
+              }`}
+            >
+              <span>📖 すべて表示</span>
+            </button>
+
+            <button
+              onClick={() => setViewMode('learn')}
+              className={`px-3 py-2 rounded-xl font-bold transition flex items-center gap-1.5 cursor-pointer ${
+                viewMode === 'learn'
+                  ? 'bg-cyan-500 text-slate-950 shadow-md shadow-cyan-500/20'
+                  : 'text-slate-400 hover:text-white hover:bg-slate-800'
+              }`}
+            >
+              <span>📝 解説・設計</span>
+              <span className="text-[10px] opacity-75">({chapter.sections.length}節)</span>
+            </button>
+
+            {allCodeFiles.length > 0 && (
+              <button
+                onClick={() => setViewMode('code')}
+                className={`px-3 py-2 rounded-xl font-bold transition flex items-center gap-1.5 cursor-pointer ${
+                  viewMode === 'code'
+                    ? 'bg-cyan-500 text-slate-950 shadow-md shadow-cyan-500/20'
+                    : 'text-slate-400 hover:text-white hover:bg-slate-800'
+                }`}
+              >
+                <span>💻 コード</span>
+                <span className="text-[10px] opacity-75">({allCodeFiles.length}ファイル)</span>
+              </button>
+            )}
+
+            <button
+              onClick={() => setViewMode('practice')}
+              className={`px-3 py-2 rounded-xl font-bold transition flex items-center gap-1.5 cursor-pointer ${
+                viewMode === 'practice'
+                  ? 'bg-cyan-500 text-slate-950 shadow-md shadow-cyan-500/20'
+                  : 'text-slate-400 hover:text-white hover:bg-slate-800'
+              }`}
+            >
+              <span>🎮 ゲーム・演習</span>
+              {chapter.quiz && chapter.quiz.length > 0 && (
+                <span className="text-[10px] opacity-75">(クイズ{chapter.quiz.length}問)</span>
+              )}
+            </button>
+          </div>
+
+          <div className="text-xs font-mono text-slate-400 hidden sm:flex items-center gap-2">
+            <span>表示モード:</span>
+            <span className="text-cyan-400 font-bold">
+              {viewMode === 'all' && '全セクションを通読中'}
+              {viewMode === 'learn' && '概念解説・UML設計図・メモリ図に集中'}
+              {viewMode === 'code' && 'C++実装コードと差分のみ表示'}
+              {viewMode === 'practice' && '実機ゲーム・理解度クイズ・演習道場'}
+            </span>
+          </div>
+        </div>
+      </div>
+
       {/* 🚀 実機ゲームステーション（大画面ポップアップ起動 ＆ インライン切替） */}
-      {chapter.gameVersion && chapter.gameVersion !== 'none' && (() => {
+      {(viewMode === 'all' || viewMode === 'practice') && chapter.gameVersion && chapter.gameVersion !== 'none' && (() => {
         const evolution = getChapterEvolution(code, chapter.gameVersion);
         const isFirstChapter = Boolean(
           evolution.isFirstChapter ||
@@ -343,7 +419,7 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
       })()}
 
       {/* 📐 この章のプログラムに対応する公式UML設計書 */}
-      {chapter.umlDiagram && (
+      {(viewMode === 'all' || viewMode === 'learn') && chapter.umlDiagram && (
         <section>
           <UmlDiagramViewer
             data={chapter.umlDiagram}
@@ -353,8 +429,8 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
         </section>
       )}
 
-      {/* 各セクションの展開 */}
-      {chapter.sections.map((section, sIdx) => {
+      {/* 各セクションの展開（practiceモード時は演習に特化するため非表示） */}
+      {viewMode !== 'practice' && chapter.sections.map((section, sIdx) => {
         // "1.1 タイトル" 形式の分解
         const titleMatch = section.title.match(/^(\d+\.\d+)\s*(.*)/);
         const sectionNum = titleMatch ? titleMatch[1] : null;
@@ -377,7 +453,8 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
                   {sectionTitle}
                 </h2>
               </div>
-              {section.leadText && (
+              {/* セクションリード文（解説モードまたはすべて表示時） */}
+              {(viewMode === 'all' || viewMode === 'learn') && section.leadText && (
                 <p className="text-lg sm:text-xl text-slate-300 mt-4 leading-relaxed font-sans">
                   {section.leadText}
                 </p>
@@ -385,7 +462,7 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
             </div>
 
           {/* セクション前の会話 */}
-          {section.dialogueBefore && section.dialogueBefore.length > 0 && (
+          {(viewMode === 'all' || viewMode === 'learn') && section.dialogueBefore && section.dialogueBefore.length > 0 && (
             <div className="space-y-3.5 bg-slate-950/40 p-5 rounded-2xl border border-slate-900">
               {section.dialogueBefore.map((dialogue) => (
                 <DialogueBubble key={dialogue.id} dialogue={dialogue} />
@@ -394,27 +471,27 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
           )}
 
           {/* 概念解説テキスト（リッチマークダウンレンダラー） */}
-          {section.explanationText && (
+          {(viewMode === 'all' || viewMode === 'learn') && section.explanationText && (
             <RichExplanation content={section.explanationText} />
           )}
 
           {/* C言語 vs C++ パラダイム対比 */}
-          {section.paradigmComparison && (
+          {(viewMode === 'all' || viewMode === 'learn') && section.paradigmComparison && (
             <ParadigmComparisonView data={section.paradigmComparison} />
           )}
 
           {/* スタック・ヒープ メモリ可視化 */}
-          {section.memoryMap && (
+          {(viewMode === 'all' || viewMode === 'learn') && section.memoryMap && (
             <MemoryVisualizer memoryMap={section.memoryMap} />
           )}
 
           {/* 変数・クラスメンバ一覧インスペクター（カード / 最適化テーブル） */}
-          {section.variables && section.variables.length > 0 && (
+          {(viewMode === 'all' || viewMode === 'learn') && section.variables && section.variables.length > 0 && (
             <VariableInspector variables={section.variables} />
           )}
 
           {/* 処理フロー（ステップバイステップ実況解説＆設計意図） */}
-          {section.processSteps && section.processSteps.length > 0 && (
+          {(viewMode === 'all' || viewMode === 'learn') && section.processSteps && section.processSteps.length > 0 && (
             <div className="space-y-4 my-6">
               <div className="flex items-center gap-2 text-sm font-mono font-bold text-emerald-400 px-1">
                 <GitCommit className="w-5 h-5" />
@@ -464,12 +541,12 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
           )}
 
           {/* 概念図解 */}
-          {section.diagramType && (
+          {(viewMode === 'all' || viewMode === 'learn') && section.diagramType && (
             <ConceptDiagram type={section.diagramType} />
           )}
 
           {/* セクション固有のUML設計書 */}
-          {section.umlDiagram && (
+          {(viewMode === 'all' || viewMode === 'learn') && section.umlDiagram && (
             <UmlDiagramViewer
               data={section.umlDiagram}
               codeFiles={section.codeFiles && section.codeFiles.length > 0 ? section.codeFiles : allCodeFiles}
@@ -477,8 +554,8 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
             />
           )}
 
-          {/* C++コードビューア */}
-          {section.codeFiles && section.codeFiles.length > 0 && (
+          {/* C++コードビューア（コードモードまたはすべて表示時） */}
+          {(viewMode === 'all' || viewMode === 'code') && section.codeFiles && section.codeFiles.length > 0 && (
             <div className="my-6">
               <div className="text-sm font-mono text-slate-400 mb-2.5 flex items-center gap-2">
                 <span className="text-cyan-400 font-bold">SOURCE CODE</span>
@@ -489,7 +566,7 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
           )}
 
           {/* セクション後の会話 */}
-          {section.dialogueAfter && section.dialogueAfter.length > 0 && (
+          {(viewMode === 'all' || viewMode === 'learn') && section.dialogueAfter && section.dialogueAfter.length > 0 && (
             <div className="space-y-3.5 bg-slate-950/40 p-5 rounded-2xl border border-slate-900">
               {section.dialogueAfter.map((dialogue) => (
                 <DialogueBubble key={dialogue.id} dialogue={dialogue} />
@@ -498,7 +575,7 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
           )}
 
           {/* キーポイント・まとめ */}
-          {section.takeaways && section.takeaways.length > 0 && (
+          {(viewMode === 'all' || viewMode === 'learn') && section.takeaways && section.takeaways.length > 0 && (
             <div className="rounded-2xl bg-slate-900/90 border border-slate-800 p-6 space-y-4 my-6">
               <h3 className="text-base sm:text-lg font-mono font-bold text-cyan-400 flex items-center gap-2.5">
                 <Lightbulb className="w-5 h-5" />
@@ -522,7 +599,7 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
             </div>
           )}
         </section>
-        {isMiddleSection && (
+        {isMiddleSection && viewMode === 'all' && (
           <AffiliatePromoBanner type="busy" />
         )}
       </React.Fragment>
@@ -530,14 +607,14 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
   })}
 
       {/* 実践ハンズオン演習道場（コーディング課題が定義されている章で自動表示） */}
-      {CODING_CHALLENGES[chapter.slug] && (
+      {(viewMode === 'all' || viewMode === 'practice') && CODING_CHALLENGES[chapter.slug] && (
         <section>
           <CodeChallengeRunner challenge={CODING_CHALLENGES[chapter.slug]} />
         </section>
       )}
 
       {/* 理解度確認クイズ */}
-      {chapter.quiz && chapter.quiz.length > 0 && (
+      {(viewMode === 'all' || viewMode === 'practice') && chapter.quiz && chapter.quiz.length > 0 && (
         <section className="rounded-3xl bg-gradient-to-b from-slate-900 to-slate-950 border border-cyan-500/30 p-6 sm:p-10 space-y-8 shadow-2xl my-8">
           <div className="flex items-center gap-3 text-cyan-400 font-mono font-bold text-xl sm:text-2xl border-b border-slate-800 pb-4">
             <HelpCircle className="w-7 h-7" />

@@ -1,6 +1,7 @@
-import React, { useRef, useEffect } from 'react';
-import { Download, Menu, BookOpen, Play } from 'lucide-react';
+import React, { useRef, useEffect, useState } from 'react';
+import { Download, Menu, BookOpen, Play, Volume2, VolumeX } from 'lucide-react';
 import { CLASSIC_CHAPTERS, MODERN_CHAPTERS, READING_CHAPTERS, SPECIAL_GUIDES } from '../../data/chapters';
+import { audioManager } from '../../utils/audioManager';
 
 interface NavbarProps {
   currentChapterId: number;
@@ -19,6 +20,20 @@ export const Navbar: React.FC<NavbarProps> = ({
 }) => {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const activeItemRef = useRef<HTMLButtonElement>(null);
+  const [isMuted, setIsMuted] = useState<boolean>(() => audioManager.getIsMuted());
+
+  useEffect(() => {
+    return audioManager.subscribe(() => {
+      setIsMuted(audioManager.getIsMuted());
+    });
+  }, []);
+
+  const handleToggleMute = () => {
+    const nextMuted = audioManager.toggleMute();
+    if (!nextMuted) {
+      audioManager.play('powerup');
+    }
+  };
 
   // 章切り替え時にアクティブボタンが中央に見えるようにスムーズスクロール
   useEffect(() => {
@@ -206,8 +221,26 @@ export const Navbar: React.FC<NavbarProps> = ({
           </div>
         </div>
 
-        {/* 右側：コード実行ラボ ＆ ソースコードダウンロード & ガイド */}
+        {/* 右側：コード実行ラボ ＆ 音声切替 ＆ ソースコードダウンロード & ガイド */}
         <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
+          {/* グローバル音量・ミュートボタン */}
+          <button
+            onClick={handleToggleMute}
+            className={`p-2 rounded-xl border transition-all active:scale-95 cursor-pointer flex items-center justify-center ${
+              isMuted
+                ? 'bg-slate-900 border-slate-700 text-slate-400 hover:text-slate-200 hover:border-slate-600'
+                : 'bg-cyan-950/80 border-cyan-500/50 text-cyan-300 shadow-md shadow-cyan-500/20'
+            }`}
+            title={isMuted ? 'サウンドをONにする（オフィス・電車内配慮のため初期ミュート中）' : 'サウンドをミュート（消音）にする'}
+            aria-label={isMuted ? '音声を有効化' : '音声をミュート'}
+          >
+            {isMuted ? (
+              <VolumeX className="w-4 h-4 text-slate-400" />
+            ) : (
+              <Volume2 className="w-4 h-4 text-cyan-400 animate-pulse" />
+            )}
+          </button>
+
           {/* C++オンライン実行ラボ（Playground） */}
           {onOpenPlaygroundModal && (
             <button

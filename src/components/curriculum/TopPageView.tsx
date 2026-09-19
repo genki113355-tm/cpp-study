@@ -9,13 +9,15 @@ import {
   ExternalLink,
   ChevronRight,
   ShieldCheck,
-  Shield
+  Shield,
+  Trophy
 } from 'lucide-react';
 import { 
   CLASSIC_CHAPTERS, 
   MODERN_CHAPTERS, 
   READING_CHAPTERS, 
-  SPECIAL_GUIDES
+  SPECIAL_GUIDES,
+  ALL_CHAPTERS
 } from '../../data/chapters';
 import { Chapter } from '../../types/curriculum';
 import { AffiliatePromoBanner } from '../affiliate/AffiliatePromoBanner';
@@ -24,12 +26,14 @@ interface TopPageViewProps {
   onSelectChapter: (slug: string) => void;
   completedChapters: number[];
   onOpenPlaygroundModal?: () => void;
+  onOpenMilestoneModal?: () => void;
 }
 
 export const TopPageView: React.FC<TopPageViewProps> = ({
   onSelectChapter,
   completedChapters,
   onOpenPlaygroundModal: _onOpenPlaygroundModal,
+  onOpenMilestoneModal,
 }) => {
   const [activeTab, setActiveTab] = useState<'classic' | 'modern' | 'reading' | 'guides'>('classic');
 
@@ -113,6 +117,31 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
             <span className="px-3 py-1 rounded-lg bg-slate-950/80 border border-cyan-500/30 text-cyan-300">🎮 Webエミュレータ搭載</span>
             <span className="px-3 py-1 rounded-lg bg-slate-950/80 border border-emerald-500/30 text-emerald-300">💻 ブラウザ実行演習完備</span>
           </div>
+
+          {/* 学習進捗 & 修了証への導線 */}
+          {onOpenMilestoneModal && (
+            <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+              <div className="p-3 rounded-2xl bg-slate-950/80 border border-slate-800 flex-1 flex items-center justify-between gap-3 text-xs font-mono">
+                <div className="flex items-center gap-2 text-slate-300">
+                  <span className="w-2 h-2 rounded-full bg-cyan-400" />
+                  <span>学習進捗：</span>
+                  <span className="text-cyan-300 font-bold">{completedChapters.length} / {ALL_CHAPTERS.length} 章完了</span>
+                </div>
+                <div className="text-cyan-400 font-bold">
+                  {Math.round((completedChapters.length / ALL_CHAPTERS.length) * 100)}%
+                </div>
+              </div>
+
+              <button
+                type="button"
+                onClick={onOpenMilestoneModal}
+                className="py-3 px-4 rounded-2xl bg-gradient-to-r from-amber-500 to-yellow-400 hover:from-amber-400 hover:to-yellow-300 text-slate-950 font-bold font-mono text-xs sm:text-sm transition flex items-center justify-center gap-2 shadow-lg shadow-amber-500/20 active:scale-95 cursor-pointer flex-shrink-0"
+              >
+                <Trophy className="w-4 h-4 text-slate-950" />
+                <span>🏆 公式修了証・バッジを確認</span>
+              </button>
+            </div>
+          )}
         </div>
       </section>
 

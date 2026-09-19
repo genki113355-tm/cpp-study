@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { RotateCcw, Sparkles, Terminal, Gamepad2, Info, Sliders, Smartphone, Pause, Play, LogOut, X, Target } from 'lucide-react';
+import { RotateCcw, Sparkles, Terminal, Gamepad2, Info, Sliders, Smartphone, Pause, Play, LogOut, X, Target, Volume2, VolumeX } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { getChapterEvolution } from '../../data/chapterEvolution';
+import { audioManager } from '../../utils/audioManager';
 
 interface GameEmulatorProps {
   version: 'v1_spaghetti' | 'v2_classes' | 'v3_dynamic' | 'v4_polymorphism' | 'v5_smart_pointers' | 'v6_patterns' | 'v7_ecs_final';
@@ -138,6 +139,20 @@ export const GameEmulator: React.FC<GameEmulatorProps> = ({
   const [score, setScore] = useState<number>(0);
   const [scene, setScene] = useState<SceneState>('title');
   const [achievementToast, setAchievementToast] = useState<string | null>(null);
+  const [isMuted, setIsMuted] = useState<boolean>(() => audioManager.getIsMuted());
+
+  useEffect(() => {
+    return audioManager.subscribe(() => {
+      setIsMuted(audioManager.getIsMuted());
+    });
+  }, []);
+
+  const handleToggleMute = () => {
+    const nextMuted = audioManager.toggleMute();
+    if (!nextMuted) {
+      audioManager.play('powerup');
+    }
+  };
 
   // C++設計定数・インタラクティブ実験室（サンドボックス）状態
   const [isSandboxOpen, setIsSandboxOpen] = useState<boolean>(false);
@@ -288,6 +303,8 @@ export const GameEmulator: React.FC<GameEmulatorProps> = ({
     setBullets((prev) => {
       // サンドボックスで設定された最大発射弾数制限
       if (prev.length >= maxBullets) return prev;
+
+      audioManager.play('shoot');
 
       const baseId = Date.now();
       const isTriple = hasTripleShot || sandboxTripleShot || version === 'v7_ecs_final';
@@ -577,6 +594,7 @@ export const GameEmulator: React.FC<GameEmulatorProps> = ({
                     setScore((s) => s + 200);
                     triggerAchievement("🛰️ BIT DRONE DEPLOYED!");
                   }
+                  audioManager.play('powerup');
                   spawnExplosion(targetX, ny, true);
                 } else if (ny < HEIGHT - 1) {
                   remaining.push({ ...item, x: targetX, y: ny });
@@ -674,6 +692,7 @@ export const GameEmulator: React.FC<GameEmulatorProps> = ({
                   if (inv.type === 'boss' && inv.hp > 1) {
                     setScore((s) => s + 80);
                     spawnExplosion(inv.x, inv.y, true);
+                    audioManager.play('hit');
                     return { ...inv, hp: inv.hp - 1 };
                   }
 
@@ -681,6 +700,7 @@ export const GameEmulator: React.FC<GameEmulatorProps> = ({
                   if (inv.type === 'elite' && inv.hp > 1) {
                     setScore((s) => s + 60);
                     spawnExplosion(inv.x, inv.y, false);
+                    audioManager.play('hit');
                     return { ...inv, hp: inv.hp - 1 };
                   }
 
@@ -688,6 +708,7 @@ export const GameEmulator: React.FC<GameEmulatorProps> = ({
                   if (inv.type === 'shield' && inv.hp > 1) {
                     setScore((s) => s + 50);
                     spawnExplosion(inv.x, inv.y, false);
+                    audioManager.play('hit');
                     return { ...inv, hp: inv.hp - 1 };
                   }
 
@@ -711,6 +732,7 @@ export const GameEmulator: React.FC<GameEmulatorProps> = ({
 
                   setScore((s) => s + pts);
                   spawnExplosion(inv.x, inv.y, inv.type === 'ufo' || inv.type === 'boss');
+                  audioManager.play('explosion');
 
                   // ドロップアイテム（第5〜7章）
                   if (version === 'v5_smart_pointers' || version === 'v6_patterns' || version === 'v7_ecs_final') {
@@ -731,6 +753,7 @@ export const GameEmulator: React.FC<GameEmulatorProps> = ({
               const prevGroundAlive = prevInvaders.some((inv) => inv.type !== 'ufo' && inv.alive);
               if (!anyGroundAlive && prevGroundAlive) {
                 setScene('gameclear');
+                audioManager.play('clear');
                 confetti({
                   particleCount: 120,
                   spread: 80,
@@ -1472,6 +1495,29 @@ export const GameEmulator: React.FC<GameEmulatorProps> = ({
           >
             <Smartphone className="w-3.5 h-3.5" />
             <span className="hidden sm:inline">操作パッド</span>
+          </button>
+
+          <button
+            onClick={handleToggleMute}
+            className={`flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-mono font-bold transition border active:scale-95 shadow-sm ${
+              isMuted
+                ? 'bg-slate-800/60 hover:bg-slate-800 text-slate-400 border-slate-700'
+                : 'bg-cyan-950/80 border-cyan-500/50 text-cyan-300 shadow-md shadow-cyan-500/20'
+            }`}
+            title={isMuted ? 'サウンドをONにする（初期ミュート中）' : 'サウンドをミュート（消音）'}
+            aria-label={isMuted ? '音声を有効化' : '音声をミュート'}
+          >
+            {isMuted ? (
+              <>
+                <VolumeX className="w-3.5 h-3.5 text-slate-400" />
+                <span className="hidden sm:inline">消音中</span>
+              </>
+            ) : (
+              <>
+                <Volume2 className="w-3.5 h-3.5 text-cyan-400 animate-pulse" />
+                <span className="hidden sm:inline">サウンドON</span>
+              </>
+            )}
           </button>
 
           <button

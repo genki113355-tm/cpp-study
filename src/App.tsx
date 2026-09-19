@@ -18,6 +18,9 @@ const SourceModal = React.lazy(() =>
 const OnlinePlaygroundModal = React.lazy(() => 
   import('./components/playground/OnlinePlaygroundModal').then((m) => ({ default: m.OnlinePlaygroundModal }))
 );
+const MilestoneModal = React.lazy(() => 
+  import('./components/curriculum/MilestoneModal').then((m) => ({ default: m.MilestoneModal }))
+);
 
 const PageLoadingFallback: React.FC = () => (
   <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4 text-cyan-400 font-mono">
@@ -51,6 +54,7 @@ export const App: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
   const [isSourceModalOpen, setIsSourceModalOpen] = useState<boolean>(false);
   const [isPlaygroundModalOpen, setIsPlaygroundModalOpen] = useState<boolean>(false);
+  const [isMilestoneModalOpen, setIsMilestoneModalOpen] = useState<boolean>(false);
 
   // 初回ロード時のURL正規化（旧ハッシュURLで訪問された場合にクリーンパスへ補正）
   useEffect(() => {
@@ -164,6 +168,7 @@ export const App: React.FC = () => {
           onClose={() => setIsSidebarOpen(false)}
           completedChapters={completedChapters}
           onToggleComplete={handleToggleComplete}
+          onOpenMilestoneModal={() => setIsMilestoneModalOpen(true)}
         />
 
         <main className="flex-1 min-w-0 pb-20 px-4 sm:px-8 lg:px-12 overflow-x-hidden">
@@ -173,6 +178,7 @@ export const App: React.FC = () => {
                 onSelectChapter={handleSelectChapter}
                 completedChapters={completedChapters}
                 onOpenPlaygroundModal={() => setIsPlaygroundModalOpen(true)}
+                onOpenMilestoneModal={() => setIsMilestoneModalOpen(true)}
               />
             ) : (
               <ChapterView
@@ -205,6 +211,17 @@ export const App: React.FC = () => {
           <OnlinePlaygroundModal
             isOpen={isPlaygroundModalOpen}
             onClose={() => setIsPlaygroundModalOpen(false)}
+          />
+        </React.Suspense>
+      )}
+
+      {/* 公式修了証・マイルストーン達成モーダル（開かれた時のみ遅延ロード） */}
+      {isMilestoneModalOpen && (
+        <React.Suspense fallback={null}>
+          <MilestoneModal
+            isOpen={isMilestoneModalOpen}
+            onClose={() => setIsMilestoneModalOpen(false)}
+            completedChapters={completedChapters}
           />
         </React.Suspense>
       )}
