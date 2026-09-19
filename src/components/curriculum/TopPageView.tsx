@@ -1546,7 +1546,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
                   : 'bg-slate-900 text-slate-400 hover:text-cyan-300 border border-slate-800'
               }`}
             >
-              <span>🚀 モダン拡張 (M5〜M8)</span>
+              <span>🚀 モダン拡張 (M5〜M15)</span>
               <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-slate-800 text-cyan-300">
                 {UPCOMING_CHAPTERS.filter((c) => c.track === 'modern').length}
               </span>
@@ -1560,7 +1560,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
                   : 'bg-slate-900 text-slate-400 hover:text-purple-300 border border-slate-800'
               }`}
             >
-              <span>🧭 読解・低レイヤ拡張 (R4〜R5)</span>
+              <span>🧭 読解・鑑識拡張 (R4〜R10)</span>
               <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-slate-800 text-purple-300">
                 {UPCOMING_CHAPTERS.filter((c) => c.track === 'reading').length}
               </span>
