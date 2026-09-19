@@ -567,33 +567,28 @@ export const Sidebar: React.FC<SidebarProps> = ({
           </a>
         </div>
 
-        {/* キャラクター紹介ミニフッター（ユーザー提供イラスト付き） */}
-        <div className="mt-auto p-4 pb-8 border-t border-slate-800/80 bg-slate-900/50 text-xs text-slate-200 space-y-3">
-          <div className="flex items-center gap-2.5">
-            <div className="w-11 h-11 rounded-xl overflow-hidden border-2 border-cyan-400/60 flex-shrink-0 shadow-md">
-              <img
-                src="/images/characters_mission.jpg"
-                alt="シロクマ指導官"
-                className="w-full h-full object-cover object-[20%_35%]"
-              />
-            </div>
+        {/* キャラクター紹介（シロクマ先生 & ペンギンくん） */}
+        <div className="mt-auto border-t border-cyan-500/20 p-4 pb-6 bg-[#080d1a]/80 space-y-3 shrink-0">
+          <div className="flex items-center gap-3">
+            <img
+              src="/images/polar-bear-guide-pointing.png"
+              alt="シロクマ先生"
+              className="w-10 h-10 rounded-full border-2 border-cyan-500 object-cover bg-slate-900 shadow-[0_0_10px_rgba(6,182,212,0.3)]"
+            />
             <div>
-              <div className="font-bold text-cyan-300 text-sm font-mono">シロクマ指導官 (Ben)</div>
-              <div className="text-xs text-slate-400">極地艦隊C++アーキテクト</div>
+              <p className="text-sm font-bold text-white leading-none mb-1">シロクマ先生 (Sensei)</p>
+              <p className="text-[10px] text-slate-400">低レイヤ・数理アルゴリズム専門家</p>
             </div>
           </div>
-
-          <div className="flex items-center gap-2.5">
-            <div className="w-11 h-11 rounded-xl overflow-hidden border-2 border-amber-400/60 flex-shrink-0 shadow-md">
-              <img
-                src="/images/characters_mission.jpg"
-                alt="ペンギンクルー"
-                className="w-full h-full object-cover object-[85%_55%]"
-              />
-            </div>
+          <div className="flex items-center gap-3">
+            <img
+              src="/images/penguin-guide-simple.jpg"
+              alt="ペンギンくん"
+              className="w-10 h-10 rounded-full border-2 border-slate-500 object-cover bg-slate-900 shadow"
+            />
             <div>
-              <div className="font-bold text-amber-300 text-sm font-mono">ペンギン通信士 (Pippin)</div>
-              <div className="text-xs text-slate-400">見習いクルー・プログラマー</div>
+              <p className="text-sm font-bold text-white leading-none mb-1">ペンギンくん (Penguin)</p>
+              <p className="text-[10px] text-slate-400">手動評価に苦しむ若手エンジニア</p>
             </div>
           </div>
         </div>

@@ -924,7 +924,49 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
         </div>
       </section>
 
-      {/* 6. フッター前CTAセクション */}
+      {/* 6. CHARACTER（2つの登場人物）セクション */}
+      <section className="space-y-6 pt-2">
+        <div className="text-center mb-8">
+          <h2 className="text-2xl sm:text-3xl font-bold text-cyan-400 tracking-wider font-mono">
+            CHARACTER
+          </h2>
+          <p className="text-slate-400 text-sm mt-1">2つの登場人物</p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+          {/* シロクマ先生 */}
+          <div className="bg-slate-900/60 border border-white/5 rounded-2xl p-8 flex flex-col items-center text-center relative overflow-hidden group hover:border-cyan-500/30 transition-colors shadow-xl">
+            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-cyan-500 to-transparent opacity-50"></div>
+            <img
+              src="/images/polar-bear-guide-pointing.png"
+              alt="シロクマ先生"
+              className="w-32 h-32 rounded-full border-4 border-cyan-500 bg-slate-900 mb-6 object-cover shadow-[0_0_15px_rgba(6,182,212,0.3)] transition-transform group-hover:scale-105"
+            />
+            <h3 className="text-xl font-bold text-cyan-400 mb-2">シロクマ先生 (Sensei)</h3>
+            <p className="text-sm text-cyan-100 italic mb-4">「自動化への投資は、君自身の時間をハックすることなんだよ」</p>
+            <p className="text-slate-400 text-sm leading-relaxed">
+              2頭身の愛らしいシロクマ。見た目とは裏腹に、低レイヤ技術、数理アルゴリズム、Linuxインフラ、C++の堅牢な設計に深い造詣を持つ超専門家。
+            </p>
+          </div>
+
+          {/* ペンギンくん */}
+          <div className="bg-slate-900/60 border border-white/5 rounded-2xl p-8 flex flex-col items-center text-center relative overflow-hidden group hover:border-slate-400/30 transition-colors shadow-xl">
+            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-slate-400 to-transparent opacity-30"></div>
+            <img
+              src="/images/penguin-guide-simple.jpg"
+              alt="ペンギンくん"
+              className="w-32 h-32 rounded-full border-4 border-slate-500 bg-slate-900 mb-6 object-cover shadow-lg transition-transform group-hover:scale-105"
+            />
+            <h3 className="text-xl font-bold text-slate-100 mb-2">ペンギンくん (Penguin)</h3>
+            <p className="text-sm text-slate-200 italic mb-4">「今日も手作業で定時が過ぎたっス！もっと楽してぇ〜！」</p>
+            <p className="text-slate-400 text-sm leading-relaxed">
+              実務でC++コードの手動ビルドや目視評価に日々追われている若手エンジニア。過酷な現場で苦しむ読者の代弁者。
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* 7. フッター前CTAセクション */}
       <section className="rounded-3xl border border-cyan-500/30 bg-gradient-to-r from-slate-950 via-cyan-950/40 to-slate-950 p-8 sm:p-12 text-center space-y-6 shadow-2xl">
         <div className="w-16 h-16 mx-auto rounded-2xl bg-cyan-500/20 border border-cyan-500/40 flex items-center justify-center text-3xl shadow-lg shadow-cyan-500/20">
           👾
@@ -957,10 +999,10 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
         </div>
       </section>
 
-      {/* 7. 勉強を頑張った自分へのご褒美・お取り寄せグルメPR */}
+      {/* 8. 勉強を頑張った自分へのご褒美・お取り寄せグルメPR */}
       <AffiliatePromoBanner type="reward" limit={3} />
 
-      {/* 8. 姉妹メディア案内セクション */}
+      {/* 9. 姉妹メディア案内セクション */}
       <section className="rounded-3xl border border-blue-500/30 bg-gradient-to-br from-slate-950 via-[#0a1528] to-slate-950 p-6 sm:p-8 shadow-2xl relative overflow-hidden">
         <div className="absolute top-0 right-0 w-80 h-80 bg-blue-500/10 rounded-full blur-3xl pointer-events-none" />
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 relative z-10">
@@ -996,7 +1038,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
         </div>
       </section>
 
-      {/* 9. 品質保証・技術監修体制（E-E-A-T）と商標に関する表示 */}
+      {/* 10. 品質保証・技術監修体制（E-E-A-T）と商標に関する表示 */}
       <section className="rounded-3xl border border-slate-800 bg-slate-900/60 p-6 sm:p-8 space-y-4">
         <div className="flex items-center gap-2">
           <Shield className="w-5 h-5 text-cyan-400" />
