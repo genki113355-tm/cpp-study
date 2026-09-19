@@ -49,7 +49,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
       {/* サイドバー本体 */}
       <aside
-        className={`fixed md:sticky top-0 md:top-16 z-50 md:z-20 h-screen md:h-[calc(100vh-4rem)] w-80 bg-[#0c121e] border-r border-slate-800 flex flex-col transition-transform duration-300 ease-in-out overflow-y-auto scrollbar-thin ${
+        className={`fixed md:sticky top-0 md:top-[4.5rem] z-50 md:z-20 h-screen md:h-[calc(100vh-4.5rem)] w-72 sm:w-80 shrink-0 bg-[#0c121e] border-r border-slate-800 flex flex-col transition-transform duration-300 ease-in-out overflow-y-auto overscroll-contain scrollbar-thin ${
           isOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'
         }`}
       >
@@ -221,7 +221,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
                     <div className="mt-1 pl-6">
                       <p
-                        className={`text-xs font-medium leading-snug line-clamp-2 break-keep ${
+                        className={`text-xs font-medium leading-snug line-clamp-2 break-words ${
                           isActive ? 'text-white font-bold' : 'text-slate-300 group-hover:text-slate-100'
                         }`}
                       >
@@ -286,7 +286,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
                     <div className="mt-1 pl-6">
                       <p
-                        className={`text-xs font-medium leading-snug line-clamp-2 break-keep ${
+                        className={`text-xs font-medium leading-snug line-clamp-2 break-words ${
                           isActive ? 'text-white font-bold' : 'text-slate-300 group-hover:text-slate-100'
                         }`}
                       >
@@ -353,7 +353,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
                     <div className="mt-1 pl-6">
                       <p
-                        className={`text-xs font-medium leading-snug line-clamp-2 break-keep ${
+                        className={`text-xs font-medium leading-snug line-clamp-2 break-words ${
                           isActive ? 'text-white font-bold' : 'text-slate-300 group-hover:text-slate-100'
                         }`}
                       >
@@ -436,7 +436,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
                     <div className="mt-1 pl-6">
                       <p
-                        className={`text-xs font-medium leading-relaxed line-clamp-2 ${
+                        className={`text-xs font-medium leading-relaxed line-clamp-2 break-words ${
                           isActive ? 'text-white font-bold' : 'text-slate-300 group-hover:text-slate-100'
                         }`}
                       >
@@ -539,7 +539,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
         </div>
 
         {/* キャラクター紹介ミニフッター（ユーザー提供イラスト付き） */}
-        <div className="mt-auto p-4 border-t border-slate-800/80 bg-slate-900/50 text-xs text-slate-200 space-y-3">
+        <div className="mt-auto p-4 pb-8 border-t border-slate-800/80 bg-slate-900/50 text-xs text-slate-200 space-y-3">
           <div className="flex items-center gap-2.5">
             <div className="w-11 h-11 rounded-xl overflow-hidden border-2 border-cyan-400/60 flex-shrink-0 shadow-md">
               <img

@@ -113,7 +113,7 @@ export const App: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#090d16] text-slate-100 flex flex-col font-sans overflow-x-hidden">
+    <div className="min-h-screen bg-[#090d16] text-slate-100 flex flex-col font-sans overflow-x-clip">
       {/* ナビゲーションバー */}
       <Navbar
         currentChapterId={currentChapterId}
@@ -134,7 +134,7 @@ export const App: React.FC = () => {
           onToggleComplete={handleToggleComplete}
         />
 
-        <main className="flex-1 min-w-0 pb-20 px-4 sm:px-8 lg:px-12">
+        <main className="flex-1 min-w-0 pb-20 px-4 sm:px-8 lg:px-12 overflow-x-hidden">
           {currentSlug === 'top' ? (
             <TopPageView
               onSelectChapter={handleSelectChapter}
