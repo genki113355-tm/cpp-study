@@ -5,7 +5,7 @@ export const WHY_CPP_IS_GREAT_COLUMN: Chapter = {
   slug: 'column-why-cpp-is-great',
   category: 'column',
   courseTrack: 'guide',
-  courseChapterCode: 'COL2',
+  courseChapterCode: 'COL3',
   title: '【特別コラム】なぜ世界は今もC++で動いているのか？ 〜シリコンの鼓動とゼロオーバーヘッドの美学〜',
   subtitle: '「難しい、だが代わりがいない」——火星探査機からUnreal Engine、AI基盤まで人類の限界を押し広げ続ける至高の言語',
   badge: '特別コラム：C++のすばらしさ',

@@ -94,16 +94,16 @@ export const READING_CHAPTERS: Chapter[] = [
   CODE_READING_STEP_6, // R6: メモリ破壊コードの鑑識捜査（Use-After-Free / ASan）
 ];
 
-/** 📚 特集ガイド＆実践コラム（品質保証・読解術・言語思想・環境構築・UML設計・デザインパターン） */
+/** 📚 特集ガイド＆実践コラム（開発環境・文法・読解術・UML設計・品質保証・デザインパターン・言語思想） */
 export const SPECIAL_GUIDES: Chapter[] = [
-  CPP_SYNTAX_REFERENCE_GUIDE, // 付録: C++基本文法＆チートシート総覧
-  GOOGLE_TEST_TDD_GUIDE,      // G4: 品質保証特集（GoogleTest & TDD実践）
-  CODE_READING_GUIDE,         // G1: 現場コード読解術総合ガイド
-  DESIGN_PATTERNS_COLUMN,     // 特別コラム: 現場で役立つデザインパターン入門
-  UML_DESIGN_GUIDE,           // G3: UML設計手法とC++相互変換
-  WHY_CPP_IS_GREAT_COLUMN,    // 特別コラム: それでも私たちがC++を愛する理由
-  WHY_CPP_IS_HARD_COLUMN,     // コラム: C++が難しい理由
-  ENVIRONMENT_SETUP_GUIDE,    // G2: C++環境構築ガイド
+  ENVIRONMENT_SETUP_GUIDE,    // G1: 実践環境構築ガイド（手元PCで動かす）
+  CPP_SYNTAX_REFERENCE_GUIDE, // G2: C++基本文法＆チートシート総覧（逆引き辞書）
+  CODE_READING_GUIDE,         // G3: 現場コード読解術総合ガイド（既存コードを読む）
+  UML_DESIGN_GUIDE,           // G4: UML設計手法とC++相互変換（設計図とコード）
+  GOOGLE_TEST_TDD_GUIDE,      // G5: 品質保証特集（GoogleTest & TDD実践）
+  DESIGN_PATTERNS_COLUMN,     // COL1: 現場で役立つデザインパターン入門（GoFの知恵）
+  WHY_CPP_IS_HARD_COLUMN,     // COL2: なぜC++は難しいと言われるのか？（歴史と代償）
+  WHY_CPP_IS_GREAT_COLUMN,    // COL3: なぜ世界は今もC++で動いているのか？（至高の言語思想）
 ];
 
 /** 実践設計カリキュラム一覧（進捗計算・コース学習用） */

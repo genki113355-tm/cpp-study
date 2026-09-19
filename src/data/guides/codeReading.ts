@@ -5,7 +5,7 @@ export const CODE_READING_GUIDE: Chapter = {
   slug: 'guide-code-reading',
   category: 'guide',
   courseTrack: 'guide',
-  courseChapterCode: 'G1',
+  courseChapterCode: 'G3',
   title: 'テスター・新規参入者のためのC++コード読解術',
   subtitle: '「設計図がない巨大リポジトリ」でも迷子にならない！エントリポイントからの探索術と依存の追い方',
   badge: '現場実践手引き',

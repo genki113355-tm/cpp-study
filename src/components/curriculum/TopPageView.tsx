@@ -450,92 +450,222 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
 
       {/* 4. カリキュラム全目次（コンパクト・ディレクトリ） */}
       <section id="curriculum-directory" className="space-y-6 pt-4">
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 border-b border-slate-800 pb-4">
-          <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-950/80 border border-cyan-500/40 text-cyan-300 font-mono text-xs font-semibold mb-2">
-              <BookOpen className="w-3.5 h-3.5 text-cyan-400" />
-              <span>CURRICULUM DIRECTORY</span>
-            </div>
-            <h2 className="text-2xl sm:text-3xl font-extrabold text-white font-sans">
-              カリキュラム全目次（全44章）
-            </h2>
-            <p className="text-xs sm:text-sm text-slate-400 font-sans mt-1">
-              各章をクリックすると、詳細な解説・対比コード・ブラウザ演習ページが開きます。
-            </p>
+        {/* セクションヘッダー */}
+        <div className="border-b border-slate-800 pb-4 space-y-2">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-950/80 border border-cyan-500/40 text-cyan-300 font-mono text-xs font-semibold">
+            <BookOpen className="w-3.5 h-3.5 text-cyan-400" />
+            <span>CURRICULUM DIRECTORY</span>
           </div>
-
-          {/* タブ切り替えボタン */}
-          <div className="flex flex-wrap gap-1.5 p-1 rounded-xl bg-slate-900/90 border border-slate-800">
-            <button
-              type="button"
-              onClick={() => setActiveTab('classic')}
-              className={`px-3 py-2 rounded-lg font-mono text-xs font-bold transition flex items-center gap-1.5 cursor-pointer ${
-                activeTab === 'classic'
-                  ? 'bg-amber-500 text-slate-950 shadow-md shadow-amber-500/20'
-                  : 'text-slate-400 hover:text-white hover:bg-slate-800'
-              }`}
-            >
-              <span>🏛️ クラシック基礎</span>
-              <span className="text-[10px] px-1.5 py-0.5 rounded bg-black/20 font-mono">16</span>
-            </button>
-            <button
-              type="button"
-              onClick={() => setActiveTab('modern')}
-              className={`px-3 py-2 rounded-lg font-mono text-xs font-bold transition flex items-center gap-1.5 cursor-pointer ${
-                activeTab === 'modern'
-                  ? 'bg-cyan-500 text-slate-950 shadow-md shadow-cyan-500/20'
-                  : 'text-slate-400 hover:text-white hover:bg-slate-800'
-              }`}
-            >
-              <span>🚀 モダン実践</span>
-              <span className="text-[10px] px-1.5 py-0.5 rounded bg-black/20 font-mono">14</span>
-            </button>
-            <button
-              type="button"
-              onClick={() => setActiveTab('reading')}
-              className={`px-3 py-2 rounded-lg font-mono text-xs font-bold transition flex items-center gap-1.5 cursor-pointer ${
-                activeTab === 'reading'
-                  ? 'bg-purple-500 text-slate-950 shadow-md shadow-purple-500/20'
-                  : 'text-slate-400 hover:text-white hover:bg-slate-800'
-              }`}
-            >
-              <span>🧭 コード読解</span>
-              <span className="text-[10px] px-1.5 py-0.5 rounded bg-black/20 font-mono">6</span>
-            </button>
-            <button
-              type="button"
-              onClick={() => setActiveTab('guides')}
-              className={`px-3 py-2 rounded-lg font-mono text-xs font-bold transition flex items-center gap-1.5 cursor-pointer ${
-                activeTab === 'guides'
-                  ? 'bg-emerald-500 text-slate-950 shadow-md shadow-emerald-500/20'
-                  : 'text-slate-400 hover:text-white hover:bg-slate-800'
-              }`}
-            >
-              <span>📚 現場特集</span>
-              <span className="text-[10px] px-1.5 py-0.5 rounded bg-black/20 font-mono">8</span>
-            </button>
-          </div>
+          <h2 className="text-2xl sm:text-3xl font-extrabold text-white font-sans">
+            カリキュラム全目次（全44章）
+          </h2>
+          <p className="text-xs sm:text-sm text-slate-400 font-sans">
+            各章をクリックすると、詳細な解説・対比コード・ブラウザ演習ページが開きます。
+          </p>
         </div>
 
-        {/* 選択中タブの説明バナー */}
-        <div className="p-3.5 rounded-2xl bg-slate-950/60 border border-slate-800/80 flex items-center justify-between gap-3 text-xs font-mono">
-          <div className="flex items-center gap-2">
-            <span className={`w-2.5 h-2.5 rounded-full shrink-0 ${
-              activeTab === 'classic' ? 'bg-amber-400 shadow-sm shadow-amber-400/50' :
-              activeTab === 'modern' ? 'bg-cyan-400 shadow-sm shadow-cyan-400/50' :
-              activeTab === 'reading' ? 'bg-purple-400 shadow-sm shadow-purple-400/50' :
-              'bg-emerald-400 shadow-sm shadow-emerald-400/50'
-            }`} />
-            <span className="text-slate-300">
-              {activeTab === 'classic' && '🏛️ クラシック基礎編（全16章・L1〜L16）：500行スパゲティコードからクラス化、動的メモリ、vtable多態性まで徹底リファクタ'}
-              {activeTab === 'modern' && '🚀 モダン実践編（全14章・M1〜M14）：スマートポインタ、ムーブ、ラムダ、ECS、C++20コルーチンまで現代実戦規格'}
-              {activeTab === 'reading' && '🧭 コード読解演習（全6ステップ・R1〜R6）：OSS実地解読、マルチスレッド競合、メモリ破壊（ASan）のプロ鑑識法'}
-              {activeTab === 'guides' && '📚 現場特集・実践チートシート（全8ガイド）：GoogleTest/TDD品質保証、UML設計書、文法チートシート、言語思想'}
+        {/* コース選択コントロール（ラジオボタン ＆ ドロップダウンセレクター） */}
+        <div className="p-4 sm:p-5 rounded-2xl bg-slate-900/90 border border-slate-800 space-y-4 shadow-xl">
+          {/* ヘッダー部：説明ラベル ＆ ドロップダウンリスト（プルダウン） */}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-800/80">
+            <div className="flex items-center gap-2">
+              <span className="w-2.5 h-2.5 rounded-full bg-cyan-400 animate-pulse" />
+              <span className="text-sm sm:text-base font-bold text-white font-sans">
+                表示コースを選択（ラジオボタン または プルダウンで切替）：
+              </span>
+            </div>
+
+            {/* ドロップダウン選択リスト（プルダウン） */}
+            <div className="flex items-center gap-2">
+              <label htmlFor="course-select-dropdown" className="text-xs font-mono text-slate-400 whitespace-nowrap">
+                プルダウン:
+              </label>
+              <select
+                id="course-select-dropdown"
+                value={activeTab}
+                onChange={(e) => setActiveTab(e.target.value as any)}
+                aria-label="コース選択ドロップダウン"
+                className="w-full sm:w-auto py-2 px-3 rounded-xl bg-slate-950 border border-slate-700 text-white font-mono text-xs cursor-pointer focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition shadow-inner font-bold"
+              >
+                <option value="classic">🏛️ クラシック基礎編 (全16章 / L1〜L16)</option>
+                <option value="modern">🚀 モダン実践編 (全14章 / M1〜M14)</option>
+                <option value="reading">🧭 コード読解演習 (全6章 / R1〜R6)</option>
+                <option value="guides">📚 現場特集・チートシート (全8本 / G1〜G5, コラム)</option>
+              </select>
+            </div>
+          </div>
+
+          {/* ラジオボタン式 4-Way セレクターカード */}
+          <div 
+            role="radiogroup" 
+            aria-label="表示コース選択ラジオボタン"
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3"
+          >
+            {/* 1. クラシック基礎 */}
+            <button
+              type="button"
+              role="radio"
+              aria-checked={activeTab === 'classic'}
+              onClick={() => setActiveTab('classic')}
+              className={`p-3.5 rounded-xl border text-left transition-all cursor-pointer flex flex-col justify-between gap-2.5 ${
+                activeTab === 'classic'
+                  ? 'bg-amber-950/40 border-amber-400 shadow-lg shadow-amber-500/10 ring-1 ring-amber-400/50'
+                  : 'bg-slate-950/60 border-slate-800/90 hover:border-slate-700 hover:bg-slate-900/60'
+              }`}
+            >
+              <div className="flex items-center justify-between gap-2">
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <span className={`w-4 h-4 rounded-full border-2 flex items-center justify-center shrink-0 ${
+                    activeTab === 'classic' ? 'border-amber-400 bg-amber-950' : 'border-slate-600 bg-slate-900'
+                  }`}>
+                    {activeTab === 'classic' && <span className="w-2 h-2 rounded-full bg-amber-400" />}
+                  </span>
+                  <span className={`text-sm font-bold font-sans truncate ${activeTab === 'classic' ? 'text-amber-300' : 'text-slate-300'}`}>
+                    🏛️ クラシック基礎
+                  </span>
+                </div>
+                <span className={`text-[11px] font-mono font-bold px-2 py-0.5 rounded-full border shrink-0 ${
+                  activeTab === 'classic'
+                    ? 'bg-amber-950 text-amber-300 border-amber-500/50'
+                    : 'bg-slate-900 text-slate-400 border-slate-800'
+                }`}>
+                  16章
+                </span>
+              </div>
+              <p className="text-[11px] text-slate-400 pl-6.5 font-sans truncate">
+                L1〜L16 / C言語・OOPの原点
+              </p>
+            </button>
+
+            {/* 2. モダン実践 */}
+            <button
+              type="button"
+              role="radio"
+              aria-checked={activeTab === 'modern'}
+              onClick={() => setActiveTab('modern')}
+              className={`p-3.5 rounded-xl border text-left transition-all cursor-pointer flex flex-col justify-between gap-2.5 ${
+                activeTab === 'modern'
+                  ? 'bg-cyan-950/40 border-cyan-400 shadow-lg shadow-cyan-500/10 ring-1 ring-cyan-400/50'
+                  : 'bg-slate-950/60 border-slate-800/90 hover:border-slate-700 hover:bg-slate-900/60'
+              }`}
+            >
+              <div className="flex items-center justify-between gap-2">
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <span className={`w-4 h-4 rounded-full border-2 flex items-center justify-center shrink-0 ${
+                    activeTab === 'modern' ? 'border-cyan-400 bg-cyan-950' : 'border-slate-600 bg-slate-900'
+                  }`}>
+                    {activeTab === 'modern' && <span className="w-2 h-2 rounded-full bg-cyan-400" />}
+                  </span>
+                  <span className={`text-sm font-bold font-sans truncate ${activeTab === 'modern' ? 'text-cyan-300' : 'text-slate-300'}`}>
+                    🚀 モダン実践
+                  </span>
+                </div>
+                <span className={`text-[11px] font-mono font-bold px-2 py-0.5 rounded-full border shrink-0 ${
+                  activeTab === 'modern'
+                    ? 'bg-cyan-950 text-cyan-300 border-cyan-500/50'
+                    : 'bg-slate-900 text-slate-400 border-slate-800'
+                }`}>
+                  14章
+                </span>
+              </div>
+              <p className="text-[11px] text-slate-400 pl-6.5 font-sans truncate">
+                M1〜M14 / C++11〜20実戦規格
+              </p>
+            </button>
+
+            {/* 3. コード読解 */}
+            <button
+              type="button"
+              role="radio"
+              aria-checked={activeTab === 'reading'}
+              onClick={() => setActiveTab('reading')}
+              className={`p-3.5 rounded-xl border text-left transition-all cursor-pointer flex flex-col justify-between gap-2.5 ${
+                activeTab === 'reading'
+                  ? 'bg-purple-950/40 border-purple-400 shadow-lg shadow-purple-500/10 ring-1 ring-purple-400/50'
+                  : 'bg-slate-950/60 border-slate-800/90 hover:border-slate-700 hover:bg-slate-900/60'
+              }`}
+            >
+              <div className="flex items-center justify-between gap-2">
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <span className={`w-4 h-4 rounded-full border-2 flex items-center justify-center shrink-0 ${
+                    activeTab === 'reading' ? 'border-purple-400 bg-purple-950' : 'border-slate-600 bg-slate-900'
+                  }`}>
+                    {activeTab === 'reading' && <span className="w-2 h-2 rounded-full bg-purple-400" />}
+                  </span>
+                  <span className={`text-sm font-bold font-sans truncate ${activeTab === 'reading' ? 'text-purple-300' : 'text-slate-300'}`}>
+                    🧭 コード読解
+                  </span>
+                </div>
+                <span className={`text-[11px] font-mono font-bold px-2 py-0.5 rounded-full border shrink-0 ${
+                  activeTab === 'reading'
+                    ? 'bg-purple-950 text-purple-300 border-purple-500/50'
+                    : 'bg-slate-900 text-slate-400 border-slate-800'
+                }`}>
+                  6章
+                </span>
+              </div>
+              <p className="text-[11px] text-slate-400 pl-6.5 font-sans truncate">
+                R1〜R6 / 現場鑑識・OSS解読
+              </p>
+            </button>
+
+            {/* 4. 現場特集 */}
+            <button
+              type="button"
+              role="radio"
+              aria-checked={activeTab === 'guides'}
+              onClick={() => setActiveTab('guides')}
+              className={`p-3.5 rounded-xl border text-left transition-all cursor-pointer flex flex-col justify-between gap-2.5 ${
+                activeTab === 'guides'
+                  ? 'bg-emerald-950/40 border-emerald-400 shadow-lg shadow-emerald-500/10 ring-1 ring-emerald-400/50'
+                  : 'bg-slate-950/60 border-slate-800/90 hover:border-slate-700 hover:bg-slate-900/60'
+              }`}
+            >
+              <div className="flex items-center justify-between gap-2">
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <span className={`w-4 h-4 rounded-full border-2 flex items-center justify-center shrink-0 ${
+                    activeTab === 'guides' ? 'border-emerald-400 bg-emerald-950' : 'border-slate-600 bg-slate-900'
+                  }`}>
+                    {activeTab === 'guides' && <span className="w-2 h-2 rounded-full bg-emerald-400" />}
+                  </span>
+                  <span className={`text-sm font-bold font-sans truncate ${activeTab === 'guides' ? 'text-emerald-300' : 'text-slate-300'}`}>
+                    📚 現場特集
+                  </span>
+                </div>
+                <span className={`text-[11px] font-mono font-bold px-2 py-0.5 rounded-full border shrink-0 ${
+                  activeTab === 'guides'
+                    ? 'bg-emerald-950 text-emerald-300 border-emerald-500/50'
+                    : 'bg-slate-900 text-slate-400 border-slate-800'
+                }`}>
+                  8本
+                </span>
+              </div>
+              <p className="text-[11px] text-slate-400 pl-6.5 font-sans truncate">
+                G1〜G5, コラム / 現場特集
+              </p>
+            </button>
+          </div>
+
+          {/* 選択中コースの詳細説明バナー */}
+          <div className="p-3 sm:p-3.5 rounded-xl bg-slate-950/80 border border-slate-800/90 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs font-mono">
+            <div className="flex items-center gap-2.5 min-w-0">
+              <span className={`w-2.5 h-2.5 rounded-full shrink-0 ${
+                activeTab === 'classic' ? 'bg-amber-400 shadow-sm shadow-amber-400/50' :
+                activeTab === 'modern' ? 'bg-cyan-400 shadow-sm shadow-cyan-400/50' :
+                activeTab === 'reading' ? 'bg-purple-400 shadow-sm shadow-purple-400/50' :
+                'bg-emerald-400 shadow-sm shadow-emerald-400/50'
+              }`} />
+              <span className="text-slate-300 truncate">
+                {activeTab === 'classic' && '🏛️ クラシック基礎編（全16章・L1〜L16）：500行スパゲティコードからクラス化、動的メモリ、vtable多態性まで徹底リファクタ'}
+                {activeTab === 'modern' && '🚀 モダン実践編（全14章・M1〜M14）：スマートポインタ、ムーブ、ラムダ、ECS、C++20コルーチンまで現代実戦規格'}
+                {activeTab === 'reading' && '🧭 コード読解演習（全6ステップ・R1〜R6）：OSS実地解読、マルチスレッド競合、メモリ破壊（ASan）のプロ鑑識法'}
+                {activeTab === 'guides' && '📚 現場特集・実践チートシート（全8本）：実践ガイド（G1〜G5：環境構築・文法・読解・UML・GoogleTest）＋ 特別コラム3編'}
+              </span>
+            </div>
+            <span className="text-slate-400 font-bold shrink-0 self-end sm:self-auto">
+              全 {currentList.length} 件を表示中
             </span>
           </div>
-          <span className="text-slate-500 font-bold shrink-0">
-            {currentList.length} 件
-          </span>
         </div>
 
         {/* リスト表示 */}

@@ -5,7 +5,7 @@ export const CPP_SYNTAX_REFERENCE_GUIDE: Chapter = {
   slug: 'guide-cpp-syntax-reference',
   category: 'guide',
   courseTrack: 'guide',
-  courseChapterCode: 'G5',
+  courseChapterCode: 'G2',
   title: '【付録】ゼロから引ける！C++基本文法＆機能チートシート総覧',
   subtitle: '〜変数・型・制御構文・ポインタ・参照・関数・クラス・STL・キャストまで逆引き完全リファレンス〜',
   badge: '付録：C++文法総覧',

@@ -5,7 +5,7 @@ export const ENVIRONMENT_SETUP_GUIDE: Chapter = {
   slug: 'guide-environment-setup',
   category: 'guide',
   courseTrack: 'guide',
-  courseChapterCode: 'G2',
+  courseChapterCode: 'G1',
   title: '実際に組んで動かす！C++ローカル開発環境構築ガイド',
   subtitle: '〜VS Code ＋ CMake ＋ モダンコンパイラで始める実機ビルド＆デバッグ〜',
   badge: '実践環境構築',

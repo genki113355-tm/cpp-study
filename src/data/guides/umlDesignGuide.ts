@@ -5,7 +5,7 @@ export const UML_DESIGN_GUIDE: Chapter = {
   slug: 'guide-uml-design',
   category: 'guide',
   courseTrack: 'guide',
-  courseChapterCode: 'G3',
+  courseChapterCode: 'G4',
   title: 'C++プログラマのためのUML設計書入門',
   subtitle: '〜コードと設計図の相互変換を完全マスター〜',
   badge: '実践UML設計書',

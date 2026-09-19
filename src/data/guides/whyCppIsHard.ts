@@ -5,7 +5,7 @@ export const WHY_CPP_IS_HARD_COLUMN: Chapter = {
   slug: 'column-why-cpp-is-hard',
   category: 'column',
   courseTrack: 'guide',
-  courseChapterCode: 'COL1',
+  courseChapterCode: 'COL2',
   title: 'なぜC++は難しいと言われるのか？',
   subtitle: '〜40年の進化とゼロオーバーヘッドの代償〜',
   badge: '言語思想コラム',

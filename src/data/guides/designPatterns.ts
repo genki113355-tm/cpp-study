@@ -5,7 +5,7 @@ export const DESIGN_PATTERNS_COLUMN: Chapter = {
   slug: 'column-design-patterns',
   category: 'column',
   courseTrack: 'guide',
-  courseChapterCode: 'COL3',
+  courseChapterCode: 'COL1',
   title: '【特別コラム】現場で役立つデザインパターン入門 〜GoFの知恵と現代C++の設計美学〜',
   subtitle: '「そもそも何のためにあるのか？」から典型3分類の実装コード、モダンC++でのスマートな進化と過剰設計の罠まで',
   badge: '特別コラム：デザインパターン',

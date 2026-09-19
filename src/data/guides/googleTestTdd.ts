@@ -5,7 +5,7 @@ export const GOOGLE_TEST_TDD_GUIDE: Chapter = {
   slug: 'guide-googletest-tdd',
   category: 'guide',
   courseTrack: 'guide',
-  courseChapterCode: 'G4',
+  courseChapterCode: 'G5',
   title: '品質保証特集：GoogleTest（gtest）とTDD（テスト駆動開発）実践入門',
   subtitle: '「動かすまでバグが分からない」からの脱却！CI/CDで壊れない堅牢なC++設計とテスト技法',
   badge: '品質保証・TDD特集',
