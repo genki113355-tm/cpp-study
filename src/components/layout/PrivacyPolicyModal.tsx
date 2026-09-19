@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import { X, Shield, Eye, Lock, FileText, CheckCircle2 } from 'lucide-react';
 
 interface PrivacyPolicyModalProps {
@@ -119,10 +119,31 @@ export const PrivacyPolicyModal: React.FC<PrivacyPolicyModalProps> = ({ isOpen, 
             </p>
           </section>
 
+          {/* 第5条: 運営者・技術監修体制（E-E-A-T）及び教材コードの利用について */}
+          <section className="space-y-2 rounded-2xl bg-slate-900/60 p-4 border border-slate-800">
+            <h3 className="text-sm sm:text-base font-bold text-cyan-300 flex items-center gap-2">
+              <Shield className="w-4 h-4 text-cyan-400" />
+              <span>5. 技術監修体制（E-E-A-T）及び教材コードの利用について</span>
+            </h3>
+            <p>
+              当サイトのカリキュラムおよび教材プログラムは、現役の組込みソフトウェア・制御システム開発に従事するC++エンジニアが技術監修を行っています。
+            </p>
+            <p>
+              組込み現場で厳格に求められるメモリ管理・リソース解放（RAII）・例外安全性・ポインタの堅牢な取扱いといった本質的な技術を、直感的に理解しやすいゲーム開発の過程を通して実践的に体得できるようカリキュラムを設計しています。
+            </p>
+            <p>
+              掲載されているモダンC++コードは、主要3大コンパイラ（GCC 13+、Clang 17+、MSVC 2022）においてC++11〜C++20標準規格に準拠したビルドおよび動作検証を行っています。
+            </p>
+            <div className="p-3 rounded-xl bg-amber-950/40 border border-amber-500/40 text-xs text-amber-200/90 leading-relaxed">
+              <span className="font-bold text-amber-300">⚠️ 教材用アンチパターンコードの取扱い：</span><br />
+              クラシック基礎編等に掲載されている「C言語的アプローチ」や「第1章〜第4章のレガシーコード」は、設計の破綻やメモリリーク・スパゲティ構造を体感していただくための【反面教師としての学習用アンチパターン】です。これらを商用・実務プロダクション環境へ転用・コピペしたことにより生じたバグや損害について、当サイト運営チームは一切の責任を負いかねます。実務開発においては、各章で推奨しているモダンC++設計（RAII、スマートポインタ等）をご採用ください。
+            </div>
+          </section>
+
           {/* 制定日 */}
           <div className="pt-2 text-right text-xs text-slate-500 font-mono">
             制定日：2026年9月19日<br />
-            運営者：シロクマC++ラボ運営チーム
+            運営者：シロクマC++ラボ 技術編集部
           </div>
         </div>
 

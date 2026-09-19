@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import { Copy, Check, FileText, FileCode, Sparkles } from 'lucide-react';
+import { Copy, Check, FileText, FileCode, Sparkles, AlertTriangle } from 'lucide-react';
 import Prism from 'prismjs';
 import 'prismjs/components/prism-c';
 import 'prismjs/components/prism-cpp';
@@ -17,6 +17,25 @@ export const CodeViewer: React.FC<CodeViewerProps> = ({ files, targetHighlight }
   const [blinkLineNumber, setBlinkLineNumber] = useState<number | null>(null);
 
   const currentFile = files[activeTab] || files[0];
+
+  const isAntiPatternFile = useMemo(() => {
+    if (!currentFile) return false;
+    const name = currentFile.filename.toLowerCase();
+    const desc = (currentFile.description || '').toLowerCase();
+    const code = currentFile.code;
+    return (
+      name.includes('spaghetti') ||
+      name.includes('legacy') ||
+      name.includes('before') ||
+      desc.includes('スパゲティ') ||
+      desc.includes('アンチパターン') ||
+      desc.includes('破綻') ||
+      desc.includes('悪い例') ||
+      code.includes('// ❌') ||
+      code.includes('// 【アンチパターン】') ||
+      code.includes('// ※悪い例')
+    );
+  }, [currentFile]);
 
   const handleCopy = async () => {
     if (!currentFile) return;
@@ -202,6 +221,21 @@ export const CodeViewer: React.FC<CodeViewerProps> = ({ files, targetHighlight }
         <div className="px-5 py-2 bg-slate-900/40 border-b border-slate-800/60 text-xs sm:text-sm text-slate-300 flex items-center gap-2.5 font-sans">
           <span className="text-cyan-400 font-mono font-bold">▸</span>
           <span>{currentFile.description}</span>
+        </div>
+      )}
+
+      {/* アンチパターン警告バナー（学習用コードの誤用・コピペ事故防止） */}
+      {isAntiPatternFile && (
+        <div className="px-5 py-2.5 bg-rose-950/80 border-b border-rose-500/50 text-xs text-rose-200 flex items-center justify-between gap-3 font-sans shadow-inner">
+          <div className="flex items-center gap-2.5 flex-wrap">
+            <span className="px-2 py-0.5 rounded-full bg-rose-900 text-rose-100 font-mono font-bold text-[10px] flex items-center gap-1 border border-rose-600/50 shadow-sm">
+              <AlertTriangle className="w-3 h-3 text-rose-300" />
+              <span>学習用アンチパターン</span>
+            </span>
+            <span className="leading-relaxed">
+              このファイルは設計の破綻・問題点（グローバル依存、生ポインタ、結合度過多など）を体感するための教材用コードです。<strong>実務プロダクション環境へのコピペ転用は避けてください。</strong>
+            </span>
+          </div>
         </div>
       )}
 

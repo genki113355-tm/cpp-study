@@ -8,7 +8,8 @@ import {
   Zap, 
   ExternalLink,
   ChevronRight,
-  ShieldCheck
+  ShieldCheck,
+  Shield
 } from 'lucide-react';
 import { 
   CLASSIC_CHAPTERS, 
@@ -885,6 +886,42 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
             <span>サイトを見る</span>
             <ExternalLink className="w-4 h-4" />
           </a>
+        </div>
+      </section>
+
+      {/* 9. 品質保証・技術監修体制（E-E-A-T）と商標に関する表示 */}
+      <section className="rounded-3xl border border-slate-800 bg-slate-900/60 p-6 sm:p-8 space-y-4">
+        <div className="flex items-center gap-2">
+          <Shield className="w-5 h-5 text-cyan-400" />
+          <h3 className="text-base sm:text-lg font-bold text-white font-sans">
+            品質保証・技術監修（E-E-A-T）および商標に関する表示
+          </h3>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs text-slate-300 font-sans leading-relaxed">
+          <div className="p-4 rounded-2xl bg-slate-950/80 border border-slate-800 space-y-2">
+            <div className="font-bold text-cyan-300 font-mono flex items-center gap-1.5 text-xs">
+              <span>🛠️ 現役組込みエンジニア監修 ＆ 動作検証環境</span>
+            </div>
+            <p>
+              シロクマC++ラボの全教材・解説コードは、現役の組込みソフトウェア・制御システム開発に従事するC++エンジニアが企画・執筆・技術監修を行っています。
+            </p>
+            <p className="text-slate-400 text-[11px]">
+              組込み現場で厳格に求められる「メモリ安全性・生ポインタの撲滅・RAIIリソース管理」の本質を、直感的に動くゲーム教材を題材に体系化。主要3大コンパイラ（GCC 13+ / Clang 17+ / MSVC 2022, C++11〜C++20準拠）にて動作検証済みです。
+            </p>
+          </div>
+
+          <div className="p-4 rounded-2xl bg-slate-950/80 border border-slate-800 space-y-2">
+            <div className="font-bold text-amber-300 font-mono flex items-center gap-1.5 text-xs">
+              <span>⚖️ 商標に関する権利表示 ＆ 免責事項</span>
+            </div>
+            <p>
+              「スペースインベーダー（SPACE INVADERS）」は株式会社タイトーの登録商標です。当サイトで提供する「RETRO SPACE SHOOTER」および各章の演習プログラムは、古典的シューティングゲームの基本原理とオブジェクト指向設計を習得するための完全独自開発による教育用コードです。株式会社タイトーとは一切関係ありません。
+            </p>
+            <p className="text-slate-400 text-[11px]">
+              ※クラシック基礎編の初期章に含まれるスパゲティ・C言語的コードは設計比較のための学習用アンチパターンです。実務プロダクション環境へのコピペ転用はお控えください。
+            </p>
+          </div>
         </div>
       </section>
     </div>
