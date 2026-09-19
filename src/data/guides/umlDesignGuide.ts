@@ -1,7 +1,7 @@
 import { Chapter } from '../../types/curriculum';
 
 export const UML_DESIGN_GUIDE: Chapter = {
-  id: 104,
+  id: 108,
   slug: 'guide-uml-design',
   category: 'guide',
   courseTrack: 'guide',

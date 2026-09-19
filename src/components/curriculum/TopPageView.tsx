@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { 
   ArrowRight, 
   BookOpen, 
@@ -33,19 +33,19 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
   const [activeTab, setActiveTab] = useState<'classic' | 'modern' | 'reading' | 'guides'>('classic');
 
   const getChapterCode = (ch: Chapter): string => {
-    if (ch.courseChapterCode) return ch.courseChapterCode;
+    if (ch.courseTrack === 'classic') {
+      const chNum = (ch.courseChapterCode || `C${ch.id}`).replace(/^[CML]/, '');
+      return `L${chNum}`;
+    }
+    if (ch.courseTrack === 'modern') {
+      const chNum = (ch.courseChapterCode || `M${ch.id}`).replace(/^[CML]/, '');
+      return `M${chNum}`;
+    }
     if (ch.courseTrack === 'reading') {
       const idx = READING_CHAPTERS.findIndex(r => r.id === ch.id);
       return idx !== -1 ? `R${idx + 1}` : 'R';
     }
-    if (ch.courseTrack === 'modern') {
-      const idx = MODERN_CHAPTERS.findIndex(m => m.id === ch.id);
-      return idx !== -1 ? `M${idx + 1}` : 'M';
-    }
-    if (ch.courseTrack === 'classic') {
-      const idx = CLASSIC_CHAPTERS.findIndex(c => c.id === ch.id);
-      return idx !== -1 ? `L${idx + 1}` : 'L';
-    }
+    if (ch.courseChapterCode) return ch.courseChapterCode;
     if (ch.slug.includes('syntax')) return '文法';
     if (ch.slug.includes('tdd')) return 'TDD';
     if (ch.slug.includes('reading')) return '読解';
@@ -57,11 +57,20 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
     return 'G';
   };
 
-  const currentList = 
-    activeTab === 'classic' ? CLASSIC_CHAPTERS :
-    activeTab === 'modern' ? MODERN_CHAPTERS :
-    activeTab === 'reading' ? READING_CHAPTERS :
-    SPECIAL_GUIDES;
+  const currentList = useMemo(() => {
+    switch (activeTab) {
+      case 'classic':
+        return CLASSIC_CHAPTERS.filter(ch => ch.courseTrack === 'classic');
+      case 'modern':
+        return MODERN_CHAPTERS.filter(ch => ch.courseTrack === 'modern');
+      case 'reading':
+        return READING_CHAPTERS.filter(ch => ch.courseTrack === 'reading');
+      case 'guides':
+        return SPECIAL_GUIDES.filter(ch => ch.category === 'guide' || ch.category === 'column' || ch.courseTrack === 'guide');
+      default:
+        return CLASSIC_CHAPTERS.filter(ch => ch.courseTrack === 'classic');
+    }
+  }, [activeTab]);
 
   const classicCompleted = CLASSIC_CHAPTERS.filter(c => completedChapters.includes(c.id)).length;
   const modernCompleted = MODERN_CHAPTERS.filter(c => completedChapters.includes(c.id)).length;
@@ -508,34 +517,68 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
           </div>
         </div>
 
+        {/* 選択中タブの説明バナー */}
+        <div className="p-3.5 rounded-2xl bg-slate-950/60 border border-slate-800/80 flex items-center justify-between gap-3 text-xs font-mono">
+          <div className="flex items-center gap-2">
+            <span className={`w-2.5 h-2.5 rounded-full shrink-0 ${
+              activeTab === 'classic' ? 'bg-amber-400 shadow-sm shadow-amber-400/50' :
+              activeTab === 'modern' ? 'bg-cyan-400 shadow-sm shadow-cyan-400/50' :
+              activeTab === 'reading' ? 'bg-purple-400 shadow-sm shadow-purple-400/50' :
+              'bg-emerald-400 shadow-sm shadow-emerald-400/50'
+            }`} />
+            <span className="text-slate-300">
+              {activeTab === 'classic' && '🏛️ クラシック基礎編（全16章・L1〜L16）：500行スパゲティコードからクラス化、動的メモリ、vtable多態性まで徹底リファクタ'}
+              {activeTab === 'modern' && '🚀 モダン実践編（全14章・M1〜M14）：スマートポインタ、ムーブ、ラムダ、ECS、C++20コルーチンまで現代実戦規格'}
+              {activeTab === 'reading' && '🧭 コード読解演習（全6ステップ・R1〜R6）：OSS実地解読、マルチスレッド競合、メモリ破壊（ASan）のプロ鑑識法'}
+              {activeTab === 'guides' && '📚 現場特集・実践チートシート（全8ガイド）：GoogleTest/TDD品質保証、UML設計書、文法チートシート、言語思想'}
+            </span>
+          </div>
+          <span className="text-slate-500 font-bold shrink-0">
+            {currentList.length} 件
+          </span>
+        </div>
+
         {/* リスト表示 */}
         <div className="space-y-2.5">
           {currentList.map((ch) => {
             const isCompleted = completedChapters.includes(ch.id);
             const chapterCode = getChapterCode(ch);
 
-            // テーマ色の決定
+            // トラックに応じたテーマ色
+            const isClassic = ch.courseTrack === 'classic';
+            const isModern = ch.courseTrack === 'modern';
+            const isReading = ch.courseTrack === 'reading';
+
             const badgeStyle = 
-              activeTab === 'classic'
+              isClassic
                 ? 'bg-amber-950/80 text-amber-300 border-amber-500/40'
-                : activeTab === 'modern'
+                : isModern
                 ? 'bg-cyan-950/80 text-cyan-300 border-cyan-500/40'
-                : activeTab === 'reading'
+                : isReading
                 ? 'bg-purple-950/80 text-purple-300 border-purple-500/40'
                 : 'bg-emerald-950/80 text-emerald-300 border-emerald-500/40';
 
             const hoverBorder =
-              activeTab === 'classic'
+              isClassic
                 ? 'hover:border-amber-400/60'
-                : activeTab === 'modern'
+                : isModern
                 ? 'hover:border-cyan-400/60'
-                : activeTab === 'reading'
+                : isReading
                 ? 'hover:border-purple-400/60'
                 : 'hover:border-emerald-400/60';
 
+            const hoverTitle =
+              isClassic
+                ? 'group-hover:text-amber-300'
+                : isModern
+                ? 'group-hover:text-cyan-300'
+                : isReading
+                ? 'group-hover:text-purple-300'
+                : 'group-hover:text-emerald-300';
+
             return (
               <a
-                key={ch.id}
+                key={`${activeTab}-${ch.id}-${ch.slug}`}
                 href={`/${ch.slug}`}
                 onClick={(e) => {
                   e.preventDefault();
@@ -549,7 +592,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
                   </span>
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center gap-2 flex-wrap">
-                      <h3 className="text-sm sm:text-base font-bold text-white group-hover:text-cyan-300 transition-colors truncate">
+                      <h3 className={`text-sm sm:text-base font-bold text-white ${hoverTitle} transition-colors truncate`}>
                         {ch.title}
                       </h3>
                       {isCompleted && (
