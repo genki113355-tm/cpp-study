@@ -129,6 +129,10 @@ export const GameEmulator: React.FC<GameEmulatorProps> = ({ version, chapterCode
   const [sandboxTripleShot, setSandboxTripleShot] = useState<boolean>(false);
   const [showVirtualPad, setShowVirtualPad] = useState<boolean>(true);
   const [showEvolutionDiff, setShowEvolutionDiff] = useState<boolean>(false);
+  const [renderMode, setRenderMode] = useState<'gui' | 'cui'>('gui');
+
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const starsRef = useRef<Array<{ x: number; y: number; s: number; alpha: number }>>([]);
 
   const invaderDirRef = useRef<number>(1);
   const invaderTimerRef = useRef<number>(0);
@@ -822,6 +826,385 @@ export const GameEmulator: React.FC<GameEmulatorProps> = ({ version, chapterCode
 
   const grid = renderScreen();
 
+  // 星空データの事前生成
+  if (starsRef.current.length === 0) {
+    for (let i = 0; i < 70; i++) {
+      starsRef.current.push({
+        x: Math.random() * 600,
+        y: Math.random() * 300,
+        s: Math.random() < 0.25 ? 2 : 1,
+        alpha: 0.3 + Math.random() * 0.7,
+      });
+    }
+  }
+
+  // HTML5 Canvas による2Dアーケードグラフィック（スプライト）描画
+  const drawCanvasGame = useCallback((ctx: CanvasRenderingContext2D) => {
+    // 1. 背景（ディープスペース星空 ＆ 底面防衛グリッド）
+    ctx.fillStyle = '#030712';
+    ctx.fillRect(0, 0, 600, 300);
+
+    // 星の瞬き描画
+    ctx.fillStyle = '#ffffff';
+    const now = Date.now();
+    starsRef.current.forEach((st) => {
+      ctx.globalAlpha = st.alpha * (0.6 + Math.sin(now / 400 + st.x) * 0.4);
+      ctx.fillRect(st.x, st.y, st.s, st.s);
+    });
+    ctx.globalAlpha = 1.0;
+
+    // 底面防衛ライン
+    ctx.strokeStyle = 'rgba(6, 182, 212, 0.35)';
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.moveTo(0, 280);
+    ctx.lineTo(600, 280);
+    ctx.stroke();
+
+    for (let x = 0; x <= 600; x += 40) {
+      ctx.strokeStyle = 'rgba(6, 182, 212, 0.08)';
+      ctx.beginPath();
+      ctx.moveTo(x, 280);
+      ctx.lineTo(x, 300);
+      ctx.stroke();
+    }
+
+    // 2. 自機（プレイヤー戦闘機スプライト）
+    const px = (playerX + 1.5) * 20;
+    const py = 270;
+
+    ctx.save();
+    ctx.translate(px, py);
+
+    // エンジン噴射炎（アニメーション）
+    const flameH = 5 + Math.sin(now / 50) * 4;
+    const flameGrad = ctx.createLinearGradient(0, 8, 0, 8 + flameH);
+    flameGrad.addColorStop(0, '#38bdf8');
+    flameGrad.addColorStop(0.5, '#0284c7');
+    flameGrad.addColorStop(1, 'transparent');
+    ctx.fillStyle = flameGrad;
+    ctx.beginPath();
+    ctx.moveTo(-5, 8);
+    ctx.lineTo(0, 8 + flameH);
+    ctx.lineTo(5, 8);
+    ctx.closePath();
+    ctx.fill();
+
+    // 戦闘機ボディ
+    ctx.fillStyle = '#0284c7';
+    ctx.strokeStyle = '#38bdf8';
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.moveTo(0, -10); // 機首
+    ctx.lineTo(18, 8);  // 右翼端
+    ctx.lineTo(11, 6);  // 右内側
+    ctx.lineTo(7, 8);   // 右エンジン
+    ctx.lineTo(-7, 8);  // 左エンジン
+    ctx.lineTo(-11, 6); // 左内側
+    ctx.lineTo(-18, 8); // 左翼端
+    ctx.closePath();
+    ctx.fill();
+    ctx.stroke();
+
+    // 内側装甲
+    ctx.fillStyle = '#0ea5e9';
+    ctx.beginPath();
+    ctx.moveTo(0, -8);
+    ctx.lineTo(7, 5);
+    ctx.lineTo(-7, 5);
+    ctx.closePath();
+    ctx.fill();
+
+    // キャノピー（コックピットガラス）
+    ctx.fillStyle = '#f0f9ff';
+    ctx.shadowColor = '#38bdf8';
+    ctx.shadowBlur = 6;
+    ctx.beginPath();
+    ctx.ellipse(0, -2, 2.5, 4.5, 0, 0, Math.PI * 2);
+    ctx.fill();
+
+    // 翼端レーザーキャノン
+    ctx.fillStyle = '#e0f2fe';
+    ctx.fillRect(-18, -2, 2, 8);
+    ctx.fillRect(16, -2, 2, 8);
+    ctx.restore();
+
+    // 3. 護衛ビットドローン（周回衛星）
+    drones.forEach((d) => {
+      const dx = (playerX + 1.5 + Math.cos(d.angle) * 3.2) * 20;
+      const dy = (13.5 + Math.sin(d.angle) * 1.5) * 20;
+      ctx.save();
+      ctx.translate(dx, dy);
+      ctx.shadowColor = '#06b6d4';
+      ctx.shadowBlur = 8;
+      ctx.fillStyle = '#06b6d4';
+      ctx.beginPath();
+      ctx.arc(0, 0, 4.5, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = '#ffffff';
+      ctx.beginPath();
+      ctx.arc(0, 0, 2, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = '#67e8f9';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.ellipse(0, 0, 7.5, 3, now / 200, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.restore();
+    });
+
+    // 4. 敵機（インベーダー各種スプライト）
+    const walkStep = Math.floor(now / 350) % 2;
+
+    invaders.forEach((inv) => {
+      if (!inv.alive) return;
+      const ix = (inv.x + 0.5) * 20;
+      const iy = (inv.y + 0.5) * 20;
+
+      ctx.save();
+      ctx.translate(ix, iy);
+
+      if (inv.type === 'boss') {
+        // 巨大母艦ボス [B:HP12]
+        ctx.shadowColor = '#ef4444';
+        ctx.shadowBlur = 12;
+
+        ctx.fillStyle = '#991b1b';
+        ctx.strokeStyle = '#ef4444';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(0, 10);
+        ctx.lineTo(26, 4);
+        ctx.lineTo(24, -8);
+        ctx.lineTo(8, -10);
+        ctx.lineTo(0, -7);
+        ctx.lineTo(-8, -10);
+        ctx.lineTo(-24, -8);
+        ctx.lineTo(-26, 4);
+        ctx.closePath();
+        ctx.fill();
+        ctx.stroke();
+
+        ctx.fillStyle = '#dc2626';
+        ctx.fillRect(-22, 4, 6, 8);
+        ctx.fillRect(16, 4, 6, 8);
+        ctx.fillRect(-5, 6, 10, 7);
+
+        ctx.fillStyle = '#facc15';
+        ctx.beginPath();
+        ctx.arc(0, -1, 4 + Math.sin(now / 120) * 1.5, 0, Math.PI * 2);
+        ctx.fill();
+
+        // ボスHPバー
+        const bW = 44;
+        const bH = 4;
+        const bX = -bW / 2;
+        const bY = -18;
+        ctx.fillStyle = '#1e293b';
+        ctx.fillRect(bX, bY, bW, bH);
+        ctx.fillStyle = '#ef4444';
+        const hpRatio = Math.max(0, inv.hp / inv.maxHp);
+        ctx.fillRect(bX, bY, bW * hpRatio, bH);
+        ctx.strokeStyle = '#f87171';
+        ctx.lineWidth = 1;
+        ctx.strokeRect(bX, bY, bW, bH);
+      } else if (inv.type === 'ufo') {
+        // 高速ボーナスUFO [U]
+        ctx.shadowColor = '#f59e0b';
+        ctx.shadowBlur = 10;
+        ctx.fillStyle = '#38bdf8';
+        ctx.beginPath();
+        ctx.arc(0, -2, 6, Math.PI, 0);
+        ctx.fill();
+
+        ctx.fillStyle = '#f59e0b';
+        ctx.beginPath();
+        ctx.ellipse(0, 2, 13, 4.5, 0, 0, Math.PI * 2);
+        ctx.fill();
+
+        const ufoLights = ['#ef4444', '#38bdf8', '#34d399', '#facc15'];
+        const lightOff = Math.floor(now / 100) % 4;
+        for (let li = -2; li <= 2; li++) {
+          ctx.fillStyle = ufoLights[(Math.abs(li) + lightOff) % ufoLights.length];
+          ctx.beginPath();
+          ctx.arc(li * 4.5, 2.5, 1.2, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      } else if (inv.type === 'shield') {
+        // 装甲シールド敵 [S:HP2]
+        if (inv.hp > 1) {
+          ctx.strokeStyle = '#34d399';
+          ctx.lineWidth = 1.5;
+          ctx.shadowColor = '#10b981';
+          ctx.shadowBlur = 8 + Math.sin(now / 150) * 3;
+          ctx.beginPath();
+          for (let a = 0; a < 6; a++) {
+            const angle = (a * Math.PI) / 3;
+            const sx = Math.cos(angle) * 11;
+            const sy = Math.sin(angle) * 11;
+            if (a === 0) ctx.moveTo(sx, sy);
+            else ctx.lineTo(sx, sy);
+          }
+          ctx.closePath();
+          ctx.stroke();
+        } else {
+          ctx.strokeStyle = '#f59e0b';
+          ctx.lineWidth = 1;
+          ctx.beginPath();
+          ctx.arc(0, 0, 10, 0, Math.PI * 1.5);
+          ctx.stroke();
+        }
+
+        ctx.fillStyle = '#059669';
+        ctx.strokeStyle = '#10b981';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(0, -7);
+        ctx.lineTo(7, -2);
+        ctx.lineTo(5, 5);
+        ctx.lineTo(-5, 5);
+        ctx.lineTo(-7, -2);
+        ctx.closePath();
+        ctx.fill();
+        ctx.stroke();
+
+        ctx.fillStyle = inv.hp > 1 ? '#a7f3d0' : '#f87171';
+        ctx.fillRect(-3.5, -2, 7, 2);
+      } else if (inv.type === 'elite') {
+        // 弾幕エリート [E]
+        ctx.shadowColor = '#c084fc';
+        ctx.shadowBlur = 8;
+        ctx.fillStyle = '#7e22ce';
+        ctx.strokeStyle = '#c084fc';
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.moveTo(0, -7);
+        ctx.lineTo(8, 0);
+        ctx.lineTo(0, 7);
+        ctx.lineTo(-8, 0);
+        ctx.closePath();
+        ctx.fill();
+        ctx.stroke();
+
+        ctx.fillStyle = '#38bdf8';
+        ctx.beginPath();
+        ctx.arc(0, 0, 2.5 + Math.sin(now / 100) * 1, 0, Math.PI * 2);
+        ctx.fill();
+      } else if (inv.type === 'bomb') {
+        // 誘爆ボム (X)
+        ctx.fillStyle = '#ea580c';
+        for (let a = 0; a < 8; a++) {
+          const angle = (a * Math.PI) / 4;
+          ctx.fillRect(Math.cos(angle) * 7 - 1.5, Math.sin(angle) * 7 - 1.5, 3, 3);
+        }
+        ctx.fillStyle = '#f97316';
+        ctx.beginPath();
+        ctx.arc(0, 0, 5.5, 0, Math.PI * 2);
+        ctx.fill();
+        const isDangerBlink = Math.sin(now / 80) > 0;
+        ctx.fillStyle = isDangerBlink ? '#ef4444' : '#fde047';
+        ctx.beginPath();
+        ctx.arc(0, 0, 2.5, 0, Math.PI * 2);
+        ctx.fill();
+      } else {
+        // 通常インベーダー [V]
+        ctx.fillStyle = '#ef4444';
+        ctx.shadowColor = '#f87171';
+        ctx.shadowBlur = 4;
+
+        ctx.beginPath();
+        ctx.arc(0, -2, 6.5, Math.PI, 0);
+        ctx.fill();
+
+        ctx.fillRect(-6.5, -2, 13, 5);
+
+        if (walkStep === 0) {
+          ctx.fillRect(-8.5, 3, 2.5, 3.5);
+          ctx.fillRect(6, 3, 2.5, 3.5);
+          ctx.fillRect(-4.5, 3, 1.8, 4);
+          ctx.fillRect(2.7, 3, 1.8, 4);
+        } else {
+          ctx.fillRect(-9, 1.5, 2.5, 4);
+          ctx.fillRect(6.5, 1.5, 2.5, 4);
+          ctx.fillRect(-2.5, 3, 1.8, 4);
+          ctx.fillRect(0.7, 3, 1.8, 4);
+        }
+
+        ctx.fillRect(-5.5, -6.5, 1.8, 4.5);
+        ctx.fillRect(3.7, -6.5, 1.8, 4.5);
+
+        ctx.fillStyle = '#fef08a';
+        ctx.shadowColor = '#facc15';
+        ctx.shadowBlur = 4;
+        ctx.fillRect(-3.5, -1, 2.2, 2.2);
+        ctx.fillRect(1.3, -1, 2.2, 2.2);
+      }
+
+      ctx.restore();
+    });
+
+    // 5. 弾丸（ネオンレーザーボルト）
+    bullets.forEach((b) => {
+      const bx = (b.x + 0.5) * 20;
+      const by = (b.y + 0.5) * 20;
+      ctx.save();
+      ctx.shadowColor = '#38bdf8';
+      ctx.shadowBlur = 8;
+      const grad = ctx.createLinearGradient(bx, by - 6, bx, by + 6);
+      grad.addColorStop(0, '#ffffff');
+      grad.addColorStop(0.5, '#38bdf8');
+      grad.addColorStop(1, 'transparent');
+      ctx.fillStyle = grad;
+      ctx.fillRect(bx - 1.5, by - 6, 3, 12);
+      ctx.restore();
+    });
+
+    // 6. ドロップアイテム
+    items.forEach((it) => {
+      const ix = (it.x + 0.5) * 20;
+      const iy = (it.y + 0.5) * 20 + Math.sin(now / 150) * 2;
+      ctx.save();
+      ctx.translate(ix, iy);
+      ctx.shadowColor = it.type === 'power' ? '#f59e0b' : '#06b6d4';
+      ctx.shadowBlur = 10;
+      ctx.fillStyle = it.type === 'power' ? '#fbbf24' : '#38bdf8';
+      ctx.beginPath();
+      ctx.arc(0, 0, 6.5, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = '#0f172a';
+      ctx.font = 'bold 9px monospace';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(it.type === 'power' ? 'P' : 'B', 0, 0.5);
+      ctx.restore();
+    });
+
+    // 7. 爆発パーティクル
+    particles.forEach((p) => {
+      const ppx = (p.x + 0.5) * 20;
+      const ppy = (p.y + 0.5) * 20;
+      const alpha = Math.max(0, p.life / p.maxLife);
+      ctx.save();
+      ctx.globalAlpha = alpha;
+      ctx.fillStyle = p.color;
+      ctx.shadowColor = p.color;
+      ctx.shadowBlur = 6;
+      ctx.beginPath();
+      ctx.arc(ppx, ppy, 2.5, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    });
+  }, [playerX, invaders, bullets, items, drones, particles]);
+
+  useEffect(() => {
+    if (renderMode !== 'gui') return;
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+    drawCanvasGame(ctx);
+  });
+
   const getVersionBadge = () => {
     switch (version) {
       case 'v1_spaghetti':
@@ -993,6 +1376,32 @@ export const GameEmulator: React.FC<GameEmulatorProps> = ({ version, chapterCode
         </div>
 
         <div className="flex items-center gap-1.5 flex-wrap">
+          {/* GUI画像 / CUI文字 レンダリング切替 */}
+          <div className="flex items-center bg-slate-900 rounded-lg p-0.5 border border-slate-700 shadow-sm mr-1">
+            <button
+              onClick={() => setRenderMode('gui')}
+              className={`px-2 py-1 rounded-md text-xs font-mono font-bold transition flex items-center gap-1 ${
+                renderMode === 'gui'
+                  ? 'bg-cyan-500 text-slate-950 shadow-sm'
+                  : 'text-slate-400 hover:text-white'
+              }`}
+              title="2Dスプライト画像によるグラフィック描画（レトロアーケード）"
+            >
+              <span>🎨 GUI画像</span>
+            </button>
+            <button
+              onClick={() => setRenderMode('cui')}
+              className={`px-2 py-1 rounded-md text-xs font-mono font-bold transition flex items-center gap-1 ${
+                renderMode === 'cui'
+                  ? 'bg-emerald-500 text-slate-950 shadow-sm'
+                  : 'text-slate-400 hover:text-white'
+              }`}
+              title="C++コンソール出力（ASCII文字）描画"
+            >
+              <span>📟 CUI文字</span>
+            </button>
+          </div>
+
           <button
             onClick={() => setShowEvolutionDiff((prev) => !prev)}
             className={`flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-mono font-bold transition border active:scale-95 shadow-sm ${
@@ -1228,37 +1637,48 @@ export const GameEmulator: React.FC<GameEmulatorProps> = ({ version, chapterCode
           </div>
         )}
 
-        {/* 画面テキスト（スマホ幅で切れないようスケーリング ＆ スクロール対応） */}
-        <div className="w-full max-w-full overflow-x-auto flex justify-center py-0.5">
-          <div className="text-[10px] min-[360px]:text-[11px] min-[400px]:text-xs sm:text-sm md:text-[15px] lg:text-[16px] leading-[1.15] font-bold tracking-wider sm:tracking-widest text-center whitespace-pre font-mono">
-            {grid.map((row, y) => (
-              <div key={y} className="flex justify-center">
-                {row.map((ch, x) => {
-                  let colorClass = 'text-slate-600';
-                  if (ch === '#') colorClass = version === 'v1_spaghetti' ? 'text-slate-500' : 'text-cyan-900';
-                  else if (ch === 'A' || ch === '_') colorClass = version === 'v1_spaghetti' ? 'text-slate-200' : 'text-cyan-400 text-glow-cyan';
-                  else if (ch === '|') colorClass = version === 'v1_spaghetti' ? 'text-slate-300' : 'text-amber-400';
-                  else if (ch === 'V') colorClass = version === 'v1_spaghetti' ? 'text-slate-400' : 'text-rose-400';
-                  else if (ch === 'S') colorClass = 'text-emerald-300 font-black text-glow-green';
-                  else if (ch === 's') colorClass = 'text-emerald-500 font-bold';
-                  else if (ch === 'E') colorClass = 'text-purple-300 font-black text-glow-cyan animate-pulse';
-                  else if (ch === 'X') colorClass = 'text-amber-400 font-black animate-pulse';
-                  else if (ch === 'B' || ch === '[' || ch === ']') colorClass = 'text-rose-400 font-black text-glow-red animate-pulse';
-                  else if (ch === 'U') colorClass = 'text-amber-300 font-black text-glow-yellow animate-pulse';
-                  else if (ch === 'b') colorClass = 'text-cyan-300 font-bold animate-pulse text-glow-cyan';
-                  else if (ch === 'P') colorClass = 'text-pink-400 font-black text-glow-yellow animate-bounce';
-                  else if (['*', '+', '.', 'x', '✦', '★', '✨'].includes(ch)) colorClass = 'text-emerald-400 text-glow-green animate-pulse';
-
-                  return (
-                    <span key={x} className={`inline-block w-[1.15ch] text-center ${colorClass}`}>
-                      {ch}
-                    </span>
-                  );
-                })}
-              </div>
-            ))}
+        {/* 画面表示：GUIキャンバス または CUIテキスト（スマホ幅で切れないようスケーリング ＆ スクロール対応） */}
+        {renderMode === 'gui' ? (
+          <div className="w-full flex justify-center items-center py-1">
+            <canvas
+              ref={canvasRef}
+              width={600}
+              height={300}
+              className="w-full max-w-[640px] aspect-[2/1] rounded-lg shadow-2xl block border border-slate-800/80 bg-[#030712]"
+            />
           </div>
-        </div>
+        ) : (
+          <div className="w-full max-w-full overflow-x-auto flex justify-center py-0.5">
+            <div className="text-[10px] min-[360px]:text-[11px] min-[400px]:text-xs sm:text-sm md:text-[15px] lg:text-[16px] leading-[1.15] font-bold tracking-wider sm:tracking-widest text-center whitespace-pre font-mono">
+              {grid.map((row, y) => (
+                <div key={y} className="flex justify-center">
+                  {row.map((ch, x) => {
+                    let colorClass = 'text-slate-600';
+                    if (ch === '#') colorClass = version === 'v1_spaghetti' ? 'text-slate-500' : 'text-cyan-900';
+                    else if (ch === 'A' || ch === '_') colorClass = version === 'v1_spaghetti' ? 'text-slate-200' : 'text-cyan-400 text-glow-cyan';
+                    else if (ch === '|') colorClass = version === 'v1_spaghetti' ? 'text-slate-300' : 'text-amber-400';
+                    else if (ch === 'V') colorClass = version === 'v1_spaghetti' ? 'text-slate-400' : 'text-rose-400';
+                    else if (ch === 'S') colorClass = 'text-emerald-300 font-black text-glow-green';
+                    else if (ch === 's') colorClass = 'text-emerald-500 font-bold';
+                    else if (ch === 'E') colorClass = 'text-purple-300 font-black text-glow-cyan animate-pulse';
+                    else if (ch === 'X') colorClass = 'text-amber-400 font-black animate-pulse';
+                    else if (ch === 'B' || ch === '[' || ch === ']') colorClass = 'text-rose-400 font-black text-glow-red animate-pulse';
+                    else if (ch === 'U') colorClass = 'text-amber-300 font-black text-glow-yellow animate-pulse';
+                    else if (ch === 'b') colorClass = 'text-cyan-300 font-bold animate-pulse text-glow-cyan';
+                    else if (ch === 'P') colorClass = 'text-pink-400 font-black text-glow-yellow animate-bounce';
+                    else if (['*', '+', '.', 'x', '✦', '★', '✨'].includes(ch)) colorClass = 'text-emerald-400 text-glow-green animate-pulse';
+
+                    return (
+                      <span key={x} className={`inline-block w-[1.15ch] text-center ${colorClass}`}>
+                        {ch}
+                      </span>
+                    );
+                  })}
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* HUDステータスライン */}
         <div className="w-full max-w-2xl mt-2 sm:mt-2.5 pt-1.5 sm:pt-2 border-t border-slate-800/80 flex items-center justify-between text-[11px] sm:text-xs font-mono text-slate-400 px-1 sm:px-2 flex-wrap gap-2">
