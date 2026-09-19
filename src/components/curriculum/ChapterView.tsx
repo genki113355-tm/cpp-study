@@ -273,7 +273,6 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
                   >
                     <Gamepad2 className="w-5 h-5 group-hover:rotate-12 transition-transform" />
                     <span>ゲームを起動する ▶</span>
-                    <span className="text-[11px] px-2 py-0.5 rounded bg-slate-950/20 text-slate-950 font-bold">大画面</span>
                   </button>
 
                   <button
