@@ -115,7 +115,19 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://shirokuma-cpp.jp/chapter-7-modern-cpp-ecs</loc>
+    <loc>https://shirokuma-cpp.jp/chapter-modern-3-lambda</loc>
+    <lastmod>2026-09-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://shirokuma-cpp.jp/chapter-modern-4-variadic-templates</loc>
+    <lastmod>2026-09-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://shirokuma-cpp.jp/chapter-modern-5-multithreading</loc>
     <lastmod>2026-09-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -127,13 +139,19 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://shirokuma-cpp.jp/chapter-modern-5-coroutines</loc>
+    <loc>https://shirokuma-cpp.jp/chapter-7-modern-cpp-ecs</loc>
     <lastmod>2026-09-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://shirokuma-cpp.jp/chapter-modern-6-concepts</loc>
+    <lastmod>2026-09-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://shirokuma-cpp.jp/chapter-modern-5-coroutines</loc>
     <lastmod>2026-09-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>

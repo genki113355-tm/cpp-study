@@ -5,9 +5,9 @@ export const chapter5: Chapter = {
   slug: 'chapter-5-smart-pointers-raii',
   courseTrack: 'modern',
   courseChapterCode: 'M1',
-  title: 'モダン第1章：スマートポインタとRAII（究極のメモリ安全性）',
+  title: 'モダン第1章：【C++11】スマートポインタとRAII（所有権設計とメモリ安全性）',
   subtitle: 'std::unique_ptr と std::shared_ptr によるリソース完全自動管理',
-  badge: 'モダンコース M1：所有権と安全な寿命管理',
+  badge: 'モダンC++ M1【C++11】：スマートポインタ',
   gameVersion: 'v5_smart_pointers',
   description: '第4章で多態性を手に入れたものの、敵の生成・破棄には生の new / delete を使っていました。本章では、生ポインタの解放漏れやダングリングポインタを設計レベルで撲滅するC++の金字塔「スマートポインタ（unique_ptr, shared_ptr, weak_ptr）」と「所有権（Ownership）」の規律を体得します。',
   umlDiagram: {

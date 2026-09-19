@@ -4,10 +4,10 @@ export const chapter7: Chapter = {
   id: 7,
   slug: 'chapter-7-modern-cpp-ecs',
   courseTrack: 'modern',
-  courseChapterCode: 'M3',
-  title: 'モダン第3章：モダンC++テンプレートとECS（設計の極致・完結編）',
-  subtitle: '「継承より合成」の真髄、型安全なコンポーネント着脱、そして卒業',
-  badge: 'モダンコース M3：ECS＆モダンC++完結編',
+  courseChapterCode: 'M10',
+  title: 'モダン第10章：【C++17】継承より合成とECS（データ指向設計とキャッシュ効率）',
+  subtitle: '「継承より合成」の真髄、型安全なコンポーネント着脱、そして近代ゲーム設計',
+  badge: 'モダンC++ M10【C++17】：ECS・データ指向',
   gameVersion: 'v7_ecs_final',
   description: 'オブジェクト指向の強力な武器「クラスの継承」ですが、ゲーム開発が大規模化すると「菱形継承（Diamond Inheritance）」「基底クラスの神格化（God Class）」「クラス爆発」という致命的な壁に直面します。最終章では、近代ゲームエンジン（Unity, Unreal, Bevy等）の設計標準である「継承より合成（Composition over Inheritance）」と、C++テンプレートを活用した「ECS（Entity Component System）」を構築。全7章の学びを結実させ、全弾幕ボスを撃破して卒業の時を迎えます！',
   sections: [
@@ -278,6 +278,6 @@ player->addComponent<ShooterComponent>(3, true);            // 3WAY弾`,
       explanation: '正解は「malloc/free や巨大switchのような『プログラマの注意力に依存した手作業』を排除し、RAII・カプセル化・型システム・疎結合設計によって『バグの発生を構造的に不可能にする』こと」です。モダンC++の設計とは、人間がミスをする余地をアーキテクチャの力で撲滅することにあります。全7章の完結、心からおめでとうございます！'
     }
   ],
-  prevChapterSlug: 'modern-2-move-and-modern-features',
-  nextChapterSlug: 'chapter-modern-4-modern-type-system'
+  prevChapterSlug: 'chapter-modern-4-modern-type-system',
+  nextChapterSlug: 'chapter-modern-6-concepts'
 };

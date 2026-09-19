@@ -23,6 +23,9 @@ import { chapterM5 } from './chapters/modern5';
 import { chapterM6 } from './chapters/modern6';
 import { chapterM7 } from './chapters/modern7';
 import { chapterM8 } from './chapters/modern8';
+import { chapterModernLambda } from './chapters/modernLambda';
+import { chapterModernVariadic } from './chapters/modernVariadic';
+import { chapterModernThreading } from './chapters/modernThreading';
 
 import { CODE_READING_GUIDE } from './guides/codeReading';
 import { WHY_CPP_IS_HARD_COLUMN } from './guides/whyCppIsHard';
@@ -59,14 +62,17 @@ export const CLASSIC_CHAPTERS: Chapter[] = [
 
 /** 🚀 モダンコース（C++11〜C++20 / モダンC++・新世代設計編） */
 export const MODERN_CHAPTERS: Chapter[] = [
-  chapter5,  // M1: スマートポインタとRAII
-  chapterM2, // M2: ムーブセマンティクスとモダンC++機能
-  chapter7,  // M3: 継承より合成とECS
-  chapterM4, // M4: 現代的型システム (variant, optional, constexpr)
-  chapterM5, // M5: C++20 コルーチンによる非同期ゲームループ
-  chapterM6, // M6: C++20 コンセプトと型制約
-  chapterM7, // M7: C++20 Ranges & Views による関数型パイプライン
-  chapterM8, // M8: C++20 モジュール完全移行ガイド
+  chapter5,              // M1【C++11】: スマートポインタとRAII
+  chapterM2,             // M2【C++11/14】: ムーブセマンティクス
+  chapterModernLambda,    // M3【C++11/14】: ラムダ式と関数オブジェクト
+  chapterModernVariadic,  // M4【C++11/14】: 可変引数テンプレートと完全転送
+  chapterModernThreading, // M5【C++11/14】: 標準マルチスレッドと並行処理
+  chapterM4,             // M7【C++17】: 現代的型システム (variant, optional, constexpr)
+  chapter7,              // M10【C++17】: 継承より合成とECS
+  chapterM6,             // M11【C++20】: コンセプトと型制約
+  chapterM5,             // M12【C++20】: コルーチンによる非同期ゲームループ
+  chapterM7,             // M13【C++20】: Ranges & Views による関数型パイプライン
+  chapterM8,             // M14【C++20】: モジュール完全移行ガイド
 ];
 
 /** 🧭 コード読解演習トラック（段階的実践読解編） */
@@ -178,58 +184,58 @@ export const UPCOMING_CHAPTERS: FutureChapterPreview[] = [
     techKeywords: ['自作ゲームエンジンアーキテクチャ', '全サブシステム統合', 'C++03の集大成', 'モダンC++への架け橋'],
   },
 
-  // 🚀 モダンC++コース 拡張予定（M9〜：C++23新世代機能編）
+  // 🚀 モダンC++コース 拡張予定（実務黄金世代 C++17 補完 ＆ C++23新世代編）
+  {
+    id: 2006,
+    slug: 'upcoming-m6',
+    title: '【M6】ゼロコピー文字列革命：std::string_view',
+    subtitle: '文字列を関数に渡すたびに発生するヒープアロケーション（malloc/new）の撲滅',
+    badge: 'モダンC++ M6【C++17】（準備中）',
+    isUpcoming: true,
+    track: 'modern',
+    beforePain: 'アセットパスや敵の名前を関数に渡すたびに std::string のコピーが走り、激しいヒープ断片化とフレーム落ちが発生。',
+    afterSkill: 'ポインタと長さだけの軽量ビュー std::string_view を駆使し、メモリコピーゼロで文字列探索や部分切り出しを爆速実行。',
+    gameEvolution: '何万回のアセットパス照合やテキスト解析がメモリ割り当てゼロで一瞬で完了！',
+    techKeywords: ['std::string_view', 'ゼロコピー', 'ヒープ削減', 'C++17'],
+  },
+  {
+    id: 2008,
+    slug: 'upcoming-m8',
+    title: '【M8】テンプレート革命：if constexpr と構造化束縛',
+    subtitle: 'SFINAE（enable_if）の魔術を葬り去るコンパイル時分岐とタプル展開',
+    badge: 'モダンC++ M8【C++17】（準備中）',
+    isUpcoming: true,
+    track: 'modern',
+    beforePain: '型ごとに処理を分けるために何十行もの難解な enable_if を書き、コンパイルエラーで日が暮れる。',
+    afterSkill: 'if constexpr による1行の直感的なコンパイル時型分岐と、auto [x, y, hp] = ... による直感的な複数値受け取り。',
+    gameEvolution: 'メタプログラミングコードが普通の if 文と同じ読みやすさになり、保守性が劇的に向上！',
+    techKeywords: ['if constexpr', '構造化束縛', 'SFINAE撤廃', 'C++17'],
+  },
   {
     id: 2009,
     slug: 'upcoming-m9',
-    title: '【M9】C++23 新機能総覧とゲーム実務への適用',
-    subtitle: 'std::expected・std::print・Deducing this の威力',
-    badge: 'モダンC++ M9（準備中）',
+    title: '【M9】クロスプラットフォームファイル操作：std::filesystem',
+    subtitle: 'Windowsの「\\」とUnixの「/」問題の終焉！OSネイティブAPI依存からの完全脱却',
+    badge: 'モダンC++ M9【C++17】（準備中）',
     isUpcoming: true,
     track: 'modern',
-    beforePain: '例外禁止環境でのエラー戻り値地獄、std::cout の遅さと書式の煩雑さ。',
-    afterSkill: 'std::expected による型安全エラーハンドリング、std::print の爆速フォーマット、Deducing this によるCRTP簡素化。',
-    gameEvolution: 'エラー発生時もクラッシュせず原因が瞬時にコンソールへ綺麗に出力！',
+    beforePain: 'セーブデータやアセットディレクトリの走査で、Windows用（FindFirstFile）とMac/Linux用（opendir）を別々に実装。',
+    afterSkill: '標準ライブラリ std::filesystem によるパス操作、ファイル存在確認、ディレクトリ走査、セーブデータ安全書き出し。',
+    gameEvolution: 'Steam / Switch / PS5 / PC で100%同一のセーブ＆アセット探索コードが稼働！',
+    techKeywords: ['std::filesystem', 'クロスプラットフォーム', 'パストラバース', 'C++17'],
+  },
+  {
+    id: 2015,
+    slug: 'upcoming-m15',
+    title: '【M15】C++23 新世代機能：std::expected とゼロコスト出力',
+    subtitle: '例外禁止環境の救世主 std::expected と、std::print による爆速フォーマット',
+    badge: 'モダンC++ M15【C++23】（準備中）',
+    isUpcoming: true,
+    track: 'modern',
+    beforePain: 'ゲーム業界特有の「例外（try-catch）使用禁止」規約により、エラーコードと出力引数の泥臭いC言語的戻り値地獄に逆戻り。',
+    afterSkill: '正常値またはエラー型を保持する std::expected による関数型エラーハンドリングと、std::print による型安全フォーマット。',
+    gameEvolution: 'クラッシュせず例外コストもゼロ！エラー原因が美しく一目瞭然に出力！',
     techKeywords: ['C++23', 'std::expected', 'std::print', 'Deducing this'],
-  },
-  {
-    id: 2010,
-    slug: 'upcoming-m10',
-    title: '【M10】コンパイル時計算の極致（constexpr / consteval）',
-    subtitle: '実行時コストをゼロにするコンパイル時ハッシュ＆テーブル生成',
-    badge: 'モダンC++ M10（準備中）',
-    isUpcoming: true,
-    track: 'modern',
-    beforePain: 'ゲーム起動時に重い三角関数テーブルや敵パラメータ変換を計算してロード遅延。',
-    afterSkill: 'consteval とコンパイル時文字列/配列処理による完全なゼロコスト事前計算。',
-    gameEvolution: 'ゲーム起動時間がゼロ秒になり、起動と同時に即座に戦闘開始！',
-    techKeywords: ['constexpr / consteval', 'コンパイル時計算', 'ゼロコスト抽象化', '固定テーブル生成'],
-  },
-  {
-    id: 2011,
-    slug: 'upcoming-m11',
-    title: '【M11】SIMD とモダン並列アルゴリズム（std::execution）',
-    subtitle: 'CPUベクトルユニット（AVX）と並列ポリシーによる弾幕爆速化',
-    badge: 'モダンC++ M11（準備中）',
-    isUpcoming: true,
-    track: 'modern',
-    beforePain: '敵やパーティクルが1万個を超えるとCPU1コアのクロック限界で処理落ち。',
-    afterSkill: 'std::execution::par_unseq と明示的SIMDベクトル化による一括並列演算。',
-    gameEvolution: '画面を埋め尽くす1万発の弾幕パーティクルが60FPSで軽快に描画！',
-    techKeywords: ['SIMD演算', 'std::execution', '並列アルゴリズム', 'AVX命令セット'],
-  },
-  {
-    id: 2012,
-    slug: 'upcoming-m12',
-    title: '【M12】std::jthread とモダン並行プログラミング',
-    subtitle: '協調的キャンセル（stop_token）と安全な非同期タスクオーケストレーション',
-    badge: 'モダンC++ M12（準備中）',
-    isUpcoming: true,
-    track: 'modern',
-    beforePain: 'スレッド終了時の join() 忘れクラッシュ、停止シグナルの手動フラグ管理。',
-    afterSkill: 'std::jthread による自動join、std::stop_token、std::latch / std::barrier による安全な並行同期。',
-    gameEvolution: 'サウンド・物理・AIが完全に安全なマルチスレッドで協調動作！',
-    techKeywords: ['std::jthread', 'stop_token', 'std::latch / barrier', 'モダンマルチスレッド'],
   },
   {
     id: 2013,

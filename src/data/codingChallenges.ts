@@ -1291,12 +1291,260 @@ int main() {
 `,
   },
 
-  // M5: C++20 コルーチン
-  'chapter-modern-5-coroutines': {
+  // M3: 【C++11/14】ラムダ式と関数オブジェクト
+  'chapter-modern-3-lambda': {
+    id: 'challenge-m3',
+    chapterSlug: 'chapter-modern-3-lambda',
+    chapterBadge: 'M3',
+    title: '演習M3：ラムダ式で条件に合致する敵を抽出せよ！',
+    missionObjective: 'std::count_if の述語引数にラムダ式 [threshold](const Enemy& e) { return e.hp <= threshold; } を渡し、低HP敵のカウントテストをパスさせてください。',
+    mentorAdvice: '外部のローカル変数 threshold をキャプチャリスト [threshold] に入れて取り込むのじゃ！引数は (const Enemy& e) で受け取るのじゃぞ！',
+    initialCode: `#include <iostream>
+#include <vector>
+#include <algorithm>
+
+struct Enemy {
+    int id;
+    int hp;
+};
+
+int main() {
+    std::cout << "--- M3 ラムダ式カウント テスト ---" << std::endl;
+    std::vector<Enemy> enemies = {
+        {1, 50},
+        {2, 15},
+        {3, 80},
+        {4, 25},
+        {5, 5}
+    };
+
+    int threshold = 20;
+
+    // TODO: threshold 以下のHPを持つ敵の数をカウントするラムダ式を
+    // std::count_if の第3引数に渡してください
+    int lowHpCount = std::count_if(enemies.begin(), enemies.end(), /* ここにラムダ式を記述 */ [](const Enemy& e) {
+        return false;
+    });
+
+    std::cout << "HP " << threshold << " 以下の敵数: " << lowHpCount << std::endl;
+
+    if (lowHpCount == 2) {
+        std::cout << "[CLEAR] M3_MISSION_SUCCESS" << std::endl;
+    } else {
+        std::cout << "[FAIL] カウント結果が期待値(2)と一致しません" << std::endl;
+    }
+    return 0;
+}
+`,
+    expectedOutputPattern: '[CLEAR] M3_MISSION_SUCCESS',
+    successMessage: '🎉 お見事！ローカル変数を安全にキャプチャしたラムダ式で、インラインかつ型安全にコレクション処理を記述できました！',
+    hint: 'std::count_if(enemies.begin(), enemies.end(), [threshold](const Enemy& e) { return e.hp <= threshold; }); と記述します。',
+    solutionCode: `#include <iostream>
+#include <vector>
+#include <algorithm>
+
+struct Enemy {
+    int id;
+    int hp;
+};
+
+int main() {
+    std::vector<Enemy> enemies = {
+        {1, 50},
+        {2, 15},
+        {3, 80},
+        {4, 25},
+        {5, 5}
+    };
+
+    int threshold = 20;
+    int lowHpCount = std::count_if(enemies.begin(), enemies.end(), [threshold](const Enemy& e) {
+        return e.hp <= threshold;
+    });
+
+    if (lowHpCount == 2) {
+        std::cout << "[CLEAR] M3_MISSION_SUCCESS" << std::endl;
+    }
+    return 0;
+}
+`,
+  },
+
+  // M4: 【C++11/14】可変引数テンプレートと完全転送
+  'chapter-modern-4-variadic-templates': {
+    id: 'challenge-m4',
+    chapterSlug: 'chapter-modern-4-variadic-templates',
+    chapterBadge: 'M4',
+    title: '演習M4：可変引数テンプレートと完全転送で万能ファクトリを実装せよ！',
+    missionObjective: '万能参照 Args&&... と std::forward<Args>(args)... を用いて、任意の引数をそのままコンストラクタに届けて std::unique_ptr<T> を生成する spawnEntity<T>() を実装してください。',
+    mentorAdvice: '「テンプレート引数 Args&&... で受け、new T(std::forward<Args>(args)...) で転送する」のが完全転送の黄金律じゃ！',
+    initialCode: `#include <iostream>
+#include <string>
+#include <memory>
+#include <utility>
+
+struct Projectile {
+    std::string type;
+    int speed;
+    int power;
+    Projectile(std::string t, int s, int p) : type(std::move(t)), speed(s), power(p) {}
+};
+
+// TODO: 可変引数テンプレートと完全転送を用いて spawnEntity<T>() を実装してください
+// template <typename T, typename... Args>
+// std::unique_ptr<T> spawnEntity(Args&&... args) {
+//     return std::unique_ptr<T>(new T(std::forward<Args>(args)...));
+// }
+template <typename T, typename... Args>
+std::unique_ptr<T> spawnEntity(Args&&... args) {
+    // ここに実装
+    return nullptr;
+}
+
+int main() {
+    std::cout << "--- M4 可変引数完全転送ファクトリ テスト ---" << std::endl;
+    auto bullet = spawnEntity<Projectile>("Laser", 500, 30);
+
+    if (bullet && bullet->type == "Laser" && bullet->speed == 500 && bullet->power == 30) {
+        std::cout << "[CLEAR] M4_MISSION_SUCCESS" << std::endl;
+    } else {
+        std::cout << "[FAIL] 生成されたオブジェクトの値が不正です" << std::endl;
+    }
+    return 0;
+}
+`,
+    expectedOutputPattern: '[CLEAR] M4_MISSION_SUCCESS',
+    successMessage: '🎉 完璧です！引数の数や型に一切依存せず、ゼロコピーで直接オブジェクトを構築する万能ファクトリを完成させました！',
+    hint: 'return std::unique_ptr<T>(new T(std::forward<Args>(args)...)); と記述します。',
+    solutionCode: `#include <iostream>
+#include <string>
+#include <memory>
+#include <utility>
+
+struct Projectile {
+    std::string type;
+    int speed;
+    int power;
+    Projectile(std::string t, int s, int p) : type(std::move(t)), speed(s), power(p) {}
+};
+
+template <typename T, typename... Args>
+std::unique_ptr<T> spawnEntity(Args&&... args) {
+    return std::unique_ptr<T>(new T(std::forward<Args>(args)...));
+}
+
+int main() {
+    auto bullet = spawnEntity<Projectile>("Laser", 500, 30);
+    if (bullet && bullet->type == "Laser" && bullet->speed == 500 && bullet->power == 30) {
+        std::cout << "[CLEAR] M4_MISSION_SUCCESS" << std::endl;
+    }
+    return 0;
+}
+`,
+  },
+
+  // M5: 【C++11/14】標準マルチスレッドと並行処理
+  'chapter-modern-5-multithreading': {
     id: 'challenge-m5',
-    chapterSlug: 'chapter-modern-5-coroutines',
+    chapterSlug: 'chapter-modern-5-multithreading',
     chapterBadge: 'M5',
-    title: '演習M5：C++20 コルーチンで時間差ウェーブ攻撃を実装せよ！',
+    title: '演習M5：std::atomic でスレッドセーフなスコアカウンタを実装せよ！',
+    missionObjective: '複数スレッドから同時に並行加算されてもデータ競合を起こさない SafeScoreCounter クラスを std::atomic を使って完成させてください。',
+    mentorAdvice: 'std::atomic<int> score_{0}; に対し、score_.fetch_add(val); または score_ += val; を呼ぶのじゃ！CPUアトミック命令でロックフリーに完結するぞ！',
+    initialCode: `#include <iostream>
+#include <thread>
+#include <vector>
+#include <atomic>
+
+class SafeScoreCounter {
+private:
+    std::atomic<int> score_{0};
+
+public:
+    // TODO: スレッドセーフに val を加算する addScore メソッドを実装してください
+    void addScore(int val) {
+        // ここに実装
+    }
+
+    int getScore() const {
+        return score_.load();
+    }
+};
+
+int main() {
+    std::cout << "--- M5 マルチスレッド並行処理 テスト ---" << std::endl;
+    SafeScoreCounter counter;
+    const int THREAD_COUNT = 4;
+    const int ADDS_PER_THREAD = 1000;
+
+    std::vector<std::thread> threads;
+    for (int i = 0; i < THREAD_COUNT; ++i) {
+        threads.emplace_back([&counter, ADDS_PER_THREAD]() {
+            for (int j = 0; j < ADDS_PER_THREAD; ++j) {
+                counter.addScore(1);
+            }
+        });
+    }
+
+    for (auto& th : threads) {
+        th.join();
+    }
+
+    std::cout << "最終スコア: " << counter.getScore() << " (期待値: 4000)" << std::endl;
+
+    if (counter.getScore() == 4000) {
+        std::cout << "[CLEAR] M5_MISSION_SUCCESS" << std::endl;
+    } else {
+        std::cout << "[FAIL] データ競合が発生しています" << std::endl;
+    }
+    return 0;
+}
+`,
+    expectedOutputPattern: '[CLEAR] M5_MISSION_SUCCESS',
+    successMessage: '🎉 素晴らしい！std::atomic により、重いOSミューテックスを使わずロックフリーにスレッド安全な高速カウンタを実現しました！',
+    hint: 'score_.fetch_add(val); または score_ += val; と記述します。',
+    solutionCode: `#include <iostream>
+#include <thread>
+#include <vector>
+#include <atomic>
+
+class SafeScoreCounter {
+private:
+    std::atomic<int> score_{0};
+
+public:
+    void addScore(int val) {
+        score_.fetch_add(val);
+    }
+
+    int getScore() const {
+        return score_.load();
+    }
+};
+
+int main() {
+    SafeScoreCounter counter;
+    std::vector<std::thread> threads;
+    for (int i = 0; i < 4; ++i) {
+        threads.emplace_back([&counter]() {
+            for (int j = 0; j < 1000; ++j) counter.addScore(1);
+        });
+    }
+    for (auto& th : threads) th.join();
+    if (counter.getScore() == 4000) {
+        std::cout << "[CLEAR] M5_MISSION_SUCCESS" << std::endl;
+    }
+    return 0;
+}
+`,
+  },
+
+  // M12: C++20 コルーチン
+  'chapter-modern-5-coroutines': {
+    id: 'challenge-m12',
+    chapterSlug: 'chapter-modern-5-coroutines',
+    chapterBadge: 'M12',
+    title: '演習M12：C++20 コルーチンで時間差ウェーブ攻撃を実装せよ！',
     missionObjective: 'co_await を使って処理を一時中断できるコルーチン関数 bossSequence(stepTracker) を完成させ、メインループから resume() を呼び出して段階的に攻撃を進めるテストをパスさせてください。',
     mentorAdvice: '「関数自身が時間の経過を制御し、必要なところで co_await でフレームを譲る」のがコルーチンの真髄じゃ！Update() の巨大 switch 文とは永久にお別れじゃぞ！',
     initialCode: `#include <iostream>

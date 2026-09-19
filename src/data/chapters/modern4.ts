@@ -4,10 +4,10 @@ export const chapterM4: Chapter = {
   id: 10,
   slug: 'chapter-modern-4-modern-type-system',
   courseTrack: 'modern',
-  courseChapterCode: 'M4',
-  title: 'モダン第4章：現代的型システムとゼロオーバーヘッド抽象化',
+  courseChapterCode: 'M7',
+  title: 'モダン第7章：【C++17】現代的型システムとゼロオーバーヘッド抽象化',
   subtitle: 'std::optional, std::variant, constexpr による極限の型安全性と超高速ディスパッチ',
-  badge: 'モダンコース M4：variantとoptional',
+  badge: 'モダンC++ M7【C++17】：現代的型システム',
   gameVersion: 'v7_ecs_final',
   description: 'C++03までの旧来設計では、「値が存在しない」ことを表すためにNULLポインタやマジックナンバー（-1など）を返し、実行時クラッシュの原因となっていました。また、多様なアイテムや敵の種別分岐には重いRTTI（dynamic_cast）や巨大なswitch文が使われていました。C++17で導入された std::optional（値の有無の型安全表現）、std::variant + std::visit（仮想関数テーブル不要の超高速パターンマッチング）、そしてコンパイル時計算の constexpr を活用し、安全かつ極限まで高速な新世代のゲームアーキテクチャを構築します。',
   sections: [
@@ -293,7 +293,7 @@ void applyItemEffect(PlayerShip& player, const ItemData& item) {
       explanation: 'constexpr は「定数式（Constant Expression）」を意味し、コンパイラがビルド時に式の値を計算してバイナリに定数として埋め込みます。これにより、ゲーム実行時の計算負荷や初期化の遅延がゼロになります。'
     }
   ],
-  prevChapterSlug: 'chapter-7-advanced-ecs-patterns',
-  nextChapterSlug: 'chapter-modern-5-coroutines'
+  prevChapterSlug: 'chapter-modern-5-multithreading',
+  nextChapterSlug: 'chapter-7-modern-cpp-ecs'
 };
 

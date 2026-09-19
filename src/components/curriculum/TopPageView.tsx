@@ -1250,9 +1250,9 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
           <div className="rounded-2xl border-2 border-cyan-500/30 bg-gradient-to-b from-cyan-950/20 via-slate-900/90 to-slate-950 p-6 sm:p-8 space-y-5 shadow-xl relative overflow-hidden">
             <div className="flex items-center justify-between">
               <span className="text-xs font-mono font-bold px-3 py-1 rounded-full bg-cyan-950 text-cyan-300 border border-cyan-500/40 flex items-center gap-1.5">
-                <span>🚀 モダンコース（全8章）</span>
+                <span>🚀 モダンコース（全11章公開中）</span>
               </span>
-              <span className="text-xs font-mono text-slate-400">C++11 〜 C++20 基準</span>
+              <span className="text-xs font-mono text-cyan-400 font-bold">C++11 / 14 / 17 / 20 体系化</span>
             </div>
 
             <div className="space-y-2">
@@ -1260,37 +1260,46 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
                 <span>モダンC++・新世代設計編</span>
               </h3>
               <p className="text-xs sm:text-sm text-slate-300 leading-relaxed font-sans">
-                スマートポインタによる「生new/deleteの完全撲滅」、巨大データのコピーをゼロコスト化する「ムーブセマンティクス（T&&）」、ラムダ式、最先端の「継承より合成（ECS）」から、C++20 の4大新機能「コルーチン」「コンセプト」「Ranges」「モジュール」まで、新世代のソフトウェアアーキテクチャを完全に身につけます。
+                実務・ゲーム業界の主力基盤である <strong className="text-cyan-300">C++11 / 14 / 17</strong>（所有権・RAII・ムーブ・ラムダ・完全転送・標準スレッド・型システム・ECS）から、次世代の <strong className="text-cyan-300">C++20 4大巨頭</strong>（コンセプト・コルーチン・Ranges・モジュール）まで、規格バージョンごとの進化と設計思想を完全制覇します。
               </p>
             </div>
 
             {/* 学べる章一覧 */}
             <div className="space-y-2 pt-2 border-t border-slate-800">
-              <span className="text-xs font-mono font-bold text-cyan-300 block">カリキュラム構成 (M1〜M8) :</span>
+              <span className="text-xs font-mono font-bold text-cyan-300 block">カリキュラム構成（規格世代別）:</span>
               <ul className="text-xs sm:text-sm text-slate-300 space-y-1.5 font-mono">
                 <li className="flex items-center gap-2">
-                  <span className="text-cyan-400 font-bold">M1:</span> スマートポインタとRAII（unique_ptr, shared_ptr, 所有権規律）
+                  <span className="text-cyan-400 font-bold">M1【C++11】:</span> スマートポインタとRAII（所有権設計とメモリ安全性）
                 </li>
                 <li className="flex items-center gap-2">
-                  <span className="text-cyan-400 font-bold">M2:</span> ムーブセマンティクスとモダン機能（右辺値参照, std::move, ラムダ）
+                  <span className="text-cyan-400 font-bold">M2【C++11/14】:</span> 右辺値参照とムーブセマンティクス（ゼロコピー革命）
                 </li>
                 <li className="flex items-center gap-2">
-                  <span className="text-cyan-400 font-bold">M3:</span> 「継承より合成」と最先端ECS（神クラス解体・テンプレートECS）
+                  <span className="text-cyan-400 font-bold">M3【C++11/14】:</span> ラムダ式と関数オブジェクト（コールバックとキャプチャの罠）
                 </li>
                 <li className="flex items-center gap-2">
-                  <span className="text-cyan-400 font-bold">M4:</span> 現代的型システム（std::variant, optional, constexpr）
+                  <span className="text-cyan-400 font-bold">M4【C++11/14】:</span> 可変引数テンプレートと完全転送（万能ファクトリ・std::forward）
                 </li>
                 <li className="flex items-center gap-2">
-                  <span className="text-cyan-400 font-bold">M5:</span> C++20 コルーチン（co_await / co_yield, 非同期ゲームタスク）
+                  <span className="text-cyan-400 font-bold">M5【C++11/14】:</span> 標準マルチスレッドと並行処理（std::thread と atomic操作）
                 </li>
                 <li className="flex items-center gap-2">
-                  <span className="text-cyan-400 font-bold">M6:</span> C++20 コンセプト（requires節, 型制約, 暗号エラー撲滅）
+                  <span className="text-cyan-400 font-bold">M7【C++17】:</span> 現代的型システム（std::optional, variant, constexpr）
                 </li>
                 <li className="flex items-center gap-2">
-                  <span className="text-cyan-400 font-bold">M7:</span> C++20 Ranges & Views（パイプライン演算子, 遅延評価, ゼロアロケーション）
+                  <span className="text-cyan-400 font-bold">M10【C++17】:</span> 継承より合成とECS（データ指向設計とキャッシュ効率）
                 </li>
                 <li className="flex items-center gap-2">
-                  <span className="text-cyan-400 font-bold">M8:</span> C++20 モジュール（export / import, ヘッダ地獄脱却, 超高速ビルド）
+                  <span className="text-cyan-400 font-bold">M11【C++20】:</span> コンセプトと型制約（型要件の明示化と暗号エラー撲滅）
+                </li>
+                <li className="flex items-center gap-2">
+                  <span className="text-cyan-400 font-bold">M12【C++20】:</span> コルーチンによる非同期ゲームループ（状態機械の終焉）
+                </li>
+                <li className="flex items-center gap-2">
+                  <span className="text-cyan-400 font-bold">M13【C++20】:</span> Ranges & Views による関数型パイプライン（遅延評価・ゼロコピー）
+                </li>
+                <li className="flex items-center gap-2">
+                  <span className="text-cyan-400 font-bold">M14【C++20】:</span> モジュール完全移行ガイド（ヘッダ地獄脱却と超高速ビルド）
                 </li>
               </ul>
             </div>

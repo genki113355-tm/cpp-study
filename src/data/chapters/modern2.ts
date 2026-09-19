@@ -5,9 +5,9 @@ export const chapterM2: Chapter = {
   slug: 'modern-2-move-and-modern-features',
   courseTrack: 'modern',
   courseChapterCode: 'M2',
-  title: 'モダン第2章：ムーブセマンティクスとモダンC++言語機能',
-  subtitle: '右辺値参照（T&&）、std::move、ラムダ式、auto によるゼロコスト抽象化',
-  badge: 'モダンコース M2：ムーブとモダン機能',
+  title: 'モダン第2章：【C++11/14】右辺値参照とムーブセマンティクス（ゼロコピー革命）',
+  subtitle: '右辺値参照（T&&）、std::move、Rule of Five によるゼロコピー抽象化',
+  badge: 'モダンC++ M2【C++11/14】：ムーブセマンティクス',
   gameVersion: 'v5_smart_pointers',
   description: 'C言語やレガシーなC++03では、大きなオブジェクトや配列を関数から返したりコレクションに追加する際、すべてのデータを複製する「ディープコピー」が発生し、多大なCPU時間とメモリを浪費していました。C++11最大の革命である「ムーブセマンティクス（右辺値参照とstd::move）」、処理をインラインで記述できる「ラムダ式」、そして型推論「auto」によって、安全性を1ミリも犠牲にせず極限の実行速度を手に入れるモダンC++の技法を習得します。',
   sections: [
@@ -234,7 +234,7 @@ auto hitChecker = [hitRadius](int dist) { return dist <= hitRadius; };`,
       explanation: '正解は「普通に std::vector を値返し（Return by value）する」です。モダンC++ではRVO（戻り値最適化）やムーブセマンティクスが働くため、値返しを行っても一切のコピーオーバーヘッドが発生しません。最も自然で安全なAPI設計になります。'
     }
   ],
-  nextChapterSlug: 'chapter-7-modern-cpp-ecs',
+  nextChapterSlug: 'chapter-modern-3-lambda',
   prevChapterSlug: 'chapter-5-smart-pointers-raii'
 };
 
