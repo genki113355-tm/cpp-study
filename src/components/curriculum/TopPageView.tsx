@@ -882,7 +882,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
           </h2>
           <p className="text-sm sm:text-base text-slate-300 font-sans leading-relaxed">
             C++学習で最も危険なのは、「このバグが起きたらこの構文を使う」という対症療法（Tips）の暗記に終始してしまうことです。
-            本ラボが約束するゴールは、1本のインベーダーゲームの完全な進化を通じて、
+            本ラボが約束するゴールは、1本のインベーダーゲーム風シューティング（RETRO SPACE SHOOTER）の完全な進化を通じて、
             <strong className="text-cyan-300">「商用ゲームエンジン同等の堅牢なC++ソフトウェアアーキテクチャ全体を、自力でゼロから設計・実装できる総合力」</strong>
             を獲得することです。
           </p>
@@ -1813,7 +1813,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
                 {/* インベーダーゲームの進化 */}
                 <div className="p-3.5 rounded-xl bg-cyan-950/30 border border-cyan-500/30 space-y-1">
                   <span className="font-bold text-cyan-300 flex items-center gap-1.5">
-                    <span>👾 インベーダーゲームの進化</span>
+                    <span>👾 シューティングゲーム（インベーダー風）の進化</span>
                   </span>
                   <p className="text-slate-300 leading-relaxed">
                     {selectedFutureChapter.gameEvolution}

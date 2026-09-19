@@ -1,4 +1,4 @@
-﻿import { useEffect } from 'react';
+import { useEffect } from 'react';
 import { Chapter } from '../types/curriculum';
 
 interface UseSEOProps {
@@ -9,7 +9,7 @@ interface UseSEOProps {
 export const useSEO = ({ currentSlug, chapter }: UseSEOProps) => {
   useEffect(() => {
     const siteBaseTitle = 'シロクマC++ラボ 〜ゲーム開発で学ぶオブジェクト指向開発 レガシー設計からモダン設計まで〜';
-    const siteBaseDesc = 'インベーダーゲーム開発の実践を通じて、レガシーC++（C++03・生ポインタ）からモダンC++（C++17・スマートポインタ・ECS設計・TDD・UML設計書）までを体系的に学べるオブジェクト指向プログラミング実践学習メディア。';
+    const siteBaseDesc = 'インベーダーゲーム風の固定画面シューティング開発の実践を通じて、レガシーC++（C++03・生ポインタ）からモダンC++（C++17・スマートポインタ・ECS設計・TDD・UML設計書）までを体系的に学べるオブジェクト指向プログラミング実践学習メディア。';
     const baseUrl = 'https://shirokuma-cpp.jp';
 
     // 1. タイトルと概要の決定

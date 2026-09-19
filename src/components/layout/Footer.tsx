@@ -42,6 +42,11 @@ export const Footer: React.FC = () => {
           </a>
         </div>
 
+        {/* 商標および免責事項 */}
+        <p className="text-[11px] text-slate-500 max-w-2xl mx-auto leading-relaxed pt-2">
+          ※「スペースインベーダー（SPACE INVADERS）」は株式会社タイトーの登録商標です。当サイトで提供する教材および「RETRO SPACE SHOOTER」等のプログラムは、古典的な固定画面シューティングゲームのアルゴリズムやオブジェクト指向設計を自作・学習するための完全オリジナルの教育コンテンツであり、株式会社タイトーとは一切関係ありません。
+        </p>
+
         <p className="text-slate-500 flex items-center justify-center gap-1 text-xs pt-2">
           <span>© 2026 シロクマC++ラボ (shirokuma-cpp.jp). All rights reserved.</span>
         </p>

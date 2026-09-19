@@ -1278,7 +1278,7 @@ export const GameEmulator: React.FC<GameEmulatorProps> = ({
         return {
           stage: '第1段階 / 構造化前夜',
           stageColor: 'text-amber-400 border-amber-500/40 bg-amber-950/60',
-          title: 'SPACE INVADERS C (PROCEDURAL)',
+          title: 'RETRO SPACE SHOOTER C (PROCEDURAL)',
           icon: '📜',
           features: [
             'C言語スタイル：単一ファイル・手続き型設計',
@@ -1291,7 +1291,7 @@ export const GameEmulator: React.FC<GameEmulatorProps> = ({
         return {
           stage: '第2段階 / クラス化・カプセル化',
           stageColor: 'text-cyan-400 border-cyan-500/40 bg-cyan-950/60',
-          title: 'SPACE INVADERS OOP (CLASSES)',
+          title: 'RETRO SPACE SHOOTER OOP (CLASSES)',
           icon: '🛡️',
           features: [
             'C++クラス化：Player / Bullet / Invader を独立カプセル化',
@@ -1304,7 +1304,7 @@ export const GameEmulator: React.FC<GameEmulatorProps> = ({
         return {
           stage: '第3段階 / 動的メモリ・パーティクル',
           stageColor: 'text-emerald-400 border-emerald-500/40 bg-emerald-950/60',
-          title: 'SPACE INVADERS DYNAMIC (STL)',
+          title: 'RETRO SPACE SHOOTER DYNAMIC (STL)',
           icon: '✨',
           features: [
             'std::vector導入による弾丸・爆発の動的メモリ管理',
@@ -1317,7 +1317,7 @@ export const GameEmulator: React.FC<GameEmulatorProps> = ({
         return {
           stage: '第4段階 / 継承とポリモーフィズム',
           stageColor: 'text-purple-400 border-purple-500/40 bg-purple-950/60',
-          title: 'SPACE INVADERS POLYMORPHISM',
+          title: 'RETRO SPACE SHOOTER POLYMORPHISM',
           icon: '🛸',
           features: [
             '基底Enemyクラスとvirtual関数による多態的ディスパッチ',
@@ -1330,7 +1330,7 @@ export const GameEmulator: React.FC<GameEmulatorProps> = ({
         return {
           stage: '第5段階 / スマートポインタ・RAII',
           stageColor: 'text-cyan-400 border-cyan-500/40 bg-cyan-950/60',
-          title: 'SPACE INVADERS MODERN RAII',
+          title: 'RETRO SPACE SHOOTER MODERN RAII',
           icon: '🛰️',
           features: [
             'std::unique_ptrによる敵・アイテムの完全所有権管理（生delete撤滅）',
@@ -1343,7 +1343,7 @@ export const GameEmulator: React.FC<GameEmulatorProps> = ({
         return {
           stage: '第6段階 / ゲームデザインパターン',
           stageColor: 'text-amber-400 border-amber-500/40 bg-amber-950/60',
-          title: 'SPACE INVADERS PATTERNS',
+          title: 'RETRO SPACE SHOOTER PATTERNS',
           icon: '🎮',
           features: [
             'Stateパターンによるタイトル・プレイ・ポーズ・ゲームオーバー遷移',
@@ -1356,7 +1356,7 @@ export const GameEmulator: React.FC<GameEmulatorProps> = ({
         return {
           stage: '第7段階 / ECSアーキテクチャ完結編',
           stageColor: 'text-rose-400 border-rose-500/40 bg-rose-950/60',
-          title: 'SPACE INVADERS ECS FINAL',
+          title: 'RETRO SPACE SHOOTER ECS FINAL',
           icon: '💥',
           features: [
             'Entity Component System（Transform/Render/Shooter/Health）合成',
@@ -2136,6 +2136,11 @@ export const GameEmulator: React.FC<GameEmulatorProps> = ({
             </div>
           </div>
         )}
+
+        {/* 商標・教育目的の注記 */}
+        <div className="w-full text-center pt-2 text-[10px] text-slate-500 font-mono">
+          ※「スペースインベーダー」は株式会社タイトーの登録商標です。本エミュレータは古典固定画面シューティングを題材とした教育用自作プログラム（RETRO SPACE SHOOTER）です。
+        </div>
       </div>
     </div>
   );

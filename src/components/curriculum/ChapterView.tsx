@@ -224,7 +224,7 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
                   <div className="flex items-center gap-2 flex-wrap">
                     <span className="px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-cyan-950/90 text-cyan-300 border border-cyan-500/40 flex items-center gap-1.5">
                       <Terminal className="w-3.5 h-3.5 text-cyan-400" />
-                      <span>{code} 収録実機ゲーム</span>
+                      <span>{code} 収録：インベーダーゲーム風シューティング</span>
                     </span>
                     <span className="text-xs text-slate-400 font-mono">
                       C++プログラム実行環境
@@ -233,7 +233,7 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
 
                   <h3 className="text-lg sm:text-2xl font-black text-white font-mono flex items-center gap-2">
                     <span className="text-cyan-400">👾</span>
-                    <span>SPACE INVADERS : {code} {chapter.title}</span>
+                    <span>RETRO SPACE SHOOTER : {code} {chapter.title}</span>
                   </h3>
 
                   {/* L1以外の章のみ「前章からの進化点」を表示 */}
@@ -248,7 +248,7 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
                     </div>
                   ) : (
                     <div className="text-xs sm:text-sm text-slate-300 font-mono bg-slate-900/80 p-2.5 rounded-xl border border-cyan-500/30">
-                      🚀 <span className="text-cyan-300 font-bold">原点のインベーダー：</span>1ファイル・グローバル変数・単発射撃から始まるC++オブジェクト指向への旅！
+                      🚀 <span className="text-cyan-300 font-bold">原点の固定画面シューティング：</span>1ファイル・グローバル変数・単発射撃から始まるC++オブジェクト指向への旅！
                     </div>
                   )}
 
@@ -608,7 +608,7 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
       {/* 記事シェアカード */}
       <ShareButtons
         title={`${chapter.title} - ${chapter.subtitle} | シロクマC++ラボ`}
-        text={`インベーダーゲーム開発を通じて学ぶC++オブジェクト指向設計カリキュラム！\n${chapter.description.slice(0, 80)}...`}
+        text={`インベーダーゲーム風シューティング（RETRO SPACE SHOOTER）開発を通じて学ぶC++オブジェクト指向設計カリキュラム！\n${chapter.description.slice(0, 80)}...`}
         variant="card"
       />
 
