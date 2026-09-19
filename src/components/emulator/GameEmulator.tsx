@@ -55,6 +55,55 @@ type SceneState = 'title' | 'playing' | 'paused' | 'gameover' | 'gameclear';
 const WIDTH = 30;
 const HEIGHT = 15;
 
+/**
+ * 実機（自機）と敵機の矩形（バウンディングボックス AABB）衝突判定
+ * 
+ * 実機（自機）の座標範囲:
+ * - 幅: 3セル ([pX, pX + 2])
+ * - 高さ: 1セル (HEIGHT - 2 = 13行目)
+ * - 左上: (pX, HEIGHT - 2)
+ * - 右上: (pX + 2, HEIGHT - 2)
+ * - 左下: (pX, HEIGHT - 2)
+ * - 右下: (pX + 2, HEIGHT - 2)
+ * 
+ * 敵機の座標範囲:
+ * - 行: Math.round(inv.y)
+ * - 列: 通常/エリート/シールド/ボムは Math.round(inv.x) の1セル
+ *       ボスは [Math.round(inv.x) - 1, Math.round(inv.x) + 1] の3セル
+ * - 左下: (enemyLeft, enemyBottom)
+ * - 右下: (enemyRight, enemyBottom)
+ * 
+ * 衝突条件（AABB交差判定）:
+ * 1. Y方向: enemyBottom >= playerTop && enemyTop <= playerBottom
+ *    (敵機が下から2段目(12行目)にいる間は enemyBottom = 12 < playerTop = 13 のため決して衝突しない)
+ * 2. X方向: enemyRight >= playerLeft && enemyLeft <= playerRight
+ */
+const checkPlayerInvaderCollision = (inv: Invader, pX: number): boolean => {
+  if (!inv.alive || inv.type === 'ufo') return false;
+
+  // 実機（自機）のバウンディングボックス
+  const playerTop = HEIGHT - 2;
+  const playerBottom = HEIGHT - 2;
+  const playerLeft = pX;
+  const playerRight = pX + 2;
+
+  // 敵機のバウンディングボックス（画面グリッド表示位置基準）
+  const iy = Math.round(inv.y);
+  const ix = Math.round(inv.x);
+  const enemyTop = iy;
+  const enemyBottom = iy;
+  const enemyLeft = inv.type === 'boss' ? ix - 1 : ix;
+  const enemyRight = inv.type === 'boss' ? ix + 1 : ix;
+
+  // Y方向の重なり判定（敵機が自機の行に達しているか）
+  const yOverlap = enemyBottom >= playerTop && enemyTop <= playerBottom;
+
+  // X方向の重なり判定（実機の左端・右端と敵機の左端・右端の矩形交差）
+  const xOverlap = enemyRight >= playerLeft && enemyLeft <= playerRight;
+
+  return yOverlap && xOverlap;
+};
+
 export const GameEmulator: React.FC<GameEmulatorProps> = ({ version }) => {
   const [playerX, setPlayerX] = useState<number>(14);
   const [bullets, setBullets] = useState<Bullet[]>([]);
@@ -233,15 +282,9 @@ export const GameEmulator: React.FC<GameEmulatorProps> = ({ version }) => {
     if (scene !== 'playing') return;
     setPlayerX((prev) => {
       const nextX = Math.max(1, prev - playerSpeed);
-      // 自機が移動して敵と接触したか判定
+      // 移動先で敵機と実機（矩形）が衝突したか判定
       setInvaders((currInvs) => {
-        const hit = currInvs.some(
-          (inv) =>
-            inv.alive &&
-            inv.type !== 'ufo' &&
-            (inv.y >= HEIGHT - 2 ||
-              (Math.abs(inv.y - (HEIGHT - 2)) <= 0.95 && inv.x >= nextX - 0.7 && inv.x <= nextX + 2.7))
-        );
+        const hit = currInvs.some((inv) => checkPlayerInvaderCollision(inv, nextX));
         if (hit) setScene('gameover');
         return currInvs;
       });
@@ -253,15 +296,9 @@ export const GameEmulator: React.FC<GameEmulatorProps> = ({ version }) => {
     if (scene !== 'playing') return;
     setPlayerX((prev) => {
       const nextX = Math.min(WIDTH - 4, prev + playerSpeed);
-      // 自機が移動して敵と接触したか判定
+      // 移動先で敵機と実機（矩形）が衝突したか判定
       setInvaders((currInvs) => {
-        const hit = currInvs.some(
-          (inv) =>
-            inv.alive &&
-            inv.type !== 'ufo' &&
-            (inv.y >= HEIGHT - 2 ||
-              (Math.abs(inv.y - (HEIGHT - 2)) <= 0.95 && inv.x >= nextX - 0.7 && inv.x <= nextX + 2.7))
-        );
+        const hit = currInvs.some((inv) => checkPlayerInvaderCollision(inv, nextX));
         if (hit) setScene('gameover');
         return currInvs;
       });
@@ -533,20 +570,21 @@ export const GameEmulator: React.FC<GameEmulatorProps> = ({ version }) => {
                 });
               }
 
-              // 防衛ライン（最下段 HEIGHT - 2）到達 or 自機との接触でゲームオーバー
+              // 実機と敵機の矩形衝突判定（自機の左上・右上と敵機の左下・右下の位置関係比較）
+              // または 最下端の防衛底壁（HEIGHT - 1）到達判定
               const px = playerXRef.current;
               let isGameOver = false;
               for (const inv of nextInvaders) {
                 if (!inv.alive || inv.type === 'ufo') continue;
-                // 1. 防衛ライン（自機の行 HEIGHT - 2）到達
-                if (inv.y >= HEIGHT - 2) {
+
+                // 1. 実機（自機）と敵機の矩形（バウンディングボックス）衝突判定
+                if (checkPlayerInvaderCollision(inv, px)) {
                   isGameOver = true;
                   break;
                 }
-                // 2. 自機（px 〜 px + 2, y = HEIGHT - 2）との接触判定
-                const isTouchingY = Math.abs(inv.y - (HEIGHT - 2)) <= 0.95;
-                const isTouchingX = inv.x >= px - 0.7 && inv.x <= px + 2.7;
-                if (isTouchingY && isTouchingX) {
+
+                // 2. 最下端（防衛底壁 HEIGHT - 1）への侵略到達判定
+                if (Math.round(inv.y) >= HEIGHT - 1) {
                   isGameOver = true;
                   break;
                 }
