@@ -174,7 +174,9 @@ export const App: React.FC = () => {
                 chapter={activeChapter}
                 onNavigate={handleSelectChapter}
                 onComplete={handleMarkComplete}
+                onToggleComplete={handleToggleComplete}
                 isCompleted={completedChapters.includes(activeChapter.id)}
+                onOpenMilestoneModal={() => setIsMilestoneModalOpen(true)}
               />
             )}
           </React.Suspense>

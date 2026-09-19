@@ -10,7 +10,8 @@ import {
   ChevronRight,
   ShieldCheck,
   Shield,
-  Trophy
+  Trophy,
+  Play
 } from 'lucide-react';
 import { 
   CLASSIC_CHAPTERS, 
@@ -36,6 +37,13 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
   onOpenMilestoneModal,
 }) => {
   const [activeTab, setActiveTab] = useState<'classic' | 'modern' | 'reading' | 'guides'>('classic');
+
+  const nextUncompletedChapter = useMemo(() => {
+    return ALL_CHAPTERS.find((c) => !completedChapters.includes(c.id)) || ALL_CHAPTERS[0];
+  }, [completedChapters]);
+
+  const hasProgress = completedChapters.length > 0;
+  const isAllCompleted = completedChapters.length >= ALL_CHAPTERS.length;
 
   const getChapterCode = (ch: Chapter): string => {
     if (ch.courseTrack === 'classic') {
@@ -116,6 +124,52 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
             <span className="px-3 py-1 rounded-lg bg-slate-950/80 border border-slate-800 text-slate-300">完全無料・登録不要</span>
             <span className="px-3 py-1 rounded-lg bg-slate-950/80 border border-cyan-500/30 text-cyan-300">🎮 Webエミュレータ搭載</span>
             <span className="px-3 py-1 rounded-lg bg-slate-950/80 border border-emerald-500/30 text-emerald-300">💻 ブラウザ実行演習完備</span>
+          </div>
+
+          {/* 学習開始・再開 CTA ボタン（最初から学ぶ / 続きから学ぶ） */}
+          <div className="pt-2 grid grid-cols-1 sm:grid-cols-2 gap-3">
+            {/* 1. 最初から学ぶ */}
+            <button
+              type="button"
+              onClick={() => onSelectChapter(ALL_CHAPTERS[0].slug)}
+              className="py-3 px-5 rounded-2xl bg-slate-800/90 hover:bg-slate-700 text-white font-bold font-mono text-xs sm:text-sm transition border border-slate-700 hover:border-slate-600 flex items-center justify-center gap-2 shadow-lg active:scale-95 cursor-pointer"
+            >
+              <span>🚀 最初から学ぶ</span>
+              <span className="text-[11px] text-slate-400 font-normal">（第1章）</span>
+            </button>
+
+            {/* 2. 続きから学ぶ */}
+            {isAllCompleted ? (
+              <button
+                type="button"
+                onClick={onOpenMilestoneModal}
+                className="py-3 px-5 rounded-2xl bg-gradient-to-r from-amber-500 to-yellow-400 hover:from-amber-400 hover:to-yellow-300 text-slate-950 font-black font-mono text-xs sm:text-sm transition shadow-lg shadow-amber-500/20 flex items-center justify-center gap-2 active:scale-95 cursor-pointer"
+              >
+                <Trophy className="w-4 h-4 text-slate-950" />
+                <span>👑 全課程制覇！修了証を確認</span>
+              </button>
+            ) : hasProgress ? (
+              <button
+                type="button"
+                onClick={() => onSelectChapter(nextUncompletedChapter.slug)}
+                className="py-3 px-5 rounded-2xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-black font-mono text-xs sm:text-sm transition shadow-lg shadow-cyan-500/30 flex items-center justify-center gap-2 active:scale-95 cursor-pointer"
+              >
+                <Play className="w-4 h-4 fill-current" />
+                <span>▶ 続きから学ぶ</span>
+                <span className="text-[11px] font-normal opacity-90 truncate max-w-[130px] sm:max-w-[180px]">
+                  （{nextUncompletedChapter.courseChapterCode ? `第${nextUncompletedChapter.courseChapterCode.replace(/^[CML]/, '')}章` : nextUncompletedChapter.title.slice(0, 10)}）
+                </span>
+              </button>
+            ) : (
+              <button
+                type="button"
+                disabled
+                className="py-3 px-5 rounded-2xl bg-slate-900/60 text-slate-600 border border-slate-800/80 font-mono text-xs sm:text-sm flex items-center justify-center gap-2 cursor-not-allowed opacity-60"
+                title="まずは第1章から始めましょう！"
+              >
+                <span>続きから学ぶ（未開始）</span>
+              </button>
+            )}
           </div>
 
           {/* 学習進捗 & 修了証への導線 */}

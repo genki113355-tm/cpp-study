@@ -13,7 +13,19 @@ import { MemoryVisualizer } from './MemoryVisualizer';
 import { VariableInspector } from './VariableInspector';
 import { RichExplanation } from './RichExplanation';
 import { UmlDiagramViewer } from './UmlDiagramViewer';
-import { CheckCircle, AlertCircle, ArrowRight, ArrowLeft, Lightbulb, HelpCircle, GitCommit, Gamepad2, Terminal } from 'lucide-react';
+import { 
+  CheckCircle, 
+  CheckCircle2,
+  AlertCircle, 
+  ArrowRight, 
+  ArrowLeft, 
+  Lightbulb, 
+  HelpCircle, 
+  GitCommit, 
+  Gamepad2, 
+  Terminal,
+  Trophy
+} from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { AffiliatePromoBanner } from '../affiliate/AffiliatePromoBanner';
 import { ShareButtons } from '../common/ShareButtons';
@@ -27,14 +39,18 @@ interface ChapterViewProps {
   chapter: Chapter;
   onNavigate: (slug: string) => void;
   onComplete: (id: number) => void;
+  onToggleComplete?: (id: number) => void;
   isCompleted: boolean;
+  onOpenMilestoneModal?: () => void;
 }
 
 export const ChapterView: React.FC<ChapterViewProps> = ({
   chapter,
   onNavigate,
   onComplete,
+  onToggleComplete,
   isCompleted,
+  onOpenMilestoneModal,
 }) => {
   const [selectedAnswers, setSelectedAnswers] = useState<Record<string, number>>({});
   const [showExplanations, setShowExplanations] = useState<Record<string, boolean>>({});
@@ -221,12 +237,19 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
                 <span className="text-xs sm:text-sm font-mono text-slate-300 font-semibold px-2.5 py-1 rounded-lg bg-slate-800/80 border border-slate-700">
                   {chapter.badge}
                 </span>
-                {isCompleted && (
-                  <span className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-mono px-3 py-1 rounded-full bg-emerald-950 text-emerald-400 border border-emerald-500/40 font-bold">
-                    <CheckCircle className="w-4 h-4" />
-                    <span>完了済み</span>
-                  </span>
-                )}
+                <button
+                  type="button"
+                  onClick={() => onToggleComplete ? onToggleComplete(chapter.id) : onComplete(chapter.id)}
+                  className={`inline-flex items-center gap-1.5 text-xs sm:text-sm font-mono px-3 py-1 rounded-full border font-bold transition cursor-pointer active:scale-95 ${
+                    isCompleted
+                      ? 'bg-emerald-950/90 text-emerald-300 border-emerald-500/50 shadow-sm shadow-emerald-500/20 hover:bg-emerald-900/60'
+                      : 'bg-slate-800/80 text-slate-400 border-slate-700 hover:text-slate-200 hover:bg-slate-700'
+                  }`}
+                  title={isCompleted ? '読了済み（クリックで未読了に戻す）' : '未読了（クリックで読了完了にする）'}
+                >
+                  <CheckCircle2 className={`w-3.5 h-3.5 ${isCompleted ? 'text-emerald-400' : 'text-slate-500'}`} />
+                  <span>{isCompleted ? '読了完了' : '未読了（完了にする）'}</span>
+                </button>
               </nav>
 
               <ShareButtons
@@ -833,12 +856,99 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
       {/* 学習完了・達成のご褒美PRバナー（最下部） */}
       <AffiliatePromoBanner type="reward" limit={3} />
 
+      {/* 読了・進捗完了アクションバー */}
+      <div className="p-6 sm:p-8 rounded-3xl bg-gradient-to-r from-slate-900 via-[#0a1222] to-slate-900 border-2 border-cyan-500/40 shadow-2xl flex flex-col sm:flex-row items-center justify-between gap-5 my-8 animate-fadeIn">
+        <div className="flex items-center gap-4">
+          <div className={`w-12 h-12 rounded-2xl flex items-center justify-center text-2xl shadow-lg flex-shrink-0 ${
+            isCompleted 
+              ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 shadow-emerald-500/10' 
+              : 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 shadow-cyan-500/10'
+          }`}>
+            {isCompleted ? '🎉' : '🎯'}
+          </div>
+          <div>
+            <div className="text-base sm:text-lg font-bold text-white font-sans flex items-center gap-2 flex-wrap">
+              <span>{isCompleted ? 'この章は読了完了しています！' : 'この章の学習は完了しましたか？'}</span>
+              {isCompleted ? (
+                <span className="text-[10px] font-mono px-2.5 py-0.5 rounded-full bg-emerald-950 text-emerald-300 border border-emerald-500/40 font-bold">
+                  COMPLETED
+                </span>
+              ) : (
+                <span className="text-[10px] font-mono px-2.5 py-0.5 rounded-full bg-slate-800 text-slate-400 border border-slate-700">
+                  UNFINISHED
+                </span>
+              )}
+            </div>
+            <p className="text-xs sm:text-sm text-slate-400 font-sans mt-1 leading-relaxed">
+              {isCompleted
+                ? '素晴らしい進捗です！復習するか、次の章へ進んで更なる高みを目指しましょう。'
+                : '完了ボタンを押すと進捗が自動保存され、マイルストーン修了証の取得にカウントされます。'}
+            </p>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-3 flex-wrap justify-end w-full sm:w-auto flex-shrink-0">
+          {!isCompleted ? (
+            <>
+              <button
+                onClick={() => {
+                  onComplete(chapter.id);
+                  confetti({
+                    particleCount: 70,
+                    spread: 60,
+                    origin: { y: 0.7 },
+                  });
+                }}
+                className="w-full sm:w-auto px-5 py-3.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-emerald-300 border border-emerald-500/40 hover:border-emerald-400 font-bold font-mono text-xs sm:text-sm transition flex items-center justify-center gap-2 shadow-sm active:scale-95 cursor-pointer"
+              >
+                <CheckCircle2 className="w-4 h-4" />
+                <span>✅ この章を完了にする</span>
+              </button>
+
+              {chapter.nextChapterSlug && (
+                <button
+                  onClick={() => {
+                    onComplete(chapter.id);
+                    confetti({
+                      particleCount: 70,
+                      spread: 60,
+                      origin: { y: 0.7 },
+                    });
+                    setTimeout(() => {
+                      onNavigate(chapter.nextChapterSlug!);
+                    }, 350);
+                  }}
+                  className="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-black font-mono text-xs sm:text-sm transition flex items-center justify-center gap-2 shadow-lg shadow-cyan-500/30 active:scale-95 cursor-pointer"
+                >
+                  <span>✅ 完了にして次の章へ進む</span>
+                  <ArrowRight className="w-4 h-4" />
+                </button>
+              )}
+            </>
+          ) : (
+            <div className="flex items-center gap-3">
+              <span className="inline-flex items-center gap-1.5 text-xs font-mono text-emerald-400 bg-emerald-950/60 border border-emerald-500/40 px-3 py-1.5 rounded-xl">
+                <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                <span>読了進捗に記録済み</span>
+              </span>
+              <button
+                onClick={() => onToggleComplete ? onToggleComplete(chapter.id) : onComplete(chapter.id)}
+                className="text-xs font-mono text-slate-400 hover:text-slate-200 underline cursor-pointer"
+                title="未読了に戻す"
+              >
+                未読了に戻す
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
+
       {/* 章ナビゲーションフッター */}
       <div className="pt-8 border-t border-slate-800 flex items-center justify-between gap-4 flex-wrap">
         {chapter.prevChapterSlug ? (
           <button
             onClick={() => onNavigate(chapter.prevChapterSlug!)}
-            className="flex items-center gap-2.5 px-6 py-3.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-100 text-sm sm:text-base font-mono font-bold transition border border-slate-700 active:scale-95 shadow-md"
+            className="flex items-center gap-2.5 px-6 py-3.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-100 text-sm sm:text-base font-mono font-bold transition border border-slate-700 active:scale-95 shadow-md cursor-pointer"
           >
             <ArrowLeft className="w-5 h-5" />
             <span>前の章へ</span>
@@ -846,7 +956,7 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
         ) : (
           <button
             onClick={() => onNavigate('top')}
-            className="flex items-center gap-2.5 px-6 py-3.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-100 text-sm sm:text-base font-mono font-bold transition border border-slate-700 active:scale-95 shadow-md"
+            className="flex items-center gap-2.5 px-6 py-3.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-100 text-sm sm:text-base font-mono font-bold transition border border-slate-700 active:scale-95 shadow-md cursor-pointer"
           >
             <ArrowLeft className="w-5 h-5" />
             <span>TOP（全体ロードマップ）へ</span>
@@ -854,19 +964,37 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
         )}
 
         {chapter.nextChapterSlug ? (
-          <button
-            onClick={() => onNavigate(chapter.nextChapterSlug!)}
-            className={`flex items-center gap-2.5 px-7 py-3.5 rounded-xl font-bold text-sm sm:text-base font-mono transition shadow-xl active:scale-95 ml-auto text-slate-950 ${
-              isReading
-                ? 'bg-purple-500 hover:bg-purple-400 shadow-purple-500/30'
-                : isClassic
-                ? 'bg-amber-500 hover:bg-amber-400 shadow-amber-500/20'
-                : 'bg-cyan-500 hover:bg-cyan-400 shadow-cyan-500/30'
-            }`}
-          >
-            <span>次の章へ進む</span>
-            <ArrowRight className="w-5 h-5" />
-          </button>
+          <div className="flex items-center gap-3 ml-auto flex-wrap">
+            {!isCompleted && (
+              <button
+                onClick={() => onNavigate(chapter.nextChapterSlug!)}
+                className="text-xs font-mono text-slate-400 hover:text-slate-200 underline cursor-pointer px-2 py-1"
+                title="進捗を完了にせずスキップ"
+              >
+                未完了のままスキップ →
+              </button>
+            )}
+
+            <button
+              onClick={() => {
+                if (!isCompleted) {
+                  onComplete(chapter.id);
+                  confetti({ particleCount: 50, spread: 60, origin: { y: 0.8 } });
+                }
+                onNavigate(chapter.nextChapterSlug!);
+              }}
+              className={`flex items-center gap-2.5 px-7 py-3.5 rounded-xl font-bold text-sm sm:text-base font-mono transition shadow-xl active:scale-95 text-slate-950 cursor-pointer ${
+                isReading
+                  ? 'bg-purple-500 hover:bg-purple-400 shadow-purple-500/30'
+                  : isClassic
+                  ? 'bg-amber-500 hover:bg-amber-400 shadow-amber-500/20'
+                  : 'bg-cyan-500 hover:bg-cyan-400 shadow-cyan-500/30'
+              }`}
+            >
+              <span>次の章へ進む</span>
+              <ArrowRight className="w-5 h-5" />
+            </button>
+          </div>
         ) : (
           <div className="flex items-center gap-3 ml-auto flex-wrap">
             <span className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-emerald-950 border border-emerald-500/40 text-emerald-400 text-xs sm:text-sm font-mono font-bold">
@@ -887,7 +1015,7 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
               isClassic ? (
                 <button
                   onClick={() => onNavigate('chapter-5-smart-pointers-raii')}
-                  className="flex items-center gap-2 px-5 py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-bold font-mono text-xs sm:text-sm transition shadow-lg shadow-cyan-500/30 active:scale-95"
+                  className="flex items-center gap-2 px-5 py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-bold font-mono text-xs sm:text-sm transition shadow-lg shadow-cyan-500/30 active:scale-95 cursor-pointer"
                 >
                   <span>🚀 モダン【M】第1章へ挑戦する</span>
                   <ArrowRight className="w-4 h-4" />
@@ -895,7 +1023,7 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
               ) : isReading ? (
                 <button
                   onClick={() => onNavigate('chapter-1-spaghetti-to-oop')}
-                  className="flex items-center gap-2 px-5 py-3 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-bold font-mono text-xs sm:text-sm transition shadow-lg shadow-amber-500/20 active:scale-95"
+                  className="flex items-center gap-2 px-5 py-3 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-bold font-mono text-xs sm:text-sm transition shadow-lg shadow-amber-500/20 active:scale-95 cursor-pointer"
                 >
                   <span>🏛️ レガシー【L】第1章へ挑戦する</span>
                   <ArrowRight className="w-4 h-4" />
@@ -903,7 +1031,7 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
               ) : (
                 <button
                   onClick={() => onNavigate('chapter-1-spaghetti-to-oop')}
-                  className="flex items-center gap-2 px-5 py-3 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-bold font-mono text-xs sm:text-sm transition shadow-lg shadow-amber-500/20 active:scale-95"
+                  className="flex items-center gap-2 px-5 py-3 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-bold font-mono text-xs sm:text-sm transition shadow-lg shadow-amber-500/20 active:scale-95 cursor-pointer"
                 >
                   <span>🏛️ レガシー【L】第1章へ挑戦する</span>
                   <ArrowRight className="w-4 h-4" />
@@ -911,9 +1039,19 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
               )
             )}
 
+            {onOpenMilestoneModal && (
+              <button
+                onClick={onOpenMilestoneModal}
+                className="flex items-center gap-2 px-5 py-3 rounded-xl bg-gradient-to-r from-amber-500 to-yellow-400 hover:from-amber-400 hover:to-yellow-300 text-slate-950 font-bold font-mono text-xs sm:text-sm transition shadow-lg shadow-amber-500/20 active:scale-95 cursor-pointer"
+              >
+                <Trophy className="w-4 h-4 text-slate-950" />
+                <span>🏆 公式修了証を確認する</span>
+              </button>
+            )}
+
             <button
               onClick={() => onNavigate('top')}
-              className="flex items-center gap-2 px-5 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold font-mono text-xs sm:text-sm transition border border-slate-700 active:scale-95"
+              className="flex items-center gap-2 px-5 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold font-mono text-xs sm:text-sm transition border border-slate-700 active:scale-95 cursor-pointer"
             >
               <span>TOPへ戻る</span>
             </button>
