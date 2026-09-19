@@ -79,6 +79,30 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://shirokuma-cpp.jp/chapter-classic-13-asset-manager</loc>
+    <lastmod>2026-09-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://shirokuma-cpp.jp/chapter-classic-14-spatial-partitioning</loc>
+    <lastmod>2026-09-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://shirokuma-cpp.jp/chapter-classic-15-data-driven</loc>
+    <lastmod>2026-09-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://shirokuma-cpp.jp/chapter-classic-16-bit-flags</loc>
+    <lastmod>2026-09-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://shirokuma-cpp.jp/chapter-5-smart-pointers-raii</loc>
     <lastmod>2026-09-17</lastmod>
     <changefreq>monthly</changefreq>

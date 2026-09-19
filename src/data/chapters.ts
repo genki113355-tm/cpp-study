@@ -14,6 +14,10 @@ import { chapterL9 } from './chapters/chapterL9';
 import { chapterL10 } from './chapters/chapterL10';
 import { chapterL11 } from './chapters/chapterL11';
 import { chapterL12 } from './chapters/chapterL12';
+import { chapterL13 } from './chapters/chapterL13';
+import { chapterL14 } from './chapters/chapterL14';
+import { chapterL15 } from './chapters/chapterL15';
+import { chapterL16 } from './chapters/chapterL16';
 import { chapterM4 } from './chapters/modern4';
 import { chapterM5 } from './chapters/modern5';
 import { chapterM6 } from './chapters/modern6';
@@ -47,6 +51,10 @@ export const CLASSIC_CHAPTERS: Chapter[] = [
   chapterL10, // C10: 静的ポリモーフィズム入門（CRTPとクラシックTemplate）
   chapterL11, // C11: 独自メモリアロケータと固定長プール管理
   chapterL12, // C12: レガシーゲームエンジン統合アーキテクチャ
+  chapterL13, // C13: アセット管理とリソースキャッシュ設計
+  chapterL14, // C14: 空間分割と超高速衝突判定
+  chapterL15, // C15: データ駆動設計（Data-Driven）とスクリプトローダー
+  chapterL16, // C16: ビット演算・ビットフラグとステータス異常系
 ];
 
 /** 🚀 モダンコース（C++11〜C++20 / モダンC++・新世代設計編） */
@@ -116,59 +124,7 @@ export interface FutureChapterPreview {
 }
 
 export const UPCOMING_CHAPTERS: FutureChapterPreview[] = [
-  // 🏛️ レガシーC++コース 拡張予定（L13〜L20：本格ゲームエンジン＆現場低レイヤ実務編）
-  {
-    id: 1013,
-    slug: 'upcoming-l13',
-    title: '【L13】アセット管理とリソースキャッシュ設計',
-    subtitle: '二重読み込み防止・ハンドル型参照・Flyweightキャッシュ',
-    badge: 'レガシーC++ L13（準備中）',
-    isUpcoming: true,
-    track: 'classic',
-    beforePain: '敵や弾のたびにテクスチャや音声を重複ロードしてメモリが爆発。どこかで解放すると他の敵の画像が壊れる。',
-    afterSkill: 'Flyweightパターンによる共有リソース管理、堅牢なハンドル型ID（ResourceId）、参照カウント式キャッシュ機構。',
-    gameEvolution: '多種多様なスプライト画像やレトロBGM・効果音をメモリ浪費ゼロでロード可能に！',
-    techKeywords: ['Flyweightパターン', 'リソースマネージャー', 'ハンドル型参照', 'キャッシュ戦略'],
-  },
-  {
-    id: 1014,
-    slug: 'upcoming-l14',
-    title: '【L14】空間分割と超高速衝突判定',
-    subtitle: '四分木（Quadtree）・グリッド分割による O(N^2) → O(N log N) 最適化',
-    badge: 'レガシーC++ L14（準備中）',
-    isUpcoming: true,
-    track: 'classic',
-    beforePain: '弾や敵が500個を超えると、全対全の当たり判定二重ループで計算回数が25万回に達し、ゲームが激しくコマ落ちする。',
-    afterSkill: '空間分割アルゴリズム（四分木/均等グリッドバケット）の実装と、AABB（軸平行境界ボックス）による高速枝刈り判定。',
-    gameEvolution: '敵100体・弾1,000発が飛び交う本格弾幕シューティングでも処理落ちなしの爆速判定を実現！',
-    techKeywords: ['四分木 (Quadtree)', '空間分割', 'AABB衝突判定', '計算量O(N log N)最適化'],
-  },
-  {
-    id: 1015,
-    slug: 'upcoming-l15',
-    title: '【L15】データ駆動設計（Data-Driven）とスクリプトローダー',
-    subtitle: 'ハードコード脱却！CSV/JSON/バイナリからの敵出現テーブル・ステージ定義パース',
-    badge: 'レガシーC++ L15（準備中）',
-    isUpcoming: true,
-    track: 'classic',
-    beforePain: '敵のHPや出現タイミング、弾の速度を調整するたびにC++コードを書き換えて再コンパイル…開発効率が最悪。',
-    afterSkill: 'データ駆動アーキテクチャ。ゲーム設定やステージ構成を外部ファイル（CSV/JSON/独自バイナリ）からパース・逆シリアライズ。',
-    gameEvolution: '全10面のステージ構成とウェーブ出現パターン、ボス行動テーブルが外部設定ファイルから即時読み込み可能に！',
-    techKeywords: ['データ駆動設計 (DOD)', 'バイナリ/テキストシリアライズ', 'ステージパーサー', '外部設定連携'],
-  },
-  {
-    id: 1016,
-    slug: 'upcoming-l16',
-    title: '【L16】ビット演算・ビットフラグとステータス異常系',
-    subtitle: '1バイトで8つの状態を操る！ハードウェア直結の高速フラグ・マスク処理',
-    badge: 'レガシーC++ L16（準備中）',
-    isUpcoming: true,
-    track: 'classic',
-    beforePain: '「無敵」「毒」「氷結」「麻痺」「シールド」などの状態をbool変数で大量に持ち、メモリの無駄遣いと組み合わせ判定がバグの温床に。',
-    afterSkill: 'ビットシフト演算、AND/OR/XOR/NOTマスク、std::bitsetと生ビットフィールドの罠を理解し、1ワードで状態を高速一括判定。',
-    gameEvolution: '自機や敵に「電撃」「氷結スロー」「貫通」「無敵点滅」などのリッチな状態異常エフェクトが実装！',
-    techKeywords: ['ビット演算', 'ビットマスク', 'ビットフィールドの罠', 'ステータス管理'],
-  },
+  // 🏛️ レガシーC++コース 拡張予定（L17〜L20：本格ゲームエンジン＆現場低レイヤ実務編）
   {
     id: 1017,
     slug: 'upcoming-l17',

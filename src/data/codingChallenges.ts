@@ -722,6 +722,575 @@ int main() {
 `,
   },
 
+  // L13: アセット管理とリソースキャッシュ設計
+  'chapter-classic-13-asset-manager': {
+    id: 'challenge-l13',
+    chapterSlug: 'chapter-classic-13-asset-manager',
+    chapterBadge: 'L13',
+    title: '演習L13：Flyweightリソースマネージャーでアセット共有を実装せよ！',
+    missionObjective: 'リソース名（キー）をマップでキャッシュ管理し、初回は新規ロード、2回目以降は既存の共有インスタンスを返却して不要なメモリ確保を防ぐ acquireSound() を実装してください。',
+    mentorAdvice: '「同じ音・同じ画像を何度も new しない」のがFlyweightの基本じゃ！cache_.find(name) で検索し、見つかれば refCount++ して既存ポインタを返し、見つからなければ new してキャッシュに追加するのじゃ！',
+    initialCode: `#include <iostream>
+#include <string>
+#include <map>
+
+struct SoundEffect {
+    std::string name;
+    int refCount;
+    SoundEffect(const std::string& n) : name(n), refCount(1) {
+        std::cout << "  [Disk Load] 効果音読込: " << name << std::endl;
+    }
+    ~SoundEffect() {
+        std::cout << "  [Release] 効果音破棄: " << name << std::endl;
+    }
+};
+
+class SoundManager {
+private:
+    std::map<std::string, SoundEffect*> cache_;
+    int loadCount_ = 0;
+
+public:
+    ~SoundManager() {
+        for (std::map<std::string, SoundEffect*>::iterator it = cache_.begin(); it != cache_.end(); ++it) {
+            delete it->second;
+        }
+    }
+
+    // TODO: Flyweight パターンによるリソース取得を実装してください
+    // 1. cache_ 内にすでに name が存在するか検索
+    // 2. 存在する場合は refCount をインクリメントし、既存ポインタを返す
+    // 3. 存在しない場合は new SoundEffect(name) して cache_ に登録し、loadCount_++ して返す
+    SoundEffect* acquireSound(const std::string& name) {
+        // ここに実装
+        return nullptr;
+    }
+
+    int getUniqueLoadedCount() const { return loadCount_; }
+    int getCacheSize() const { return static_cast<int>(cache_.size()); }
+};
+
+int main() {
+    std::cout << "--- L13 Flyweightリソースキャッシュ テスト ---" << std::endl;
+    SoundManager manager;
+
+    // 1. レーザー音を3回要求
+    SoundEffect* s1 = manager.acquireSound("laser.wav");
+    SoundEffect* s2 = manager.acquireSound("laser.wav");
+    SoundEffect* s3 = manager.acquireSound("laser.wav");
+
+    // 2. 爆発音を2回要求
+    SoundEffect* s4 = manager.acquireSound("explosion.wav");
+    SoundEffect* s5 = manager.acquireSound("explosion.wav");
+
+    std::cout << "ディスク読込回数: " << manager.getUniqueLoadedCount() << std::endl;
+    std::cout << "キャッシュ内アイテム数: " << manager.getCacheSize() << std::endl;
+    std::cout << "laser.wav 参照カウント: " << (s1 ? s1->refCount : 0) << std::endl;
+
+    // 合計5回要求したが、ユニークなロードは2回だけで、同一インスタンスが共有されていること
+    if (s1 == s2 && s2 == s3 && s1 != nullptr &&
+        s4 == s5 && s4 != nullptr &&
+        manager.getUniqueLoadedCount() == 2 &&
+        s1->refCount == 3 && s4->refCount == 2) {
+        std::cout << "[CLEAR] L13_MISSION_SUCCESS" << std::endl;
+    } else {
+        std::cout << "[FAIL] リソースが正しく共有されていません" << std::endl;
+    }
+
+    return 0;
+}
+`,
+    expectedOutputPattern: '[CLEAR] L13_MISSION_SUCCESS',
+    successMessage: '🎉 素晴らしい！同一アセットがメモリ上に1つだけ保持され、何百回再生要求されてもロードが1回で済むFlyweightアーキテクチャが完成しました！',
+    hint: 'std::map<std::string, SoundEffect*>::iterator it = cache_.find(name); で検索し、it != cache_.end() なら it->second->refCount++; return it->second; とします。見つからなければ new して cache_[name] に保存します。',
+    solutionCode: `#include <iostream>
+#include <string>
+#include <map>
+
+struct SoundEffect {
+    std::string name;
+    int refCount;
+    SoundEffect(const std::string& n) : name(n), refCount(1) {
+        std::cout << "  [Disk Load] 効果音読込: " << name << std::endl;
+    }
+    ~SoundEffect() {
+        std::cout << "  [Release] 効果音破棄: " << name << std::endl;
+    }
+};
+
+class SoundManager {
+private:
+    std::map<std::string, SoundEffect*> cache_;
+    int loadCount_ = 0;
+
+public:
+    ~SoundManager() {
+        for (std::map<std::string, SoundEffect*>::iterator it = cache_.begin(); it != cache_.end(); ++it) {
+            delete it->second;
+        }
+    }
+
+    SoundEffect* acquireSound(const std::string& name) {
+        std::map<std::string, SoundEffect*>::iterator it = cache_.find(name);
+        if (it != cache_.end()) {
+            it->second->refCount++;
+            return it->second;
+        }
+        SoundEffect* effect = new SoundEffect(name);
+        cache_[name] = effect;
+        loadCount_++;
+        return effect;
+    }
+
+    int getUniqueLoadedCount() const { return loadCount_; }
+    int getCacheSize() const { return static_cast<int>(cache_.size()); }
+};
+
+int main() {
+    SoundManager manager;
+    SoundEffect* s1 = manager.acquireSound("laser.wav");
+    SoundEffect* s2 = manager.acquireSound("laser.wav");
+    SoundEffect* s3 = manager.acquireSound("laser.wav");
+    SoundEffect* s4 = manager.acquireSound("explosion.wav");
+    SoundEffect* s5 = manager.acquireSound("explosion.wav");
+
+    if (s1 == s2 && s2 == s3 && s1 != nullptr &&
+        s4 == s5 && s4 != nullptr &&
+        manager.getUniqueLoadedCount() == 2 &&
+        s1->refCount == 3 && s4->refCount == 2) {
+        std::cout << "[CLEAR] L13_MISSION_SUCCESS" << std::endl;
+    }
+    return 0;
+}
+`,
+  },
+
+  // L14: 空間分割と超高速衝突判定
+  'chapter-classic-14-spatial-partitioning': {
+    id: 'challenge-l14',
+    chapterSlug: 'chapter-classic-14-spatial-partitioning',
+    chapterBadge: 'L14',
+    title: '演習L14：均等グリッドによる衝突判定の枝刈りを実装せよ！',
+    missionObjective: 'オブジェクトの座標からグリッドのセルIDを算出し、同一セルに属するペアのみを抽出して衝突判定を行う空間ハッシュ関数 getCellId() と登録処理を実装してください。',
+    mentorAdvice: 'セル座標は x / cellSize, y / cellSize の整数除算じゃ！異なるセル同士は遠く離れているのでチェック不要、同一セル内だけ二重ループを回せば計算量が激変するのじゃ！',
+    initialCode: `#include <iostream>
+#include <vector>
+#include <map>
+
+struct Object2D {
+    int id;
+    int x;
+    int y;
+};
+
+class SimpleSpatialGrid {
+private:
+    int cellSize_;
+    // セルID -> そのセルに存在するオブジェクトIDのリスト
+    std::map<int, std::vector<int> > cells_;
+
+public:
+    SimpleSpatialGrid(int cellSize) : cellSize_(cellSize) {}
+
+    // TODO: 座標 (x, y) から 1次元のセルID を計算して返してください
+    // 簡単のため、セルX = x / cellSize_, セルY = y / cellSize_ とし、
+    // セルID = セルY * 1000 + セルX としてください（座標は正の整数を想定）
+    int getCellId(int x, int y) const {
+        // ここに実装
+        return 0;
+    }
+
+    void insert(const Object2D& obj) {
+        int cellId = getCellId(obj.x, obj.y);
+        cells_[cellId].push_back(obj.id);
+    }
+
+    // 同一セル内のペア判定を実行し、判定回数（checkCount）を返す
+    int countNarrowPhaseChecks() const {
+        int checks = 0;
+        for (std::map<int, std::vector<int> >::const_iterator it = cells_.begin(); it != cells_.end(); ++it) {
+            size_t count = it->second.size();
+            // セル内の全ペア数: N * (N - 1) / 2
+            if (count >= 2) {
+                checks += static_cast<int>(count * (count - 1) / 2);
+            }
+        }
+        return checks;
+    }
+};
+
+int main() {
+    std::cout << "--- L14 空間グリッド衝突枝刈り テスト ---" << std::endl;
+    // セルサイズ 100x100
+    SimpleSpatialGrid grid(100);
+
+    // セル(0, 0) に3個: x in [0, 99], y in [0, 99]
+    grid.insert({1, 10, 20});
+    grid.insert({2, 30, 40});
+    grid.insert({3, 50, 60});
+
+    // セル(5, 5) に2個: x in [500, 599], y in [500, 599]
+    grid.insert({4, 510, 520});
+    grid.insert({5, 530, 540});
+
+    // 孤立したセルに1個
+    grid.insert({6, 900, 900});
+
+    // 総当たり（N=6）なら 6 * 5 / 2 = 15回の判定が必要
+    // 空間グリッドなら:
+    // セル(0, 0)の3個 -> 3 * 2 / 2 = 3回
+    // セル(5, 5)の2個 -> 2 * 1 / 2 = 1回
+    // 合計: 4回！
+    int checks = grid.countNarrowPhaseChecks();
+    std::cout << "空間グリッドでの判定回数: " << checks << " 回 (総当たりなら 15 回)" << std::endl;
+
+    if (grid.getCellId(50, 60) == 0 &&
+        grid.getCellId(510, 520) == 5005 &&
+        checks == 4) {
+        std::cout << "[CLEAR] L14_MISSION_SUCCESS" << std::endl;
+    } else {
+        std::cout << "[FAIL] セルIDの計算または判定回数が正しくありません" << std::endl;
+    }
+
+    return 0;
+}
+`,
+    expectedOutputPattern: '[CLEAR] L14_MISSION_SUCCESS',
+    successMessage: '🎉 お見事！遠く離れたオブジェクト同士の判定を空間分割で根こそぎ枝刈りし、判定回数を大幅に削減できました！',
+    hint: 'int cx = x / cellSize_; int cy = y / cellSize_; return cy * 1000 + cx; と実装します。',
+    solutionCode: `#include <iostream>
+#include <vector>
+#include <map>
+
+struct Object2D {
+    int id;
+    int x;
+    int y;
+};
+
+class SimpleSpatialGrid {
+private:
+    int cellSize_;
+    std::map<int, std::vector<int> > cells_;
+
+public:
+    SimpleSpatialGrid(int cellSize) : cellSize_(cellSize) {}
+
+    int getCellId(int x, int y) const {
+        int cx = x / cellSize_;
+        int cy = y / cellSize_;
+        return cy * 1000 + cx;
+    }
+
+    void insert(const Object2D& obj) {
+        int cellId = getCellId(obj.x, obj.y);
+        cells_[cellId].push_back(obj.id);
+    }
+
+    int countNarrowPhaseChecks() const {
+        int checks = 0;
+        for (std::map<int, std::vector<int> >::const_iterator it = cells_.begin(); it != cells_.end(); ++it) {
+            size_t count = it->second.size();
+            if (count >= 2) {
+                checks += static_cast<int>(count * (count - 1) / 2);
+            }
+        }
+        return checks;
+    }
+};
+
+int main() {
+    SimpleSpatialGrid grid(100);
+    grid.insert({1, 10, 20});
+    grid.insert({2, 30, 40});
+    grid.insert({3, 50, 60});
+    grid.insert({4, 510, 520});
+    grid.insert({5, 530, 540});
+    grid.insert({6, 900, 900});
+
+    int checks = grid.countNarrowPhaseChecks();
+    if (grid.getCellId(50, 60) == 0 &&
+        grid.getCellId(510, 520) == 5005 &&
+        checks == 4) {
+        std::cout << "[CLEAR] L14_MISSION_SUCCESS" << std::endl;
+    }
+    return 0;
+}
+`,
+  },
+
+  // L15: データ駆動設計とスクリプトローダー
+  'chapter-classic-15-data-driven': {
+    id: 'challenge-l15',
+    chapterSlug: 'chapter-classic-15-data-driven',
+    chapterBadge: 'L15',
+    title: '演習L15：テキストステージスクリプトパーサーを実装せよ！',
+    missionObjective: '文字列ストリームを用いて "INVADER 100 200 50" のようなテキスト行を安全に読み取り、コメント行（#）を無視して敵の配置リスト（vector<SpawnData>）を構築するパーサーを実装してください。',
+    mentorAdvice: 'std::stringstream と std::getline の組み合わせじゃ！line.empty() || line[0] == "#" をスキップし、lineStream >> type >> x >> y >> hp で安全に型変換して取得するのじゃ！',
+    initialCode: `#include <iostream>
+#include <sstream>
+#include <string>
+#include <vector>
+
+struct SpawnData {
+    std::string type;
+    int x;
+    int y;
+    int hp;
+};
+
+class StageParser {
+public:
+    // TODO: scriptText を1行ずつ読み込み、有効な SpawnData を outList に格納してください
+    // 1. 空行、および先頭が '#' のコメント行はスキップ
+    // 2. 正常行は "TYPE X Y HP" の4トークンを読み込む
+    // 3. パース成功行のみ outList に追加
+    static void parse(const std::string& scriptText, std::vector<SpawnData>& outList) {
+        // ここに実装
+    }
+};
+
+int main() {
+    std::cout << "--- L15 データ駆動テキストパーサー テスト ---" << std::endl;
+    std::string script = 
+        "# === ステージ1 スクリプト ===\\n"
+        "# コメント行はスキップ\\n"
+        "INVADER 100 200 30\\n"
+        "\\n"
+        "# 敵2\\n"
+        "INVADER 160 200 30\\n"
+        "BOSS 300 150 500\\n";
+
+    std::vector<SpawnData> list;
+    StageParser::parse(script, list);
+
+    std::cout << "パース成功件数: " << list.size() << std::endl;
+    for (size_t i = 0; i < list.size(); ++i) {
+        std::cout << "  [" << i << "] " << list[i].type 
+                  << " at (" << list[i].x << ", " << list[i].y << ") HP=" << list[i].hp << std::endl;
+    }
+
+    if (list.size() == 3 &&
+        list[0].type == "INVADER" && list[0].x == 100 && list[0].hp == 30 &&
+        list[2].type == "BOSS" && list[2].x == 300 && list[2].hp == 500) {
+        std::cout << "[CLEAR] L15_MISSION_SUCCESS" << std::endl;
+    } else {
+        std::cout << "[FAIL] パーサーの抽出結果が期待値と一致しません" << std::endl;
+    }
+
+    return 0;
+}
+`,
+    expectedOutputPattern: '[CLEAR] L15_MISSION_SUCCESS',
+    successMessage: '🎉 素晴らしい！外部テキストファイルからゲームステージの敵配置を動的にパース・ロードするデータ駆動アーキテクチャの基礎が完成しました！',
+    hint: 'std::istringstream stream(scriptText); std::string line; while (std::getline(stream, line)) { if (line.empty() || line[0] == \'#\') continue; std::stringstream ls(line); SpawnData d; if (ls >> d.type >> d.x >> d.y >> d.hp) outList.push_back(d); } と記述します。',
+    solutionCode: `#include <iostream>
+#include <sstream>
+#include <string>
+#include <vector>
+
+struct SpawnData {
+    std::string type;
+    int x;
+    int y;
+    int hp;
+};
+
+class StageParser {
+public:
+    static void parse(const std::string& scriptText, std::vector<SpawnData>& outList) {
+        std::istringstream stream(scriptText);
+        std::string line;
+        while (std::getline(stream, line)) {
+            if (line.empty() || line[0] == '#') {
+                continue;
+            }
+            std::stringstream ls(line);
+            SpawnData d;
+            if (ls >> d.type >> d.x >> d.y >> d.hp) {
+                outList.push_back(d);
+            }
+        }
+    }
+};
+
+int main() {
+    std::string script = 
+        "# === ステージ1 スクリプト ===\\n"
+        "# コメント行はスキップ\\n"
+        "INVADER 100 200 30\\n"
+        "\\n"
+        "INVADER 160 200 30\\n"
+        "BOSS 300 150 500\\n";
+
+    std::vector<SpawnData> list;
+    StageParser::parse(script, list);
+
+    if (list.size() == 3 &&
+        list[0].type == "INVADER" && list[0].x == 100 && list[0].hp == 30 &&
+        list[2].type == "BOSS" && list[2].x == 300 && list[2].hp == 500) {
+        std::cout << "[CLEAR] L15_MISSION_SUCCESS" << std::endl;
+    }
+    return 0;
+}
+`,
+  },
+
+  // L16: ビット演算・ビットフラグとステータス異常系
+  'chapter-classic-16-bit-flags': {
+    id: 'challenge-l16',
+    chapterSlug: 'chapter-classic-16-bit-flags',
+    chapterBadge: 'L16',
+    title: '演習L16：型安全ビットフラグによる状態異常コンボ判定を実装せよ！',
+    missionObjective: 'enum class StatusEffect に対するビットフラグ付与（OR）、解除（AND + NOT）、所持チェック（AND）、複合判定（hasAll）を実装し、状態異常のテストをパスさせてください。',
+    mentorAdvice: 'フラグ付与は flags |= mask、解除は flags &= ~mask、チェックは (flags & mask) != 0 じゃ！enum class は static_cast<uint32_t> して演算するのじゃ！',
+    initialCode: `#include <iostream>
+#include <stdint.h>
+
+enum class StatusEffect : uint32_t {
+    None        = 0,
+    Poison      = 1 << 0, // 0x01: 毒
+    Frozen      = 1 << 1, // 0x02: 氷結
+    Invincible  = 1 << 2, // 0x04: 無敵
+    Shield      = 1 << 3  // 0x08: バリア
+};
+
+inline StatusEffect operator|(StatusEffect a, StatusEffect b) {
+    return static_cast<StatusEffect>(static_cast<uint32_t>(a) | static_cast<uint32_t>(b));
+}
+
+inline StatusEffect operator&(StatusEffect a, StatusEffect b) {
+    return static_cast<StatusEffect>(static_cast<uint32_t>(a) & static_cast<uint32_t>(b));
+}
+
+inline StatusEffect operator~(StatusEffect a) {
+    return static_cast<StatusEffect>(~static_cast<uint32_t>(a));
+}
+
+class StatusHolder {
+private:
+    StatusEffect flags_ = StatusEffect::None;
+
+public:
+    // TODO: 以下の4つのビット操作メソッドを実装してください
+    // 1. add: flags_ に effect を付与 (OR演算)
+    // 2. remove: flags_ から effect を解除 (AND + NOT演算)
+    // 3. has: effect のビットが立っているか判定 (None以外ならtrue)
+    // 4. hasAll: combined に含まれるすべてのビットが立っているか判定
+    void add(StatusEffect effect) {
+        // ここに実装
+    }
+
+    void remove(StatusEffect effect) {
+        // ここに実装
+    }
+
+    bool has(StatusEffect effect) const {
+        // ここに実装
+        return false;
+    }
+
+    bool hasAll(StatusEffect combined) const {
+        // ここに実装
+        return false;
+    }
+
+    uint32_t getRawValue() const { return static_cast<uint32_t>(flags_); }
+};
+
+int main() {
+    std::cout << "--- L16 型安全ビットフラグ テスト ---" << std::endl;
+    StatusHolder holder;
+
+    // 1. 毒と氷結を付与 (0x01 | 0x02 = 0x03)
+    holder.add(StatusEffect::Poison | StatusEffect::Frozen);
+    std::cout << "付与後生フラグ値: 0x" << std::hex << holder.getRawValue() << std::dec << std::endl;
+
+    bool check1 = holder.has(StatusEffect::Poison);
+    bool check2 = holder.has(StatusEffect::Frozen);
+    bool check3 = !holder.has(StatusEffect::Shield);
+    bool checkCombo = holder.hasAll(StatusEffect::Poison | StatusEffect::Frozen);
+
+    // 2. 毒のみを解除 (0x03 & ~0x01 = 0x02)
+    holder.remove(StatusEffect::Poison);
+    bool check4 = !holder.has(StatusEffect::Poison);
+    bool check5 = holder.has(StatusEffect::Frozen);
+
+    std::cout << "Poisonあり: " << check1 << ", Frozenあり: " << check2 << ", Combo判定: " << checkCombo << std::endl;
+    std::cout << "Poison解除後: " << check4 << ", Frozen残り: " << check5 << std::endl;
+
+    if (check1 && check2 && check3 && checkCombo && check4 && check5 && holder.getRawValue() == 2) {
+        std::cout << "[CLEAR] L16_MISSION_SUCCESS" << std::endl;
+    } else {
+        std::cout << "[FAIL] ビットフラグの操作結果が正しくありません" << std::endl;
+    }
+
+    return 0;
+}
+`,
+    expectedOutputPattern: '[CLEAR] L16_MISSION_SUCCESS',
+    successMessage: '🎉 完璧です！たった1つの整数で32種の状態をO(1)で操り、複合条件も一瞬で判定できる型安全ビットフラグをマスターしました！',
+    hint: 'addは flags_ = flags_ | effect; removeは flags_ = flags_ & (~effect); hasは (flags_ & effect) != StatusEffect::None; hasAllは (flags_ & combined) == combined; とします。',
+    solutionCode: `#include <iostream>
+#include <stdint.h>
+
+enum class StatusEffect : uint32_t {
+    None        = 0,
+    Poison      = 1 << 0,
+    Frozen      = 1 << 1,
+    Invincible  = 1 << 2,
+    Shield      = 1 << 3
+};
+
+inline StatusEffect operator|(StatusEffect a, StatusEffect b) {
+    return static_cast<StatusEffect>(static_cast<uint32_t>(a) | static_cast<uint32_t>(b));
+}
+
+inline StatusEffect operator&(StatusEffect a, StatusEffect b) {
+    return static_cast<StatusEffect>(static_cast<uint32_t>(a) & static_cast<uint32_t>(b));
+}
+
+inline StatusEffect operator~(StatusEffect a) {
+    return static_cast<StatusEffect>(~static_cast<uint32_t>(a));
+}
+
+class StatusHolder {
+private:
+    StatusEffect flags_ = StatusEffect::None;
+
+public:
+    void add(StatusEffect effect) {
+        flags_ = flags_ | effect;
+    }
+
+    void remove(StatusEffect effect) {
+        flags_ = flags_ & (~effect);
+    }
+
+    bool has(StatusEffect effect) const {
+        return (flags_ & effect) != StatusEffect::None;
+    }
+
+    bool hasAll(StatusEffect combined) const {
+        return (flags_ & combined) == combined;
+    }
+
+    uint32_t getRawValue() const { return static_cast<uint32_t>(flags_); }
+};
+
+int main() {
+    StatusHolder holder;
+    holder.add(StatusEffect::Poison | StatusEffect::Frozen);
+    holder.remove(StatusEffect::Poison);
+
+    if (holder.getRawValue() == 2) {
+        std::cout << "[CLEAR] L16_MISSION_SUCCESS" << std::endl;
+    }
+    return 0;
+}
+`,
+  },
+
   // M5: C++20 コルーチン
   'chapter-modern-5-coroutines': {
     id: 'challenge-m5',

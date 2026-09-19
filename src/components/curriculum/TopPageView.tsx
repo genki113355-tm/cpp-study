@@ -1179,7 +1179,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
 
             {/* 学べる章一覧 */}
             <div className="space-y-2 pt-2 border-t border-slate-800">
-              <span className="text-xs font-mono font-bold text-amber-300 block">カリキュラム構成 (L1〜L12) :</span>
+              <span className="text-xs font-mono font-bold text-amber-300 block">カリキュラム構成 (L1〜L16) :</span>
               <ul className="text-xs sm:text-sm text-slate-300 space-y-1.5 font-mono">
                 <li className="flex items-center gap-2">
                   <span className="text-amber-400 font-bold">L1:</span> 構造化設計の限界（巨大スパゲティコードの解剖）
@@ -1216,6 +1216,18 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
                 </li>
                 <li className="flex items-center gap-2">
                   <span className="text-amber-400 font-bold">L12:</span> レガシーゲームエンジン統合アーキテクチャ（固定デルタタイムとサブシステム）
+                </li>
+                <li className="flex items-center gap-2">
+                  <span className="text-amber-400 font-bold">L13:</span> アセット管理とリソースキャッシュ設計（Flyweightパターンとハンドル）
+                </li>
+                <li className="flex items-center gap-2">
+                  <span className="text-amber-400 font-bold">L14:</span> 空間分割と超高速衝突判定（均等グリッド・四分木ブロードフェーズ）
+                </li>
+                <li className="flex items-center gap-2">
+                  <span className="text-amber-400 font-bold">L15:</span> データ駆動設計とスクリプトローダー（テキスト/CSVパーサー・動的ファクトリ）
+                </li>
+                <li className="flex items-center gap-2">
+                  <span className="text-amber-400 font-bold">L16:</span> ビット演算・ビットフラグとステータス異常系（ハードウェア直結型安全マスク）
                 </li>
               </ul>
             </div>
@@ -1601,7 +1613,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
                   : 'bg-slate-900 text-slate-400 hover:text-amber-300 border border-slate-800'
               }`}
             >
-              <span>🏛️ レガシー拡張 (L12〜L20)</span>
+              <span>🏛️ レガシー拡張 (L17〜L20)</span>
               <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-slate-800 text-amber-300">
                 {UPCOMING_CHAPTERS.filter((c) => c.track === 'classic').length}
               </span>
@@ -1615,7 +1627,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
                   : 'bg-slate-900 text-slate-400 hover:text-cyan-300 border border-slate-800'
               }`}
             >
-              <span>🚀 モダン拡張 (M5〜M15)</span>
+              <span>🚀 モダン拡張 (M9〜M15)</span>
               <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-slate-800 text-cyan-300">
                 {UPCOMING_CHAPTERS.filter((c) => c.track === 'modern').length}
               </span>
