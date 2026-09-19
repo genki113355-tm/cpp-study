@@ -123,6 +123,61 @@ export const CodeChallengeRunner: React.FC<CodeChallengeRunnerProps> = ({ challe
             <span className="font-sans leading-relaxed text-slate-300">{challenge.mentorAdvice}</span>
           </div>
         </div>
+
+        {/* 🔰 実践ハンズオン演習の進め方（3ステップ・ガイド） */}
+        <div className="p-4 sm:p-5 rounded-2xl bg-cyan-950/30 border border-cyan-500/30 text-xs sm:text-sm text-cyan-200 shadow-inner">
+          <div className="font-bold text-cyan-300 flex items-center gap-2 mb-2 flex-wrap">
+            <span className="px-2.5 py-0.5 rounded-full bg-cyan-900/90 text-cyan-200 border border-cyan-400/40 text-[11px] font-mono font-bold">
+              🔰 はじめての方へ：演習の進め方
+            </span>
+            <span className="text-xs text-slate-400 font-normal">（迷わず3ステップでクリアできます！）</span>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-3">
+            <div className="p-3 rounded-xl bg-slate-900/90 border border-slate-800 flex items-start gap-2.5">
+              <span className="w-5 h-5 rounded-full bg-cyan-500/20 text-cyan-400 font-bold font-mono text-xs flex items-center justify-center flex-shrink-0 mt-0.5">1</span>
+              <div>
+                <span className="font-bold text-white block text-xs sm:text-sm">ミッションを確認</span>
+                <span className="text-[11px] text-slate-400 leading-relaxed block mt-1">上の「課題」と「指導官の助言」を読んで達成目標を掴みます。</span>
+              </div>
+            </div>
+
+            <div className="p-3 rounded-xl bg-slate-900/90 border-2 border-cyan-500/50 flex items-start gap-2.5 shadow-[0_0_15px_rgba(6,182,212,0.15)]">
+              <span className="w-5 h-5 rounded-full bg-cyan-500 text-slate-950 font-black font-mono text-xs flex items-center justify-center flex-shrink-0 mt-0.5">2</span>
+              <div>
+                <span className="font-bold text-cyan-300 block text-xs sm:text-sm flex items-center gap-1.5">
+                  <span>コードを直接編集</span>
+                  <span className="text-[10px] px-1.5 py-0.2 rounded bg-emerald-950 text-emerald-300 border border-emerald-500/30 font-bold">文字入力OK</span>
+                </span>
+                <span className="text-[11px] text-slate-300 leading-relaxed block mt-1">
+                  下のエディタ内をクリックすると直接キーボード入力できます。<code className="text-amber-300 bg-slate-950 px-1.5 py-0.5 rounded font-mono">// TODO:</code> の箇所を修正しましょう！
+                </span>
+              </div>
+            </div>
+
+            <div className="p-3 rounded-xl bg-slate-900/90 border border-slate-800 flex items-start gap-2.5">
+              <span className="w-5 h-5 rounded-full bg-cyan-500/20 text-cyan-400 font-bold font-mono text-xs flex items-center justify-center flex-shrink-0 mt-0.5">3</span>
+              <div>
+                <span className="font-bold text-white block text-xs sm:text-sm">テストを実行！</span>
+                <span className="text-[11px] text-slate-400 leading-relaxed block mt-1">下の「▶ コードをテスト実行する」を押すと本物のGCCコンパイラが自動判定します。</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-3 pt-2.5 border-t border-cyan-900/50 flex items-center justify-between flex-wrap gap-2 text-xs">
+            <span className="text-slate-400">💡 迷ったときは、右下の「ヒント」を見るか、模範解答を直接セットして試せます：</span>
+            <button
+              onClick={() => {
+                setCode(challenge.solutionCode);
+                setResult(null);
+                setIsPassed(false);
+              }}
+              className="text-cyan-400 hover:text-cyan-300 hover:underline flex items-center gap-1 font-bold font-mono text-xs cursor-pointer bg-cyan-950/60 px-2.5 py-1 rounded-lg border border-cyan-500/30"
+            >
+              <span>🔑 模範解答コードをエディタにセットする</span>
+            </button>
+          </div>
+        </div>
       </div>
 
       {/* コードエディタ本体 */}
@@ -142,7 +197,7 @@ export const CodeChallengeRunner: React.FC<CodeChallengeRunnerProps> = ({ challe
           <button
             onClick={handleRun}
             disabled={isRunning}
-            className={`flex items-center gap-2 px-6 py-3 rounded-xl font-bold font-mono text-sm transition shadow-xl active:scale-95 ${
+            className={`flex items-center gap-2 px-6 py-3 rounded-xl font-bold font-mono text-sm transition shadow-xl active:scale-95 cursor-pointer ${
               isRunning
                 ? 'bg-slate-800 text-slate-400 cursor-not-allowed border border-slate-700'
                 : 'bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 shadow-cyan-500/30'
@@ -151,12 +206,12 @@ export const CodeChallengeRunner: React.FC<CodeChallengeRunnerProps> = ({ challe
             {isRunning ? (
               <>
                 <span className="w-4 h-4 rounded-full border-2 border-cyan-400 border-t-transparent animate-spin" />
-                <span>コンパイル実行中...</span>
+                <span>コンパイルテスト実行中...</span>
               </>
             ) : (
               <>
                 <Play className="w-4 h-4 fill-current" />
-                <span>▶ コンパイル＆実行</span>
+                <span>▶ コードをテスト実行する</span>
               </>
             )}
           </button>

@@ -99,15 +99,32 @@ export const InteractiveCodeEditor: React.FC<InteractiveCodeEditorProps> = ({
   };
 
   return (
-    <div className={`rounded-2xl border border-slate-800 bg-[#050811] overflow-hidden shadow-2xl flex flex-col ${className}`}>
+    <div
+      onClick={() => textareaRef.current?.focus()}
+      className={`rounded-2xl border border-slate-800 focus-within:border-cyan-400/80 focus-within:ring-2 focus-within:ring-cyan-500/50 focus-within:shadow-[0_0_30px_rgba(6,182,212,0.25)] bg-[#050811] overflow-hidden shadow-2xl flex flex-col transition-all cursor-text ${className}`}
+    >
       {/* エディタツールバー */}
-      <div className="flex items-center justify-between px-3 py-2 bg-slate-900/90 border-b border-slate-800/80 text-xs font-mono text-slate-400 select-none">
-        <div className="flex items-center gap-2">
+      <div 
+        onClick={(e) => e.stopPropagation()}
+        className="flex items-center justify-between px-3 py-2 bg-slate-900/90 border-b border-slate-800/80 text-xs font-mono text-slate-400 select-none cursor-default"
+      >
+        <div className="flex items-center gap-2 flex-wrap">
           <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-cyan-950/80 text-cyan-400 border border-cyan-500/30 text-[11px] font-bold">
             <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
             C++ (C++23)
           </span>
-          <span className="text-[11px] text-slate-500 hidden sm:inline">
+
+          {!readOnly ? (
+            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-950/80 text-emerald-300 border border-emerald-500/40 text-[11px] font-bold animate-pulse">
+              <span>✏️ 直接入力・編集できます</span>
+            </span>
+          ) : (
+            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-slate-800 text-slate-400 text-[11px]">
+              <span>閲覧専用</span>
+            </span>
+          )}
+
+          <span className="text-[11px] text-slate-500 hidden md:inline">
             {lines.length} 行 / {value.length} 文字
           </span>
         </div>
@@ -117,7 +134,7 @@ export const InteractiveCodeEditor: React.FC<InteractiveCodeEditorProps> = ({
           <button
             type="button"
             onClick={() => setFontSizePx((p) => Math.max(11, p - 1))}
-            className="p-1.5 rounded-lg text-slate-400 hover:text-slate-200 hover:bg-slate-800 transition"
+            className="p-1.5 rounded-lg text-slate-400 hover:text-slate-200 hover:bg-slate-800 transition cursor-pointer"
             title="文字を小さく (A-)"
           >
             <ZoomOut className="w-3.5 h-3.5" />
@@ -126,7 +143,7 @@ export const InteractiveCodeEditor: React.FC<InteractiveCodeEditorProps> = ({
           <button
             type="button"
             onClick={() => setFontSizePx((p) => Math.min(20, p + 1))}
-            className="p-1.5 rounded-lg text-slate-400 hover:text-slate-200 hover:bg-slate-800 transition"
+            className="p-1.5 rounded-lg text-slate-400 hover:text-slate-200 hover:bg-slate-800 transition cursor-pointer"
             title="文字を大きく (A+)"
           >
             <ZoomIn className="w-3.5 h-3.5" />
@@ -138,7 +155,7 @@ export const InteractiveCodeEditor: React.FC<InteractiveCodeEditorProps> = ({
           <button
             type="button"
             onClick={handleCopy}
-            className="flex items-center gap-1 px-2 py-1 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition"
+            className="flex items-center gap-1 px-2 py-1 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition cursor-pointer"
             title="コードをコピー"
           >
             {copied ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
@@ -150,7 +167,7 @@ export const InteractiveCodeEditor: React.FC<InteractiveCodeEditorProps> = ({
             <button
               type="button"
               onClick={onReset}
-              className="flex items-center gap-1 px-2 py-1 rounded-lg text-slate-400 hover:text-amber-300 hover:bg-slate-800 transition"
+              className="flex items-center gap-1 px-2 py-1 rounded-lg text-slate-400 hover:text-amber-300 hover:bg-slate-800 transition cursor-pointer"
               title="初期コードに戻す"
             >
               <RotateCcw className="w-3.5 h-3.5" />
@@ -160,13 +177,28 @@ export const InteractiveCodeEditor: React.FC<InteractiveCodeEditorProps> = ({
         </div>
       </div>
 
+      {/* 入力促進の親切バー（未編集時や初見時の安心用） */}
+      {!readOnly && (
+        <div 
+          onClick={() => textareaRef.current?.focus()}
+          className="px-3 py-1.5 bg-cyan-950/40 border-b border-cyan-500/20 text-cyan-300 text-[11px] font-mono flex items-center justify-between gap-2 select-none cursor-text"
+        >
+          <span className="flex items-center gap-1.5">
+            <span>👇</span>
+            <span className="font-semibold">ここをクリックするとカーソルが入り、キーボードでコードを書き換えられます</span>
+          </span>
+          <span className="text-cyan-400/80 text-[10px] hidden sm:inline">（Tabキーでインデント・Enter自動補完）</span>
+        </div>
+      )}
+
       {/* エディタ本体（行番号 ＋ テキストエリア） */}
       <div className="relative flex flex-1 overflow-hidden" style={{ minHeight }}>
         {/* 行番号カラム */}
         <div
           ref={lineNumbersRef}
           aria-hidden="true"
-          className="w-10 sm:w-12 py-3.5 pl-2 pr-2 text-right bg-[#03060c] text-slate-600 select-none font-mono text-xs border-r border-slate-800/60 overflow-hidden"
+          onClick={() => textareaRef.current?.focus()}
+          className="w-10 sm:w-12 py-3.5 pl-2 pr-2 text-right bg-[#03060c] text-slate-600 select-none font-mono text-xs border-r border-slate-800/60 overflow-hidden cursor-text"
           style={{ fontSize: `${fontSizePx}px`, lineHeight: 1.5 }}
         >
           {lines.map((_, i) => (
@@ -188,15 +220,18 @@ export const InteractiveCodeEditor: React.FC<InteractiveCodeEditorProps> = ({
           autoCapitalize="none"
           autoComplete="off"
           autoCorrect="off"
-          className="flex-1 w-full h-full p-3.5 bg-transparent text-cyan-100 font-mono resize-none outline-none leading-normal overflow-auto whitespace-pre selection:bg-cyan-600/40 selection:text-white"
+          className="flex-1 w-full h-full p-3.5 bg-transparent text-cyan-100 font-mono resize-none outline-none leading-normal overflow-auto whitespace-pre selection:bg-cyan-600/40 selection:text-white caret-cyan-400 focus:caret-cyan-300"
           style={{ fontSize: `${fontSizePx}px`, lineHeight: 1.5 }}
           placeholder="// ここに C++ コードを入力してください..."
         />
       </div>
 
       {/* フッター小ヒント */}
-      <div className="px-3 py-1.5 bg-[#03060c] border-t border-slate-800/60 flex items-center justify-between text-[11px] font-mono text-slate-500">
-        <span className="hidden sm:inline">💡 Tabキーで2文字インデント、Enterで自動インデント</span>
+      <div 
+        onClick={(e) => e.stopPropagation()}
+        className="px-3 py-1.5 bg-[#03060c] border-t border-slate-800/60 flex items-center justify-between text-[11px] font-mono text-slate-500 cursor-default"
+      >
+        <span className="hidden sm:inline">💡 コードを修正したら、下の「▶ コードをテスト実行する」ボタンを押してください</span>
         <span className="ml-auto text-slate-400">GCC (gnu++2b / -O2 -Wall)</span>
       </div>
     </div>
