@@ -7,49 +7,88 @@ export const CPP_SYNTAX_REFERENCE_GUIDE: Chapter = {
   courseTrack: 'guide',
   courseChapterCode: 'G2',
   title: '【付録】ゼロから引ける！C++基本文法＆機能チートシート総覧',
-  subtitle: '〜変数・型・制御構文・ポインタ・参照・関数・クラス・STL・キャストまで逆引き完全リファレンス〜',
-  badge: '付録：C++文法総覧',
+  subtitle: '〜変数・型・制御構文・ポインタ・参照・関数・クラス・STL・キャストまで【C++03/11/14/17/20規格対応】逆引き完全リファレンス〜',
+  badge: '付録：C++文法総覧（規格別対応）',
   gameVersion: 'none',
-  description: 'オブジェクト指向設計やゲーム開発を学ぶ中で、「あれ、この構文どう書くんだっけ？」「ポインタと参照の違いは何だっけ？」と迷った時に、いつでも瞬時に引き戻せる完全なC++文法クイックリファレンスです。基本データ型、入出力、制御構造、ポインタ/参照、関数・ラムダ式、クラス/構造体、必須STL（vector, map, string, unique_ptr）、そしてC++の型安全キャストまで、実動コードスニペットと注意点を網羅しています。',
+  description: 'オブジェクト指向設計やゲーム開発を学ぶ中で、「あれ、この構文どう書くんだっけ？」「うちのプロジェクト（C++11 / C++17等）でこの書き方は使えるんだっけ？」と迷った時に、いつでも瞬時に引き戻せる規格対応版C++文法クイックリファレンスです。C++03からC++11/14/17/20までの主要な違い、基本型、入出力、制御構造、enum class、ポインタ/参照/nullptr、関数・ラムダ式・テンプレート超入門、クラス/構造体、必須STL（vector, map, string, string_view, unique_ptr）、そしてC++の型安全キャストまで、実動コードスニペットと注意点を網羅しています。',
   sections: [
     {
       id: 'sec-syntax-basics-types',
-      title: '付録1. 基本データ型・変数宣言・入出力・演算子',
-      leadText: 'C++の最も基本的なビルディングブロック。各プリミティブ型のサイズと範囲、型推論 auto、そして高速な入出力のお約束。',
+      title: '付録1. C++規格早見表・基本データ型・定数・入出力',
+      leadText: 'プロジェクトで使える規格（C++03〜C++20）の判定基準と、各プリミティブ型、型推論 auto、定数 constexpr、高速な入出力。',
       dialogueBefore: [
         {
           id: 'dlg-syn-1',
           speaker: 'penguin',
           emotion: 'question',
-          text: 'ベン先生！C++って型の種類が多くて混乱します。`int` と `int32_t` の違いや、`auto` の使いどころを教えてください！'
+          text: 'ベン先生！C++って現場によって「C++11対応」とか「C++17必須」って言われますが、何が違うんですか？型の種類や `constexpr` の使いどころも教えてください！'
         },
         {
           id: 'dlg-syn-2',
           speaker: 'shirokuma',
           emotion: 'teaching',
-          text: 'うむ！C++の型は「ハードウェアのメモリをどう解釈するか」の宣言じゃ。型を制する者がC++を制す！まずは最もよく使う基本型と入出力の型を整理するぞ！'
+          text: 'うむ！C++は3年ごとに進化しており、プロジェクトのコンパイラ規格によって使える武器が全く異なるんじゃ！まずは【規格進化の早見表】と、基本型・定数の書き方を一挙に整理するぞ！'
         }
       ],
       explanationText: `
-### 1. よく使う基本データ型一覧
+### 0. C++規格バージョンの進化早見年表
 
-| 型名 | サイズ（一般的） | 表現できる範囲・用途 | 例 |
-| :--- | :--- | :--- | :--- |
-| \`bool\` | 1バイト | \`true\` または \`false\` | \`bool isAlive = true;\` |
-| \`char\` | 1バイト | 1文字（ASCIIコード） / -128〜127 | \`char rank = 'S';\` |
-| \`int\` | 4バイト (32bit) | 整数（約 -21億〜+21億） | \`int score = 1000;\` |
-| \`int64_t\` / \`long long\` | 8バイト (64bit) | 巨大整数（約 -900京〜+900京） | \`int64_t largeId = 9999999999LL;\` |
-| \`size_t\` | 4または8バイト | 配列の要素数やサイズ（非負の符号なし整数） | \`size_t len = vec.size();\` |
-| \`float\` | 4バイト (32bit) | 単精度浮動小数点数（約7桁の有効数字） | \`float speed = 3.14f;\` |
-| \`double\` | 8バイト (64bit) | 倍精度浮動小数点数（約15桁の有効数字） | \`double preciseVal = 3.14159265;\` |
-| \`auto\` | コンパイル時決定 | 右辺の式から型を自動推論（C++11以降） | \`auto iter = vec.begin();\` |
+実務でコードを書く際、「この機能は現場のC++規格で使えるか？」を常に意識することが極めて重要です。
 
-> **💡 シロクマ指導官のTips: 固定長整数型を使おう**
-> ゲームのパケット通信やセーブデータでは、環境によってサイズが変わる \`int\` や \`long\` ではなく、\`<cstdint>\` で定義されている \`int32_t\`, \`uint32_t\`, \`uint8_t\` などの明示的ビット長を使うのが実務の鉄則じゃ！
+| 規格名 | 通称 | 主な現場での位置づけ・代表的機能 |
+| :--- | :--- | :--- |
+| **C++98 / 03** | クラシックC++ | レガシー現場・生ポインタ・手動 \`new\`/\`delete\`・STL基礎。 |
+| **C++11** | モダンC++の夜明け | **【最大の大改新】** \`auto\`, \`nullptr\`, 範囲for, ラムダ式, \`unique_ptr\`, \`enum class\`, \`constexpr\`。生ポインタの危険性が劇的に撲滅された。 |
+| **C++14** | C++11の完成形 | \`std::make_unique\`, ジェネリックラムダ, \`constexpr\` の制限緩和。 |
+| **C++17** | 現代実務のデファクト | **【現在の業界標準】** 初期化付きif/switch, \`std::string_view\`, \`std::optional\`, 構造化束縛 (\`auto [k, v]\`), \`std::filesystem\`。 |
+| **C++20** | 次世代C++ | コンセプト（型制約 Concept）, 範囲ライブラリ（Ranges）, コルーチン, \`std::span\`, \`std::format\`。 |
 
 ---
 
-### 2. 標準入出力（std::cin / std::cout）
+### 1. よく使う基本データ型一覧（規格別）
+
+| 型名 | 対応規格 | サイズ（一般的） | 表現できる範囲・用途 | 例 |
+| :--- | :---: | :--- | :--- | :--- |
+| \`bool\` | C++98〜 | 1バイト | \`true\` または \`false\` | \`bool isAlive = true;\` |
+| \`char\` | C++98〜 | 1バイト | 1文字（ASCIIコード） / -128〜127 | \`char rank = 'S';\` |
+| \`int\` | C++98〜 | 4バイト (32bit) | 整数（約 -21億〜+21億） | \`int score = 1000;\` |
+| \`int64_t\` | **C++11〜** | 8バイト (64bit) | 巨大整数（約 -900京〜+900京 / \`<cstdint>\`） | \`int64_t largeId = 9999999999LL;\` |
+| \`size_t\` | C++98〜 | 4または8バイト | 配列の要素数やサイズ（非負の符号なし整数） | \`size_t len = vec.size();\` |
+| \`float\` | C++98〜 | 4バイト (32bit) | 単精度浮動小数点数（約7桁の有効数字） | \`float speed = 3.14f;\` |
+| \`double\` | C++98〜 | 8バイト (64bit) | 倍精度浮動小数点数（約15桁の有効数字） | \`double preciseVal = 3.14159265;\` |
+| \`auto\` | **C++11〜** | コンパイル時決定 | 右辺の式から型を自動推論（イテレータ等に必須） | \`auto iter = vec.begin();\` |
+
+> **💡 シロクマ指導官のTips: 固定長整数型を使おう 【C++11】**
+> ゲームのパケット通信やバイナリセーブデータでは、環境によってビット数が変わる \`int\` や \`long\` ではなく、\`<cstdint>\` で定義されている \`int32_t\`, \`uint32_t\`, \`uint8_t\` などの明示的ビット長を使うのが実務の鉄則じゃ！
+
+---
+
+### 2. 定数宣言: const 【C++98】 vs constexpr 【C++11/14】
+
+C言語の \`#define MAX_ENEMY 100\` のようなマクロ定数は型情報がなくデバッグしにくいため、現代C++では **\`constexpr\`** を使用します。
+
+\`\`\`cpp
+// ❌ 非推奨: C言語流マクロ（スコープ無視・型安全性なし）
+#define MAX_HP 999
+
+// ⭕ C++98: const 定数（実行時確定でもOK）
+const int MaxPlayers = 4;
+
+// 🌟 C++11/14: constexpr（コンパイル時計算の定数・配列サイズに使える）
+constexpr int ScreenWidth = 800;
+constexpr int ScreenHeight = 600;
+constexpr int TotalPixels = ScreenWidth * ScreenHeight; // コンパイル時に計算完了！
+
+// constexpr 関数 (C++14〜: ループや条件分岐も可能)
+constexpr int square(int x) {
+    return x * x;
+}
+int buffer[square(4)]; // コンパイル時定数なので配列サイズに使える！
+\`\`\`
+
+---
+
+### 3. 標準入出力（std::cin / std::cout） 【C++98〜】
 
 \`\`\`cpp
 #include <iostream>
@@ -76,27 +115,27 @@ int main() {
     },
     {
       id: 'sec-syntax-control-flow',
-      title: '付録2. 制御構文（条件分岐・ループ・早期リターン）',
-      leadText: 'if, switch, for, 範囲for, while の基本と、C++特有の強力な初期化付きif構文。',
+      title: '付録2. 制御構文・列挙型（enum class）・構造化束縛',
+      leadText: 'if, switch, 初期化付きif/switch 【C++17】, enum class 【C++11】, 範囲for 【C++11】, 構造化束縛 【C++17】。',
       dialogueBefore: [
         {
           id: 'dlg-syn-3',
           speaker: 'penguin',
           emotion: 'thinking',
-          text: 'for文も色々な書き方がありますよね？普通の `for(int i=0; i<N; ++i)` と、`for(const auto& x : list)` ってどう使い分ければいいですか？'
+          text: 'for文も色々な書き方がありますよね？それと、現場で「生enumではなく enum class を使え」と怒られたのですが、何が違うんですか？'
         },
         {
           id: 'dlg-syn-4',
           speaker: 'shirokuma',
           emotion: 'teaching',
-          text: '現代のC++では【範囲for文（Range-based for）】が基本じゃ！インデックス変数 i のタイポによる配列外参照バグを100%防ぎ、コードも圧倒的にスッキリ読めるからの！'
+          text: '生enumは名前がスコープ外に漏れ出し、勝手に int に型変換されてバグの温床になるんじゃ！C++11の【enum class】と【範囲for文】、さらにC++17の【構造化束縛】をマスターすれば、現代の現場コードは怖くないぞ！'
         }
       ],
       explanationText: `
-### 1. 条件分岐 (if / else if / else)
+### 1. 条件分岐 (if / else) 【C++98〜】 & 初期化付きif 【C++17〜】
 
 \`\`\`cpp
-// 通常のif文
+// 通常のif文 【C++98〜】
 if (playerHp <= 0) {
     std::cout << "ゲームオーバー\\n";
 } else if (playerHp < 30) {
@@ -105,45 +144,75 @@ if (playerHp <= 0) {
     std::cout << "安全\\n";
 }
 
-// C++17: 初期化付きif文（スコープを限定できて安全！）
+// 🌟 C++17: 初期化付きif文（スコープをifブロック内だけに限定できて超安全！）
 if (auto* enemy = findTarget(); enemy != nullptr) {
-    enemy->takeDamage(10); // enemy はこの if ブロック内でのみ生存
+    enemy->takeDamage(10); // enemy はこの if ブロック内でのみ生存し、外に漏れない
 }
 \`\`\`
 
 ---
 
-### 2. 多岐分岐 (switch / case)
+### 2. 列挙型: enum 【C++98】 vs enum class 【C++11〜】
+
+現代C++の実務では、特別な理由がない限り **\`enum class\`** のみが許可されます。
 
 \`\`\`cpp
-enum GameState { TITLE, PLAYING, GAMEOVER };
-GameState state = PLAYING;
+// ❌ レガシー: 生の enum (C++98)
+// 問題1: TITLE や PLAYING が外のグローバル空間を汚染する
+// 問題2: int と暗黙に比較・代入できてしまい型安全でない (if (state == 0) が通る)
+enum LegacyState { TITLE, PLAYING };
 
-switch (state) {
-    case TITLE:
-        renderTitle();
-        break; // breakを忘れると下のcaseへ落下（フォールスルー）するので注意！
-    case PLAYING:
-        updateGame();
-        break;
-    case GAMEOVER:
-        showResult();
-        break;
-    default:
-        break;
+// ⭕ 現代標準: enum class (C++11〜 スコープ付き列挙型)
+enum class GameState {
+    Title,
+    Playing,
+    GameOver
+};
+
+// 使い方: 必ず GameState:: を前置する（名前衝突ゼロ！）
+GameState state = GameState::Playing;
+
+// if (state == 1) ➔ コンパイルエラー！（暗黙のint変換を防ぎバグを阻止）
+if (state == GameState::Playing) {
+    // 正常処理
 }
 \`\`\`
 
 ---
 
-### 3. ループ構文（for / 範囲for / while）
+### 3. 多岐分岐 (switch / case) 【C++98〜】 & 初期化付きswitch 【C++17〜】
+
+\`\`\`cpp
+switch (state) {
+    case GameState::Title:
+        renderTitle();
+        break; // breakを忘れると下のcaseへ落下（フォールスルー）するので注意！
+    case GameState::Playing:
+        updateGame();
+        break;
+    case GameState::GameOver:
+        showResult();
+        break;
+}
+
+// 🌟 C++17: 初期化付きswitch文
+switch (auto status = getNetworkStatus(); status) {
+    // status の有効範囲を switch 内に限定
+}
+\`\`\`
+
+---
+
+### 4. ループ構文（for / 範囲for 【C++11】 / 構造化束縛 【C++17】）
 
 \`\`\`cpp
 #include <vector>
+#include <unordered_map>
+#include <string>
 
 std::vector<int> scores = { 100, 250, 400 };
 
-// ① 範囲for文（最も推奨！コピーを防ぐために const auto& を使う）
+// ① 範囲for文 【C++11〜】（最も推奨！コピーを防ぐために const auto& を使う）
 for (const auto& s : scores) {
     std::cout << s << "\\n";
 }
@@ -153,12 +222,18 @@ for (auto& s : scores) {
     s += 10; // 要素そのものを書き換え
 }
 
-// ③ インデックスが必要な場合の伝統的for文
+// ③ 構造化束縛 (Structured Binding) 【C++17〜】（マップのキーと値を一発分解！）
+std::unordered_map<std::string, int> itemPrices = { {"Potion", 50}, {"Ether", 120} };
+for (const auto& [item, price] : itemPrices) {
+    std::cout << item << " は " << price << "G です\\n";
+}
+
+// ④ インデックスが必要な場合の伝統的for文 【C++98〜】
 for (size_t i = 0; i < scores.size(); ++i) {
     std::cout << i << "位: " << scores[i] << "\\n";
 }
 
-// ④ while文（条件が真の間繰り返す）
+// ⑤ while文 【C++98〜】
 int countdown = 3;
 while (countdown > 0) {
     std::cout << countdown-- << "...\\n";
@@ -168,47 +243,65 @@ while (countdown > 0) {
     },
     {
       id: 'sec-syntax-pointers-references',
-      title: '付録3. ポインタ（*）と参照（&）の完全攻略',
-      leadText: 'C++初心者の最大の関門。「アドレス」「間接参照」「参照渡し」「const参照」の違いを図解でスッキリ解消。',
+      title: '付録3. ポインタ（*）・参照（&）・nullptr 【C++11】の完全攻略',
+      leadText: '「アドレス」「間接参照」「参照渡し」「const参照」、そしてNULLの曖昧さを葬り去った型安全な nullptr 【C++11】の決定打。',
       dialogueBefore: [
         {
           id: 'dlg-syn-5',
           speaker: 'penguin',
           emotion: 'sweating',
-          text: '`int*` と `int&`、記号が似ていて頭が爆発しそうです……！どっちを使えばいいんですか！？'
+          text: '`int*` と `int&`、記号が似ていて頭が爆発しそうです……！あと、`NULL` と `nullptr` って何が違うんですか？'
         },
         {
           id: 'dlg-syn-6',
           speaker: 'shirokuma',
           emotion: 'teaching',
-          text: 'ガハハ！違いは極めて明快じゃ！\n・ポインタ（*）は「住所（アドレス）をメモした紙」。空っぽ（nullptr）にもなれるし、別の住所を書き直すこともできる。\n・参照（&）は「その人につけた『あだ名（別名）』」。最初から実体にガッチリ結合し、絶対に nullptr にはなれん！\n現代C++では【参照を使える場所では、常に参照を優先する】のが鉄則じゃ！'
+          text: 'ガハハ！違いは極めて明快じゃ！\n・ポインタ（*）は「住所（アドレス）をメモした紙」。空っぽ（nullptr）にもなれるし、別の住所を指し直すこともできる。\n・参照（&）は「実体につけた『あだ名』」。絶対に nullptr にはなれず、生涯その実体を指し続ける！\nそして NULL は大昔の整数の 0 じゃが、C++11 の【nullptr】は正真正銘のポインタ専用型じゃ！'
         }
       ],
       explanationText: `
-### ポインタ vs 参照の比較表
+### 1. ポインタ vs 参照の比較表
 
-| 比較項目 | ポインタ (\`T*\`) | 参照 (\`T&\`) |
+| 比較項目 | ポインタ (\`T*\`) 【C++98〜】 | 参照 (\`T&\`) 【C++98〜】 |
 | :--- | :--- | :--- |
 | **本質** | アドレス（メモリ番地）を格納する独立した変数 | 既存のオブジェクトに対する「別名（エイリアス）」 |
-| **nullptr（空）** | **可能** (\`int* p = nullptr;\`) | **不可**（必ず有効な実体を指す必要がある） |
-| **再代入（対象の変更）**| **可能**（別の変数を指し直せる） | **不可**（一度バインドしたら一生その実体を指す） |
-| **構文** | アドレス取得 \`&x\`、中身アクセス \`*p\` | 普通の変数と同じように扱える（\`ref = 20;\`） |
+| **空（未初期化/無効）** | **可能** (\`int* p = nullptr;\`) | **不可**（必ず有効な実体への結合が必要） |
+| **再代入（対象の変更）**| **可能**（別の変数のアドレスを代入可能） | **不可**（一度バインドしたら一生その実体を指す） |
+| **構文** | アドレス取得 \`&x\`、中身アクセス \`*p\` | 普通の変数と全く同じように扱える（\`ref = 20;\`） |
+| **実務の原則** | nullptr を許容したい場合のみ使用 | **【最優先】nullptr があり得ない場合は常に参照を使う** |
 
 ---
 
-### 実践コード例
+### 2. nullptr 【C++11〜】 vs NULL / 0 【C++98】（なぜ現代でNULLは禁止なのか？）
+
+現代C++において、\`NULL\` や \`0\` でポインタを初期化することは静的解析ツールで重大警告（Clang-Tidy等）となります。
+
+\`\`\`cpp
+// ❌ 危険: NULL はマクロで単なる整数 0 と定義されていることが多い
+void printTarget(int id)    { std::cout << "ID: " << id << "\\n"; }
+void printTarget(Enemy* e) { std::cout << "Enemy Pointer\\n"; }
+
+printTarget(NULL); // 🚨 曖昧さエラー！あるいは printTarget(int) が呼ばれてしまう大事故！
+
+// ⭕ 現代標準: nullptr 【C++11〜】(std::nullptr_t 型)
+printTarget(nullptr); // 確実に printTarget(Enemy*) が呼ばれる！100%型安全
+\`\`\`
+
+---
+
+### 3. 実践コード例: アドレス取得と参照 【C++98〜】
 
 \`\`\`cpp
 #include <iostream>
 
 void pointerExample() {
     int val = 42;
-    int* ptr = &val; // &val で val のアドレスを取得
+    int* ptr = &val; // &val で val のメモリアドレスを取得
 
     std::cout << "val のアドレス: " << ptr << "\\n";
-    std::cout << "ptr が指す中身: " << *ptr << "\\n"; // * で逆参照
+    std::cout << "ptr が指す中身: " << *ptr << "\\n"; // * で逆参照（中身を読む）
 
-    *ptr = 100; // val の値が 100 に書き換わる
+    *ptr = 100; // ptr を通じて val の値が 100 に書き換わる
 }
 
 void referenceExample() {
@@ -221,13 +314,13 @@ void referenceExample() {
 
 ---
 
-### const との組み合わせ（関数の引数設計）
+### 4. const との組み合わせ（関数の引数設計の鉄則） 【C++98〜】
 
 \`\`\`cpp
 // 1. 値渡し: 巨大なオブジェクトだと全コピーが発生し激遅！
 void processCopy(std::string str); 
 
-// 2. 参照渡し: 中身を関数内で書き換える場合
+// 2. 参照渡し: 中身を関数内で書き換えて呼び出し元に戻す場合
 void addScore(int& score) { score += 10; }
 
 // 3. const参照渡し: 【最も頻出！】コピーを一切せず、読み取り専用で高速に渡す
@@ -240,31 +333,31 @@ void printName(const std::string& name) {
     },
     {
       id: 'sec-syntax-functions-lambdas',
-      title: '付録4. 関数・オーバーロード・デフォルト引数・ラムダ式',
-      leadText: '関数の基本定義から、同じ名前で引数を変えるオーバーロード、そしてC++11の最強機能「ラムダ式」まで。',
+      title: '付録4. 関数・オーバーロード・ラムダ式・テンプレート超入門',
+      leadText: 'オーバーロード 【C++98】、C++11の最強兵器「ラムダ式」、C++14「ジェネリックラムダ」、そしてSTLの山括弧 <> の正体である「関数テンプレート超入門」【C++98〜】。',
       dialogueBefore: [
         {
           id: 'dlg-syn-7',
           speaker: 'penguin',
           emotion: 'happy',
-          text: 'ラムダ式って `[](){}` みたいな顔文字みたいな記号ですよね。何が便利なんですか？'
+          text: 'ラムダ式って `[](){}` みたいな顔文字みたいな記号ですよね。あと、STLで見かける `<typename T>` や `<int>` って何者なんですか？'
         },
         {
           id: 'dlg-syn-8',
           speaker: 'shirokuma',
           emotion: 'teaching',
-          text: '「その場限りの小さな関数」をわざわざ外で名前をつけて定義しなくて済むんじゃ！ソートの条件指定や、敵のフィルタリングで絶大な威力を発揮するぞ！'
+          text: 'ラムダ式【C++11】はその場限りの使い捨て関数をスマートに書く武器じゃ！そして山括弧 `<>` は【テンプレート】と呼ばれ、「型だけを差し替えて同じ処理を使い回す」C++の奥義なんじゃ！両方押さえておくぞ！'
         }
       ],
       explanationText: `
-### 1. 関数のオーバーロードとデフォルト引数
+### 1. 関数のオーバーロードとデフォルト引数 【C++98〜】
 
 \`\`\`cpp
 // オーバーロード: 同じ関数名で引数の型や数が異なる関数を定義できる
 int add(int a, int b) { return a + b; }
 float add(float a, float b) { return a + b; }
 
-// デフォルト引数: 引数が省略された時の初期値を指定
+// デフォルト引数: 引数が省略された時の初期値を指定（右側の引数から順に指定）
 void spawnEnemy(int x, int y, int hp = 100) {
     // hp が渡されなければ 100 になる
 }
@@ -275,7 +368,7 @@ spawnEnemy(10, 20, 500);  // hp = 500 (ボス)
 
 ---
 
-### 2. ラムダ式（無名関数）
+### 2. ラムダ式（無名関数） 【C++11〜】 & ジェネリックラムダ 【C++14〜】
 
 \`\`\`cpp
 #include <algorithm>
@@ -299,58 +392,100 @@ std::sort(enemies.begin(), enemies.end(), [](const Enemy& a, const Enemy& b) {
 
 // キャプチャの基本:
 int threshold = 100;
-// [threshold]: 外の変数をコピーして持ち込む
-// [&threshold]: 外の変数を参照として持ち込む
+// [threshold]: 外の変数をコピーして持ち込む（読み取り専用）
+// [&threshold]: 外の変数を参照として持ち込む（書き換え可能）
 // [&]: 外の全変数を参照キャプチャ
 auto isHighHp = [threshold](const Enemy& e) {
     return e.hp >= threshold;
 };
+
+// 🌟 C++14: ジェネリックラムダ（引数に auto を使える！）
+auto printItem = [](const auto& item) {
+    std::cout << item << "\\n";
+};
+\`\`\`
+
+---
+
+### 3. 関数テンプレート超入門 【C++98〜】（STLの山括弧 <> の正体）
+
+「型が違うだけで、全く同じロジックを何個も書きたくない」ときに使います。
+
+\`\`\`cpp
+// 任意の型 T を受け取って大きい方を返すテンプレート関数
+template <typename T>
+T myMax(T a, T b) {
+    return (a > b) ? a : b;
+}
+
+// 使い方:
+int maxInt = myMax<int>(10, 20);        // 型を明示指定: T = int
+double maxDbl = myMax(3.14, 2.71);      // 引数から自動型推論: T = double
+
+// 💡 これこそが、std::vector<int> や std::make_unique<Enemy>() の山括弧 <> の仕組み！
+// クラスや関数に「型を外から注入する」ためのC++の根本機能です。
 \`\`\`
       `
     },
     {
       id: 'sec-syntax-classes-structs',
-      title: '付録5. クラス（class）と構造体（struct）・アクセス修飾子',
-      leadText: 'struct と class の唯一の違いとは？カプセル化、メンバ初期化子リスト、explicit の重要性を復習。',
+      title: '付録5. クラス（class）・構造体（struct）・現代的クラス設計',
+      leadText: 'struct と class の違い 【C++98】、メンバ初期化子リスト、C++11のメンバ内初期化、= default / = delete、override 修飾子。',
       dialogueBefore: [
         {
           id: 'dlg-syn-9',
           speaker: 'penguin',
           emotion: 'question',
-          text: 'C++では `struct` と `class` って何が違うんですか？機能はほとんど同じに見えますが…'
+          text: 'C++では `struct` と `class` って何が違うんですか？あと `= default` や `override` などの新キーワードもよく見かけます！'
         },
         {
           id: 'dlg-syn-10',
           speaker: 'shirokuma',
           emotion: 'teaching',
-          text: '違いはたった1つ！【何も指定しなかった時のデフォルトが public か private か】だけじゃ！\n・struct はデフォルトが public（データの集まり向け）\n・class はデフォルトが private（カプセル化したい設計向け）\n現場ではこの意図で使い分けるのが紳士協定じゃな！'
+          text: 'struct と class の違いはたった1つ！【何も書かなかった時のデフォルトが public か private か】だけじゃ！\nそして C++11 から加わった `= default`, `= delete`, `override` は、設計ミスをコンパイル段階で100%弾く現代の必須装備じゃ！'
         }
       ],
       explanationText: `
-### クラスの標準的な設計テンプレート
+### 1. struct vs class の比較 【C++98〜】
+
+| 比較項目 | 構造体 (\`struct\`) | クラス (\`class\`) |
+| :--- | :--- | :--- |
+| **デフォルトのアクセス権** | **\`public:\`**（外部から自由にアクセス可能） | **\`private:\`**（外部から非公開・隠蔽） |
+| **デフォルトの継承** | \`public\` 継承 | \`private\` 継承 |
+| **実務での使い分け** | メンバ関数を持たない「データの束」向け | カプセル化（内部状態を隠す）された「オブジェクト」向け |
+
+---
+
+### 2. 現代C++のクラス標準設計テンプレート 【C++11〜17】
 
 \`\`\`cpp
 #include <string>
 #include <algorithm>
+#include <iostream>
 
 class Player {
-// 1. private: 外部から直接触らせない内部データ（カプセル化）
+// 1. private: 外部から直接書き換えさせない内部データ
 private:
     std::string name_;
-    int hp_;
-    int maxHp_;
+    // 🌟 C++11: メンバ内初期化（コンストラクタで書き忘れてもゴミ値が入らない！）
+    int hp_{100};
+    int maxHp_{100};
 
-// 2. public: 外部に公開する操作（メソッド）
+// 2. public: 外部に公開するインターフェース
 public:
-    // コンストラクタ: メンバ初期化子リスト (: name_(name)...) を使うのが鉄則！
-    // explicit: 意図しない暗黙の型変換を防ぐ
-    explicit Player(const std::string& name, int maxHp = 100)
-        : name_(name), hp_(maxHp), maxHp_(maxHp) {}
+    // コンストラクタ: メンバ初期化子リスト (: name_(name)...) を使うのが鉄則
+    // explicit 【C++98〜】: 意図しない暗黙の型変換（Player p = 100; 等）を防ぐ
+    explicit Player(std::string name, int maxHp = 100)
+        : name_(std::move(name)), hp_(maxHp), maxHp_(maxHp) {}
 
-    // デストラクタ: 寿命を迎えた時に自動で呼ばれる
+    // デストラクタ 【C++11〜】: コンパイラ生成の標準動作であることを明示
     ~Player() = default;
 
-    // ゲッター (constメンバ関数: メンバ変数を変更しないことを保証)
+    // 🌟 C++11: コピー禁止の宣言（浅いコピーによる二重解放バグを完全封殺）
+    Player(const Player&) = delete;
+    Player& operator=(const Player&) = delete;
+
+    // ゲッター (constメンバ関数 【C++98〜】: メンバ変数を変更しないことをコンパイラが保証)
     int getHp() const { return hp_; }
     const std::string& getName() const { return name_; }
 
@@ -359,61 +494,94 @@ public:
         hp_ = std::max(0, hp_ - dmg); // 不正なマイナス値を防ぐ
     }
 };
+
+// 🌟 C++11: override 指定子（基底クラスの仮想関数を上書きしたことを明示）
+class BaseEntity {
+public:
+    virtual ~BaseEntity() = default;
+    virtual void update() {}
+};
+
+class Monster : public BaseEntity {
+public:
+    // override を付けることで、関数名のタイポ時にコンパイルエラーを出してくれる！
+    void update() override {
+        std::cout << "Monster update\\n";
+    }
+};
 \`\`\`
       `
     },
     {
       id: 'sec-syntax-stl-containers',
-      title: '付録6. 必須STLコンテナ（vector, string, unordered_map, unique_ptr）',
-      leadText: '標準ライブラリ（Standard Template Library）を制覇する。生配列にさよならを告げる4大必須ツール。',
+      title: '付録6. 必須STLコンテナ・文字列（string_view）・スマートポインタ',
+      leadText: 'vector 【C++98/11】, string 【C++98】, string_view 【C++17】, unordered_map 【C++11】, unique_ptr 【C++11】 / make_unique 【C++14】。生配列と手動deleteに完全決別する必須ツール群。',
       dialogueBefore: [
         {
           id: 'dlg-syn-11',
           speaker: 'penguin',
           emotion: 'happy',
-          text: 'STLを使えるようになってから、生配列のバッファオーバーフローに怯えなくて済むようになりました！'
+          text: 'STLを使えるようになってから、生配列のバッファオーバーフローに怯えなくて済むようになりました！あと最近よく聞く `std::string_view` って何ですか？'
         },
         {
           id: 'dlg-syn-12',
           speaker: 'shirokuma',
           emotion: 'teaching',
-          text: 'うむ！特に \`std::vector\`（動的配列）と \`std::unordered_map\`（ハッシュ連想配列）はゲーム開発の全域で使う主食じゃ。使いこなすのじゃ！'
+          text: 'うむ！`std::vector` と `std::unordered_map` はゲーム開発の主食じゃ！\nそして C++17 で登場した【std::string_view】は、「メモリコピーを一切起こさずに文字列を覗き見する」現代C++の超高速キラー機能じゃぞ！'
         }
       ],
       explanationText: `
-### 1. \`std::vector\` (動的配列)
+### 1. \`std::vector\` (動的配列) 【C++98〜】 & \`emplace_back\` 【C++11〜】
 
 \`\`\`cpp
 #include <vector>
 
-std::vector<int> v;
-v.push_back(10);        // 末尾に追加
-v.emplace_back(20);     // 直接構築して追加（push_backより高速）
-std::cout << v[0];      // 添字アクセス
-std::cout << v.size();   // 要素数 (2)
-v.clear();              // 全消去
+std::vector<int> v = { 1, 2, 3 }; // 初期化子リスト 【C++11〜】
+v.push_back(10);                  // 末尾に追加（コピーまたはムーブ）
+v.emplace_back(20);               // 🌟 C++11: その場で直接コンストラクト（高速！）
+
+std::cout << v[0];                // 添字アクセス（高速・範囲外チェックなし）
+std::cout << v.at(0);             // 範囲外なら例外を投げる安全アクセス
+std::cout << v.size();             // 要素数
+v.clear();                        // 全要素消去
 \`\`\`
 
 ---
 
-### 2. \`std::string\` (安全な文字列)
+### 2. \`std::string\` 【C++98〜】 vs \`std::string_view\` 【C++17〜】
 
 \`\`\`cpp
 #include <string>
+#include <string_view>
+#include <iostream>
 
-std::string s1 = "Hello";
-std::string s2 = " World";
-std::string s3 = s1 + s2; // 結合: "Hello World"
-
-if (s3.find("World") != std::string::npos) {
-    // 文字列が含まれているか検索
+// ❌ レガシー: const std::string& は "Hello" などの文字列リテラルを渡すと一時オブジェクト生成（動的メモリ確保）が発生することがある
+void printLegacy(const std::string& s) {
+    std::cout << s << "\\n";
 }
-const char* rawCStr = s3.c_str(); // C言語の char* APIに渡す場合
+
+// 🌟 現代標準: std::string_view 【C++17〜】
+// ポインタと長さ（16バイト程度）だけを保持し、コピーやメモリ確保が【絶対ゼロ】！
+void printModern(std::string_view sv) {
+    std::cout << sv << "\\n";
+}
+
+int main() {
+    std::string str = "プレイヤー";
+    printModern(str);              // std::string をそのまま渡せる（コピーなし）
+    printModern("ゲームスタート");   // 文字列リテラルもそのまま渡せる（アロケーションなし）
+    printModern(std::string_view(str.data(), 3)); // 部分切り出しもO(1)で超高速！
+}
 \`\`\`
 
 ---
 
-### 3. \`std::unordered_map\` (キー・バリュー辞書 / ハッシュマップ)
+### 3. \`std::unordered_map\` 【C++11〜】 vs \`std::map\` 【C++98〜】
+
+| コンテナ | 内部構造 | 検索計算量 | 特徴 |
+| :--- | :--- | :--- | :--- |
+| **\`std::unordered_map\`** 【C++11〜】 | ハッシュテーブル | **平均 O(1)** | 順序不定。**ゲーム開発の辞書・ID検索の第一候補** |
+| **\`std::map\`** 【C++98〜】 | 赤黒木（平衡二分木） | **O(log N)** | キーが常に昇順ソートされる。ランキング表示等向け |
 
 \`\`\`cpp
 #include <unordered_map>
@@ -423,34 +591,45 @@ std::unordered_map<std::string, int> itemPrices;
 itemPrices["Potion"] = 50;
 itemPrices["Ether"] = 120;
 
-// 検索
-if (itemPrices.find("Potion") != itemPrices.end()) {
-    std::cout << "ポーションの価格: " << itemPrices["Potion"] << "G\\n";
+// find で存在確認（存在しないキーに [] を使うと勝手に要素が生成されてしまうため！）
+if (auto it = itemPrices.find("Potion"); it != itemPrices.end()) {
+    std::cout << "ポーションの価格: " << it->second << "G\\n";
 }
 \`\`\`
 
 ---
 
-### 4. \`std::unique_ptr\` (スマートポインタ / 単独所有権)
+### 4. \`std::unique_ptr\` 【C++11〜】 & \`std::make_unique\` 【C++14〜】
+
+現代C++では、生の \`new\` / \`delete\` を業務コードに書くことは完全に禁止されています。
 
 \`\`\`cpp
 #include <memory>
 
 class Weapon { /* ... */ };
 
-// 生 new は書かない！make_unique を使う
+// ❌ 過去の書き方: 生 new（delete 忘れや例外でメモリリークの原因）
+// Weapon* w = new Weapon();
+
+// ⭕ 現代標準: std::make_unique 【C++14〜】
 auto weapon = std::make_unique<Weapon>();
 
-// スコープを抜けた瞬間、delete が 100% 自動実行される！
-// 所有権の移譲（ムーブ）:
+// 💡 スコープを抜けた瞬間、デストラクタと delete が 100% 自動実行される！
+
+// 所有権の移動（ムーブセマンティクス 【C++11〜】）
+// unique_ptr はコピー不可（= delete）。std::move でのみ所有権を譲渡できる
 std::unique_ptr<Weapon> playerWeapon = std::move(weapon);
+// この時点で weapon は nullptr になる
 \`\`\`
+
+> **💡 shared_ptr / weak_ptr 【C++11〜】 の使いどころ**:
+> 複数のオブジェクトで共同所有したい場合のみ \`std::shared_ptr\` / \`std::make_shared\` を使います。循環参照によるメモリリークを防ぐ監視役には \`std::weak_ptr\` を組み合わせます。
       `
     },
     {
       id: 'sec-syntax-cpp-casts',
-      title: '付録7. C++型安全キャスト4兄弟（static, reinterpret, const, dynamic）',
-      leadText: 'C言語流の危険な (Type)val キャストを全廃する。コンパイラに意図を伝え、バグを未然に防ぐ4つのキャスト演算子。',
+      title: '付録7. C++型安全キャスト4兄弟（static, dynamic, const, reinterpret） 【C++98〜】',
+      leadText: 'C言語流の危険な (Type)val キャストを全廃する。コンパイラに意図を伝え、重大なバグを未然に防ぐ4つのキャスト演算子。',
       dialogueBefore: [
         {
           id: 'dlg-syn-13',
@@ -462,22 +641,23 @@ std::unique_ptr<Weapon> playerWeapon = std::move(weapon);
           id: 'dlg-syn-14',
           speaker: 'shirokuma',
           emotion: 'teaching',
-          text: 'C言語のキャストは「何でも無理やり型変換する万能のこぎり」じゃ！危険なポインタ変換も数値変換も同じ構文だから、重大なバグを見逃してしまう。C++の4大キャストは【何のためにキャストしているのかという意図を明確にし、危険な変換をコンパイラに拒否させる防壁】なんじゃよ！'
+          text: 'C言語の丸カッコキャストは「何でも無理やり型変換する万能のこぎり」じゃ！危険なポインタ変換も数値変換も同じ構文だから、重大なバグを見逃してしまう。\nC++の4大キャストは【何のためにキャストしているのかという意図を明確にし、危険な変換をコンパイラに拒否させる防壁】なんじゃよ！'
         }
       ],
       explanationText: `
-### C++ 4大キャストの使い分け一覧
+### C++ 4大キャストの使い分け一覧 【C++98〜 全規格共通ルール】
 
-| キャスト名 | 用途 | 安全性 | 例 |
-| :--- | :--- | :--- | :--- |
-| **\`static_cast\`** | 基本的な型の変換（float ➔ int、安全なアップキャスト等） | **高**（不可能な変換はコンパイルエラー） | \`int x = static_cast<int>(3.14f);\` |
-| **\`dynamic_cast\`** | 継承関係におけるダウンキャスト（仮想関数を持つクラス限定） | **最高**（失敗すると \`nullptr\` を返す） | \`Boss* b = dynamic_cast<Boss*>(enemyPtr);\` |
-| **\`const_cast\`** | \`const\` 修飾を一時的に外す（レガシーC言語APIとの連携時のみ） | **注意**（本来constなオブジェクトを書き換えると未定義動作） | \`char* p = const_cast<char*>(constStr);\` |
-| **\`reinterpret_cast\`**| メモリの生バイト列を別の型として無理やり解釈（ハードウェア制御向け） | **危険**（アライメントや型エイリアス違反に注意） | \`uintptr_t addr = reinterpret_cast<uintptr_t>(ptr);\` |
+| キャスト名 | 用途 | 安全性 | 実戦コード例 |
+| :--- | :--- | :---: | :--- |
+| **\`static_cast\`** | 基本的な型の変換（float ➔ int、安全なアップキャスト等） | **高** | \`int x = static_cast<int>(3.14f);\` |
+| **\`dynamic_cast\`** | 継承関係におけるダウンキャスト（仮想関数を持つクラス限定） | **最高** | \`Boss* b = dynamic_cast<Boss*>(enemyPtr);\`<br/>*(失敗時は nullptr を返す)* |
+| **\`const_cast\`** | \`const\` 修飾を一時的に外す（レガシーC言語APIとの連携時のみ） | **注意** | \`char* p = const_cast<char*>(constStr);\` |
+| **\`reinterpret_cast\`**| メモリの生バイト列を別の型として無理やり解釈（バイナリ通信等） | **危険** | \`uintptr_t addr = reinterpret_cast<uintptr_t>(ptr);\` |
 
-> **💡 シロクマ指導官のまとめ**:
-> 迷ったらまず **\`static_cast\`** を使おう！コンパイルが通らなければ、設計そのものがおかしい可能性が高いぞ！
+> **⚠️ 現場の静的解析ルール**:
+> Google C++ Style Guide や Clang-Tidy（\`google-readability-casting\`）では、C言語スタイルの丸カッコキャスト \`(Type)val\` は**エラー対象**として検知されます。C++コードでは必ず上記4つの明示キャストを使いましょう！
       `
     }
   ]
 };
+
