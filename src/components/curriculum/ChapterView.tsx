@@ -24,7 +24,10 @@ import {
   GitCommit, 
   Gamepad2, 
   Terminal,
-  Trophy
+  Trophy,
+  Clock,
+  Flame,
+  Target
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { AffiliatePromoBanner } from '../affiliate/AffiliatePromoBanner';
@@ -32,6 +35,7 @@ import { ShareButtons } from '../common/ShareButtons';
 import { CodeChallengeRunner } from '../playground/CodeChallengeRunner';
 import { CODING_CHALLENGES } from '../../data/codingChallenges';
 import { getChapterEvolution } from '../../data/chapterEvolution';
+import { getChapterMeta } from '../../data/chapterMetadata';
 
 type ViewMode = 'all' | 'learn' | 'code' | 'practice';
 
@@ -63,6 +67,9 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
   useEffect(() => {
     setViewMode('all');
   }, [chapter.slug]);
+
+  // この章の学習メタデータ（所要時間・重要度・難易度・到達目標）
+  const meta = useMemo(() => getChapterMeta(chapter), [chapter]);
 
   // この章に含まれるすべての教材コードファイルを抽出
   const allCodeFiles = useMemo(() => {
@@ -259,13 +266,51 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
               />
             </div>
 
+            {/* 学習メタデータ・ステータスバー（目安時間・重要度・難易度・到達目標） */}
+            <div className="p-3.5 sm:p-4 rounded-2xl bg-slate-950/80 border border-slate-800/90 space-y-2.5 shadow-lg">
+              <div className="flex flex-wrap items-center gap-2 sm:gap-2.5 text-xs sm:text-sm font-mono">
+                {/* 読了・演習目安時間 */}
+                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-slate-900 border border-slate-700/80 text-slate-200">
+                  <Clock className="w-3.5 h-3.5 text-cyan-400" />
+                  <span>目安: <strong>{meta.readingTimeText}</strong></span>
+                </div>
+
+                {/* 重要度 */}
+                <div className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-lg border font-bold ${meta.badgeClasses.importance}`}>
+                  <Flame className="w-3.5 h-3.5 text-current" />
+                  <span>重要度: {meta.importanceStars}（{meta.importanceLabel}）</span>
+                </div>
+
+                {/* 難易度 */}
+                <div className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-lg border font-semibold ${meta.badgeClasses.difficulty}`}>
+                  <Target className="w-3.5 h-3.5 text-current" />
+                  <span>難易度: {meta.difficulty}</span>
+                </div>
+
+                {/* クイズ有無 */}
+                {chapter.quiz && chapter.quiz.length > 0 && (
+                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-purple-950/80 border border-purple-500/40 text-purple-300 font-semibold">
+                    <HelpCircle className="w-3.5 h-3.5 text-purple-400" />
+                    <span>クイズ{chapter.quiz.length}問あり</span>
+                  </div>
+                )}
+              </div>
+
+              {meta.keyTakeaway && (
+                <div className="text-xs sm:text-sm text-slate-300 flex items-start gap-2 pt-1.5 border-t border-slate-800/80">
+                  <span className="text-amber-400 font-bold shrink-0 font-mono">🎯 到達目標:</span>
+                  <span className="font-sans leading-relaxed text-slate-300">{meta.keyTakeaway}</span>
+                </div>
+              )}
+            </div>
+
             <p className="text-base sm:text-lg md:text-xl text-slate-300 pt-2 leading-relaxed font-sans">
               {chapter.description}
             </p>
           </div>
 
           {/* 司令室のシロクマ先生＆ペンギン生徒イラストバナー */}
-          <div className="w-full lg:w-96 h-56 rounded-2xl overflow-hidden border-2 border-emerald-500/40 shadow-2xl shadow-emerald-950/60 flex-shrink-0 relative group">
+          <div className="w-full lg:w-96 h-44 sm:h-56 rounded-2xl overflow-hidden border-2 border-emerald-500/40 shadow-2xl shadow-emerald-950/60 flex-shrink-0 relative group">
             <img
               src="/images/characters_mission.jpg"
               alt="シロクマ先生とペンギン生徒の作戦司令室"

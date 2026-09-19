@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { CheckCircle2, Circle, Clock, X, ChevronDown, ChevronUp, Trophy } from 'lucide-react';
 import { ALL_CHAPTERS, CLASSIC_CHAPTERS, MODERN_CHAPTERS, READING_CHAPTERS, SPECIAL_GUIDES, UPCOMING_CHAPTERS } from '../../data/chapters';
 import { CourseTrack } from '../../types/curriculum';
+import { getChapterMeta } from '../../data/chapterMetadata';
 
 interface SidebarProps {
   currentChapterSlug: string;
@@ -193,6 +194,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 const isActive = ch.slug === currentChapterSlug;
                 const isCompleted = completedChapters.includes(ch.id);
                 const chNum = (ch.courseChapterCode || `C${ch.id}`).replace(/^[CML]/, '');
+                const meta = getChapterMeta(ch);
 
                 return (
                   <div
@@ -229,6 +231,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
                       >
                         【L】第{chNum}章
                       </span>
+                      <span className="ml-auto text-[10px] font-mono text-slate-500 group-hover:text-slate-400 shrink-0">
+                        {meta.readingTimeMinutes}分
+                      </span>
                     </div>
 
                     <div className="mt-1 pl-6">
@@ -258,6 +263,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 const isActive = ch.slug === currentChapterSlug;
                 const isCompleted = completedChapters.includes(ch.id);
                 const chNum = (ch.courseChapterCode || `M${ch.id}`).replace(/^[CML]/, '');
+                const meta = getChapterMeta(ch);
 
                 return (
                   <div
@@ -294,6 +300,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
                       >
                         【M】第{chNum}章
                       </span>
+                      <span className="ml-auto text-[10px] font-mono text-slate-500 group-hover:text-slate-400 shrink-0">
+                        {meta.readingTimeMinutes}分
+                      </span>
                     </div>
 
                     <div className="mt-1 pl-6">
@@ -325,6 +334,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 const isActive = ch.slug === currentChapterSlug;
                 const isCompleted = completedChapters.includes(ch.id);
                 const chNum = (ch.courseChapterCode || `R${ch.id}`).replace(/^[CMR]/, '');
+                const meta = getChapterMeta(ch);
 
                 return (
                   <div
@@ -361,6 +371,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
                       >
                         【R】Step {chNum}
                       </span>
+                      <span className="ml-auto text-[10px] font-mono text-slate-500 group-hover:text-slate-400 shrink-0">
+                        {meta.readingTimeMinutes}分
+                      </span>
                     </div>
 
                     <div className="mt-1 pl-6">
@@ -390,6 +403,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 const isActive = guide.slug === currentChapterSlug;
                 const isCompleted = completedChapters.includes(guide.id);
                 const isColumn = guide.category === 'column';
+                const meta = getChapterMeta(guide);
                 const icon = guide.slug === 'guide-googletest-tdd'
                   ? '🧪'
                   : guide.slug === 'guide-code-reading' 
@@ -443,6 +457,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
                         }`}
                       >
                         {guide.badge}
+                      </span>
+                      <span className="ml-auto text-[10px] font-mono text-slate-500 group-hover:text-slate-400 shrink-0">
+                        {meta.readingTimeMinutes}分
                       </span>
                     </div>
 

@@ -11,7 +11,8 @@ import {
   ShieldCheck,
   Shield,
   Trophy,
-  Play
+  Play,
+  Clock
 } from 'lucide-react';
 import { 
   CLASSIC_CHAPTERS, 
@@ -21,6 +22,7 @@ import {
   ALL_CHAPTERS
 } from '../../data/chapters';
 import { Chapter } from '../../types/curriculum';
+import { getChapterMeta } from '../../data/chapterMetadata';
 import { AffiliatePromoBanner } from '../affiliate/AffiliatePromoBanner';
 
 interface TopPageViewProps {
@@ -790,6 +792,8 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
                 ? 'group-hover:text-purple-300'
                 : 'group-hover:text-emerald-300';
 
+            const meta = getChapterMeta(ch);
+
             return (
               <a
                 key={`${activeTab}-${ch.id}-${ch.slug}`}
@@ -800,8 +804,8 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
                 }}
                 className={`group flex items-center justify-between gap-4 p-3.5 sm:p-4 rounded-2xl bg-slate-900/60 border border-slate-800/80 ${hoverBorder} hover:bg-slate-900 transition-all cursor-pointer no-underline text-inherit`}
               >
-                <div className="flex items-center gap-3 sm:gap-4 min-w-0 flex-1">
-                  <span className={`w-10 h-10 sm:w-11 sm:h-11 rounded-xl flex items-center justify-center font-mono text-xs sm:text-sm font-black border shrink-0 ${badgeStyle}`}>
+                <div className="flex items-start sm:items-center gap-3 sm:gap-4 min-w-0 flex-1">
+                  <span className={`w-10 h-10 sm:w-11 sm:h-11 rounded-xl flex items-center justify-center font-mono text-xs sm:text-sm font-black border shrink-0 mt-0.5 sm:mt-0 ${badgeStyle}`}>
                     {chapterCode}
                   </span>
                   <div className="min-w-0 flex-1">
@@ -819,10 +823,30 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
                     <p className="text-xs text-slate-400 truncate mt-0.5 font-sans">
                       {ch.subtitle || ch.description}
                     </p>
+
+                    {/* メタデータバッジ（目安時間・重要度・難易度） */}
+                    <div className="flex items-center gap-1.5 mt-2 flex-wrap text-[10px] sm:text-[11px] font-mono">
+                      {/* 目安時間 */}
+                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-slate-950/80 border border-slate-700/80 text-slate-300">
+                        <Clock className="w-3 h-3 text-slate-400" />
+                        <span>{meta.readingTimeText}</span>
+                      </span>
+
+                      {/* 重要度 */}
+                      <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-md border font-semibold ${meta.badgeClasses.importance}`}>
+                        <span>{meta.importanceStars}</span>
+                        <span>{meta.importanceLabel}</span>
+                      </span>
+
+                      {/* 難易度 */}
+                      <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-md border font-medium ${meta.badgeClasses.difficulty}`}>
+                        <span>{meta.difficulty}</span>
+                      </span>
+                    </div>
                   </div>
                 </div>
 
-                <div className="flex items-center gap-2 shrink-0">
+                <div className="flex items-center gap-2 shrink-0 self-center">
                   <span className="hidden sm:inline-block text-xs font-mono text-slate-500 group-hover:text-slate-300 transition-colors">
                     開く
                   </span>

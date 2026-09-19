@@ -287,6 +287,15 @@ export const CodeViewer: React.FC<CodeViewerProps> = ({ files, targetHighlight }
         </div>
       )}
 
+      {/* スマホ閲覧時：横スクロール＆行タップ案内バー */}
+      <div className="sm:hidden px-3.5 py-1.5 bg-slate-950/90 border-b border-slate-800/80 text-[10px] font-mono text-slate-400 flex items-center justify-between">
+        <span className="flex items-center gap-1 text-cyan-400/90">
+          <span>↔</span>
+          <span>左右スワイプで全文表示</span>
+        </span>
+        <span className="text-slate-500">💡 行タップで構文解説</span>
+      </div>
+
       {/* コード表示エリア（行番号 ＆ 核心行ハイライト付き） */}
       <div className="relative overflow-x-auto max-h-[700px] scrollbar-thin py-3">
         <pre className="!m-0 !p-0 !bg-transparent text-xs sm:text-sm md:text-base font-mono leading-relaxed">
