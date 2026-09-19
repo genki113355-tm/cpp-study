@@ -87,6 +87,11 @@ export const GameEmulator: React.FC<GameEmulatorProps> = ({ version }) => {
   const lastTimeRef = useRef<number>(0);
   const moveTimerRef = useRef<number | null>(null);
 
+  const playerXRef = useRef<number>(playerX);
+  playerXRef.current = playerX;
+  const enemySpeedMulRef = useRef<number>(enemySpeedMul);
+  enemySpeedMulRef.current = enemySpeedMul;
+
   // 実績トースト表示ヘルパー (Observer パターン)
   const triggerAchievement = useCallback((text: string) => {
     setAchievementToast(text);
@@ -223,15 +228,45 @@ export const GameEmulator: React.FC<GameEmulatorProps> = ({ version }) => {
     });
   }, [scene, playerX, version, hasTripleShot, sandboxTripleShot, drones, maxBullets]);
 
-  // 移動処理（playerSpeedを反映）
+  // 移動処理（playerSpeedを反映 ＆ 敵との接触判定）
   const moveLeft = useCallback(() => {
     if (scene !== 'playing') return;
-    setPlayerX((prev) => Math.max(1, prev - playerSpeed));
+    setPlayerX((prev) => {
+      const nextX = Math.max(1, prev - playerSpeed);
+      // 自機が移動して敵と接触したか判定
+      setInvaders((currInvs) => {
+        const hit = currInvs.some(
+          (inv) =>
+            inv.alive &&
+            inv.type !== 'ufo' &&
+            (inv.y >= HEIGHT - 2 ||
+              (Math.abs(inv.y - (HEIGHT - 2)) <= 0.95 && inv.x >= nextX - 0.7 && inv.x <= nextX + 2.7))
+        );
+        if (hit) setScene('gameover');
+        return currInvs;
+      });
+      return nextX;
+    });
   }, [scene, playerSpeed]);
 
   const moveRight = useCallback(() => {
     if (scene !== 'playing') return;
-    setPlayerX((prev) => Math.min(WIDTH - 4, prev + playerSpeed));
+    setPlayerX((prev) => {
+      const nextX = Math.min(WIDTH - 4, prev + playerSpeed);
+      // 自機が移動して敵と接触したか判定
+      setInvaders((currInvs) => {
+        const hit = currInvs.some(
+          (inv) =>
+            inv.alive &&
+            inv.type !== 'ufo' &&
+            (inv.y >= HEIGHT - 2 ||
+              (Math.abs(inv.y - (HEIGHT - 2)) <= 0.95 && inv.x >= nextX - 0.7 && inv.x <= nextX + 2.7))
+        );
+        if (hit) setScene('gameover');
+        return currInvs;
+      });
+      return nextX;
+    });
   }, [scene, playerSpeed]);
 
   // 長押し連続移動用ヘルパー
@@ -434,14 +469,14 @@ export const GameEmulator: React.FC<GameEmulatorProps> = ({ version }) => {
                 // 第7章：マグネット回収コンポーネント（近くのアイテムをプレイヤーに吸引）
                 let targetX = item.x;
                 if (version === 'v7_ecs_final') {
-                  if (Math.abs(item.x - (playerX + 1)) <= 5.0) {
-                    targetX += (playerX + 1 > item.x ? 0.3 : -0.3);
+                  if (Math.abs(item.x - (playerXRef.current + 1)) <= 5.0) {
+                    targetX += (playerXRef.current + 1 > item.x ? 0.3 : -0.3);
                   }
                 }
                 const ny = item.y + 0.25;
 
                 // プレイヤー接触判定
-                if (Math.abs(targetX - (playerX + 1)) <= 1.8 && Math.abs(ny - (HEIGHT - 2)) <= 1.2) {
+                if (Math.abs(targetX - (playerXRef.current + 1)) <= 1.8 && Math.abs(ny - (HEIGHT - 2)) <= 1.2) {
                   if (item.type === 'power') {
                     setHasTripleShot(true);
                     setScore((s) => s + 300);
@@ -461,7 +496,7 @@ export const GameEmulator: React.FC<GameEmulatorProps> = ({ version }) => {
           }
 
           // 5. 敵の移動タイマー（通常敵＆シールド敵＆エリート敵＆ボス）
-          invaderTimerRef.current += 1 * enemySpeedMul;
+          invaderTimerRef.current += 1 * enemySpeedMulRef.current;
           if (invaderTimerRef.current >= 6) {
             invaderTimerRef.current = 0;
 
@@ -478,33 +513,50 @@ export const GameEmulator: React.FC<GameEmulatorProps> = ({ version }) => {
                 }
               }
 
+              let nextInvaders: Invader[];
               if (hitWall) {
                 invaderDirRef.current = -invaderDirRef.current;
-                let touchedBottom = false;
-                const nextInvaders = prevInvaders.map((inv) => {
+                nextInvaders = prevInvaders.map((inv) => {
                   if (inv.type === 'ufo' || inv.type === 'boss') return inv;
-                  const newY = inv.y + 1;
-                  if (inv.alive && newY >= HEIGHT - 2) {
-                    touchedBottom = true;
-                  }
-                  return { ...inv, y: newY };
+                  return { ...inv, y: inv.y + 1 };
                 });
-                if (touchedBottom) {
-                  setScene('gameover');
-                }
-                return nextInvaders;
               } else {
-                return prevInvaders.map((inv) => {
+                nextInvaders = prevInvaders.map((inv) => {
                   if (inv.type === 'ufo' || inv.type === 'boss') return inv;
                   // エリート敵は上下に少し揺れる
                   const deltaY = inv.type === 'elite' ? (Math.random() > 0.5 ? 0.2 : -0.2) : 0;
                   return {
                     ...inv,
                     x: inv.x + invaderDirRef.current,
-                    y: Math.max(2, Math.min(HEIGHT - 4, inv.y + deltaY)),
+                    y: Math.max(2, inv.y + deltaY),
                   };
                 });
               }
+
+              // 防衛ライン（最下段 HEIGHT - 2）到達 or 自機との接触でゲームオーバー
+              const px = playerXRef.current;
+              let isGameOver = false;
+              for (const inv of nextInvaders) {
+                if (!inv.alive || inv.type === 'ufo') continue;
+                // 1. 防衛ライン（自機の行 HEIGHT - 2）到達
+                if (inv.y >= HEIGHT - 2) {
+                  isGameOver = true;
+                  break;
+                }
+                // 2. 自機（px 〜 px + 2, y = HEIGHT - 2）との接触判定
+                const isTouchingY = Math.abs(inv.y - (HEIGHT - 2)) <= 0.95;
+                const isTouchingX = inv.x >= px - 0.7 && inv.x <= px + 2.7;
+                if (isTouchingY && isTouchingX) {
+                  isGameOver = true;
+                  break;
+                }
+              }
+
+              if (isGameOver) {
+                setScene('gameover');
+              }
+
+              return nextInvaders;
             });
           }
 
@@ -753,54 +805,54 @@ export const GameEmulator: React.FC<GameEmulatorProps> = ({ version }) => {
   const activeUfo = invaders.find((inv) => inv.type === 'ufo' && inv.alive);
 
   return (
-    <div className="rounded-2xl border border-cyan-500/30 bg-slate-950 shadow-2xl p-4 md:p-6 my-6 relative overflow-hidden backdrop-blur-md">
+    <div className="rounded-2xl border border-cyan-500/30 bg-slate-950 shadow-2xl p-2.5 sm:p-4 my-2 sm:my-3 relative overflow-hidden backdrop-blur-md">
       {/* 背景の淡いグリッド */}
       <div className="absolute inset-0 bg-[radial-gradient(#1e293b_1px,transparent_1px)] [background-size:16px_16px] opacity-30 pointer-events-none" />
 
       {/* エミュレータ上部バー */}
-      <div className="flex items-center justify-between border-b border-slate-800 pb-3 mb-4 flex-wrap gap-2">
-        <div className="flex items-center gap-2.5">
-          <Terminal className="w-5 h-5 sm:w-6 sm:h-6 text-cyan-400" />
-          <h3 className="font-mono text-base sm:text-lg font-bold text-slate-100 flex items-center gap-2.5 flex-wrap">
+      <div className="flex items-center justify-between border-b border-slate-800 pb-2 mb-2 sm:mb-2.5 flex-wrap gap-2">
+        <div className="flex items-center gap-2">
+          <Terminal className="w-4 h-4 sm:w-5 sm:h-5 text-cyan-400" />
+          <h3 className="font-mono text-sm sm:text-base font-bold text-slate-100 flex items-center gap-2 flex-wrap">
             <span>Webコンソール実行エミュレータ</span>
-            <span className={`text-xs sm:text-sm px-3 py-1 rounded-full border font-sans font-semibold ${vInfo.color}`}>
+            <span className={`text-[11px] sm:text-xs px-2.5 py-0.5 rounded-full border font-sans font-semibold ${vInfo.color}`}>
               {vInfo.name}
             </span>
           </h3>
         </div>
 
-        <div className="flex items-center gap-2 flex-wrap">
+        <div className="flex items-center gap-1.5 flex-wrap">
           <button
             onClick={() => setIsSandboxOpen((prev) => !prev)}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs sm:text-sm font-mono font-bold transition border active:scale-95 shadow-sm ${
+            className={`flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-mono font-bold transition border active:scale-95 shadow-sm ${
               isSandboxOpen
                 ? 'bg-cyan-500 text-slate-950 border-cyan-400 shadow-cyan-500/30'
                 : 'bg-slate-800 hover:bg-slate-700 text-cyan-300 border-cyan-500/30'
             }`}
             title="C++コードの定数（速度・連射数など）をリアルタイムに変更"
           >
-            <Sliders className="w-4 h-4" />
+            <Sliders className="w-3.5 h-3.5" />
             <span>C++定数実験室</span>
           </button>
 
           <button
             onClick={() => setShowVirtualPad((prev) => !prev)}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs sm:text-sm font-mono font-bold transition border active:scale-95 shadow-sm ${
+            className={`flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-mono font-bold transition border active:scale-95 shadow-sm ${
               showVirtualPad
                 ? 'bg-slate-700 text-slate-100 border-slate-600'
                 : 'bg-slate-800/60 hover:bg-slate-800 text-slate-400 border-slate-700'
             }`}
             title="スマホ・タッチ用バーチャルパッドの表示切替"
           >
-            <Smartphone className="w-4 h-4" />
+            <Smartphone className="w-3.5 h-3.5" />
             <span className="hidden sm:inline">操作パッド</span>
           </button>
 
           <button
             onClick={initGame}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs sm:text-sm font-mono font-bold transition border border-slate-700 active:scale-95 shadow-sm"
+            className="flex items-center gap-1 px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-mono font-bold transition border border-slate-700 active:scale-95 shadow-sm"
           >
-            <RotateCcw className="w-4 h-4" />
+            <RotateCcw className="w-3.5 h-3.5" />
             <span>リセット</span>
           </button>
         </div>
@@ -912,27 +964,27 @@ export const GameEmulator: React.FC<GameEmulatorProps> = ({ version }) => {
       )}
 
       {/* バージョンごとの特徴ガイダンス */}
-      <div className="mb-4 px-4 py-2.5 rounded-xl bg-slate-900/80 border border-slate-800 text-xs sm:text-sm text-slate-300 flex items-center gap-2.5 font-mono">
-        <Info className="w-4 h-4 sm:w-5 sm:h-5 text-cyan-400 flex-shrink-0" />
+      <div className="mb-2 px-3 py-1.5 rounded-lg bg-slate-900/80 border border-slate-800 text-xs text-slate-300 flex items-center gap-2 font-mono">
+        <Info className="w-4 h-4 text-cyan-400 flex-shrink-0" />
         <span className="leading-relaxed">{vInfo.desc}</span>
       </div>
 
       {/* レトロCRT風コンソール画面 */}
-      <div className="relative rounded-2xl border-2 border-slate-800 bg-[#040810] p-4 sm:p-6 font-mono overflow-hidden shadow-2xl flex flex-col items-center select-none scanline">
+      <div className="relative rounded-xl border-2 border-slate-800 bg-[#040810] px-2 py-2 sm:px-4 sm:py-3 font-mono overflow-hidden shadow-2xl flex flex-col items-center select-none scanline">
         {/* CRTのグローエフェクト */}
         <div className="absolute inset-0 bg-gradient-to-b from-cyan-500/[0.03] to-transparent pointer-events-none" />
 
         {/* 実績解除トースト（Observer パターン） */}
         {achievementToast && (
-          <div className="absolute top-4 left-1/2 -translate-x-1/2 z-30 flex items-center gap-2 bg-gradient-to-r from-amber-400 to-yellow-300 text-slate-950 px-4 py-2 rounded-xl font-mono font-black text-xs sm:text-sm shadow-2xl border-2 border-white animate-bounce">
+          <div className="absolute top-3 left-1/2 -translate-x-1/2 z-30 flex items-center gap-2 bg-gradient-to-r from-amber-400 to-yellow-300 text-slate-950 px-3 py-1.5 rounded-xl font-mono font-black text-xs shadow-2xl border-2 border-white animate-bounce">
             <span>🏆 [OBSERVER EVENT]</span>
             <span>{achievementToast}</span>
           </div>
         )}
 
         {/* 画面テキスト（スマホ幅で切れないようスケーリング ＆ スクロール対応） */}
-        <div className="w-full max-w-full overflow-x-auto flex justify-center py-2">
-          <div className="text-[11px] min-[360px]:text-xs min-[400px]:text-sm sm:text-base md:text-lg lg:text-xl leading-none font-bold tracking-wider sm:tracking-widest text-center whitespace-pre font-mono">
+        <div className="w-full max-w-full overflow-x-auto flex justify-center py-0.5">
+          <div className="text-[10px] min-[360px]:text-[11px] min-[400px]:text-xs sm:text-sm md:text-[15px] lg:text-[16px] leading-[1.15] font-bold tracking-wider sm:tracking-widest text-center whitespace-pre font-mono">
             {grid.map((row, y) => (
               <div key={y} className="flex justify-center">
                 {row.map((ch, x) => {
@@ -963,10 +1015,10 @@ export const GameEmulator: React.FC<GameEmulatorProps> = ({ version }) => {
         </div>
 
         {/* HUDステータスライン */}
-        <div className="w-full max-w-2xl mt-5 pt-3 border-t border-slate-800/80 flex items-center justify-between text-xs sm:text-sm font-mono text-slate-400 px-2 flex-wrap gap-2">
+        <div className="w-full max-w-2xl mt-2 sm:mt-2.5 pt-1.5 sm:pt-2 border-t border-slate-800/80 flex items-center justify-between text-[11px] sm:text-xs font-mono text-slate-400 px-1 sm:px-2 flex-wrap gap-2">
           <div>
             <span className="text-slate-500 font-bold">SCORE:</span>{' '}
-            <span className="text-amber-400 font-bold text-sm sm:text-base">{score}</span>
+            <span className="text-amber-400 font-bold text-xs sm:text-sm">{score}</span>
           </div>
 
           {version === 'v7_ecs_final' ? (
@@ -1085,43 +1137,43 @@ export const GameEmulator: React.FC<GameEmulatorProps> = ({ version }) => {
 
         {/* ゲームオーバー / クリア時のオーバーレイバナー */}
         {(scene === 'gameover' || scene === 'gameclear') && (
-          <div className="absolute inset-0 bg-slate-950/85 backdrop-blur-md flex flex-col items-center justify-center p-4 z-20">
+          <div className="absolute inset-0 bg-slate-950/85 backdrop-blur-md flex flex-col items-center justify-center p-3 z-20">
             {scene === 'gameclear' ? (
               <div className="text-center max-w-sm">
-                <div className="w-44 h-24 mx-auto mb-3 rounded-2xl overflow-hidden border-2 border-emerald-400 shadow-xl shadow-emerald-500/30">
+                <div className="w-36 h-20 mx-auto mb-2 rounded-xl overflow-hidden border-2 border-emerald-400 shadow-xl shadow-emerald-500/30">
                   <img
                     src="/images/characters_victory.png"
                     alt="シロクマ先生とペンギン生徒のハイタッチ"
                     className="w-full h-full object-cover"
                   />
                 </div>
-                <h4 className="text-xl sm:text-2xl font-bold text-emerald-400 font-mono mb-1 text-glow-green">
+                <h4 className="text-lg sm:text-xl font-bold text-emerald-400 font-mono mb-1 text-glow-green">
                   TARGET DETECTED! VICTORY!
                 </h4>
-                <p className="text-xs sm:text-sm text-slate-300 font-mono mb-4">
+                <p className="text-xs text-slate-300 font-mono mb-2.5">
                   全インベーダーを撃破！シロクマ先生とハイタッチ！🎉
                 </p>
                 <button
                   onClick={initGame}
-                  className="px-5 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-sm font-mono transition shadow-lg shadow-emerald-500/30"
+                  className="px-4 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs sm:text-sm font-mono transition shadow-lg shadow-emerald-500/30 active:scale-95"
                 >
                   もう一度遊ぶ (Rキー)
                 </button>
               </div>
             ) : (
               <div className="text-center">
-                <div className="w-44 h-24 mx-auto mb-3 rounded-2xl overflow-hidden border-2 border-rose-500 shadow-xl shadow-rose-500/30">
+                <div className="w-36 h-20 mx-auto mb-2 rounded-xl overflow-hidden border-2 border-rose-500 shadow-xl shadow-rose-500/30">
                   <img
                     src="/images/characters_mission.jpg"
                     alt="シロクマ先生とペンギン生徒の作戦会議"
                     className="w-full h-full object-cover"
                   />
                 </div>
-                <h4 className="text-xl sm:text-2xl font-bold text-rose-500 font-mono mb-1">GAME OVER</h4>
-                <p className="text-xs sm:text-sm text-slate-300 font-mono mb-4">インベーダーに侵略されてしまいました</p>
+                <h4 className="text-lg sm:text-xl font-bold text-rose-500 font-mono mb-1">GAME OVER</h4>
+                <p className="text-xs text-slate-300 font-mono mb-2.5">インベーダーに侵略されてしまいました</p>
                 <button
                   onClick={initGame}
-                  className="px-5 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-bold text-sm font-mono transition shadow-lg shadow-rose-600/30"
+                  className="px-4 py-2 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs sm:text-sm font-mono transition shadow-lg shadow-rose-600/30 active:scale-95"
                 >
                   リトライする (Rキー)
                 </button>
@@ -1132,38 +1184,38 @@ export const GameEmulator: React.FC<GameEmulatorProps> = ({ version }) => {
       </div>
 
       {/* 操作ガイド ＆ モバイル対応バーチャルゲームパッド */}
-      <div className="mt-4 pt-3 border-t border-slate-800/80 space-y-3">
+      <div className="mt-2.5 pt-2 border-t border-slate-800/80 space-y-2">
         {/* キーボード案内 */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-2 text-xs sm:text-sm text-slate-300 font-mono">
-          <div className="flex items-center gap-2 flex-wrap">
-            <Gamepad2 className="w-4 h-4 text-cyan-400" />
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-1.5 text-[11px] sm:text-xs text-slate-300 font-mono">
+          <div className="flex items-center gap-1.5 flex-wrap">
+            <Gamepad2 className="w-3.5 h-3.5 text-cyan-400" />
             <span className="font-bold text-slate-200">操作方法:</span>
-            <kbd className="px-2 py-0.5 rounded bg-slate-800 border border-slate-700 text-slate-100 font-bold text-xs">A / ←</kbd>
-            <kbd className="px-2 py-0.5 rounded bg-slate-800 border border-slate-700 text-slate-100 font-bold text-xs">D / →</kbd>
+            <kbd className="px-1.5 py-0.5 rounded bg-slate-800 border border-slate-700 text-slate-100 font-bold text-[10px] sm:text-xs">A / ←</kbd>
+            <kbd className="px-1.5 py-0.5 rounded bg-slate-800 border border-slate-700 text-slate-100 font-bold text-[10px] sm:text-xs">D / →</kbd>
             <span className="text-slate-400">移動</span>
-            <kbd className="px-2 py-0.5 rounded bg-slate-800 border border-slate-700 text-slate-100 font-bold text-xs">Space</kbd>
+            <kbd className="px-1.5 py-0.5 rounded bg-slate-800 border border-slate-700 text-slate-100 font-bold text-[10px] sm:text-xs">Space</kbd>
             <span className="text-slate-400">発射</span>
-            <kbd className="px-2 py-0.5 rounded bg-slate-800 border border-slate-700 text-amber-300 font-bold text-xs">P</kbd>
+            <kbd className="px-1.5 py-0.5 rounded bg-slate-800 border border-slate-700 text-amber-300 font-bold text-[10px] sm:text-xs">P</kbd>
             <span className="text-slate-400">ポーズ</span>
-            <kbd className="px-2 py-0.5 rounded bg-slate-800 border border-slate-700 text-rose-300 font-bold text-xs">R</kbd>
+            <kbd className="px-1.5 py-0.5 rounded bg-slate-800 border border-slate-700 text-rose-300 font-bold text-[10px] sm:text-xs">R</kbd>
             <span className="text-slate-400">リトライ</span>
           </div>
 
           <button
             onClick={() => setShowVirtualPad((prev) => !prev)}
-            className="text-xs text-cyan-400 hover:text-cyan-300 flex items-center gap-1 transition"
+            className="text-[11px] sm:text-xs text-cyan-400 hover:text-cyan-300 flex items-center gap-1 transition"
           >
-            <Smartphone className="w-3.5 h-3.5" />
-            <span>{showVirtualPad ? 'バーチャルパッドを隠す' : 'スマホ用パッドを表示'}</span>
+            <Smartphone className="w-3 h-3" />
+            <span>{showVirtualPad ? 'パッド非表示' : 'パッド表示'}</span>
           </button>
         </div>
 
         {/* モバイル＆タッチ端末対応バーチャルコントローラー */}
         {showVirtualPad && (
-          <div className="p-3 sm:p-4 rounded-2xl bg-gradient-to-b from-slate-900/90 to-slate-950 border border-slate-800 shadow-xl select-none touch-none">
-            <div className="flex items-center justify-between gap-2 max-w-lg mx-auto">
+          <div className="p-1.5 sm:p-2 rounded-xl bg-gradient-to-b from-slate-900/90 to-slate-950 border border-slate-800 shadow-xl select-none touch-none">
+            <div className="flex items-center justify-between gap-2 max-w-md mx-auto">
               {/* 左手：移動 D-PAD（タップ＆長押し対応） */}
-              <div className="flex items-center gap-2 sm:gap-3">
+              <div className="flex items-center gap-1.5 sm:gap-2">
                 <button
                   onMouseDown={() => startMove('left')}
                   onMouseUp={stopMove}
@@ -1177,11 +1229,11 @@ export const GameEmulator: React.FC<GameEmulatorProps> = ({ version }) => {
                     stopMove();
                   }}
                   onTouchCancel={stopMove}
-                  className="w-12 h-12 min-[380px]:w-14 min-[380px]:h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-b from-slate-800 to-slate-900 border-2 border-slate-700 active:border-cyan-400 active:from-cyan-900 active:to-slate-900 text-white font-mono text-lg sm:text-2xl flex flex-col items-center justify-center transition shadow-lg active:scale-95 cursor-pointer touch-none"
+                  className="w-10 h-10 min-[380px]:w-11 min-[380px]:h-11 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-b from-slate-800 to-slate-900 border-2 border-slate-700 active:border-cyan-400 active:from-cyan-900 active:to-slate-900 text-white font-mono text-base sm:text-lg flex flex-col items-center justify-center transition shadow-lg active:scale-95 cursor-pointer touch-none"
                   aria-label="左移動（長押し対応）"
                 >
                   <span>◀</span>
-                  <span className="text-[9px] text-slate-400 font-sans tracking-tight">LEFT</span>
+                  <span className="text-[8px] text-slate-400 font-sans tracking-tight leading-none">LEFT</span>
                 </button>
 
                 <button
@@ -1197,49 +1249,49 @@ export const GameEmulator: React.FC<GameEmulatorProps> = ({ version }) => {
                     stopMove();
                   }}
                   onTouchCancel={stopMove}
-                  className="w-12 h-12 min-[380px]:w-14 min-[380px]:h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-b from-slate-800 to-slate-900 border-2 border-slate-700 active:border-cyan-400 active:from-cyan-900 active:to-slate-900 text-white font-mono text-lg sm:text-2xl flex flex-col items-center justify-center transition shadow-lg active:scale-95 cursor-pointer touch-none"
+                  className="w-10 h-10 min-[380px]:w-11 min-[380px]:h-11 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-b from-slate-800 to-slate-900 border-2 border-slate-700 active:border-cyan-400 active:from-cyan-900 active:to-slate-900 text-white font-mono text-base sm:text-lg flex flex-col items-center justify-center transition shadow-lg active:scale-95 cursor-pointer touch-none"
                   aria-label="右移動（長押し対応）"
                 >
                   <span>▶</span>
-                  <span className="text-[9px] text-slate-400 font-sans tracking-tight">RIGHT</span>
+                  <span className="text-[8px] text-slate-400 font-sans tracking-tight leading-none">RIGHT</span>
                 </button>
               </div>
 
               {/* 中央：システム操作（PAUSE / RESUME / RESET） */}
-              <div className="flex flex-col items-center gap-1.5">
+              <div className="flex flex-col items-center gap-1">
                 <button
                   onClick={togglePause}
-                  className="px-3 py-1.5 sm:px-4 sm:py-2 rounded-xl bg-slate-800 hover:bg-slate-700 active:bg-slate-600 border border-slate-700 text-slate-200 text-xs font-mono font-bold flex items-center gap-1.5 transition active:scale-95 shadow"
+                  className="px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 active:bg-slate-600 border border-slate-700 text-slate-200 text-[11px] sm:text-xs font-mono font-bold flex items-center gap-1 transition active:scale-95 shadow"
                 >
                   {scene === 'paused' ? (
                     <>
-                      <Play className="w-3.5 h-3.5 text-emerald-400 fill-emerald-400" />
+                      <Play className="w-3 h-3 text-emerald-400 fill-emerald-400" />
                       <span>RESUME</span>
                     </>
                   ) : scene === 'title' ? (
                     <>
-                      <Play className="w-3.5 h-3.5 text-cyan-400 fill-cyan-400" />
+                      <Play className="w-3 h-3 text-cyan-400 fill-cyan-400" />
                       <span>START</span>
                     </>
                   ) : scene === 'gameover' || scene === 'gameclear' ? (
                     <>
-                      <RotateCcw className="w-3.5 h-3.5 text-rose-400" />
+                      <RotateCcw className="w-3 h-3 text-rose-400" />
                       <span>RETRY</span>
                     </>
                   ) : (
                     <>
-                      <Pause className="w-3.5 h-3.5 text-amber-400" />
+                      <Pause className="w-3 h-3 text-amber-400" />
                       <span>PAUSE</span>
                     </>
                   )}
                 </button>
 
-                <div className="text-[10px] text-slate-400 font-mono flex items-center gap-1">
+                <div className="text-[9px] text-slate-400 font-mono flex items-center gap-1">
                   <span>長押しで連続移動</span>
                 </div>
               </div>
 
-              {/* 右手：アクションボタン（特大 FIRE ボタン） */}
+              {/* 右手：アクションボタン（FIRE ボタン） */}
               <div className="flex items-center">
                 <button
                   onClick={(e) => {
@@ -1250,11 +1302,11 @@ export const GameEmulator: React.FC<GameEmulatorProps> = ({ version }) => {
                     e.preventDefault();
                     shoot();
                   }}
-                  className="w-14 h-14 min-[380px]:w-16 min-[380px]:h-16 sm:w-20 sm:h-20 rounded-2xl bg-gradient-to-b from-cyan-500 to-cyan-600 hover:from-cyan-400 hover:to-cyan-500 active:from-cyan-300 active:to-cyan-400 text-slate-950 font-black font-mono text-xs min-[380px]:text-sm sm:text-base flex flex-col items-center justify-center transition shadow-lg shadow-cyan-500/40 border-2 border-cyan-300 active:scale-90 cursor-pointer touch-none"
+                  className="w-11 h-11 min-[380px]:w-12 min-[380px]:h-12 sm:w-13 sm:h-13 rounded-xl bg-gradient-to-b from-cyan-500 to-cyan-600 hover:from-cyan-400 hover:to-cyan-500 active:from-cyan-300 active:to-cyan-400 text-slate-950 font-black font-mono text-[11px] sm:text-xs flex flex-col items-center justify-center transition shadow-lg shadow-cyan-500/40 border-2 border-cyan-300 active:scale-90 cursor-pointer touch-none"
                   aria-label="発射ボタン"
                 >
-                  <span className="text-lg sm:text-xl">🚀</span>
-                  <span className="tracking-wider">FIRE</span>
+                  <span className="text-base sm:text-lg leading-none">🚀</span>
+                  <span className="tracking-wider leading-none mt-0.5">FIRE</span>
                 </button>
               </div>
             </div>
