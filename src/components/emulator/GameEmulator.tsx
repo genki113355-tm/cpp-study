@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { RotateCcw, Sparkles, Terminal, Gamepad2, Info, Sliders, Smartphone, Pause, Play } from 'lucide-react';
+import { RotateCcw, Sparkles, Terminal, Gamepad2, Info, Sliders, Smartphone, Pause, Play, LogOut } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { getChapterEvolution } from '../../data/chapterEvolution';
 
@@ -363,7 +363,7 @@ export const GameEmulator: React.FC<GameEmulatorProps> = ({ version, chapterCode
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       // ページスクロール防止
-      if (['ArrowLeft', 'ArrowRight', ' ', 'a', 'd', 'A', 'D', 'p', 'P', 'r', 'R'].includes(e.key)) {
+      if (['ArrowLeft', 'ArrowRight', ' ', 'a', 'd', 'A', 'D', 'p', 'P', 'r', 'R', 'q', 'Q', 'Escape'].includes(e.key)) {
         if ([' ', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
           e.preventDefault();
         }
@@ -377,7 +377,13 @@ export const GameEmulator: React.FC<GameEmulatorProps> = ({ version, chapterCode
         return;
       }
 
-      // ポーズ切り替え（Pキー: State パターン）
+      // ポーズ切り替え（Pキー: State パターン）＆ 終了（QキーまたはEscapeでタイトルへ戻る）
+      if (scene === 'paused') {
+        if (e.key === 'q' || e.key === 'Q' || e.key === 'Escape') {
+          initGame();
+          return;
+        }
+      }
       if (e.key === 'p' || e.key === 'P') {
         if (scene === 'playing') {
           setScene('paused');
@@ -387,10 +393,16 @@ export const GameEmulator: React.FC<GameEmulatorProps> = ({ version, chapterCode
         return;
       }
 
-      // ゲームオーバー/クリア時のリトライ（Rキー）
-      if ((scene === 'gameover' || scene === 'gameclear') && (e.key === 'r' || e.key === 'R')) {
-        restartGame();
-        return;
+      // ゲームオーバー/クリア時の操作（Rキーでリトライ、QキーまたはEscapeでタイトルへ終了）
+      if (scene === 'gameover' || scene === 'gameclear') {
+        if (e.key === 'r' || e.key === 'R') {
+          restartGame();
+          return;
+        }
+        if (e.key === 'q' || e.key === 'Q' || e.key === 'Escape') {
+          initGame();
+          return;
+        }
       }
 
       if (scene === 'playing') {
@@ -406,7 +418,7 @@ export const GameEmulator: React.FC<GameEmulatorProps> = ({ version, chapterCode
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [scene, moveLeft, moveRight, shoot, restartGame]);
+  }, [scene, moveLeft, moveRight, shoot, restartGame, initGame]);
 
   // 爆発エフェクトの生成（第3章・第4章・第5章）
   const spawnExplosion = useCallback((x: number, y: number, isUfo: boolean = false) => {
@@ -1405,19 +1417,29 @@ export const GameEmulator: React.FC<GameEmulatorProps> = ({ version, chapterCode
         {/* ポーズ画面オーバーレイ（State パターン） */}
         {scene === 'paused' && (
           <div className="absolute inset-0 bg-slate-950/80 backdrop-blur-sm flex flex-col items-center justify-center p-4 z-20">
-            <div className="text-center max-w-sm">
-              <h4 className="text-2xl font-bold text-amber-400 font-mono mb-2">
+            <div className="text-center max-w-sm space-y-3">
+              <h4 className="text-2xl font-bold text-amber-400 font-mono">
                 ⏸️ PAUSED
               </h4>
-              <p className="text-xs sm:text-sm text-slate-300 font-mono mb-5">
+              <p className="text-xs sm:text-sm text-slate-300 font-mono">
                 State パターンによりゲームループ更新が一時停止中
               </p>
-              <button
-                onClick={() => setScene('playing')}
-                className="px-5 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-sm font-mono transition shadow-lg shadow-amber-500/30"
-              >
-                再開する (Pキー)
-              </button>
+              <div className="flex items-center justify-center gap-2.5 flex-wrap">
+                <button
+                  onClick={() => setScene('playing')}
+                  className="px-5 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 active:scale-95 text-slate-950 font-bold text-xs sm:text-sm font-mono transition shadow-lg shadow-amber-500/30 flex items-center gap-1.5"
+                >
+                  <Play className="w-3.5 h-3.5 fill-slate-950" />
+                  <span>再開する (Pキー)</span>
+                </button>
+                <button
+                  onClick={initGame}
+                  className="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 active:scale-95 text-slate-300 hover:text-white font-bold text-xs sm:text-sm font-mono transition border border-slate-700 flex items-center gap-1.5 shadow"
+                >
+                  <LogOut className="w-3.5 h-3.5" />
+                  <span>終了する (Qキー)</span>
+                </button>
+              </div>
             </div>
           </div>
         )}
@@ -1440,12 +1462,22 @@ export const GameEmulator: React.FC<GameEmulatorProps> = ({ version, chapterCode
                 <p className="text-xs text-slate-300 font-mono mb-2.5">
                   全インベーダーを撃破！シロクマ先生とハイタッチ！🎉
                 </p>
-                <button
-                  onClick={restartGame}
-                  className="px-4 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs sm:text-sm font-mono transition shadow-lg shadow-emerald-500/30 active:scale-95"
-                >
-                  もう一度遊ぶ (Rキー)
-                </button>
+                <div className="flex items-center justify-center gap-2.5 flex-wrap">
+                  <button
+                    onClick={restartGame}
+                    className="px-4 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs sm:text-sm font-mono transition shadow-lg shadow-emerald-500/30 active:scale-95 flex items-center gap-1.5"
+                  >
+                    <RotateCcw className="w-3.5 h-3.5" />
+                    <span>もう一度遊ぶ (Rキー)</span>
+                  </button>
+                  <button
+                    onClick={initGame}
+                    className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white font-bold text-xs sm:text-sm font-mono transition border border-slate-700 active:scale-95 flex items-center gap-1.5 shadow"
+                  >
+                    <LogOut className="w-3.5 h-3.5" />
+                    <span>終了する (Qキー)</span>
+                  </button>
+                </div>
               </div>
             ) : (
               <div className="text-center">
@@ -1458,12 +1490,22 @@ export const GameEmulator: React.FC<GameEmulatorProps> = ({ version, chapterCode
                 </div>
                 <h4 className="text-lg sm:text-xl font-bold text-rose-500 font-mono mb-1">GAME OVER</h4>
                 <p className="text-xs text-slate-300 font-mono mb-2.5">インベーダーに侵略されてしまいました</p>
-                <button
-                  onClick={restartGame}
-                  className="px-4 py-2 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs sm:text-sm font-mono transition shadow-lg shadow-rose-600/30 active:scale-95"
-                >
-                  リトライする (Rキー)
-                </button>
+                <div className="flex items-center justify-center gap-2.5 flex-wrap">
+                  <button
+                    onClick={restartGame}
+                    className="px-4 py-2 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs sm:text-sm font-mono transition shadow-lg shadow-rose-600/30 active:scale-95 flex items-center gap-1.5"
+                  >
+                    <RotateCcw className="w-3.5 h-3.5" />
+                    <span>リトライする (Rキー)</span>
+                  </button>
+                  <button
+                    onClick={initGame}
+                    className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white font-bold text-xs sm:text-sm font-mono transition border border-slate-700 active:scale-95 flex items-center gap-1.5 shadow"
+                  >
+                    <LogOut className="w-3.5 h-3.5" />
+                    <span>終了する (Qキー)</span>
+                  </button>
+                </div>
               </div>
             )}
           </div>
@@ -1486,6 +1528,8 @@ export const GameEmulator: React.FC<GameEmulatorProps> = ({ version, chapterCode
             <span className="text-slate-400">ポーズ</span>
             <kbd className="px-1.5 py-0.5 rounded bg-slate-800 border border-slate-700 text-rose-300 font-bold text-[10px] sm:text-xs">R</kbd>
             <span className="text-slate-400">リトライ</span>
+            <kbd className="px-1.5 py-0.5 rounded bg-slate-800 border border-slate-700 text-slate-300 font-bold text-[10px] sm:text-xs">Q / Esc</kbd>
+            <span className="text-slate-400">終了</span>
           </div>
 
           <button
