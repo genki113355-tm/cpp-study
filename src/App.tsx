@@ -6,6 +6,7 @@ import { Footer } from './components/layout/Footer';
 import { ChapterView } from './components/curriculum/ChapterView';
 import { TopPageView } from './components/curriculum/TopPageView';
 import { SourceModal } from './components/layout/SourceModal';
+import { OnlinePlaygroundModal } from './components/playground/OnlinePlaygroundModal';
 import { useSEO } from './hooks/useSEO';
 
 export const App: React.FC = () => {
@@ -28,6 +29,7 @@ export const App: React.FC = () => {
 
   const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
   const [isSourceModalOpen, setIsSourceModalOpen] = useState<boolean>(false);
+  const [isPlaygroundModalOpen, setIsPlaygroundModalOpen] = useState<boolean>(false);
 
   // URLハッシュ同期
   useEffect(() => {
@@ -118,6 +120,7 @@ export const App: React.FC = () => {
         onSelectChapter={handleSelectChapter}
         onToggleSidebar={() => setIsSidebarOpen((prev) => !prev)}
         onOpenSourceModal={() => setIsSourceModalOpen(true)}
+        onOpenPlaygroundModal={() => setIsPlaygroundModalOpen(true)}
       />
 
       {/* メインエリア：サイドバー ＋ 広々としたカリキュラム本文 */}
@@ -136,6 +139,7 @@ export const App: React.FC = () => {
             <TopPageView
               onSelectChapter={handleSelectChapter}
               completedChapters={completedChapters}
+              onOpenPlaygroundModal={() => setIsPlaygroundModalOpen(true)}
             />
           ) : (
             <ChapterView
@@ -155,6 +159,12 @@ export const App: React.FC = () => {
       <SourceModal
         isOpen={isSourceModalOpen}
         onClose={() => setIsSourceModalOpen(false)}
+      />
+
+      {/* C++オンライン実行ラボ（Playground）モーダル */}
+      <OnlinePlaygroundModal
+        isOpen={isPlaygroundModalOpen}
+        onClose={() => setIsPlaygroundModalOpen(false)}
       />
     </div>
   );

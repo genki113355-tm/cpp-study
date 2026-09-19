@@ -14,6 +14,8 @@ import { CheckCircle, AlertCircle, ArrowRight, ArrowLeft, Lightbulb, HelpCircle,
 import confetti from 'canvas-confetti';
 import { AffiliatePromoBanner } from '../affiliate/AffiliatePromoBanner';
 import { ShareButtons } from '../common/ShareButtons';
+import { CodeChallengeRunner } from '../playground/CodeChallengeRunner';
+import { CODING_CHALLENGES } from '../../data/codingChallenges';
 
 interface ChapterViewProps {
   chapter: Chapter;
@@ -385,6 +387,13 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
       </React.Fragment>
     );
   })}
+
+      {/* 実践ハンズオン演習道場（コーディング課題が定義されている章で自動表示） */}
+      {CODING_CHALLENGES[chapter.slug] && (
+        <section>
+          <CodeChallengeRunner challenge={CODING_CHALLENGES[chapter.slug]} />
+        </section>
+      )}
 
       {/* 理解度確認クイズ */}
       {chapter.quiz && chapter.quiz.length > 0 && (

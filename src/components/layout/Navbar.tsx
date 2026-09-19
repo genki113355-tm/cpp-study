@@ -1,5 +1,5 @@
 import React from 'react';
-import { Download, Menu, BookOpen } from 'lucide-react';
+import { Download, Menu, BookOpen, Play } from 'lucide-react';
 import { CLASSIC_CHAPTERS, MODERN_CHAPTERS, READING_CHAPTERS, SPECIAL_GUIDES } from '../../data/chapters';
 
 interface NavbarProps {
@@ -7,6 +7,7 @@ interface NavbarProps {
   onSelectChapter: (slug: string) => void;
   onToggleSidebar: () => void;
   onOpenSourceModal: () => void;
+  onOpenPlaygroundModal?: () => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -14,6 +15,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   onSelectChapter,
   onToggleSidebar,
   onOpenSourceModal,
+  onOpenPlaygroundModal,
 }) => {
   return (
     <header className="sticky top-0 z-40 w-full border-b border-slate-800 bg-[#090d16]/90 backdrop-blur-md">
@@ -207,11 +209,24 @@ export const Navbar: React.FC<NavbarProps> = ({
           </div>
         </div>
 
-        {/* 右側：ソースコードダウンロード & ガイド */}
-        <div className="flex items-center gap-3">
+        {/* 右側：コード実行ラボ ＆ ソースコードダウンロード & ガイド */}
+        <div className="flex items-center gap-2 sm:gap-3">
+          {/* C++オンライン実行ラボ（Playground） */}
+          {onOpenPlaygroundModal && (
+            <button
+              onClick={onOpenPlaygroundModal}
+              className="flex items-center gap-1.5 px-3 py-2 sm:px-3.5 sm:py-2 rounded-xl bg-gradient-to-r from-cyan-500/20 to-blue-500/20 hover:from-cyan-500/30 hover:to-blue-500/30 text-cyan-300 border border-cyan-500/40 text-xs sm:text-sm font-mono font-bold transition shadow-sm active:scale-95 cursor-pointer"
+              title="ブラウザでC++コードを書いて即時実行する"
+            >
+              <Play className="w-3.5 h-3.5 fill-current text-cyan-400" />
+              <span className="hidden min-[420px]:inline">コード実行ラボ</span>
+              <span className="inline min-[420px]:hidden">実行</span>
+            </button>
+          )}
+
           <button
             onClick={onOpenSourceModal}
-            className="flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white text-xs sm:text-sm font-mono font-bold transition border border-slate-700 active:scale-95 shadow-sm"
+            className="flex items-center gap-2 px-3 py-2 sm:px-4 sm:py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white text-xs sm:text-sm font-mono font-bold transition border border-slate-700 active:scale-95 shadow-sm"
           >
             <Download className="w-4 h-4 text-cyan-400" />
             <span className="hidden sm:inline">C++実機コード</span>

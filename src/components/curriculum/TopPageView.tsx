@@ -32,11 +32,13 @@ import { BeforeAfterShowcase } from './BeforeAfterShowcase';
 interface TopPageViewProps {
   onSelectChapter: (slug: string) => void;
   completedChapters: number[];
+  onOpenPlaygroundModal?: () => void;
 }
 
 export const TopPageView: React.FC<TopPageViewProps> = ({
   onSelectChapter,
   completedChapters,
+  onOpenPlaygroundModal,
 }) => {
   const [selectedTrack, setSelectedTrack] = useState<'all' | CourseTrack>('all');
 
@@ -246,6 +248,16 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
                 <Sparkles className="w-3.5 h-3.5 text-amber-400 animate-pulse" />
                 NEW 特集
               </span>
+              {onOpenPlaygroundModal && (
+                <button
+                  type="button"
+                  onClick={onOpenPlaygroundModal}
+                  className="text-xs font-mono px-3 py-1 rounded-lg bg-emerald-950/80 hover:bg-emerald-900 text-emerald-300 hover:text-emerald-100 border border-emerald-500/50 transition flex items-center gap-1.5 shadow-sm active:scale-95 cursor-pointer"
+                >
+                  <Terminal className="w-3 h-3 text-emerald-400" />
+                  <span>💻 C++実行ラボ (ブラウザで即実行)</span>
+                </button>
+              )}
               <a
                 href="/guide-cpp-syntax-reference"
                 onClick={(e) => { e.preventDefault(); onSelectChapter('guide-cpp-syntax-reference'); }}
@@ -301,6 +313,17 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
                 <span>🚀 モダンコースから学ぶ (M1)</span>
                 <ArrowRight className="w-4 h-4" />
               </button>
+
+              {onOpenPlaygroundModal && (
+                <button
+                  type="button"
+                  onClick={onOpenPlaygroundModal}
+                  className="px-4 py-3.5 rounded-xl bg-emerald-950/70 hover:bg-emerald-900/80 text-emerald-300 hover:text-emerald-100 border border-emerald-500/40 font-bold font-mono text-xs sm:text-sm transition flex items-center gap-2 shadow-lg shadow-emerald-900/20 active:scale-95"
+                >
+                  <Terminal className="w-4 h-4 text-emerald-400" />
+                  <span>💻 C++実行ラボ</span>
+                </button>
+              )}
 
               <a
                 href="#roadmap"
