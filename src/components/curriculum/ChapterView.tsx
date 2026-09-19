@@ -4,8 +4,11 @@ import { CLASSIC_CHAPTERS, MODERN_CHAPTERS, READING_CHAPTERS } from '../../data/
 import { DialogueBubble } from './DialogueBubble';
 import { CodeViewer } from './CodeViewer';
 import { ConceptDiagram } from './ConceptDiagram';
-import { GameEmulator } from '../emulator/GameEmulator';
 import { ParadigmComparisonView } from './ParadigmComparisonView';
+
+const GameEmulator = React.lazy(() => 
+  import('../emulator/GameEmulator').then((m) => ({ default: m.GameEmulator }))
+);
 import { MemoryVisualizer } from './MemoryVisualizer';
 import { VariableInspector } from './VariableInspector';
 import { RichExplanation } from './RichExplanation';
@@ -298,26 +301,42 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
             {/* ページ内インライン展開（ユーザーが希望した場合のみ） */}
             {showInlineGame && (
               <div className="pt-2 animate-fadeIn">
-                <GameEmulator
-                  key={`${chapter.slug}-inline`}
-                  version={chapter.gameVersion}
-                  chapterCode={code}
-                  chapterTitle={chapter.title}
-                  isModal={false}
-                />
+                <React.Suspense fallback={
+                  <div className="flex items-center justify-center p-12 rounded-2xl bg-slate-950 border border-cyan-500/30 text-cyan-400 font-mono text-sm gap-3">
+                    <div className="w-5 h-5 border-2 border-cyan-400 border-t-transparent rounded-full animate-spin" />
+                    <span>アーケードエミュレータを準備中...</span>
+                  </div>
+                }>
+                  <GameEmulator
+                    key={`${chapter.slug}-inline`}
+                    version={chapter.gameVersion}
+                    chapterCode={code}
+                    chapterTitle={chapter.title}
+                    isModal={false}
+                  />
+                </React.Suspense>
               </div>
             )}
 
             {/* 🎮 大画面ポップアップモーダル */}
             {isGameModalOpen && (
-              <GameEmulator
-                key={`${chapter.slug}-modal`}
-                version={chapter.gameVersion}
-                chapterCode={code}
-                chapterTitle={chapter.title}
-                isModal={true}
-                onClose={() => setIsGameModalOpen(false)}
-              />
+              <React.Suspense fallback={
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-md">
+                  <div className="flex items-center gap-3 p-6 rounded-2xl bg-slate-900 border border-cyan-500/50 text-cyan-400 font-mono text-sm shadow-2xl">
+                    <div className="w-5 h-5 border-2 border-cyan-400 border-t-transparent rounded-full animate-spin" />
+                    <span>RETRO SPACE SHOOTER 起動中...</span>
+                  </div>
+                </div>
+              }>
+                <GameEmulator
+                  key={`${chapter.slug}-modal`}
+                  version={chapter.gameVersion}
+                  chapterCode={code}
+                  chapterTitle={chapter.title}
+                  isModal={true}
+                  onClose={() => setIsGameModalOpen(false)}
+                />
+              </React.Suspense>
             )}
           </section>
         );

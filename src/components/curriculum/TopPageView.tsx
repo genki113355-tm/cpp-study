@@ -19,16 +19,12 @@ import {
   Boxes,
   Workflow,
   BookOpen,
-  Clock,
-  ExternalLink,
-  X
+  ExternalLink
 } from 'lucide-react';
-import { ALL_CHAPTERS, CLASSIC_CHAPTERS, MODERN_CHAPTERS, READING_CHAPTERS, UPCOMING_CHAPTERS, FutureChapterPreview } from '../../data/chapters';
+import { ALL_CHAPTERS, CLASSIC_CHAPTERS, MODERN_CHAPTERS, READING_CHAPTERS } from '../../data/chapters';
 import { CourseTrack } from '../../types/curriculum';
 import { AffiliatePromoBanner } from '../affiliate/AffiliatePromoBanner';
 import { PersonaTrackSelector } from './PersonaTrackSelector';
-import { GameEvolutionRoadmap } from './GameEvolutionRoadmap';
-import { BeforeAfterShowcase } from './BeforeAfterShowcase';
 
 interface TopPageViewProps {
   onSelectChapter: (slug: string) => void;
@@ -42,8 +38,6 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
   onOpenPlaygroundModal,
 }) => {
   const [selectedTrack, setSelectedTrack] = useState<'all' | CourseTrack>('all');
-  const [upcomingTrackFilter, setUpcomingTrackFilter] = useState<'all' | 'classic' | 'modern' | 'reading'>('all');
-  const [selectedFutureChapter, setSelectedFutureChapter] = useState<FutureChapterPreview | null>(null);
 
   // 各章の「アーキテクチャ担当」「C言語の苦しみ」と「C++で身につく設計力」「ゲームの進化」のメタ情報
   const chapterDetails: Record<number, {
@@ -438,12 +432,6 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
 
       {/* 🧭 あなたの現在地はどこですか？ 2大ペルソナ別・学習ナビゲーション */}
       <PersonaTrackSelector onSelectChapter={onSelectChapter} />
-
-      {/* 🚀 1つのゲームが育つ C++設計進化の全10段階物語 */}
-      <GameEvolutionRoadmap onSelectChapter={onSelectChapter} />
-
-      {/* ⚔️ 圧倒的進化を比較。「最初のコード」vs「10ステージ後のコード」 */}
-      <BeforeAfterShowcase />
 
       {/* 📚 新規参入者・テスター・実践者向け：特集ガイド＆品質保証 */}
       <section className="space-y-6">
@@ -1575,279 +1563,6 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
             );
           })}
         </div>
-
-        {/* 🗺️ 長期拡張ロードマップ構想（全20〜30章への道筋） */}
-        <div className="mt-12 rounded-3xl border border-slate-800 bg-gradient-to-b from-slate-900/70 via-slate-950 to-slate-950 p-6 sm:p-10 space-y-6 shadow-2xl">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-slate-800 pb-5">
-            <div>
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-950/70 border border-cyan-500/30 text-cyan-300 font-mono text-xs font-semibold mb-2">
-                <Clock className="w-3.5 h-3.5 text-cyan-400" />
-                <span>EXPANSION ROADMAP : 全20〜30章 継続拡張構想</span>
-              </div>
-              <h3 className="text-xl sm:text-2xl font-bold text-white font-sans">
-                今後予定している長期拡張カリキュラム（順次執筆・公開予定）
-              </h3>
-              <p className="text-xs sm:text-sm text-slate-400 font-sans mt-1 max-w-3xl leading-relaxed">
-                現行の本格カリキュラム（レガシーL1〜L16、モダンM1〜M14、読解演習R1〜R3）から、さらに現場低レイヤ・自作ゲームエンジン統合・C++23/26次世代規格へ。現場のあらゆる課題を制覇する総合学習プラットフォームへと継続拡充していきます。
-              </p>
-            </div>
-            <div className="flex items-center gap-2 shrink-0">
-              <span className="text-xs font-mono px-3 py-1.5 rounded-xl bg-slate-900 border border-slate-800 text-cyan-400 font-bold">
-                計 {UPCOMING_CHAPTERS.length} 章の構想策定済
-              </span>
-            </div>
-          </div>
-
-          {/* トラック別フィルタータブ */}
-          <div className="flex flex-wrap items-center gap-2 pt-1 pb-2">
-            <button
-              onClick={() => setUpcomingTrackFilter('all')}
-              className={`px-3.5 py-1.5 rounded-xl font-mono text-xs font-bold transition flex items-center gap-1.5 ${
-                upcomingTrackFilter === 'all'
-                  ? 'bg-cyan-500 text-slate-950 shadow-md shadow-cyan-500/20'
-                  : 'bg-slate-900 text-slate-400 hover:text-slate-200 border border-slate-800'
-              }`}
-            >
-              <span>すべて表示</span>
-              <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-slate-800 text-cyan-300">
-                {UPCOMING_CHAPTERS.length}
-              </span>
-            </button>
-
-            <button
-              onClick={() => setUpcomingTrackFilter('classic')}
-              className={`px-3.5 py-1.5 rounded-xl font-mono text-xs font-bold transition flex items-center gap-1.5 ${
-                upcomingTrackFilter === 'classic'
-                  ? 'bg-amber-500 text-slate-950 shadow-md shadow-amber-500/20'
-                  : 'bg-slate-900 text-slate-400 hover:text-amber-300 border border-slate-800'
-              }`}
-            >
-              <span>🏛️ レガシー拡張 (L17〜L20)</span>
-              <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-slate-800 text-amber-300">
-                {UPCOMING_CHAPTERS.filter((c) => c.track === 'classic').length}
-              </span>
-            </button>
-
-            <button
-              onClick={() => setUpcomingTrackFilter('modern')}
-              className={`px-3.5 py-1.5 rounded-xl font-mono text-xs font-bold transition flex items-center gap-1.5 ${
-                upcomingTrackFilter === 'modern'
-                  ? 'bg-cyan-500 text-slate-950 shadow-md shadow-cyan-500/20'
-                  : 'bg-slate-900 text-slate-400 hover:text-cyan-300 border border-slate-800'
-              }`}
-            >
-              <span>🚀 モダン拡張 (M15〜M22)</span>
-              <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-slate-800 text-cyan-300">
-                {UPCOMING_CHAPTERS.filter((c) => c.track === 'modern').length}
-              </span>
-            </button>
-
-            <button
-              onClick={() => setUpcomingTrackFilter('reading')}
-              className={`px-3.5 py-1.5 rounded-xl font-mono text-xs font-bold transition flex items-center gap-1.5 ${
-                upcomingTrackFilter === 'reading'
-                  ? 'bg-purple-500 text-slate-950 shadow-md shadow-purple-500/20'
-                  : 'bg-slate-900 text-slate-400 hover:text-purple-300 border border-slate-800'
-              }`}
-            >
-              <span>🧭 読解・鑑識拡張 (R7〜R10)</span>
-              <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-slate-800 text-purple-300">
-                {UPCOMING_CHAPTERS.filter((c) => c.track === 'reading').length}
-              </span>
-            </button>
-          </div>
-
-          {/* 将来章カードグリッド */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {UPCOMING_CHAPTERS.filter((c) => upcomingTrackFilter === 'all' || c.track === upcomingTrackFilter).map((futureCh) => {
-              const isClassicFuture = futureCh.track === 'classic';
-              const isModernFuture = futureCh.track === 'modern';
-              return (
-                <div
-                  key={futureCh.id}
-                  onClick={() => setSelectedFutureChapter(futureCh)}
-                  className={`p-5 rounded-2xl border border-dashed bg-slate-950/70 hover:bg-slate-900/80 transition-all cursor-pointer flex flex-col justify-between group relative overflow-hidden ${
-                    isClassicFuture
-                      ? 'border-amber-500/30 hover:border-amber-400/70 hover:shadow-lg hover:shadow-amber-500/10'
-                      : isModernFuture
-                      ? 'border-cyan-500/30 hover:border-cyan-400/70 hover:shadow-lg hover:shadow-cyan-500/10'
-                      : 'border-purple-500/30 hover:border-purple-400/70 hover:shadow-lg hover:shadow-purple-500/10'
-                  }`}
-                >
-                  <div className="space-y-3">
-                    <div className="flex items-center justify-between gap-2">
-                      <span className={`text-xs font-mono font-bold px-2 py-0.5 rounded border ${
-                        isClassicFuture
-                          ? 'bg-amber-950/70 text-amber-300 border-amber-500/40'
-                          : isModernFuture
-                          ? 'bg-cyan-950/70 text-cyan-300 border-cyan-500/40'
-                          : 'bg-purple-950/70 text-purple-300 border-purple-500/40'
-                      }`}>
-                        {futureCh.badge}
-                      </span>
-                      <span className="text-[10px] font-mono text-slate-500 group-hover:text-cyan-400 transition-colors">
-                        詳細を見る →
-                      </span>
-                    </div>
-
-                    <div>
-                      <h4 className="text-sm sm:text-base font-bold text-slate-100 font-sans leading-snug group-hover:text-cyan-300 transition-colors">
-                        {futureCh.title}
-                      </h4>
-                      <p className="text-xs text-slate-400 font-sans mt-1 line-clamp-2 leading-relaxed">
-                        {futureCh.subtitle}
-                      </p>
-                    </div>
-
-                    {/* 現場の苦痛＆身につくスキル概要 */}
-                    <div className="space-y-1.5 text-[11px] font-sans pt-1 border-t border-slate-800/80">
-                      <div className="text-rose-400/90 line-clamp-1">
-                        <span className="font-bold mr-1">苦痛:</span>
-                        {futureCh.beforePain}
-                      </div>
-                      <div className="text-emerald-400/90 line-clamp-1">
-                        <span className="font-bold mr-1">習得:</span>
-                        {futureCh.afterSkill}
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* キーワードタグ群 */}
-                  <div className="flex flex-wrap gap-1.5 pt-3 mt-3 border-t border-slate-800/60">
-                    {futureCh.techKeywords.slice(0, 3).map((kw, i) => (
-                      <span key={i} className="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-900 text-slate-400 border border-slate-800">
-                        #{kw}
-                      </span>
-                    ))}
-                    {futureCh.techKeywords.length > 3 && (
-                      <span className="text-[10px] font-mono text-slate-500 py-0.5">
-                        +{futureCh.techKeywords.length - 3}
-                      </span>
-                    )}
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* 将来章プレビュー詳細モーダル */}
-        {selectedFutureChapter && (
-          <div
-            className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/80 backdrop-blur-sm animate-fade-in"
-            onClick={() => setSelectedFutureChapter(null)}
-          >
-            <div
-              className="relative w-full max-w-2xl bg-[#090e1a] border-2 border-cyan-500/50 rounded-3xl p-6 sm:p-8 shadow-2xl space-y-6 overflow-hidden max-h-[90vh] overflow-y-auto"
-              onClick={(e) => e.stopPropagation()}
-            >
-              {/* モーダルヘッダー */}
-              <div className="flex items-start justify-between gap-4 border-b border-slate-800 pb-4">
-                <div className="space-y-1.5">
-                  <div className="flex items-center gap-2">
-                    <span className="text-xs font-mono font-bold px-2.5 py-0.5 rounded border bg-cyan-950 text-cyan-300 border-cyan-500/40">
-                      {selectedFutureChapter.badge}
-                    </span>
-                    <span className="text-xs font-mono text-amber-400 px-2 py-0.5 rounded bg-amber-950/60 border border-amber-500/30">
-                      順次公開予定
-                    </span>
-                  </div>
-                  <h3 className="text-lg sm:text-xl font-black text-white font-sans">
-                    {selectedFutureChapter.title}
-                  </h3>
-                  <p className="text-xs sm:text-sm text-slate-300 font-sans">
-                    {selectedFutureChapter.subtitle}
-                  </p>
-                </div>
-                <button
-                  onClick={() => setSelectedFutureChapter(null)}
-                  className="p-1.5 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition shrink-0"
-                >
-                  <X className="w-5 h-5" />
-                </button>
-              </div>
-
-              {/* シロクマ指導官のコメント */}
-              <div className="flex items-start gap-3.5 p-4 rounded-2xl bg-slate-950/80 border border-slate-800 text-xs sm:text-sm">
-                <div className="w-12 h-12 rounded-xl overflow-hidden border border-cyan-400/50 shrink-0">
-                  <img
-                    src="/images/characters_mission.jpg"
-                    alt="シロクマ指導官"
-                    className="w-full h-full object-cover object-[20%_35%]"
-                  />
-                </div>
-                <div className="space-y-1">
-                  <span className="font-mono font-bold text-cyan-300 text-xs">シロクマ指導官の展望メッセージ :</span>
-                  <p className="font-sans text-slate-200 leading-relaxed text-xs sm:text-sm">
-                    {selectedFutureChapter.track === 'classic'
-                      ? `「この【${selectedFutureChapter.title.replace(/【.+?】/, '')}】は、現場で数多くのプロが頭を抱えてきた実戦の最前線じゃ！付け焼き刃の入門書では絶対に手に入らない、泥臭くも圧倒的な低レイヤ設計力を伝授するぞ！」`
-                      : selectedFutureChapter.track === 'modern'
-                      ? `「C++20以降の新世界へようこそ！【${selectedFutureChapter.title.replace(/【.+?】/, '')}】をマスターすれば、古臭いテンプレートや煩雑なコードが一気に次世代の洗練された設計へと進化するのじゃ！」`
-                      : `「コードを読む力は、現場で最も重宝されるスキルじゃ！【${selectedFutureChapter.title.replace(/【.+?】/, '')}】で未知のリポジトリを迷わず攻略するプロの目を養うぞ！」`}
-                  </p>
-                </div>
-              </div>
-
-              {/* 詳細情報グリッド */}
-              <div className="space-y-3 font-sans text-xs sm:text-sm">
-                {/* 現場の苦痛 */}
-                <div className="p-3.5 rounded-xl bg-rose-950/30 border border-rose-500/30 space-y-1">
-                  <span className="font-bold text-rose-300 flex items-center gap-1.5">
-                    <span>⚠️ 現場で直面する苦痛（Before）</span>
-                  </span>
-                  <p className="text-slate-300 leading-relaxed">
-                    {selectedFutureChapter.beforePain}
-                  </p>
-                </div>
-
-                {/* 身につくC++技術 */}
-                <div className="p-3.5 rounded-xl bg-emerald-950/30 border border-emerald-500/30 space-y-1">
-                  <span className="font-bold text-emerald-300 flex items-center gap-1.5">
-                    <span>💡 この章で身につく設計力・技術（After）</span>
-                  </span>
-                  <p className="text-slate-300 leading-relaxed">
-                    {selectedFutureChapter.afterSkill}
-                  </p>
-                </div>
-
-                {/* インベーダーゲームの進化 */}
-                <div className="p-3.5 rounded-xl bg-cyan-950/30 border border-cyan-500/30 space-y-1">
-                  <span className="font-bold text-cyan-300 flex items-center gap-1.5">
-                    <span>👾 シューティングゲーム（インベーダー風）の進化</span>
-                  </span>
-                  <p className="text-slate-300 leading-relaxed">
-                    {selectedFutureChapter.gameEvolution}
-                  </p>
-                </div>
-              </div>
-
-              {/* キーワード */}
-              <div className="space-y-2 pt-2 border-t border-slate-800">
-                <span className="text-xs font-mono font-bold text-slate-400">習得キーワード:</span>
-                <div className="flex flex-wrap gap-2">
-                  {selectedFutureChapter.techKeywords.map((kw, i) => (
-                    <span
-                      key={i}
-                      className="px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-700 text-cyan-300 font-mono text-xs"
-                    >
-                      #{kw}
-                    </span>
-                  ))}
-                </div>
-              </div>
-
-              {/* モーダルフッター */}
-              <div className="flex justify-end pt-2">
-                <button
-                  onClick={() => setSelectedFutureChapter(null)}
-                  className="px-5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-mono text-xs transition"
-                >
-                  閉じる
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
       </section>
 
       {/* フッター前CTAセクション */}

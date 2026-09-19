@@ -3,18 +3,39 @@ import { ALL_CHAPTERS, getChapterBySlug } from './data/chapters';
 import { Navbar } from './components/layout/Navbar';
 import { Sidebar } from './components/layout/Sidebar';
 import { Footer } from './components/layout/Footer';
-import { ChapterView } from './components/curriculum/ChapterView';
-import { TopPageView } from './components/curriculum/TopPageView';
-import { SourceModal } from './components/layout/SourceModal';
-import { OnlinePlaygroundModal } from './components/playground/OnlinePlaygroundModal';
 import { useSEO } from './hooks/useSEO';
+
+// コード分割（Code Splitting）による初期読み込みの超軽量化
+const TopPageView = React.lazy(() => 
+  import('./components/curriculum/TopPageView').then((m) => ({ default: m.TopPageView }))
+);
+const ChapterView = React.lazy(() => 
+  import('./components/curriculum/ChapterView').then((m) => ({ default: m.ChapterView }))
+);
+const SourceModal = React.lazy(() => 
+  import('./components/layout/SourceModal').then((m) => ({ default: m.SourceModal }))
+);
+const OnlinePlaygroundModal = React.lazy(() => 
+  import('./components/playground/OnlinePlaygroundModal').then((m) => ({ default: m.OnlinePlaygroundModal }))
+);
+
+const PageLoadingFallback: React.FC = () => (
+  <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4 text-cyan-400 font-mono">
+    <div className="w-10 h-10 border-2 border-cyan-400 border-t-transparent rounded-full animate-spin" />
+    <span className="text-sm tracking-widest text-slate-400">LOADING CURRICULUM...</span>
+  </div>
+);
 
 export const App: React.FC = () => {
   const [currentSlug, setCurrentSlug] = useState<string>(() => {
-    const hash = window.location.hash.replace('#', '');
-    if (hash && getChapterBySlug(hash)) return hash;
+    // 1. パスルーティングを優先（例: /chapter-1-spaghetti-to-oop）
     const pathSlug = window.location.pathname.replace(/^\/+/, '').replace(/\/+$/, '');
     if (pathSlug && getChapterBySlug(pathSlug)) return pathSlug;
+
+    // 2. 後方互換性のためハッシュもフォールバック判定
+    const hash = window.location.hash.replace('#', '');
+    if (hash && getChapterBySlug(hash)) return hash;
+
     return 'top';
   });
 
@@ -31,16 +52,35 @@ export const App: React.FC = () => {
   const [isSourceModalOpen, setIsSourceModalOpen] = useState<boolean>(false);
   const [isPlaygroundModalOpen, setIsPlaygroundModalOpen] = useState<boolean>(false);
 
-  // URLハッシュ同期
+  // 初回ロード時のURL正規化（旧ハッシュURLで訪問された場合にクリーンパスへ補正）
   useEffect(() => {
-    if (currentSlug === 'top') {
-      if (window.location.hash && window.location.hash !== '#top') {
-        window.history.replaceState(null, '', window.location.pathname);
-      }
-    } else {
-      window.location.hash = currentSlug;
+    const hash = window.location.hash.replace('#', '');
+    if (hash && getChapterBySlug(hash)) {
+      window.history.replaceState(null, '', `/${hash}`);
+    } else if (currentSlug === 'top' && window.location.hash) {
+      window.history.replaceState(null, '', '/');
     }
-  }, [currentSlug]);
+  }, []);
+
+  // ブラウザの「戻る」「進む」キー操作（popstate）対応
+  useEffect(() => {
+    const handlePopState = () => {
+      const pathSlug = window.location.pathname.replace(/^\/+/, '').replace(/\/+$/, '');
+      if (pathSlug && getChapterBySlug(pathSlug)) {
+        setCurrentSlug(pathSlug);
+      } else {
+        const hash = window.location.hash.replace('#', '');
+        if (hash && getChapterBySlug(hash)) {
+          setCurrentSlug(hash);
+        } else {
+          setCurrentSlug('top');
+        }
+      }
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
 
   const currentChapter = getChapterBySlug(currentSlug);
 
@@ -58,23 +98,10 @@ export const App: React.FC = () => {
       (window as any).gtag('event', 'page_view', {
         page_title: pageTitle,
         page_location: window.location.href,
-        page_path: window.location.pathname + (currentSlug === 'top' ? '' : '#' + currentSlug),
+        page_path: currentSlug === 'top' ? '/' : `/${currentSlug}`,
       });
     }
   }, [currentSlug, currentChapter]);
-
-  useEffect(() => {
-    const handleHashChange = () => {
-      const hash = window.location.hash.replace('#', '');
-      if (!hash || hash === 'top') {
-        setCurrentSlug('top');
-      } else if (getChapterBySlug(hash)) {
-        setCurrentSlug(hash);
-      }
-    };
-    window.addEventListener('hashchange', handleHashChange);
-    return () => window.removeEventListener('hashchange', handleHashChange);
-  }, []);
 
   // 完了状態の保存
   const handleToggleComplete = (id: number) => {
@@ -107,8 +134,13 @@ export const App: React.FC = () => {
   const activeChapter = currentChapter || ALL_CHAPTERS[0];
   const currentChapterId = currentSlug === 'top' ? 0 : activeChapter.id;
 
+  // 章選択時のクリーンURL遷移（HTML5 pushState）
   const handleSelectChapter = (slug: string) => {
     setCurrentSlug(slug);
+    const targetPath = slug === 'top' ? '/' : `/${slug}`;
+    if (window.location.pathname !== targetPath) {
+      window.history.pushState(null, '', targetPath);
+    }
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -135,37 +167,47 @@ export const App: React.FC = () => {
         />
 
         <main className="flex-1 min-w-0 pb-20 px-4 sm:px-8 lg:px-12 overflow-x-hidden">
-          {currentSlug === 'top' ? (
-            <TopPageView
-              onSelectChapter={handleSelectChapter}
-              completedChapters={completedChapters}
-              onOpenPlaygroundModal={() => setIsPlaygroundModalOpen(true)}
-            />
-          ) : (
-            <ChapterView
-              chapter={activeChapter}
-              onNavigate={handleSelectChapter}
-              onComplete={handleMarkComplete}
-              isCompleted={completedChapters.includes(activeChapter.id)}
-            />
-          )}
+          <React.Suspense fallback={<PageLoadingFallback />}>
+            {currentSlug === 'top' ? (
+              <TopPageView
+                onSelectChapter={handleSelectChapter}
+                completedChapters={completedChapters}
+                onOpenPlaygroundModal={() => setIsPlaygroundModalOpen(true)}
+              />
+            ) : (
+              <ChapterView
+                chapter={activeChapter}
+                onNavigate={handleSelectChapter}
+                onComplete={handleMarkComplete}
+                isCompleted={completedChapters.includes(activeChapter.id)}
+              />
+            )}
+          </React.Suspense>
         </main>
       </div>
 
       {/* フッター */}
       <Footer />
 
-      {/* ソースコードガイドモーダル */}
-      <SourceModal
-        isOpen={isSourceModalOpen}
-        onClose={() => setIsSourceModalOpen(false)}
-      />
+      {/* ソースコードガイドモーダル（開かれた時のみ遅延ロード） */}
+      {isSourceModalOpen && (
+        <React.Suspense fallback={null}>
+          <SourceModal
+            isOpen={isSourceModalOpen}
+            onClose={() => setIsSourceModalOpen(false)}
+          />
+        </React.Suspense>
+      )}
 
-      {/* C++オンライン実行ラボ（Playground）モーダル */}
-      <OnlinePlaygroundModal
-        isOpen={isPlaygroundModalOpen}
-        onClose={() => setIsPlaygroundModalOpen(false)}
-      />
+      {/* C++オンライン実行ラボ（Playground）モーダル（開かれた時のみ遅延ロード） */}
+      {isPlaygroundModalOpen && (
+        <React.Suspense fallback={null}>
+          <OnlinePlaygroundModal
+            isOpen={isPlaygroundModalOpen}
+            onClose={() => setIsPlaygroundModalOpen(false)}
+          />
+        </React.Suspense>
+      )}
     </div>
   );
 };
