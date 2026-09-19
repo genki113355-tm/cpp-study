@@ -30,27 +30,55 @@ export const VariableInspector: React.FC<VariableInspectorProps> = ({ variables 
           </div>
         </div>
 
-        {/* 表示モード切り替えトグル */}
-        <div className="flex items-center bg-slate-950 p-1.5 rounded-2xl border border-slate-800 font-mono text-xs sm:text-sm">
+        {/* 表示モード切り替え（選択式ラジオボタングループ） */}
+        <div role="radiogroup" aria-label="変数表示形式選択" className="flex items-center bg-slate-950 p-1.5 rounded-2xl border border-slate-800 font-mono text-xs sm:text-sm shadow-inner">
           <button
+            role="radio"
+            aria-checked={viewMode === 'cards'}
             onClick={() => setViewMode('cards')}
-            className={`flex items-center gap-2 px-4 py-2 rounded-xl transition-all ${
+            className={`flex items-center gap-2 px-3.5 py-1.5 rounded-xl transition-all cursor-pointer select-none ${
               viewMode === 'cards'
-                ? 'bg-cyan-500 text-slate-950 font-bold shadow-md shadow-cyan-500/30'
-                : 'text-slate-400 hover:text-slate-200'
+                ? 'bg-cyan-500/20 text-cyan-200 border border-cyan-500/50 font-bold shadow-sm shadow-cyan-500/10'
+                : 'text-slate-400 hover:text-slate-200 border border-transparent'
             }`}
           >
+            {/* ラジオボタン円 */}
+            <span
+              className={`w-3.5 h-3.5 rounded-full border flex items-center justify-center transition shrink-0 ${
+                viewMode === 'cards'
+                  ? 'border-cyan-400 bg-slate-950 ring-1 ring-cyan-500/40'
+                  : 'border-slate-500 bg-slate-800'
+              }`}
+            >
+              {viewMode === 'cards' && (
+                <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 shadow-sm shadow-cyan-400" />
+              )}
+            </span>
             <LayoutGrid className="w-4 h-4" />
             <span>カード表示 (推奨)</span>
           </button>
           <button
+            role="radio"
+            aria-checked={viewMode === 'table'}
             onClick={() => setViewMode('table')}
-            className={`flex items-center gap-2 px-4 py-2 rounded-xl transition-all ${
+            className={`flex items-center gap-2 px-3.5 py-1.5 rounded-xl transition-all cursor-pointer select-none ${
               viewMode === 'table'
-                ? 'bg-cyan-500 text-slate-950 font-bold shadow-md shadow-cyan-500/30'
-                : 'text-slate-400 hover:text-slate-200'
+                ? 'bg-cyan-500/20 text-cyan-200 border border-cyan-500/50 font-bold shadow-sm shadow-cyan-500/10'
+                : 'text-slate-400 hover:text-slate-200 border border-transparent'
             }`}
           >
+            {/* ラジオボタン円 */}
+            <span
+              className={`w-3.5 h-3.5 rounded-full border flex items-center justify-center transition shrink-0 ${
+                viewMode === 'table'
+                  ? 'border-cyan-400 bg-slate-950 ring-1 ring-cyan-500/40'
+                  : 'border-slate-500 bg-slate-800'
+              }`}
+            >
+              {viewMode === 'table' && (
+                <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 shadow-sm shadow-cyan-400" />
+              )}
+            </span>
             <TableIcon className="w-4 h-4" />
             <span>テーブル表示</span>
           </button>

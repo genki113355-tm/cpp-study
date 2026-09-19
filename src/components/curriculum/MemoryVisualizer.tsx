@@ -25,27 +25,55 @@ export const MemoryVisualizer: React.FC<MemoryVisualizerProps> = ({ memoryMap })
           </h3>
         </div>
 
-        {/* 表示モード切り替えタブ */}
-        <div className="flex items-center gap-1 bg-slate-900/90 p-1 rounded-xl border border-slate-800 font-mono text-xs">
+        {/* 表示モード切り替え（選択式ラジオボタングループ） */}
+        <div role="radiogroup" aria-label="メモリ表示形式選択" className="flex items-center gap-1.5 bg-slate-900/90 p-1 rounded-xl border border-slate-800 font-mono text-xs shadow-inner">
           <button
+            role="radio"
+            aria-checked={viewMode === 'visual'}
             onClick={() => setViewMode('visual')}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-all ${
+            className={`flex items-center gap-2 px-3 py-1.5 rounded-lg transition-all cursor-pointer select-none ${
               viewMode === 'visual'
-                ? 'bg-emerald-500 text-slate-950 font-bold shadow'
-                : 'text-slate-400 hover:text-slate-200'
+                ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/50 font-bold shadow-sm shadow-emerald-500/10'
+                : 'text-slate-400 hover:text-slate-200 border border-transparent'
             }`}
           >
+            {/* ラジオボタン円 */}
+            <span
+              className={`w-3.5 h-3.5 rounded-full border flex items-center justify-center transition shrink-0 ${
+                viewMode === 'visual'
+                  ? 'border-emerald-400 bg-slate-950 ring-1 ring-emerald-500/40'
+                  : 'border-slate-500 bg-slate-800'
+              }`}
+            >
+              {viewMode === 'visual' && (
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shadow-sm shadow-emerald-400" />
+              )}
+            </span>
             <LayoutDashboard className="w-3.5 h-3.5" />
             <span>ビジュアル図解</span>
           </button>
           <button
+            role="radio"
+            aria-checked={viewMode === 'ascii'}
             onClick={() => setViewMode('ascii')}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-all ${
+            className={`flex items-center gap-2 px-3 py-1.5 rounded-lg transition-all cursor-pointer select-none ${
               viewMode === 'ascii'
-                ? 'bg-emerald-500 text-slate-950 font-bold shadow'
-                : 'text-slate-400 hover:text-slate-200'
+                ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/50 font-bold shadow-sm shadow-emerald-500/10'
+                : 'text-slate-400 hover:text-slate-200 border border-transparent'
             }`}
           >
+            {/* ラジオボタン円 */}
+            <span
+              className={`w-3.5 h-3.5 rounded-full border flex items-center justify-center transition shrink-0 ${
+                viewMode === 'ascii'
+                  ? 'border-emerald-400 bg-slate-950 ring-1 ring-emerald-500/40'
+                  : 'border-slate-500 bg-slate-800'
+              }`}
+            >
+              {viewMode === 'ascii' && (
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shadow-sm shadow-emerald-400" />
+              )}
+            </span>
             <Terminal className="w-3.5 h-3.5" />
             <span>ターミナル (ASCII)</span>
           </button>

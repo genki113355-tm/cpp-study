@@ -67,6 +67,52 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
     return files;
   }, [chapter]);
 
+  // 表示形式（ラジオボタン or プルダウンリスト）の設定（localStorageに保持）
+  const [selectorStyle, setSelectorStyle] = useState<'radio' | 'dropdown'>(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('chapter_view_selector_style');
+      if (saved === 'radio' || saved === 'dropdown') return saved;
+    }
+    return 'radio';
+  });
+
+  const handleSelectorStyleChange = (style: 'radio' | 'dropdown') => {
+    setSelectorStyle(style);
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('chapter_view_selector_style', style);
+    }
+  };
+
+  const viewModeOptions = useMemo(() => [
+    {
+      id: 'all' as ViewMode,
+      icon: '📖',
+      label: 'すべて表示',
+      desc: '全セクションを通読中',
+    },
+    {
+      id: 'learn' as ViewMode,
+      icon: '📝',
+      label: '解説・設計',
+      count: `${chapter.sections.length}節`,
+      desc: '概念解説・UML設計図・メモリ図に集中',
+    },
+    ...(allCodeFiles.length > 0 ? [{
+      id: 'code' as ViewMode,
+      icon: '💻',
+      label: 'コード',
+      count: `${allCodeFiles.length}ファイル`,
+      desc: 'C++実装コードと差分のみ表示',
+    }] : []),
+    {
+      id: 'practice' as ViewMode,
+      icon: '🎮',
+      label: 'ゲーム・演習',
+      count: chapter.quiz && chapter.quiz.length > 0 ? `クイズ${chapter.quiz.length}問` : undefined,
+      desc: '実機ゲーム・理解度クイズ・演習道場',
+    },
+  ], [chapter, allCodeFiles]);
+
   const handleSelectOption = (questionId: string, optionIndex: number, correctIndex: number) => {
     setSelectedAnswers((prev) => ({ ...prev, [questionId]: optionIndex }));
     setShowExplanations((prev) => ({ ...prev, [questionId]: true }));
@@ -212,69 +258,136 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
         </div>
       </div>
 
-      {/* 🧭 表示モード切替タブ（長大な縦スクロールを解消し、目的に応じて絞り込み） */}
+      {/* 🧭 表示モード切替（選択式であることを明確化したラジオボタン ＆ プルダウンリスト） */}
       <div className="sticky top-18 z-30 -my-4 py-3 bg-[#090d16]/95 backdrop-blur-md border-y border-slate-800/80">
         <div className="flex items-center justify-between gap-3 flex-wrap">
-          <div className="flex items-center gap-1.5 p-1 bg-slate-900/90 rounded-2xl border border-slate-800 text-xs font-mono">
-            <button
-              onClick={() => setViewMode('all')}
-              className={`px-3 py-2 rounded-xl font-bold transition flex items-center gap-1.5 cursor-pointer ${
-                viewMode === 'all'
-                  ? 'bg-cyan-500 text-slate-950 shadow-md shadow-cyan-500/20'
-                  : 'text-slate-400 hover:text-white hover:bg-slate-800'
-              }`}
-            >
-              <span>📖 すべて表示</span>
-            </button>
-
-            <button
-              onClick={() => setViewMode('learn')}
-              className={`px-3 py-2 rounded-xl font-bold transition flex items-center gap-1.5 cursor-pointer ${
-                viewMode === 'learn'
-                  ? 'bg-cyan-500 text-slate-950 shadow-md shadow-cyan-500/20'
-                  : 'text-slate-400 hover:text-white hover:bg-slate-800'
-              }`}
-            >
-              <span>📝 解説・設計</span>
-              <span className="text-[10px] opacity-75">({chapter.sections.length}節)</span>
-            </button>
-
-            {allCodeFiles.length > 0 && (
+          {/* 左側：選択コントロール群 ＆ 形式切替 */}
+          <div className="flex items-center gap-2.5 flex-wrap">
+            {/* 形式切り替え（ラジオ ⇄ プルダウン）ボタン */}
+            <div className="flex items-center gap-1 p-0.5 bg-slate-900/90 rounded-xl border border-slate-800 text-[11px] font-mono shrink-0 shadow-inner">
               <button
-                onClick={() => setViewMode('code')}
-                className={`px-3 py-2 rounded-xl font-bold transition flex items-center gap-1.5 cursor-pointer ${
-                  viewMode === 'code'
-                    ? 'bg-cyan-500 text-slate-950 shadow-md shadow-cyan-500/20'
-                    : 'text-slate-400 hover:text-white hover:bg-slate-800'
+                type="button"
+                onClick={() => handleSelectorStyleChange('radio')}
+                title="ラジオボタン形式で選択（1クリックで直感切り替え）"
+                className={`px-2 py-1 rounded-lg transition flex items-center gap-1 cursor-pointer select-none ${
+                  selectorStyle === 'radio'
+                    ? 'bg-cyan-500/20 text-cyan-300 font-bold border border-cyan-500/40 shadow-sm shadow-cyan-500/10'
+                    : 'text-slate-400 hover:text-slate-200'
                 }`}
               >
-                <span>💻 コード</span>
-                <span className="text-[10px] opacity-75">({allCodeFiles.length}ファイル)</span>
+                <span>🔘</span>
+                <span className="hidden sm:inline">ラジオ</span>
               </button>
-            )}
+              <button
+                type="button"
+                onClick={() => handleSelectorStyleChange('dropdown')}
+                title="プルダウンリスト形式で選択（省スペースなドロップダウン）"
+                className={`px-2 py-1 rounded-lg transition flex items-center gap-1 cursor-pointer select-none ${
+                  selectorStyle === 'dropdown'
+                    ? 'bg-cyan-500/20 text-cyan-300 font-bold border border-cyan-500/40 shadow-sm shadow-cyan-500/10'
+                    : 'text-slate-400 hover:text-slate-200'
+                }`}
+              >
+                <span>▾</span>
+                <span className="hidden sm:inline">プルダウン</span>
+              </button>
+            </div>
 
-            <button
-              onClick={() => setViewMode('practice')}
-              className={`px-3 py-2 rounded-xl font-bold transition flex items-center gap-1.5 cursor-pointer ${
-                viewMode === 'practice'
-                  ? 'bg-cyan-500 text-slate-950 shadow-md shadow-cyan-500/20'
-                  : 'text-slate-400 hover:text-white hover:bg-slate-800'
-              }`}
-            >
-              <span>🎮 ゲーム・演習</span>
-              {chapter.quiz && chapter.quiz.length > 0 && (
-                <span className="text-[10px] opacity-75">(クイズ{chapter.quiz.length}問)</span>
-              )}
-            </button>
+            {/* ① ラジオボタン形式 */}
+            {selectorStyle === 'radio' ? (
+              <div
+                role="radiogroup"
+                aria-label="表示モード選択"
+                className="flex items-center gap-1.5 p-1 bg-slate-900/90 rounded-2xl border border-slate-800 text-xs font-mono flex-wrap shadow-inner"
+              >
+                <span className="text-slate-400 text-xs px-2 hidden md:flex items-center gap-1 font-semibold">
+                  <span className="text-cyan-400 font-bold">🔘</span> 表示選択:
+                </span>
+                {viewModeOptions.map((option) => {
+                  const isSelected = viewMode === option.id;
+                  return (
+                    <label
+                      key={option.id}
+                      className={`group flex items-center gap-2 px-3 py-1.5 rounded-xl cursor-pointer transition select-none ${
+                        isSelected
+                          ? 'bg-cyan-500/20 text-cyan-200 border border-cyan-500/50 shadow-md shadow-cyan-500/10 font-bold'
+                          : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/80 border border-transparent font-medium'
+                      }`}
+                    >
+                      <input
+                        type="radio"
+                        name="chapter-view-mode"
+                        value={option.id}
+                        checked={isSelected}
+                        onChange={() => setViewMode(option.id)}
+                        className="sr-only"
+                      />
+                      {/* ラジオボタン円（外枠＋選択時の中央ドット） */}
+                      <span
+                        className={`w-3.5 h-3.5 rounded-full border flex items-center justify-center transition shrink-0 ${
+                          isSelected
+                            ? 'border-cyan-400 bg-slate-950 ring-2 ring-cyan-500/40'
+                            : 'border-slate-500 bg-slate-800/80 group-hover:border-slate-400'
+                        }`}
+                      >
+                        {isSelected && (
+                          <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 shadow-sm shadow-cyan-400" />
+                        )}
+                      </span>
+                      <span className="flex items-center gap-1">
+                        <span>{option.icon}</span>
+                        <span>{option.label}</span>
+                        {option.count && (
+                          <span
+                            className={`text-[10px] ${
+                              isSelected ? 'text-cyan-300/80' : 'text-slate-500'
+                            }`}
+                          >
+                            ({option.count})
+                          </span>
+                        )}
+                      </span>
+                    </label>
+                  );
+                })}
+              </div>
+            ) : (
+              /* ② プルダウンリスト形式 */
+              <div className="flex items-center gap-2">
+                <label
+                  htmlFor="chapter-view-mode-select"
+                  className="text-xs font-mono font-bold text-slate-300 shrink-0 flex items-center gap-1"
+                >
+                  <span className="text-cyan-400">▾</span> 表示モード選択:
+                </label>
+                <div className="relative inline-block">
+                  <select
+                    id="chapter-view-mode-select"
+                    value={viewMode}
+                    onChange={(e) => setViewMode(e.target.value as ViewMode)}
+                    className="bg-slate-900 border-2 border-cyan-500/50 hover:border-cyan-400 text-cyan-200 rounded-xl pl-3 pr-8 py-1.5 text-xs font-mono font-bold focus:outline-none focus:ring-2 focus:ring-cyan-400 appearance-none cursor-pointer shadow-md shadow-cyan-500/10 transition"
+                  >
+                    {viewModeOptions.map((opt) => (
+                      <option key={opt.id} value={opt.id} className="bg-slate-900 text-slate-200 py-1">
+                        {opt.icon} {opt.label}{opt.count ? ` (${opt.count})` : ''} - {opt.desc}
+                      </option>
+                    ))}
+                  </select>
+                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2.5 text-cyan-400">
+                    <svg className="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                      <path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
 
-          <div className="text-xs font-mono text-slate-400 hidden sm:flex items-center gap-2">
-            <span>表示モード:</span>
+          {/* 右側：現在の表示ステータス */}
+          <div className="text-xs font-mono text-slate-400 hidden lg:flex items-center gap-2">
+            <span>表示状態:</span>
             <span className="text-cyan-400 font-bold">
-              {viewMode === 'all' && '全セクションを通読中'}
-              {viewMode === 'learn' && '概念解説・UML設計図・メモリ図に集中'}
-              {viewMode === 'code' && 'C++実装コードと差分のみ表示'}
-              {viewMode === 'practice' && '実機ゲーム・理解度クイズ・演習道場'}
+              {viewModeOptions.find((opt) => opt.id === viewMode)?.desc}
             </span>
           </div>
         </div>
