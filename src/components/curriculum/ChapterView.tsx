@@ -204,13 +204,18 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
           <div className="flex items-center justify-between mb-3 flex-wrap gap-2">
             <h2 className="text-xl sm:text-2xl font-bold text-white flex items-center gap-2 font-mono">
               <span className="text-cyan-400">#</span>
-              <span>実機プレビュー：この章で動かすゲーム</span>
+              <span>実機エミュレータ：{code} {chapter.title}</span>
             </h2>
             <span className="text-xs sm:text-sm text-slate-400 font-mono">
               キーボードまたはボタンで操作可能
             </span>
           </div>
-          <GameEmulator version={chapter.gameVersion} />
+          <GameEmulator
+            key={chapter.slug}
+            version={chapter.gameVersion}
+            chapterCode={code}
+            chapterTitle={chapter.title}
+          />
         </section>
       )}
 

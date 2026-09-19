@@ -4,6 +4,8 @@ import confetti from 'canvas-confetti';
 
 interface GameEmulatorProps {
   version: 'v1_spaghetti' | 'v2_classes' | 'v3_dynamic' | 'v4_polymorphism' | 'v5_smart_pointers' | 'v6_patterns' | 'v7_ecs_final';
+  chapterCode?: string;
+  chapterTitle?: string;
 }
 
 interface Particle {
@@ -104,7 +106,7 @@ const checkPlayerInvaderCollision = (inv: Invader, pX: number): boolean => {
   return yOverlap && xOverlap;
 };
 
-export const GameEmulator: React.FC<GameEmulatorProps> = ({ version }) => {
+export const GameEmulator: React.FC<GameEmulatorProps> = ({ version, chapterCode, chapterTitle }) => {
   const [playerX, setPlayerX] = useState<number>(14);
   const [bullets, setBullets] = useState<Bullet[]>([]);
   const [invaders, setInvaders] = useState<Invader[]>([]);
@@ -113,9 +115,7 @@ export const GameEmulator: React.FC<GameEmulatorProps> = ({ version }) => {
   const [drones, setDrones] = useState<BitDrone[]>([]);
   const [hasTripleShot, setHasTripleShot] = useState<boolean>(false);
   const [score, setScore] = useState<number>(0);
-  const [scene, setScene] = useState<SceneState>(
-    version === 'v6_patterns' || version === 'v7_ecs_final' ? 'title' : 'playing'
-  );
+  const [scene, setScene] = useState<SceneState>('title');
   const [achievementToast, setAchievementToast] = useState<string | null>(null);
 
   // C++設計定数・インタラクティブ実験室（サンドボックス）状態
@@ -141,6 +141,16 @@ export const GameEmulator: React.FC<GameEmulatorProps> = ({ version }) => {
   const enemySpeedMulRef = useRef<number>(enemySpeedMul);
   enemySpeedMulRef.current = enemySpeedMul;
 
+  // 移動タイマーの確実なクリーンアップ
+  useEffect(() => {
+    return () => {
+      if (moveTimerRef.current) {
+        clearInterval(moveTimerRef.current);
+        moveTimerRef.current = null;
+      }
+    };
+  }, []);
+
   // 実績トースト表示ヘルパー (Observer パターン)
   const triggerAchievement = useCallback((text: string) => {
     setAchievementToast(text);
@@ -149,13 +159,13 @@ export const GameEmulator: React.FC<GameEmulatorProps> = ({ version }) => {
     }, 2800);
   }, []);
 
-  // ゲームの初期化
+  // ゲームの初期化（全バージョン共通でタイトル/待機画面から開始）
   const initGame = useCallback(() => {
     setPlayerX(14);
     setBullets([]);
     setParticles([]);
     setScore(0);
-    setScene(version === 'v6_patterns' || version === 'v7_ecs_final' ? 'title' : 'playing');
+    setScene('title');
     setAchievementToast(null);
     invaderDirRef.current = 1;
     invaderTimerRef.current = 0;
@@ -239,7 +249,13 @@ export const GameEmulator: React.FC<GameEmulatorProps> = ({ version }) => {
     initGame();
   }, [version, initGame]);
 
-  //   // 弾丸の発射処理
+  // ゲームオーバー/クリア時の即時再プレイ開始
+  const restartGame = useCallback(() => {
+    initGame();
+    setScene('playing');
+  }, [initGame]);
+
+  // 弾丸の発射処理
   const shoot = useCallback(() => {
     if (scene !== 'playing') return;
 
@@ -371,7 +387,7 @@ export const GameEmulator: React.FC<GameEmulatorProps> = ({ version }) => {
 
       // ゲームオーバー/クリア時のリトライ（Rキー）
       if ((scene === 'gameover' || scene === 'gameclear') && (e.key === 'r' || e.key === 'R')) {
-        initGame();
+        restartGame();
         return;
       }
 
@@ -388,7 +404,7 @@ export const GameEmulator: React.FC<GameEmulatorProps> = ({ version }) => {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [scene, moveLeft, moveRight, shoot, initGame]);
+  }, [scene, moveLeft, moveRight, shoot, restartGame]);
 
   // 爆発エフェクトの生成（第3章・第4章・第5章）
   const spawnExplosion = useCallback((x: number, y: number, isUfo: boolean = false) => {
@@ -839,7 +855,104 @@ export const GameEmulator: React.FC<GameEmulatorProps> = ({ version }) => {
     }
   };
 
+  const getTitleScreenInfo = () => {
+    switch (version) {
+      case 'v1_spaghetti':
+        return {
+          stage: '第1段階 / 構造化前夜',
+          stageColor: 'text-amber-400 border-amber-500/40 bg-amber-950/60',
+          title: 'SPACE INVADERS C (PROCEDURAL)',
+          icon: '📜',
+          features: [
+            'C言語スタイル：単一ファイル・手続き型設計',
+            '単発弾丸・白黒ASCIIコンソール描画',
+            '固定配列とグローバル変数による状態管理',
+          ],
+          hint: 'ここからすべてが始まる！C++のクラス化による進化を体験しよう',
+        };
+      case 'v2_classes':
+        return {
+          stage: '第2段階 / クラス化・カプセル化',
+          stageColor: 'text-cyan-400 border-cyan-500/40 bg-cyan-950/60',
+          title: 'SPACE INVADERS OOP (CLASSES)',
+          icon: '🛡️',
+          features: [
+            'C++クラス化：Player / Bullet / Invader を独立カプセル化',
+            '座標・状態の隠蔽とRGBカラーコンソール出力',
+            'ヘッダ・実装ファイルの分割コンパイル基盤',
+          ],
+          hint: 'オブジェクト指向によりコードが整理され、安定した挙動を実現！',
+        };
+      case 'v3_dynamic':
+        return {
+          stage: '第3段階 / 動的メモリ・パーティクル',
+          stageColor: 'text-emerald-400 border-emerald-500/40 bg-emerald-950/60',
+          title: 'SPACE INVADERS DYNAMIC (STL)',
+          icon: '✨',
+          features: [
+            'std::vector導入による弾丸・爆発の動的メモリ管理',
+            '3連射バースト射撃システムのアンロック',
+            'インベーダー撃破時に火花粒子が拡散する動的パーティクル',
+          ],
+          hint: '動的配列とRule of Three/RAIIによりメモリリークのない動的演出！',
+        };
+      case 'v4_polymorphism':
+        return {
+          stage: '第4段階 / 継承とポリモーフィズム',
+          stageColor: 'text-purple-400 border-purple-500/40 bg-purple-950/60',
+          title: 'SPACE INVADERS POLYMORPHISM',
+          icon: '🛸',
+          features: [
+            '基底Enemyクラスとvirtual関数による多態的ディスパッチ',
+            '耐久力2のシールド敵 [S] ＆ 上空を高速通過するボーナスUFO [U]',
+            '基底ポインタ経由の統一的Update/Draw呼び出し',
+          ],
+          hint: '継承と仮想関数で、コードを複製せず新しい敵タイプを拡張可能！',
+        };
+      case 'v5_smart_pointers':
+        return {
+          stage: '第5段階 / スマートポインタ・RAII',
+          stageColor: 'text-cyan-400 border-cyan-500/40 bg-cyan-950/60',
+          title: 'SPACE INVADERS MODERN RAII',
+          icon: '🛰️',
+          features: [
+            'std::unique_ptrによる敵・アイテムの完全所有権管理（生delete撤滅）',
+            'std::shared_ptrで自機周囲を旋回援護する護衛ビットドローン [o]',
+            '敵撃破時のアイテムドロップ（P: 3WAYレーザー、B: ビット増設）',
+          ],
+          hint: 'モダンC++のRAII設計によりメモリリーク0バイトを完全保証！',
+        };
+      case 'v6_patterns':
+        return {
+          stage: '第6段階 / ゲームデザインパターン',
+          stageColor: 'text-amber-400 border-amber-500/40 bg-amber-950/60',
+          title: 'SPACE INVADERS PATTERNS',
+          icon: '🎮',
+          features: [
+            'Stateパターンによるタイトル・プレイ・ポーズ・ゲームオーバー遷移',
+            'Observerパターンによる実績解除（UFO撃破・クリア通知）の疎結合発火',
+            '巨大if文分岐を排除したクリーンなゲームループ状態制御',
+          ],
+          hint: 'デザインパターンでUIとゲームロジックが美しく疎結合に分離！',
+        };
+      case 'v7_ecs_final':
+        return {
+          stage: '第7段階 / ECSアーキテクチャ完結編',
+          stageColor: 'text-rose-400 border-rose-500/40 bg-rose-950/60',
+          title: 'SPACE INVADERS ECS FINAL',
+          icon: '💥',
+          features: [
+            'Entity Component System（Transform/Render/Shooter/Health）合成',
+            '深層多重継承を完全排除し、振る舞いを動的アセンブル',
+            '巨大母艦ボス [B:HP12] ＆ 3WAY貫通レーザー ＆ 誘爆ボム (X)',
+          ],
+          hint: '商業AAAゲームエンジンが採用する最高峰の疎結合データ指向設計！',
+        };
+    }
+  };
+
   const vInfo = getVersionBadge();
+  const titleInfo = getTitleScreenInfo();
   const activeUfo = invaders.find((inv) => inv.type === 'ufo' && inv.alive);
 
   return (
@@ -856,6 +969,11 @@ export const GameEmulator: React.FC<GameEmulatorProps> = ({ version }) => {
             <span className={`text-[11px] sm:text-xs px-2.5 py-0.5 rounded-full border font-sans font-semibold ${vInfo.color}`}>
               {vInfo.name}
             </span>
+            {chapterCode && (
+              <span className="text-[10px] sm:text-xs px-2 py-0.5 rounded-full border border-slate-700 bg-slate-900 text-slate-300 font-mono">
+                {chapterCode} 収録
+              </span>
+            )}
           </h3>
         </div>
 
@@ -1128,26 +1246,61 @@ export const GameEmulator: React.FC<GameEmulatorProps> = ({ version }) => {
           </div>
         </div>
 
-        {/* タイトル画面オーバーレイ（State パターン） */}
+        {/* タイトル・待機画面オーバーレイ（全バージョン共通） */}
         {scene === 'title' && (
-          <div className="absolute inset-0 bg-slate-950/85 backdrop-blur-sm flex flex-col items-center justify-center p-4 z-20">
-            <div className="text-center max-w-md">
-              <div className="w-12 h-12 mx-auto mb-2 rounded-2xl bg-cyan-500/20 border border-cyan-500/40 flex items-center justify-center text-2xl">
-                👾
+          <div className="absolute inset-0 bg-slate-950/90 backdrop-blur-md flex flex-col items-center justify-center p-3 sm:p-5 z-20 overflow-y-auto">
+            <div className="text-center max-w-lg w-full my-auto space-y-3">
+              {/* ステージバッジ */}
+              <div className="flex items-center justify-center gap-2 flex-wrap">
+                <span className={`text-[10px] sm:text-xs px-2.5 py-0.5 rounded-full border font-mono font-bold ${titleInfo.stageColor}`}>
+                  {titleInfo.stage}
+                </span>
+                {chapterCode && (
+                  <span className="text-[10px] sm:text-xs px-2 py-0.5 rounded-full border border-slate-700 bg-slate-900 text-slate-300 font-mono">
+                    {chapterCode} 収録
+                  </span>
+                )}
               </div>
-              <h4 className="text-xl sm:text-2xl font-bold text-cyan-400 font-mono mb-2 text-glow-cyan">
-                {version === 'v7_ecs_final' ? 'SPACE INVADERS ECS 2026' : 'SPACE INVADERS PATTERNS'}
-              </h4>
-              <p className="text-xs sm:text-sm text-slate-300 font-mono mb-6 leading-relaxed whitespace-pre-line">
-                {version === 'v7_ecs_final'
-                  ? '【完結編】ECS（Entity Component System）設計\n巨大母艦 [ B ] と弾幕エリート [ E ] を撃破せよ！'
-                  : 'State パターンによる状態管理\nTitle ⇄ Playing ⇄ Paused ⇄ GameOver'}
+
+              {/* タイトル */}
+              <div className="flex items-center justify-center gap-2">
+                <span className="text-2xl sm:text-3xl">{titleInfo.icon}</span>
+                <h4 className="text-lg sm:text-xl md:text-2xl font-black text-white font-mono tracking-wide text-glow-cyan">
+                  {titleInfo.title}
+                </h4>
+              </div>
+
+              {chapterTitle && (
+                <div className="text-[11px] sm:text-xs text-slate-400 font-mono truncate max-w-sm mx-auto">
+                  <span>章：{chapterTitle}</span>
+                </div>
+              )}
+
+              {/* 特徴リスト */}
+              <div className="bg-slate-900/80 rounded-xl border border-slate-800 p-2.5 sm:p-3 text-left space-y-1.5 font-mono text-[11px] sm:text-xs text-slate-300">
+                <div className="text-cyan-400 font-bold mb-1 flex items-center gap-1.5 text-[11px] sm:text-xs">
+                  <Sparkles className="w-3.5 h-3.5" />
+                  <span>このバージョンのC++設計ポイント:</span>
+                </div>
+                {titleInfo.features.map((feat, idx) => (
+                  <div key={idx} className="flex items-start gap-1.5">
+                    <span className="text-cyan-400 font-bold">•</span>
+                    <span className="leading-snug">{feat}</span>
+                  </div>
+                ))}
+              </div>
+
+              <p className="text-[10px] sm:text-xs text-slate-400 font-mono italic">
+                💡 {titleInfo.hint}
               </p>
+
+              {/* スタートボタン */}
               <button
                 onClick={() => setScene('playing')}
-                className="px-6 py-3 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold text-sm font-mono transition shadow-lg shadow-cyan-500/40 active:scale-95 animate-pulse"
+                className="w-full sm:w-auto px-8 py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-emerald-500 hover:from-cyan-400 hover:to-emerald-400 text-slate-950 font-black text-xs sm:text-sm font-mono transition shadow-lg shadow-cyan-500/30 active:scale-95 animate-pulse flex items-center justify-center gap-2 mx-auto"
               >
-                PRESS SPACE TO START ▶
+                <Play className="w-4 h-4 fill-slate-950" />
+                <span>ゲーム開始 ▶ [SPACE または クリック]</span>
               </button>
             </div>
           </div>
@@ -1192,7 +1345,7 @@ export const GameEmulator: React.FC<GameEmulatorProps> = ({ version }) => {
                   全インベーダーを撃破！シロクマ先生とハイタッチ！🎉
                 </p>
                 <button
-                  onClick={initGame}
+                  onClick={restartGame}
                   className="px-4 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs sm:text-sm font-mono transition shadow-lg shadow-emerald-500/30 active:scale-95"
                 >
                   もう一度遊ぶ (Rキー)
@@ -1210,7 +1363,7 @@ export const GameEmulator: React.FC<GameEmulatorProps> = ({ version }) => {
                 <h4 className="text-lg sm:text-xl font-bold text-rose-500 font-mono mb-1">GAME OVER</h4>
                 <p className="text-xs text-slate-300 font-mono mb-2.5">インベーダーに侵略されてしまいました</p>
                 <button
-                  onClick={initGame}
+                  onClick={restartGame}
                   className="px-4 py-2 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs sm:text-sm font-mono transition shadow-lg shadow-rose-600/30 active:scale-95"
                 >
                   リトライする (Rキー)
