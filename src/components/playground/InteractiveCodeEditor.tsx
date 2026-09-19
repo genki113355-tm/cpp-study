@@ -35,12 +35,6 @@ export const InteractiveCodeEditor: React.FC<InteractiveCodeEditorProps> = ({
     }
   };
 
-  // スクロール同期
-  const handleScroll = () => {
-    if (textareaRef.current && lineNumbersRef.current) {
-      lineNumbersRef.current.scrollTop = textareaRef.current.scrollTop;
-    }
-  };
 
   // Tabキー、Enterキーによるインテリジェントインデント処理
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -97,6 +91,11 @@ export const InteractiveCodeEditor: React.FC<InteractiveCodeEditorProps> = ({
       }
     }
   };
+
+  const parsedMinHeight = parseInt(minHeight) || 320;
+  const rowHeight = Math.round(fontSizePx * 1.6);
+  const totalContentHeight = Math.max(lines.length + 2, 12) * rowHeight + 24;
+  const containerHeight = Math.min(520, Math.max(parsedMinHeight, totalContentHeight));
 
   return (
     <div
@@ -177,7 +176,7 @@ export const InteractiveCodeEditor: React.FC<InteractiveCodeEditorProps> = ({
         </div>
       </div>
 
-      {/* 入力促進の親切バー（未編集時や初見時の安心用） */}
+      {/* 入力促進の親切バー */}
       {!readOnly && (
         <div 
           onClick={() => textareaRef.current?.focus()}
@@ -191,18 +190,21 @@ export const InteractiveCodeEditor: React.FC<InteractiveCodeEditorProps> = ({
         </div>
       )}
 
-      {/* エディタ本体（行番号 ＋ テキストエリア） */}
-      <div className="relative flex flex-1 overflow-hidden" style={{ minHeight }}>
-        {/* 行番号カラム */}
+      {/* エディタ本体（行番号 ＋ テキストエリアの一体スクロールコンテナ） */}
+      <div 
+        className="relative flex overflow-auto bg-[#040711]" 
+        style={{ height: `${containerHeight}px` }}
+      >
+        {/* 行番号カラム（stickyで横スクロール時も左端固定） */}
         <div
           ref={lineNumbersRef}
           aria-hidden="true"
           onClick={() => textareaRef.current?.focus()}
-          className="w-10 sm:w-12 py-3.5 pl-2 pr-2 text-right bg-[#03060c] text-slate-600 select-none font-mono text-xs border-r border-slate-800/60 overflow-hidden cursor-text"
-          style={{ fontSize: `${fontSizePx}px`, lineHeight: 1.5 }}
+          className="w-10 sm:w-12 pt-3 pb-6 pl-2 pr-2 text-right bg-[#03060c] text-slate-600 select-none font-mono text-xs border-r border-slate-800/60 flex-shrink-0 cursor-text sticky left-0 z-10"
+          style={{ fontSize: `${fontSizePx}px`, minHeight: `${totalContentHeight}px` }}
         >
           {lines.map((_, i) => (
-            <div key={i} className="leading-normal">
+            <div key={i} style={{ height: `${rowHeight}px`, lineHeight: `${rowHeight}px` }}>
               {i + 1}
             </div>
           ))}
@@ -214,14 +216,18 @@ export const InteractiveCodeEditor: React.FC<InteractiveCodeEditorProps> = ({
           value={value}
           onChange={(e) => onChange(e.target.value)}
           onKeyDown={handleKeyDown}
-          onScroll={handleScroll}
           readOnly={readOnly}
           spellCheck={false}
           autoCapitalize="none"
           autoComplete="off"
           autoCorrect="off"
-          className="flex-1 w-full h-full p-3.5 bg-transparent text-cyan-100 font-mono resize-none outline-none leading-normal overflow-auto whitespace-pre selection:bg-cyan-600/40 selection:text-white caret-cyan-400 focus:caret-cyan-300"
-          style={{ fontSize: `${fontSizePx}px`, lineHeight: 1.5 }}
+          rows={Math.max(12, lines.length + 2)}
+          className="flex-1 min-w-[500px] w-full pt-3 pb-6 px-3.5 bg-transparent text-cyan-100 font-mono resize-none outline-none whitespace-pre selection:bg-cyan-600/40 selection:text-white caret-cyan-400 focus:caret-cyan-300 border-none leading-none"
+          style={{ 
+            fontSize: `${fontSizePx}px`, 
+            lineHeight: `${rowHeight}px`,
+            height: `${totalContentHeight}px`,
+          }}
           placeholder="// ここに C++ コードを入力してください..."
         />
       </div>
