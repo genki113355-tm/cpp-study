@@ -219,10 +219,11 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
               <div className="absolute inset-0 bg-[radial-gradient(#06b6d4_1px,transparent_1px)] [background-size:24px_24px] opacity-15 pointer-events-none" />
               <div className="absolute top-0 right-0 w-80 h-80 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none" />
 
-              <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-5">
-                <div className="space-y-2.5 max-w-2xl">
-                  <div className="flex items-center gap-2 flex-wrap">
-                    <span className="px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-cyan-950/90 text-cyan-300 border border-cyan-500/40 flex items-center gap-1.5">
+              <div className="relative z-10 flex flex-col items-center text-center space-y-5">
+                {/* 上部ヘッダー情報 */}
+                <div className="space-y-2.5 max-w-2xl flex flex-col items-center">
+                  <div className="flex items-center gap-2 flex-wrap justify-center">
+                    <span className="px-3 py-1 rounded-full text-xs font-mono font-bold bg-cyan-950/90 text-cyan-300 border border-cyan-500/40 flex items-center gap-1.5">
                       <Terminal className="w-3.5 h-3.5 text-cyan-400" />
                       <span>{code} 収録：インベーダーゲーム風シューティング</span>
                     </span>
@@ -231,28 +232,45 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
                     </span>
                   </div>
 
-                  <h3 className="text-lg sm:text-2xl font-black text-white font-mono flex items-center gap-2">
+                  <h3 className="text-lg sm:text-2xl font-black text-white font-mono flex items-center justify-center gap-2">
                     <span className="text-cyan-400">👾</span>
                     <span>RETRO SPACE SHOOTER : {code} {chapter.title}</span>
                   </h3>
 
                   {/* L1以外の章のみ「前章からの進化点」を表示 */}
                   {!isFirstChapter ? (
-                    <div className="flex items-start gap-2 text-xs sm:text-sm font-mono bg-slate-900/90 p-2.5 rounded-xl border border-amber-500/30 text-slate-300">
+                    <div className="inline-flex items-center gap-2 text-xs sm:text-sm font-mono bg-slate-900/90 px-3.5 py-2 rounded-xl border border-amber-500/30 text-slate-300 max-w-xl text-left">
                       <span className="px-2 py-0.5 rounded bg-amber-950 text-amber-300 font-bold border border-amber-500/40 flex-shrink-0 text-xs">
                         🔄 前章からの進化
                       </span>
-                      <span className="leading-snug text-amber-100 font-medium pt-0.5">
+                      <span className="leading-snug text-amber-100 font-medium">
                         {evolution.headline}
                       </span>
                     </div>
                   ) : (
-                    <div className="text-xs sm:text-sm text-slate-300 font-mono bg-slate-900/80 p-2.5 rounded-xl border border-cyan-500/30">
+                    <div className="text-xs sm:text-sm text-slate-300 font-mono bg-slate-900/80 px-3.5 py-2 rounded-xl border border-cyan-500/30 max-w-xl">
                       🚀 <span className="text-cyan-300 font-bold">原点の固定画面シューティング：</span>1ファイル・グローバル変数・単発射撃から始まるC++オブジェクト指向への旅！
                     </div>
                   )}
+                </div>
 
-                  <div className="flex items-center gap-3 text-xs text-slate-400 font-mono pt-0.5 flex-wrap">
+                {/* 中央：縦4cm × 横5cm (約150px × 200px) の超目立つ起動ボタン */}
+                <div className="flex flex-col items-center justify-center gap-3 my-1">
+                  <button
+                    onClick={() => setIsGameModalOpen(true)}
+                    className="w-[200px] h-[150px] rounded-2xl bg-gradient-to-br from-cyan-500 via-sky-500 to-emerald-500 hover:from-cyan-400 hover:via-sky-400 hover:to-emerald-400 text-slate-950 font-mono font-black transition-all duration-300 shadow-[0_0_35px_rgba(6,182,212,0.45)] hover:shadow-[0_0_55px_rgba(6,182,212,0.7)] hover:scale-105 active:scale-95 flex flex-col items-center justify-center gap-2.5 group cursor-pointer border-2 border-cyan-200/50"
+                    title="ゲームを起動する"
+                  >
+                    <div className="w-14 h-14 rounded-xl bg-slate-950/20 flex items-center justify-center group-hover:scale-110 group-hover:rotate-6 transition-transform">
+                      <Gamepad2 className="w-10 h-10 text-slate-950" />
+                    </div>
+                    <div className="flex flex-col items-center leading-tight">
+                      <span className="text-base sm:text-lg font-black tracking-wide text-slate-950">ゲームを起動する</span>
+                      <span className="text-xs font-bold text-slate-900/80 font-mono tracking-wider mt-0.5">▶ PLAY GAME</span>
+                    </div>
+                  </button>
+
+                  <div className="flex items-center gap-3 text-xs text-slate-400 font-mono pt-1 flex-wrap justify-center">
                     <span className="flex items-center gap-1 text-emerald-400">
                       <span>🎨 2Dグラフィック</span>
                     </span>
@@ -265,21 +283,13 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
                   </div>
                 </div>
 
-                {/* 起動アクションボタン */}
-                <div className="flex flex-col sm:flex-row md:flex-col gap-2.5 flex-shrink-0 justify-center">
-                  <button
-                    onClick={() => setIsGameModalOpen(true)}
-                    className="px-6 py-3.5 rounded-xl bg-gradient-to-r from-cyan-500 via-sky-500 to-emerald-500 hover:from-cyan-400 hover:to-emerald-400 text-slate-950 font-mono font-black text-sm sm:text-base transition shadow-xl shadow-cyan-500/30 active:scale-95 flex items-center justify-center gap-2.5 group cursor-pointer"
-                  >
-                    <Gamepad2 className="w-5 h-5 group-hover:rotate-12 transition-transform" />
-                    <span>ゲームを起動する ▶</span>
-                  </button>
-
+                {/* 下部：インライン表示の切り替え */}
+                <div className="pt-2 border-t border-slate-800/80 w-full flex justify-center">
                   <button
                     onClick={() => setShowInlineGame((prev) => !prev)}
-                    className="px-4 py-2 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-slate-300 hover:text-white text-xs font-mono transition border border-slate-700 flex items-center justify-center gap-1.5 cursor-pointer"
+                    className="text-xs text-slate-400 hover:text-cyan-300 font-mono transition flex items-center gap-1.5 py-1 px-3 rounded hover:bg-slate-800/60 cursor-pointer"
                   >
-                    <span>{showInlineGame ? '▲ ページ内表示を閉じる' : '▼ ページ内にインライン表示'}</span>
+                    <span>{showInlineGame ? '▲ ページ内表示を閉じる' : '▼ ページ内にインライン表示する'}</span>
                   </button>
                 </div>
               </div>
