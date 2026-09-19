@@ -20,6 +20,7 @@ export interface ChapterEvolutionInfo {
   afterSummary: string;
   diffItems: EvolutionDiffItem[];
   cppArchitecturePoint: string;
+  isFirstChapter?: boolean;
 }
 
 export const CHAPTER_EVOLUTION_MAP: Record<string, ChapterEvolutionInfo> = {
@@ -28,6 +29,7 @@ export const CHAPTER_EVOLUTION_MAP: Record<string, ChapterEvolutionInfo> = {
   // ==========================================
   C1: {
     chapterCode: 'C1',
+    isFirstChapter: true,
     title: '構造化設計の限界（C言語スパゲティ）',
     previousChapter: 'なし（原点・スタート地点）',
     headline: 'C言語手続き型の原点！1ファイル・グローバル変数・単発白黒インベーダー',
@@ -484,8 +486,14 @@ export const CHAPTER_EVOLUTION_MAP: Record<string, ChapterEvolutionInfo> = {
  * 章コードまたはバージョンから進化情報を取得するヘルパー
  */
 export const getChapterEvolution = (chapterCode?: string, version?: string): ChapterEvolutionInfo => {
+  // L1〜L16 は C1〜C16 と同一マップへマッピング
+  const normalizedCode = chapterCode?.replace(/^L/, 'C');
+
   if (chapterCode && CHAPTER_EVOLUTION_MAP[chapterCode]) {
     return CHAPTER_EVOLUTION_MAP[chapterCode];
+  }
+  if (normalizedCode && CHAPTER_EVOLUTION_MAP[normalizedCode]) {
+    return CHAPTER_EVOLUTION_MAP[normalizedCode];
   }
 
   // バージョンによるフォールバック

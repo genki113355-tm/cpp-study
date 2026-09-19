@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { RotateCcw, Sparkles, Terminal, Gamepad2, Info, Sliders, Smartphone, Pause, Play, LogOut } from 'lucide-react';
+import { RotateCcw, Sparkles, Terminal, Gamepad2, Info, Sliders, Smartphone, Pause, Play, LogOut, X, Target } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { getChapterEvolution } from '../../data/chapterEvolution';
 
@@ -7,6 +7,8 @@ interface GameEmulatorProps {
   version: 'v1_spaghetti' | 'v2_classes' | 'v3_dynamic' | 'v4_polymorphism' | 'v5_smart_pointers' | 'v6_patterns' | 'v7_ecs_final';
   chapterCode?: string;
   chapterTitle?: string;
+  isModal?: boolean;
+  onClose?: () => void;
 }
 
 interface Particle {
@@ -107,8 +109,26 @@ const checkPlayerInvaderCollision = (inv: Invader, pX: number): boolean => {
   return yOverlap && xOverlap;
 };
 
-export const GameEmulator: React.FC<GameEmulatorProps> = ({ version, chapterCode, chapterTitle }) => {
+export const GameEmulator: React.FC<GameEmulatorProps> = ({
+  version,
+  chapterCode,
+  chapterTitle,
+  isModal = false,
+  onClose,
+}) => {
   const [playerX, setPlayerX] = useState<number>(14);
+
+  // Escキーでモーダルを閉じる
+  useEffect(() => {
+    if (!onClose) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        onClose();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [onClose]);
   const [bullets, setBullets] = useState<Bullet[]>([]);
   const [invaders, setInvaders] = useState<Invader[]>([]);
   const [particles, setParticles] = useState<Particle[]>([]);
@@ -1351,10 +1371,21 @@ export const GameEmulator: React.FC<GameEmulatorProps> = ({ version, chapterCode
   const vInfo = getVersionBadge();
   const titleInfo = getTitleScreenInfo();
   const evolution = getChapterEvolution(chapterCode, version);
+  const isFirstChapter = Boolean(
+    evolution.isFirstChapter ||
+    chapterCode === 'L1' ||
+    chapterCode === 'C1' ||
+    version === 'v1_spaghetti' ||
+    evolution.previousChapter.includes('なし')
+  );
   const activeUfo = invaders.find((inv) => inv.type === 'ufo' && inv.alive);
 
-  return (
-    <div className="rounded-2xl border border-cyan-500/30 bg-slate-950 shadow-2xl p-2.5 sm:p-4 my-2 sm:my-3 relative overflow-hidden backdrop-blur-md">
+  const emulatorNode = (
+    <div className={`rounded-2xl border border-cyan-500/30 bg-slate-950 shadow-2xl p-2.5 sm:p-4 relative overflow-hidden backdrop-blur-md ${
+      isModal
+        ? 'w-full max-w-5xl max-h-[94vh] flex flex-col border-cyan-500/50 shadow-[0_0_60px_rgba(6,182,212,0.35)] overflow-y-auto'
+        : 'my-2 sm:my-3'
+    }`}>
       {/* 背景の淡いグリッド */}
       <div className="absolute inset-0 bg-[radial-gradient(#1e293b_1px,transparent_1px)] [background-size:16px_16px] opacity-30 pointer-events-none" />
 
@@ -1402,18 +1433,20 @@ export const GameEmulator: React.FC<GameEmulatorProps> = ({ version, chapterCode
             </button>
           </div>
 
-          <button
-            onClick={() => setShowEvolutionDiff((prev) => !prev)}
-            className={`flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-mono font-bold transition border active:scale-95 shadow-sm ${
-              showEvolutionDiff
-                ? 'bg-amber-500 text-slate-950 border-amber-400 shadow-amber-500/30'
-                : 'bg-slate-800 hover:bg-slate-700 text-amber-300 border-amber-500/30'
-            }`}
-            title="前の章（前世代）とのゲーム機能・C++設計の進化差分を表示"
-          >
-            <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-            <span>前章からの変化</span>
-          </button>
+          {!isFirstChapter && (
+            <button
+              onClick={() => setShowEvolutionDiff((prev) => !prev)}
+              className={`flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-mono font-bold transition border active:scale-95 shadow-sm ${
+                showEvolutionDiff
+                  ? 'bg-amber-500 text-slate-950 border-amber-400 shadow-amber-500/30'
+                  : 'bg-slate-800 hover:bg-slate-700 text-amber-300 border-amber-500/30'
+              }`}
+              title="前の章（前世代）とのゲーム機能・C++設計の進化差分を表示"
+            >
+              <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+              <span>前章からの変化</span>
+            </button>
+          )}
 
           <button
             onClick={() => setIsSandboxOpen((prev) => !prev)}
@@ -1448,6 +1481,17 @@ export const GameEmulator: React.FC<GameEmulatorProps> = ({ version, chapterCode
             <RotateCcw className="w-3.5 h-3.5" />
             <span>リセット</span>
           </button>
+
+          {onClose && (
+            <button
+              onClick={onClose}
+              className="flex items-center gap-1.5 px-3 py-1 rounded-lg bg-rose-950/80 hover:bg-rose-900 text-rose-300 hover:text-white text-xs font-mono font-bold transition border border-rose-500/50 active:scale-95 shadow-sm ml-1"
+              title="エミュレータを閉じる (Esc)"
+            >
+              <X className="w-3.5 h-3.5" />
+              <span>閉じる (Esc)</span>
+            </button>
+          )}
         </div>
       </div>
 
@@ -1607,25 +1651,27 @@ export const GameEmulator: React.FC<GameEmulatorProps> = ({ version, chapterCode
         </div>
       )}
 
-      {/* 🔄 前章からの進化クイックバー ＆ バージョンガイダンス */}
-      <div className="mb-2 px-3 py-1.5 rounded-lg bg-slate-900/80 border border-slate-800 text-xs text-slate-300 flex items-center justify-between gap-2 font-mono flex-wrap">
-        <div className="flex items-center gap-2 flex-1 min-w-0">
-          <span className="px-1.5 py-0.5 rounded bg-amber-950/80 border border-amber-500/40 text-amber-300 font-bold text-[10px] sm:text-[11px] flex-shrink-0 flex items-center gap-1">
-            <Sparkles className="w-3 h-3 text-amber-400" />
-            <span>前章（{evolution.previousChapter}）からの変化</span>
-          </span>
-          <span className="truncate text-slate-200 font-sans text-xs">{evolution.headline}</span>
+      {/* 🔄 前章からの進化クイックバー ＆ バージョンガイダンス（L1以外の章のみ表示） */}
+      {!isFirstChapter && (
+        <div className="mb-2 px-3 py-1.5 rounded-lg bg-slate-900/80 border border-slate-800 text-xs text-slate-300 flex items-center justify-between gap-2 font-mono flex-wrap">
+          <div className="flex items-center gap-2 flex-1 min-w-0">
+            <span className="px-1.5 py-0.5 rounded bg-amber-950/80 border border-amber-500/40 text-amber-300 font-bold text-[10px] sm:text-[11px] flex-shrink-0 flex items-center gap-1">
+              <Sparkles className="w-3 h-3 text-amber-400" />
+              <span>前章（{evolution.previousChapter}）からの変化</span>
+            </span>
+            <span className="truncate text-slate-200 font-sans text-xs">{evolution.headline}</span>
+          </div>
+          <button
+            onClick={() => setShowEvolutionDiff((prev) => !prev)}
+            className="text-[11px] text-cyan-400 hover:text-cyan-300 underline flex-shrink-0 font-bold ml-auto"
+          >
+            {showEvolutionDiff ? '差分を閉じる ▲' : '前章との違いを見る ▼'}
+          </button>
         </div>
-        <button
-          onClick={() => setShowEvolutionDiff((prev) => !prev)}
-          className="text-[11px] text-cyan-400 hover:text-cyan-300 underline flex-shrink-0 font-bold ml-auto"
-        >
-          {showEvolutionDiff ? '差分を閉じる ▲' : '前章との違いを見る ▼'}
-        </button>
-      </div>
+      )}
 
       {/* レトロCRT風コンソール画面 */}
-      <div className="relative rounded-xl border-2 border-slate-800 bg-[#040810] px-2 py-2 sm:px-4 sm:py-3 font-mono overflow-hidden shadow-2xl flex flex-col items-center select-none scanline">
+      <div className={`relative rounded-xl border-2 border-slate-800 bg-[#040810] px-2 py-2 sm:px-4 sm:py-3 font-mono overflow-hidden shadow-2xl flex flex-col items-center select-none scanline w-full ${isModal ? 'min-h-[460px] sm:min-h-[520px]' : 'min-h-[350px] sm:min-h-[390px]'}`}>
         {/* CRTのグローエフェクト */}
         <div className="absolute inset-0 bg-gradient-to-b from-cyan-500/[0.03] to-transparent pointer-events-none" />
 
@@ -1639,17 +1685,17 @@ export const GameEmulator: React.FC<GameEmulatorProps> = ({ version, chapterCode
 
         {/* 画面表示：GUIキャンバス または CUIテキスト（スマホ幅で切れないようスケーリング ＆ スクロール対応） */}
         {renderMode === 'gui' ? (
-          <div className="w-full flex justify-center items-center py-1">
+          <div className="w-full flex justify-center items-center py-1 flex-1">
             <canvas
               ref={canvasRef}
               width={600}
               height={300}
-              className="w-full max-w-[640px] aspect-[2/1] rounded-lg shadow-2xl block border border-slate-800/80 bg-[#030712]"
+              className={`w-full ${isModal ? 'max-w-4xl' : 'max-w-[640px]'} aspect-[2/1] rounded-lg shadow-2xl block border border-slate-800/80 bg-[#030712]`}
             />
           </div>
         ) : (
-          <div className="w-full max-w-full overflow-x-auto flex justify-center py-0.5">
-            <div className="text-[10px] min-[360px]:text-[11px] min-[400px]:text-xs sm:text-sm md:text-[15px] lg:text-[16px] leading-[1.15] font-bold tracking-wider sm:tracking-widest text-center whitespace-pre font-mono">
+          <div className="w-full max-w-full overflow-x-auto flex justify-center py-1 flex-1">
+            <div className={`${isModal ? 'text-xs sm:text-sm md:text-base lg:text-lg leading-[1.2]' : 'text-[10px] min-[360px]:text-[11px] min-[400px]:text-xs sm:text-sm md:text-[15px] lg:text-[16px] leading-[1.15]'} font-bold tracking-wider sm:tracking-widest text-center whitespace-pre font-mono`}>
               {grid.map((row, y) => (
                 <div key={y} className="flex justify-center">
                   {row.map((ch, x) => {
@@ -1786,41 +1832,68 @@ export const GameEmulator: React.FC<GameEmulatorProps> = ({ version, chapterCode
                 </div>
               )}
 
-              {/* 🔄 前章からのゲーム進化差分（Before / After 比較） */}
-              <div className="bg-slate-900/90 rounded-xl border-2 border-amber-500/40 p-2.5 sm:p-3 text-left space-y-2 font-mono text-[11px] sm:text-xs shadow-lg">
-                <div className="flex items-center justify-between gap-1 flex-wrap border-b border-slate-800 pb-1.5">
-                  <div className="text-amber-300 font-bold flex items-center gap-1.5 text-xs">
-                    <Sparkles className="w-3.5 h-3.5 text-amber-400 flex-shrink-0" />
-                    <span>前章（{evolution.previousChapter}）からの進化点:</span>
-                  </div>
-                  <span className="text-[10px] text-slate-400">
-                    C++設計 ＆ ゲーム挙動差分
-                  </span>
-                </div>
-
-                <div className="text-amber-100 font-sans font-bold text-xs sm:text-sm leading-snug">
-                  ✨ {evolution.headline}
-                </div>
-
-                <div className="space-y-1.5 pt-0.5">
-                  {evolution.diffItems.map((item, idx) => (
-                    <div key={idx} className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 text-[10px] sm:text-[11px] bg-slate-950/70 p-1.5 rounded-lg border border-slate-800/80">
-                      <div className="text-rose-300/90 flex items-start gap-1">
-                        <span className="text-rose-400 font-bold flex-shrink-0">【前章】</span>
-                        <span className="leading-tight">{item.before}</span>
+              {/* 🔄 前章からのゲーム進化差分（L2以降） または 初章ミッション案内（L1） */}
+              {!isFirstChapter ? (
+                <>
+                  <div className="bg-slate-900/90 rounded-xl border-2 border-amber-500/40 p-2.5 sm:p-3 text-left space-y-2 font-mono text-[11px] sm:text-xs shadow-lg">
+                    <div className="flex items-center justify-between gap-1 flex-wrap border-b border-slate-800 pb-1.5">
+                      <div className="text-amber-300 font-bold flex items-center gap-1.5 text-xs">
+                        <Sparkles className="w-3.5 h-3.5 text-amber-400 flex-shrink-0" />
+                        <span>前章（{evolution.previousChapter}）からの進化点:</span>
                       </div>
-                      <div className="text-emerald-300 flex items-start gap-1">
-                        <span className="text-emerald-400 font-bold flex-shrink-0">【本章】</span>
-                        <span className="leading-tight font-bold">{item.after}</span>
-                      </div>
+                      <span className="text-[10px] text-slate-400">
+                        C++設計 ＆ ゲーム挙動差分
+                      </span>
                     </div>
-                  ))}
-                </div>
-              </div>
 
-              <p className="text-[10px] sm:text-xs text-slate-400 font-mono italic leading-relaxed text-left px-1">
-                💡 <span className="text-cyan-300 font-bold">C++設計の狙い: </span>{evolution.cppArchitecturePoint}
-              </p>
+                    <div className="text-amber-100 font-sans font-bold text-xs sm:text-sm leading-snug">
+                      ✨ {evolution.headline}
+                    </div>
+
+                    <div className="space-y-1.5 pt-0.5">
+                      {evolution.diffItems.map((item, idx) => (
+                        <div key={idx} className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 text-[10px] sm:text-[11px] bg-slate-950/70 p-1.5 rounded-lg border border-slate-800/80">
+                          <div className="text-rose-300/90 flex items-start gap-1">
+                            <span className="text-rose-400 font-bold flex-shrink-0">【前章】</span>
+                            <span className="leading-tight">{item.before}</span>
+                          </div>
+                          <div className="text-emerald-300 flex items-start gap-1">
+                            <span className="text-emerald-400 font-bold flex-shrink-0">【本章】</span>
+                            <span className="leading-tight font-bold">{item.after}</span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  <p className="text-[10px] sm:text-xs text-slate-400 font-mono italic leading-relaxed text-left px-1">
+                    💡 <span className="text-cyan-300 font-bold">C++設計の狙い: </span>{evolution.cppArchitecturePoint}
+                  </p>
+                </>
+              ) : (
+                <div className="bg-slate-900/90 rounded-xl border border-cyan-500/40 p-2.5 sm:p-3 text-left space-y-2 font-mono text-xs shadow-lg">
+                  <div className="text-cyan-300 font-bold flex items-center gap-2 text-xs sm:text-sm border-b border-slate-800 pb-1">
+                    <Target className="w-3.5 h-3.5 text-cyan-400 flex-shrink-0" />
+                    <span>ミッション目標 ＆ 操作方法:</span>
+                  </div>
+                  <p className="text-slate-200 text-[11px] sm:text-xs leading-relaxed">
+                    迫りくるインベーダー編隊（10機）を迎撃し、地球防衛ラインを死守せよ！
+                  </p>
+                  <div className="grid grid-cols-2 gap-2 text-[10px] sm:text-[11px] pt-0.5">
+                    <div className="bg-slate-950/80 p-1.5 rounded-lg border border-slate-800 text-slate-300 flex items-center gap-1.5">
+                      <span className="text-cyan-400 font-bold px-1 py-0.5 rounded bg-cyan-950/80 border border-cyan-500/30">[←] [→]</span>
+                      <span>左右移動</span>
+                    </div>
+                    <div className="bg-slate-950/80 p-1.5 rounded-lg border border-slate-800 text-slate-300 flex items-center gap-1.5">
+                      <span className="text-cyan-400 font-bold px-1 py-0.5 rounded bg-cyan-950/80 border border-cyan-500/30">[SPACE]</span>
+                      <span>単発射撃</span>
+                    </div>
+                  </div>
+                  <p className="text-[10px] sm:text-[11px] text-slate-400 pt-0.5">
+                    💡 <span className="text-cyan-300 font-semibold">C++設計の狙い: </span>1ファイル・グローバル変数・単発弾による手続き型コードの限界を体感します。
+                  </p>
+                </div>
+              )}
 
               {/* スタートボタン */}
               <button
@@ -2066,4 +2139,19 @@ export const GameEmulator: React.FC<GameEmulatorProps> = ({ version, chapterCode
       </div>
     </div>
   );
+
+  if (isModal) {
+    return (
+      <div
+        className="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-2 sm:p-4 md:p-6 animate-fadeIn"
+        onClick={(e) => {
+          if (e.target === e.currentTarget && onClose) onClose();
+        }}
+      >
+        {emulatorNode}
+      </div>
+    );
+  }
+
+  return emulatorNode;
 };

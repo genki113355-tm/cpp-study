@@ -10,7 +10,7 @@ import { MemoryVisualizer } from './MemoryVisualizer';
 import { VariableInspector } from './VariableInspector';
 import { RichExplanation } from './RichExplanation';
 import { UmlDiagramViewer } from './UmlDiagramViewer';
-import { CheckCircle, AlertCircle, ArrowRight, ArrowLeft, Lightbulb, HelpCircle, GitCommit } from 'lucide-react';
+import { CheckCircle, AlertCircle, ArrowRight, ArrowLeft, Lightbulb, HelpCircle, GitCommit, Gamepad2, Terminal } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { AffiliatePromoBanner } from '../affiliate/AffiliatePromoBanner';
 import { ShareButtons } from '../common/ShareButtons';
@@ -34,6 +34,8 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
   const [selectedAnswers, setSelectedAnswers] = useState<Record<string, number>>({});
   const [showExplanations, setShowExplanations] = useState<Record<string, boolean>>({});
   const [codeHighlight, setCodeHighlight] = useState<CodeHighlightTarget | undefined>();
+  const [isGameModalOpen, setIsGameModalOpen] = useState<boolean>(false);
+  const [showInlineGame, setShowInlineGame] = useState<boolean>(false);
 
   // この章に含まれるすべての教材コードファイルを抽出
   const allCodeFiles = useMemo(() => {
@@ -199,36 +201,115 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
         </div>
       </div>
 
-      {/* ブラウザ内インベーダーゲームエミュレータ（ゲーム章のみ） */}
+      {/* 🚀 実機ゲームステーション（大画面ポップアップ起動 ＆ インライン切替） */}
       {chapter.gameVersion && chapter.gameVersion !== 'none' && (() => {
         const evolution = getChapterEvolution(code, chapter.gameVersion);
+        const isFirstChapter = Boolean(
+          evolution.isFirstChapter ||
+          code === 'L1' ||
+          code === 'C1' ||
+          chapter.gameVersion === 'v1_spaghetti' ||
+          evolution.previousChapter.includes('なし')
+        );
+
         return (
-          <section className="space-y-2">
-            <div className="flex items-center justify-between flex-wrap gap-2">
-              <div>
-                <h2 className="text-xl sm:text-2xl font-bold text-white flex items-center gap-2 font-mono">
-                  <span className="text-cyan-400">#</span>
-                  <span>実機エミュレータ：{code} {chapter.title}</span>
-                </h2>
-                <div className="mt-1 flex items-center gap-2 flex-wrap text-xs sm:text-sm font-mono">
-                  <span className="px-2 py-0.5 rounded bg-amber-950/80 border border-amber-500/40 text-amber-300 font-bold flex items-center gap-1">
-                    <span>🔄 前の章からの進化点</span>
-                  </span>
-                  <span className="text-slate-300 font-medium">
-                    {evolution.headline}
-                  </span>
+          <section className="space-y-3">
+            <div className="rounded-2xl border-2 border-cyan-500/40 bg-gradient-to-br from-slate-900 via-[#070e1b] to-slate-950 p-4 sm:p-6 shadow-2xl relative overflow-hidden">
+              {/* 背景の淡いグリッド ＆ ネオングロー */}
+              <div className="absolute inset-0 bg-[radial-gradient(#06b6d4_1px,transparent_1px)] [background-size:24px_24px] opacity-15 pointer-events-none" />
+              <div className="absolute top-0 right-0 w-80 h-80 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none" />
+
+              <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-5">
+                <div className="space-y-2.5 max-w-2xl">
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <span className="px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-cyan-950/90 text-cyan-300 border border-cyan-500/40 flex items-center gap-1.5">
+                      <Terminal className="w-3.5 h-3.5 text-cyan-400" />
+                      <span>{code} 収録実機ゲーム</span>
+                    </span>
+                    <span className="text-xs text-slate-400 font-mono">
+                      C++プログラム実行環境
+                    </span>
+                  </div>
+
+                  <h3 className="text-lg sm:text-2xl font-black text-white font-mono flex items-center gap-2">
+                    <span className="text-cyan-400">👾</span>
+                    <span>SPACE INVADERS : {code} {chapter.title}</span>
+                  </h3>
+
+                  {/* L1以外の章のみ「前章からの進化点」を表示 */}
+                  {!isFirstChapter ? (
+                    <div className="flex items-start gap-2 text-xs sm:text-sm font-mono bg-slate-900/90 p-2.5 rounded-xl border border-amber-500/30 text-slate-300">
+                      <span className="px-2 py-0.5 rounded bg-amber-950 text-amber-300 font-bold border border-amber-500/40 flex-shrink-0 text-xs">
+                        🔄 前章からの進化
+                      </span>
+                      <span className="leading-snug text-amber-100 font-medium pt-0.5">
+                        {evolution.headline}
+                      </span>
+                    </div>
+                  ) : (
+                    <div className="text-xs sm:text-sm text-slate-300 font-mono bg-slate-900/80 p-2.5 rounded-xl border border-cyan-500/30">
+                      🚀 <span className="text-cyan-300 font-bold">原点のインベーダー：</span>1ファイル・グローバル変数・単発射撃から始まるC++オブジェクト指向への旅！
+                    </div>
+                  )}
+
+                  <div className="flex items-center gap-3 text-xs text-slate-400 font-mono pt-0.5 flex-wrap">
+                    <span className="flex items-center gap-1 text-emerald-400">
+                      <span>🎨 2Dグラフィック</span>
+                    </span>
+                    <span>•</span>
+                    <span className="flex items-center gap-1 text-cyan-400">
+                      <span>📟 CUI文字切替</span>
+                    </span>
+                    <span>•</span>
+                    <span className="text-slate-300">キーボード/タッチ対応</span>
+                  </div>
+                </div>
+
+                {/* 起動アクションボタン */}
+                <div className="flex flex-col sm:flex-row md:flex-col gap-2.5 flex-shrink-0 justify-center">
+                  <button
+                    onClick={() => setIsGameModalOpen(true)}
+                    className="px-6 py-3.5 rounded-xl bg-gradient-to-r from-cyan-500 via-sky-500 to-emerald-500 hover:from-cyan-400 hover:to-emerald-400 text-slate-950 font-mono font-black text-sm sm:text-base transition shadow-xl shadow-cyan-500/30 active:scale-95 flex items-center justify-center gap-2.5 group cursor-pointer"
+                  >
+                    <Gamepad2 className="w-5 h-5 group-hover:rotate-12 transition-transform" />
+                    <span>ゲームを起動する ▶</span>
+                    <span className="text-[11px] px-2 py-0.5 rounded bg-slate-950/20 text-slate-950 font-bold">大画面</span>
+                  </button>
+
+                  <button
+                    onClick={() => setShowInlineGame((prev) => !prev)}
+                    className="px-4 py-2 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-slate-300 hover:text-white text-xs font-mono transition border border-slate-700 flex items-center justify-center gap-1.5 cursor-pointer"
+                  >
+                    <span>{showInlineGame ? '▲ ページ内表示を閉じる' : '▼ ページ内にインライン表示'}</span>
+                  </button>
                 </div>
               </div>
-              <span className="text-xs sm:text-sm text-slate-400 font-mono">
-                キーボードまたはボタンで操作可能
-              </span>
             </div>
-            <GameEmulator
-              key={chapter.slug}
-              version={chapter.gameVersion}
-              chapterCode={code}
-              chapterTitle={chapter.title}
-            />
+
+            {/* ページ内インライン展開（ユーザーが希望した場合のみ） */}
+            {showInlineGame && (
+              <div className="pt-2 animate-fadeIn">
+                <GameEmulator
+                  key={`${chapter.slug}-inline`}
+                  version={chapter.gameVersion}
+                  chapterCode={code}
+                  chapterTitle={chapter.title}
+                  isModal={false}
+                />
+              </div>
+            )}
+
+            {/* 🎮 大画面ポップアップモーダル */}
+            {isGameModalOpen && (
+              <GameEmulator
+                key={`${chapter.slug}-modal`}
+                version={chapter.gameVersion}
+                chapterCode={code}
+                chapterTitle={chapter.title}
+                isModal={true}
+                onClose={() => setIsGameModalOpen(false)}
+              />
+            )}
           </section>
         );
       })()}
