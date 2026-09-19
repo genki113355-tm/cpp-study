@@ -65,7 +65,7 @@ C++の型は「ハードウェアのメモリ領域を何バイト確保し、�
 | \`long long\` | **C++11〜** | 8バイト (64bit以上) | 巨大整数（約 -922京〜+922京） | \`long long bigId = 9999999999LL;\` |
 | \`unsigned long long\` | **C++11〜** | 8バイト (64bit以上) | 0 〜 約1844京 | \`unsigned long long maxId = ~0ULL;\` |
 
-#### ② 固定幅整数型・実務標準型（\`<cstdint>\` / \`<cstddef>\`） 【C++11〜 実務標準】
+#### ② 固定幅整数型・実務標準型（<cstdint> / <cstddef>） 【C++11〜 実務標準】
 環境差（Windows vs Linux等）によるバグを防ぐため、ゲーム・通信開発では以下の固定幅型が最優先で使われます。
 
 | 型名 | 対応規格 | サイズ | 表現できる範囲・用途 | 例 |
@@ -576,7 +576,7 @@ public:
         }
       ],
       explanationText: `
-### 1. \`std::vector\` (動的配列) 【C++98〜】 & \`emplace_back\` 【C++11〜】
+### 1. std::vector（動的配列） 【C++98〜】 & emplace_back 【C++11〜】
 
 \`\`\`cpp
 #include <vector>
@@ -593,7 +593,7 @@ v.clear();                        // 全要素消去
 
 ---
 
-### 2. \`std::string\` 【C++98〜】 vs \`std::string_view\` 【C++17〜】
+### 2. std::string 【C++98〜】 vs std::string_view 【C++17〜】
 
 \`\`\`cpp
 #include <string>
@@ -621,7 +621,7 @@ int main() {
 
 ---
 
-### 3. \`std::unordered_map\` 【C++11〜】 vs \`std::map\` 【C++98〜】
+### 3. std::unordered_map 【C++11〜】 vs std::map 【C++98〜】
 
 | コンテナ | 内部構造 | 検索計算量 | 特徴 |
 | :--- | :--- | :--- | :--- |
@@ -644,7 +644,7 @@ if (auto it = itemPrices.find("Potion"); it != itemPrices.end()) {
 
 ---
 
-### 4. \`std::unique_ptr\` 【C++11〜】 & \`std::make_unique\` 【C++14〜】
+### 4. std::unique_ptr 【C++11〜】 & std::make_unique 【C++14〜】
 
 現代C++では、生の \`new\` / \`delete\` を業務コードに書くことは完全に禁止されています。
 

@@ -195,7 +195,7 @@ export const RichExplanation: React.FC<RichExplanationProps> = ({ content }) => 
           className="text-base sm:text-lg font-bold text-slate-100 font-mono pt-4 pb-1 flex items-center gap-2.5 text-cyan-200"
         >
           <span className="w-1.5 h-4 bg-cyan-400/80 rounded-sm flex-shrink-0" />
-          <span>{renderFormattedText(headingText)}</span>
+          <span>{renderFormattedText(headingText, true)}</span>
         </h5>
       );
       continue;
@@ -210,7 +210,7 @@ export const RichExplanation: React.FC<RichExplanationProps> = ({ content }) => 
           className="text-lg sm:text-xl md:text-2xl font-bold text-cyan-300 font-mono pt-5 pb-2 border-b border-slate-800/80 flex items-center gap-3"
         >
           <span className="w-2.5 h-5 bg-cyan-400 rounded-sm flex-shrink-0" />
-          <span>{renderFormattedText(headingText)}</span>
+          <span>{renderFormattedText(headingText, true)}</span>
         </h4>
       );
       continue;
@@ -284,7 +284,7 @@ export const RichExplanation: React.FC<RichExplanationProps> = ({ content }) => 
 };
 
 // **太字**、`インラインコード`、*イタリック*、および <br> 改行タグのレンダリングヘルパー
-function renderFormattedText(text: string): React.ReactNode {
+function renderFormattedText(text: string, isHeading: boolean = false): React.ReactNode {
   // 1. <br> または <br/> または <br /> で分割
   const brSegments = text.split(/<br\s*\/?>/gi);
 
@@ -303,7 +303,11 @@ function renderFormattedText(text: string): React.ReactNode {
         return (
           <code
             key={i}
-            className="px-2 py-0.5 rounded bg-slate-950 text-cyan-300 font-mono text-xs sm:text-sm border border-slate-800 mx-0.5"
+            className={
+              isHeading
+                ? "px-2 py-0.5 rounded bg-slate-950/80 text-cyan-200 font-mono text-[0.9em] border border-cyan-800/60 mx-1 align-baseline inline-block font-bold shadow-sm"
+                : "px-1.5 py-0.5 rounded bg-slate-950 text-cyan-300 font-mono text-[0.88em] border border-slate-800 mx-0.5 align-baseline inline-block font-medium"
+            }
           >
             {part.slice(1, -1)}
           </code>
