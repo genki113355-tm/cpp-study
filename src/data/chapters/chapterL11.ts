@@ -11,7 +11,7 @@ export const chapterL11: Chapter = {
   gameVersion: 'v2_classes',
   description: 'ゲーム開発の現場、とりわけコンシューマ機やリアルタイムアクションの現場には、古くから伝わる絶対の掟があります。それは「ゲームプレイのメインループ中に生 new や生 delete を絶対に呼んではならない」という禁止令です。OSの汎用メモリアロケータ（malloc/new）は、いつどこで空きメモリを探すか予測できず、突発的なフレーム落ち（スパイク）を引き起こします。さらに深刻なのが「メモリの断片化（フラグメンテーション）」です。メモリの空き総量は十分にあるのに、連続したメモリが確保できずゲームが強制クラッシュする恐怖のバグです。本章では、弾幕やパーティクルなどの同種オブジェクトを事前に一括確保し、空き領域自体をリンクリストとして再利用する伝説の技法【固定長メモリプール（Fixed-Size Memory Pool）】を徹底解剖。さらにC++の深淵である【プレースメントnew】と【明示的デストラクタ呼び出し】をマスターし、O(1)定数時間で爆速にメモリを切り売りするプロクオリティの独自アロケータを構築します。',
   prevChapterSlug: 'chapter-10-static-polymorphism-crtp',
-  nextChapterSlug: undefined,
+  nextChapterSlug: 'chapter-12-game-engine-architecture',
   sections: [
     {
       id: 'sec-l11-fragmentation-hell',

@@ -604,6 +604,123 @@ int main() {
 }
 `,
   },
+
+  // L12: レガシーゲームエンジン統合アーキテクチャ
+  'chapter-12-game-engine-architecture': {
+    id: 'challenge-l12',
+    chapterSlug: 'chapter-12-game-engine-architecture',
+    chapterBadge: 'L12',
+    title: '演習L12：固定デルタタイムとアキュムレータループを実装せよ！',
+    missionObjective: 'フレームごとの経過時間（dt）をアキュムレータに蓄積し、FIXED_DT（1/60秒 ≒ 0.0166秒）刻みで物理更新 advancePhysicsStep() を実行する決定論的ゲームループを実装してください。',
+    mentorAdvice: '商用エンジンの心臓部じゃ！accumulator >= FIXED_DT の間 while ループでシミュレーションを進め、accumulator から FIXED_DT を引くのじゃ！',
+    initialCode: `#include <iostream>
+#include <algorithm>
+
+class GameEngineLoop {
+private:
+    static constexpr double FIXED_DT = 1.0 / 60.0; // 0.016666...
+    double accumulator_ = 0.0;
+    int physicsTickCount_ = 0;
+
+public:
+    void advancePhysicsStep() {
+        physicsTickCount_++;
+        std::cout << "  [Physics] 固定ステップ #" << physicsTickCount_ << " 実行 (dt=" << FIXED_DT << ")" << std::endl;
+    }
+
+    // TODO: 1フレームの経過時間 frameTime を受け取り、
+    // accumulator_ に蓄積して、FIXED_DT 刻みで advancePhysicsStep() を実行してください
+    void update(double frameTime) {
+        // スパイラル・オブ・デス防止：上限 0.25秒 でクランプ
+        double clampedTime = std::min(frameTime, 0.25);
+
+        // ここにアキュムレータへの蓄積と、while ループでの物理ステップ呼び出しを実装
+        // accumulator_ += clampedTime;
+        // while (accumulator_ >= FIXED_DT) {
+        //     advancePhysicsStep();
+        //     accumulator_ -= FIXED_DT;
+        // }
+    }
+
+    int getTickCount() const { return physicsTickCount_; }
+    double getRemainingAccumulator() const { return accumulator_; }
+};
+
+int main() {
+    std::cout << "--- L12 固定デルタタイム ゲームループ テスト ---" << std::endl;
+    GameEngineLoop engine;
+
+    // 1. 通常の 60FPS フレーム (約 0.0167秒) -> 1回物理ステップが走る
+    std::cout << "Frame 1 (0.0167秒経過):" << std::endl;
+    engine.update(0.0167);
+
+    // 2. 激しい処理落ちフレーム (0.0500秒経過: 約3フレーム分) -> 3回物理ステップが走る
+    std::cout << "Frame 2 (0.0500秒経過 - 処理落ち発生):" << std::endl;
+    engine.update(0.0500);
+
+    std::cout << "Total Physics Ticks: " << engine.getTickCount() << std::endl;
+
+    // 0.0167 + 0.0500 = 0.0667秒 / (1/60 ≒ 0.016666) -> 計4回のTicksが期待される
+    if (engine.getTickCount() == 4) {
+        std::cout << "[CLEAR] L12_MISSION_SUCCESS" << std::endl;
+    } else {
+        std::cout << "[FAIL] 物理Tick回数が期待値(4)と一致しません (実際: " << engine.getTickCount() << ")" << std::endl;
+    }
+
+    return 0;
+}
+`,
+    expectedOutputPattern: '[CLEAR] L12_MISSION_SUCCESS',
+    successMessage: '🎉 完璧です！アキュムレータ方式によって、処理落ちが発生しても弾抜けを起こさず決定論的に追いつくゲームループを構築できました！',
+    hint: 'accumulator_ += clampedTime; のあと、while (accumulator_ >= FIXED_DT) { advancePhysicsStep(); accumulator_ -= FIXED_DT; } と記述します。',
+    solutionCode: `#include <iostream>
+#include <algorithm>
+
+class GameEngineLoop {
+private:
+    static constexpr double FIXED_DT = 1.0 / 60.0;
+    double accumulator_ = 0.0;
+    int physicsTickCount_ = 0;
+
+public:
+    void advancePhysicsStep() {
+        physicsTickCount_++;
+        std::cout << "  [Physics] 固定ステップ #" << physicsTickCount_ << " 実行 (dt=" << FIXED_DT << ")" << std::endl;
+    }
+
+    void update(double frameTime) {
+        double clampedTime = std::min(frameTime, 0.25);
+        accumulator_ += clampedTime;
+        while (accumulator_ >= FIXED_DT) {
+            advancePhysicsStep();
+            accumulator_ -= FIXED_DT;
+        }
+    }
+
+    int getTickCount() const { return physicsTickCount_; }
+    double getRemainingAccumulator() const { return accumulator_; }
+};
+
+int main() {
+    std::cout << "--- L12 固定デルタタイム ゲームループ テスト ---" << std::endl;
+    GameEngineLoop engine;
+
+    std::cout << "Frame 1 (0.0167秒経過):" << std::endl;
+    engine.update(0.0167);
+
+    std::cout << "Frame 2 (0.0500秒経過 - 処理落ち発生):" << std::endl;
+    engine.update(0.0500);
+
+    std::cout << "Total Physics Ticks: " << engine.getTickCount() << std::endl;
+
+    if (engine.getTickCount() == 4) {
+        std::cout << "[CLEAR] L12_MISSION_SUCCESS" << std::endl;
+    }
+
+    return 0;
+}
+`,
+  },
 };
 
 /** 自由実験室（Online Playground）用のプリセットテンプレート一覧 */

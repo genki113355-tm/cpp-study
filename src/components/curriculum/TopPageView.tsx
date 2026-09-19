@@ -151,6 +151,20 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
       gameEvolution: '超高密度な10万発の弾幕ストームが、関数呼び出しオーバーヘッドゼロで滑らかに乱舞！',
       techKeywords: ['CRTP', '静的ポリモーフィズム', 'インライン展開 (Inlining)', '静的Mix-in', 'ゼロオーバーヘッド'],
     },
+    15: {
+      architecturalRole: '独自メモリアロケータ＆固定長プール・フラグメンテーション撲滅',
+      beforePain: 'ゲームプレイ中に生 new/delete を連打してメモリ断片化（フラグメンテーション）が発生し突発的なフレーム落ちや強制終了。',
+      afterSkill: '固定長メモリプール（Fixed-Size Memory Pool）のフリーリスト構造。プレースメントnewと明示的デストラクタ呼び出しによるO(1)爆速メモリ管理。',
+      gameEvolution: '毎フレーム無数に生成される弾幕・パーティクルが、ヒープ確保ゼロ＆O(1)定数時間の独自プールで超安定動作！',
+      techKeywords: ['独自メモリプール', 'フラグメンテーション撲滅', 'プレースメントnew', 'フリーリスト', 'O(1)定数時間'],
+    },
+    16: {
+      architecturalRole: 'エンジン統合＆固定デルタタイムオーケストレーション',
+      beforePain: '各マネージャーの初期化/終了順が狂ってクラッシュ。処理落ちした瞬間に弾が壁をすり抜け、240Hzモニタではゲームが異常加速する。',
+      afterSkill: '固定デルタタイム（Fixed Timestep）とアキュムレータ方式、IEngineSubsystemによる逆順シャットダウン、ヘッドレス設計とDI。',
+      gameEvolution: 'どんなフレームレートでも完全決定論的に60FPS挙動！レンダラ・物理・サウンドが整然と協調動作する本格エンジン化。',
+      techKeywords: ['固定デルタタイム', 'アキュムレータ', 'IEngineSubsystem', 'ヘッドレス設計', '逆順シャットダウン'],
+    },
     201: {
       architecturalRole: '手続き型データフロー＆状態変数ライフサイクルの解読',
       beforePain: '何百行もある手続き型コードで、変数がどこで宣言され、ループ内でどう書き換わっているか見失う。',
@@ -1121,7 +1135,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
           <div className="rounded-2xl border-2 border-amber-500/30 bg-gradient-to-b from-amber-950/20 via-slate-900/90 to-slate-950 p-6 sm:p-8 space-y-5 shadow-xl relative overflow-hidden">
             <div className="flex items-center justify-between">
               <span className="text-xs font-mono font-bold px-3 py-1 rounded-full bg-amber-950 text-amber-300 border border-amber-500/40 flex items-center gap-1.5">
-                <span>🏛️ レガシーC++コース（全6章）</span>
+                <span>🏛️ レガシーC++コース（全12章）</span>
               </span>
               <span className="text-xs font-mono text-slate-400">C言語 〜 C++03 基準</span>
             </div>
@@ -1137,7 +1151,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
 
             {/* 学べる章一覧 */}
             <div className="space-y-2 pt-2 border-t border-slate-800">
-              <span className="text-xs font-mono font-bold text-amber-300 block">カリキュラム構成 (L1〜L7) :</span>
+              <span className="text-xs font-mono font-bold text-amber-300 block">カリキュラム構成 (L1〜L12) :</span>
               <ul className="text-xs sm:text-sm text-slate-300 space-y-1.5 font-mono">
                 <li className="flex items-center gap-2">
                   <span className="text-amber-400 font-bold">L1:</span> 構造化設計の限界（巨大スパゲティコードの解剖）
@@ -1159,6 +1173,21 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
                 </li>
                 <li className="flex items-center gap-2">
                   <span className="text-amber-400 font-bold">L7:</span> ポインタ演算と手動メモリアライメント（バイナリ通信・セーブデータ）
+                </li>
+                <li className="flex items-center gap-2">
+                  <span className="text-amber-400 font-bold">L8:</span> 関数ポインタとコールバック設計（Delegateパターン）
+                </li>
+                <li className="flex items-center gap-2">
+                  <span className="text-amber-400 font-bold">L9:</span> 多重継承の闇と仮想基底クラス（菱形継承とthis調整）
+                </li>
+                <li className="flex items-center gap-2">
+                  <span className="text-amber-400 font-bold">L10:</span> 静的ポリモーフィズム入門（CRTPとゼロコスト抽象化）
+                </li>
+                <li className="flex items-center gap-2">
+                  <span className="text-amber-400 font-bold">L11:</span> 独自メモリアロケータと固定長プール管理（フラグメンテーション撲滅）
+                </li>
+                <li className="flex items-center gap-2">
+                  <span className="text-amber-400 font-bold">L12:</span> レガシーゲームエンジン統合アーキテクチャ（固定デルタタイムとサブシステム）
                 </li>
               </ul>
             </div>

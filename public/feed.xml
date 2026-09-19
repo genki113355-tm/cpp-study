@@ -5,7 +5,7 @@
     <link>https://shirokuma-cpp.jp/</link>
     <description><![CDATA[1本のインベーダーゲームを10段階でリファクタリングしながら学ぶ！レガシー生ポインタからモダンC++17、ECS設計、TDD、UML設計書、C++基本文法総覧まで完全網羅したオブジェクト指向実践学習メディア。]]></description>
     <language>ja</language>
-    <lastBuildDate>Sat, 19 Sep 2026 00:33:57 GMT</lastBuildDate>
+    <lastBuildDate>Sat, 19 Sep 2026 00:43:29 GMT</lastBuildDate>
     <atom:link href="https://shirokuma-cpp.jp/feed.xml" rel="self" type="application/rss+xml"/>
     <item>
       <title><![CDATA[レガシー第1章：1ファイルで作るスパゲティコード（ビフォー：意図の不在）]]></title>
@@ -13,7 +13,7 @@
       <guid isPermaLink="true">https://shirokuma-cpp.jp/chapter-1-spaghetti-code</guid>
       <description><![CDATA[C言語の手続き型設計がなぜ大規模開発で破綻するのか？ - Windowsコンソール上で文字（自機 _A_、敵 V、弾 |）を使って描画する最小限のインベーダーゲーム。C言語で関数設計を書いてきた人が「とりあえず動かす」ために書いてしまいがちな、意図の不在によるスパゲティコードを徹底的に解剖します。]]></description>
       <category><![CDATA[レガシーC++ C1：1ファイル・構造化設計の限界]]></category>
-      <pubDate>Sat, 19 Sep 2026 00:33:57 GMT</pubDate>
+      <pubDate>Sat, 19 Sep 2026 00:43:29 GMT</pubDate>
     </item>
     <item>
       <title><![CDATA[レガシー第2章：クラス化とファイルの分割（アフター：カプセル化の意図）]]></title>
@@ -21,7 +21,7 @@
       <guid isPermaLink="true">https://shirokuma-cpp.jp/chapter-2-classes-and-files</guid>
       <description><![CDATA[データと振る舞いを束ね、責務境界を物理ファイルで切り分ける - グローバル変数を全廃！Player（自機）、Invader（敵）、Bullet（弾）をそれぞれヘッダ（.h）と実装（.cpp）に分離。C言語の「構造体ポインタを関数に渡す設計」とC++の「クラス」の決定的な違いと、カプセル化の真の意図を解き明かします。]]></description>
       <category><![CDATA[レガシーC++ C2：カプセル化とファイル分割]]></category>
-      <pubDate>Sat, 19 Sep 2026 00:33:57 GMT</pubDate>
+      <pubDate>Sat, 19 Sep 2026 00:43:29 GMT</pubDate>
     </item>
     <item>
       <title><![CDATA[レガシー第3章：オブジェクトの動的生成と寿命管理（豪華さアップ＆メモリの意図）]]></title>
@@ -29,7 +29,7 @@
       <guid isPermaLink="true">https://shirokuma-cpp.jp/chapter-3-dynamic-lifecycle</guid>
       <description><![CDATA[可変個数のオブジェクトを安全に扱う！std::vector と RAII の基本 - 固定長配列を卒業し、標準コンテナ std::vector を導入！敵に弾が当たると、大量の火花（Particleオブジェクト）が動的に生み出され、寿命を迎えて自動消滅する豪華なエフェクトを実装。メモリ（スタック/ヒープ）におけるオブジェクトの誕生と消滅のサイクルを完全可視化します。]]></description>
       <category><![CDATA[レガシーC++ C3：動的配列と手動寿命管理]]></category>
-      <pubDate>Sat, 19 Sep 2026 00:33:57 GMT</pubDate>
+      <pubDate>Sat, 19 Sep 2026 00:43:29 GMT</pubDate>
     </item>
     <item>
       <title><![CDATA[レガシー第4章：継承とポリモーフィズム（敵のバリエーションと多態性）]]></title>
@@ -37,7 +37,7 @@
       <guid isPermaLink="true">https://shirokuma-cpp.jp/chapter-4-inheritance-and-polymorphism</guid>
       <description><![CDATA[switch文の分岐地獄を打破する、オブジェクト指向最大の武器 - 通常インベーダーに加え、2回被弾が必要な装甲シールド敵（S）や、上空を高速横切るボーナスUFO（U）が登場！C言語の「巨大なswitch-case」による構造化設計の限界と破綻を暴き、C++の抽象基底クラス・純粋仮想関数・仮想関数テーブル（vtable）の驚異的な拡張性を徹底解説します。]]></description>
       <category><![CDATA[レガシーC++ C4：継承とポリモーフィズム]]></category>
-      <pubDate>Sat, 19 Sep 2026 00:33:57 GMT</pubDate>
+      <pubDate>Sat, 19 Sep 2026 00:43:29 GMT</pubDate>
     </item>
     <item>
       <title><![CDATA[レガシー第5章：クラシック・ゲームデザインパターン（State & Observer）]]></title>
@@ -45,7 +45,7 @@
       <guid isPermaLink="true">https://shirokuma-cpp.jp/chapter-6-design-patterns</guid>
       <description><![CDATA[肥大化するswitch文の撲滅と、疎結合なイベント通知アーキテクチャ - ゲームが本格化すると、タイトル画面・プレイ中・ポーズ・ゲームオーバーといった「シーン遷移」や、実績解除・スコア集計・音効といった「イベント通知」が絡み合い、コードは巨大な switch 文と相互依存スパゲティに逆戻りします。本章では、GoFデザインパターンの精髄である「State パターン」と「Observer パターン」を実践し、真に拡張性の高いゲームアーキテクチャを構築します。]]></description>
       <category><![CDATA[レガシーC++ C5：ゲームデザインパターン]]></category>
-      <pubDate>Sat, 19 Sep 2026 00:33:57 GMT</pubDate>
+      <pubDate>Sat, 19 Sep 2026 00:43:29 GMT</pubDate>
     </item>
     <item>
       <title><![CDATA[レガシー第6章：演算子オーバーロードと値オブジェクト]]></title>
@@ -53,7 +53,7 @@
       <guid isPermaLink="true">https://shirokuma-cpp.jp/chapter-6-operator-overload-vector</guid>
       <description><![CDATA[数式通りに弾道や位置を記述！C++における数学クラスと演算子の流儀 - C言語の構造体では、座標や速度の加算に `Vec2_Add(&pos, &vel, &out);` のような関数呼び出しを多用し、コードのネストや引数順序のバグに悩まされていました。C++の強力な機能「演算子オーバーロード（operator+, operator*, operator+=）」を活用することで、数学の公式通りに物理演算を直感的に記述する手法を習得します。さらに、予期せぬ暗黙の型変換を防ぐ explicit キーワード、friend 関数によるストリーム出力（std::cout << v）、値オブジェクト設計の作法をマスターします。]]></description>
       <category><![CDATA[レガシーC++ L6：演算子とVec2D]]></category>
-      <pubDate>Sat, 19 Sep 2026 00:33:57 GMT</pubDate>
+      <pubDate>Sat, 19 Sep 2026 00:43:29 GMT</pubDate>
     </item>
     <item>
       <title><![CDATA[レガシー第7章：ポインタ演算と手動メモリアライメントの深淵]]></title>
@@ -61,7 +61,7 @@
       <guid isPermaLink="true">https://shirokuma-cpp.jp/chapter-7-pointer-alignment-endian</guid>
       <description><![CDATA[ハードウェア境界・エンディアン変換・バイトパック構造体によるバイナリ通信とセーブデータ - ゲーム開発の現場では、セーブデータの保存やネットワーク対戦のパケット送信で「バイナリデータの読み書き」が必須となります。しかし、C言語流に構造体をそのまま `fwrite(&player, sizeof(player), 1, fp);` でダンプすると、環境によってデータが壊れる「構造体パディング（Padding）」「境界整列（Alignment）」「エンディアン（Endianness）」の罠に直面します。CPUがメモリをフェッチする物理的仕組み、ポインタ演算の正しい型キャスト、そして移植性の高い安全なバイナリシリアライザの設計手法を徹底解剖します。]]></description>
       <category><![CDATA[レガシーC++ L7：ポインタ・アライメント・バイナリ]]></category>
-      <pubDate>Sat, 19 Sep 2026 00:33:57 GMT</pubDate>
+      <pubDate>Sat, 19 Sep 2026 00:43:29 GMT</pubDate>
     </item>
     <item>
       <title><![CDATA[レガシー第8章：関数ポインタとC++メンバ関数ポインタの怪]]></title>
@@ -69,7 +69,7 @@
       <guid isPermaLink="true">https://shirokuma-cpp.jp/chapter-8-function-pointers-callbacks</guid>
       <description><![CDATA[C言語スタイルのvoid*コールバックから型安全なメンバ関数ポインタ・委譲・イベントリスナー設計へ - ゲーム開発において「ボタンをクリックしたら技を出す」「敵を倒したらスコアを加算する」「タイマーが鳴ったら敵を湧かせる」といったイベント通知は設計の要です。C言語では `void (*callback)(void* userData)` によるコールバックが定番でしたが、型安全性の喪失とキャストミスによる即死クラッシュの温床でした。さらにC++では、クラスのメンバ関数は通常の関数ポインタとは全く異なる「多重継承や仮想関数に対応するための複雑な内部構造（最大16〜24バイト）」を持っています。本章では、メンバ関数ポインタの物理メモリ構造を解明し、モダンC++（C++11のラムダやstd::function）が登場する以前に現場のエンジニアが血と汗で築き上げた「型安全な委譲（Delegate）設計」をマスターします。]]></description>
       <category><![CDATA[レガシーC++ L8：関数ポインタ・コールバック]]></category>
-      <pubDate>Sat, 19 Sep 2026 00:33:57 GMT</pubDate>
+      <pubDate>Sat, 19 Sep 2026 00:43:29 GMT</pubDate>
     </item>
     <item>
       <title><![CDATA[レガシー第9章：多重継承の闇と仮想基底クラス（菱形継承）]]></title>
@@ -77,7 +77,7 @@
       <guid isPermaLink="true">https://shirokuma-cpp.jp/chapter-9-multiple-inheritance-diamond</guid>
       <description><![CDATA[メモリレイアウトの解剖、thisポインタ調整オフセット、そして仮想基底クラス（virtual inheritance）の代償 - ゲーム開発が大規模化すると、「空を飛べる敵（FlyingEnemy）」と「弾を撃てる敵（ShootingEnemy）」の両方の能力を持った「空飛ぶ砲台ボス（Boss）」を作りたくなる瞬間が必ず訪れます。オブジェクト指向初心者は安易に `class Boss : public FlyingEnemy, public ShootingEnemy` という多重継承（Multiple Inheritance）に手を染めますが、待っているのは共通基底クラスが2重実体化してコンパイラが悲鳴を上げる「菱形継承の死（Diamond of Death）」です。多重継承時の物理メモリ配置、キャストでポインタのアドレス値が勝手にズレる「thisポインタ調整オフセット」、仮想基底クラス（virtual inheritance）の隠れたオーバーヘッドを徹底解剖し、なぜ現代のゲームエンジンが多重継承を原則禁止して「継承より合成（Composition）」を選んだのか、その必然性を解き明かします。]]></description>
       <category><![CDATA[レガシーC++ L9：多重継承・菱形継承]]></category>
-      <pubDate>Sat, 19 Sep 2026 00:33:57 GMT</pubDate>
+      <pubDate>Sat, 19 Sep 2026 00:43:29 GMT</pubDate>
     </item>
     <item>
       <title><![CDATA[レガシー第10章：静的ポリモーフィズム入門（CRTPとクラシックTemplate）]]></title>
@@ -85,7 +85,7 @@
       <guid isPermaLink="true">https://shirokuma-cpp.jp/chapter-10-static-polymorphism-crtp</guid>
       <description><![CDATA[仮想関数テーブル（vtable）のオーバーヘッドをゼロにする！コンパイル時ポリモーフィズムと奇妙に再帰したテンプレートパターン - オブジェクト指向の代名詞である仮想関数（virtual）による動的ポリモーフィズムは、柔軟で美しい設計を可能にしますが、極限のパフォーマンスが求められるゲーム開発では「隠れたコスト」が存在します。毎フレーム何万回も呼ばれる弾幕やパーティクルにおいて、vtable（仮想関数テーブル）を辿るポインタ間接参照と、コンパイラが関数をインライン展開できないことによる関数呼び出しオーバーヘッドは無視できない負荷となります。本章では、C++98時代からゲームプログラマが愛用してきた伝説の技法【CRTP（Curiously Recurring Template Pattern：奇妙に再帰したテンプレートパターン）】を徹底解剖。仮想関数のオーバーヘッドを1サイクル・1バイトすら残さずコンパイル時に消滅させ、超高速な静的ポリモーフィズムを実現するアーキテクチャを習得します。]]></description>
       <category><![CDATA[レガシーC++ L10：CRTP・静的ポリモーフィズム]]></category>
-      <pubDate>Sat, 19 Sep 2026 00:33:57 GMT</pubDate>
+      <pubDate>Sat, 19 Sep 2026 00:43:29 GMT</pubDate>
     </item>
     <item>
       <title><![CDATA[レガシー第11章：独自メモリアロケータと固定長プール管理]]></title>
@@ -93,7 +93,15 @@
       <guid isPermaLink="true">https://shirokuma-cpp.jp/chapter-11-memory-pool-allocator</guid>
       <description><![CDATA[ゲーム現場のnew/delete禁止令！フラグメンテーション撲滅とO(1)爆速固定長メモリプール - ゲーム開発の現場、とりわけコンシューマ機やリアルタイムアクションの現場には、古くから伝わる絶対の掟があります。それは「ゲームプレイのメインループ中に生 new や生 delete を絶対に呼んではならない」という禁止令です。OSの汎用メモリアロケータ（malloc/new）は、いつどこで空きメモリを探すか予測できず、突発的なフレーム落ち（スパイク）を引き起こします。さらに深刻なのが「メモリの断片化（フラグメンテーション）」です。メモリの空き総量は十分にあるのに、連続したメモリが確保できずゲームが強制クラッシュする恐怖のバグです。本章では、弾幕やパーティクルなどの同種オブジェクトを事前に一括確保し、空き領域自体をリンクリストとして再利用する伝説の技法【固定長メモリプール（Fixed-Size Memory Pool）】を徹底解剖。さらにC++の深淵である【プレースメントnew】と【明示的デストラクタ呼び出し】をマスターし、O(1)定数時間で爆速にメモリを切り売りするプロクオリティの独自アロケータを構築します。]]></description>
       <category><![CDATA[レガシーC++ L11：独自メモリプール]]></category>
-      <pubDate>Sat, 19 Sep 2026 00:33:57 GMT</pubDate>
+      <pubDate>Sat, 19 Sep 2026 00:43:29 GMT</pubDate>
+    </item>
+    <item>
+      <title><![CDATA[レガシー第12章：レガシーゲームエンジン統合アーキテクチャ]]></title>
+      <link>https://shirokuma-cpp.jp/chapter-12-game-engine-architecture</link>
+      <guid isPermaLink="true">https://shirokuma-cpp.jp/chapter-12-game-engine-architecture</guid>
+      <description><![CDATA[メインループ・レンダラ・物理・サウンドの疎結合オーケストレーション - これまでの第1章〜第11章で、私たちはカプセル化、動的寿命、ポリモーフィズム、State/Observerパターン、演算子オーバーロード、ポインタ演算、コールバック、多重継承の回避、CRTP、そして独自メモリプールまで、C++の強力な設計技法を1つずつ習得してきました。しかし、実際の商用ゲームや実務の大規模システムでは、「個々の部品が動く」だけでは通用しません。描画、物理演算、入力、サウンド、シーン遷移といった巨大なサブシステム群を、どのような順序で初期化し、どのような時間軸で更新し、安全に終了させるのかという【エンジン骨格（オーケストレーション）】の設計が不可欠です。本章では、市販の2D/3Dゲームエンジン（Unreal EngineやUnityの内部コア）でも採用されている伝説の【固定デルタタイム（Fixed Timestep）ゲームループ】と、サブシステムの結合度を極限まで下げる【IEngineSubsystem ライフサイクル管理】を徹底解説。PCスペックやフレームレートに一切左右されない、決定論的で堅牢なゲームエンジンアーキテクチャを完成させます。]]></description>
+      <category><![CDATA[レガシーC++ L12：ゲームエンジン統合]]></category>
+      <pubDate>Sat, 19 Sep 2026 00:43:29 GMT</pubDate>
     </item>
     <item>
       <title><![CDATA[モダン第1章：スマートポインタとRAII（究極のメモリ安全性）]]></title>
@@ -101,7 +109,7 @@
       <guid isPermaLink="true">https://shirokuma-cpp.jp/chapter-5-smart-pointers-raii</guid>
       <description><![CDATA[std::unique_ptr と std::shared_ptr によるリソース完全自動管理 - 第4章で多態性を手に入れたものの、敵の生成・破棄には生の new / delete を使っていました。本章では、生ポインタの解放漏れやダングリングポインタを設計レベルで撲滅するC++の金字塔「スマートポインタ（unique_ptr, shared_ptr, weak_ptr）」と「所有権（Ownership）」の規律を体得します。]]></description>
       <category><![CDATA[モダンコース M1：所有権と安全な寿命管理]]></category>
-      <pubDate>Sat, 19 Sep 2026 00:33:57 GMT</pubDate>
+      <pubDate>Sat, 19 Sep 2026 00:43:29 GMT</pubDate>
     </item>
     <item>
       <title><![CDATA[モダン第2章：ムーブセマンティクスとモダンC++言語機能]]></title>
@@ -109,7 +117,7 @@
       <guid isPermaLink="true">https://shirokuma-cpp.jp/modern-2-move-and-modern-features</guid>
       <description><![CDATA[右辺値参照（T&&）、std::move、ラムダ式、auto によるゼロコスト抽象化 - C言語やレガシーなC++03では、大きなオブジェクトや配列を関数から返したりコレクションに追加する際、すべてのデータを複製する「ディープコピー」が発生し、多大なCPU時間とメモリを浪費していました。C++11最大の革命である「ムーブセマンティクス（右辺値参照とstd::move）」、処理をインラインで記述できる「ラムダ式」、そして型推論「auto」によって、安全性を1ミリも犠牲にせず極限の実行速度を手に入れるモダンC++の技法を習得します。]]></description>
       <category><![CDATA[モダンコース M2：ムーブとモダン機能]]></category>
-      <pubDate>Sat, 19 Sep 2026 00:33:57 GMT</pubDate>
+      <pubDate>Sat, 19 Sep 2026 00:43:29 GMT</pubDate>
     </item>
     <item>
       <title><![CDATA[モダン第3章：モダンC++テンプレートとECS（設計の極致・完結編）]]></title>
@@ -117,7 +125,7 @@
       <guid isPermaLink="true">https://shirokuma-cpp.jp/chapter-7-modern-cpp-ecs</guid>
       <description><![CDATA[「継承より合成」の真髄、型安全なコンポーネント着脱、そして卒業 - オブジェクト指向の強力な武器「クラスの継承」ですが、ゲーム開発が大規模化すると「菱形継承（Diamond Inheritance）」「基底クラスの神格化（God Class）」「クラス爆発」という致命的な壁に直面します。最終章では、近代ゲームエンジン（Unity, Unreal, Bevy等）の設計標準である「継承より合成（Composition over Inheritance）」と、C++テンプレートを活用した「ECS（Entity Component System）」を構築。全7章の学びを結実させ、全弾幕ボスを撃破して卒業の時を迎えます！]]></description>
       <category><![CDATA[モダンコース M3：ECS＆モダンC++完結編]]></category>
-      <pubDate>Sat, 19 Sep 2026 00:33:57 GMT</pubDate>
+      <pubDate>Sat, 19 Sep 2026 00:43:29 GMT</pubDate>
     </item>
     <item>
       <title><![CDATA[モダン第4章：現代的型システムとゼロオーバーヘッド抽象化]]></title>
@@ -125,7 +133,7 @@
       <guid isPermaLink="true">https://shirokuma-cpp.jp/chapter-modern-4-modern-type-system</guid>
       <description><![CDATA[std::optional, std::variant, constexpr による極限の型安全性と超高速ディスパッチ - C++03までの旧来設計では、「値が存在しない」ことを表すためにNULLポインタやマジックナンバー（-1など）を返し、実行時クラッシュの原因となっていました。また、多様なアイテムや敵の種別分岐には重いRTTI（dynamic_cast）や巨大なswitch文が使われていました。C++17で導入された std::optional（値の有無の型安全表現）、std::variant + std::visit（仮想関数テーブル不要の超高速パターンマッチング）、そしてコンパイル時計算の constexpr を活用し、安全かつ極限まで高速な新世代のゲームアーキテクチャを構築します。]]></description>
       <category><![CDATA[モダンコース M4：variantとoptional]]></category>
-      <pubDate>Sat, 19 Sep 2026 00:33:57 GMT</pubDate>
+      <pubDate>Sat, 19 Sep 2026 00:43:29 GMT</pubDate>
     </item>
     <item>
       <title><![CDATA[コード読解演習 Step 1【初級】：手続き型データフローの追跡]]></title>
@@ -133,7 +141,7 @@
       <guid isPermaLink="true">https://shirokuma-cpp.jp/reading-step-1</guid>
       <description><![CDATA[単一ファイル・手続き型コードから「状態変数」と「メインループの実行順序」を抜き出す - 何百行もある手続き型ソースコードを前にしても動じない！変数がどこで初期化され、ループ内でどう書き換わり、どこへ出力されるのか——「状態変数のライフサイクル」と「実行順序」をプロの眼力でトレースする基礎体力を養成します。]]></description>
       <category><![CDATA[読解演習 Step 1]]></category>
-      <pubDate>Sat, 19 Sep 2026 00:33:57 GMT</pubDate>
+      <pubDate>Sat, 19 Sep 2026 00:43:29 GMT</pubDate>
     </item>
     <item>
       <title><![CDATA[コード読解演習 Step 2【中級】：ヘッダAPI仕様とクラス依存の解読]]></title>
@@ -141,7 +149,7 @@
       <guid isPermaLink="true">https://shirokuma-cpp.jp/reading-step-2</guid>
       <description><![CDATA[ヘッダファイル群（.h）からクラス設計図を脳内復元し、責任境界と呼び出し構造を見抜く - ファイル数が数十個に増えたとき、.cpp の実装ロジックにいきなり飛び込むのは遭難の元！ヘッダファイル（.h）の宣言だけを拾い読みしてクラス間の依存関係（所有・参照）と責務を瞬時に把握する中級読解テクニックを習得します。]]></description>
       <category><![CDATA[読解演習 Step 2]]></category>
-      <pubDate>Sat, 19 Sep 2026 00:33:57 GMT</pubDate>
+      <pubDate>Sat, 19 Sep 2026 00:43:29 GMT</pubDate>
     </item>
     <item>
       <title><![CDATA[コード読解演習 Step 3【上級】：多態性・vtable・動的挙動の追跡]]></title>
@@ -149,7 +157,7 @@
       <guid isPermaLink="true">https://shirokuma-cpp.jp/reading-step-3</guid>
       <description><![CDATA[基底ポインタと仮想関数テーブル（vtable）の向こう側にある「真の実行時呼び出し先」を暴く - `target->execute();` と書かれていても、実際に動くのはどのクラスの関数なのか？静的なテキスト検索だけでは歯が立たない多態性（ポリモーフィズム）と動的ディスパッチを、vtableの構造とデバッガ・ログを活用して正確に特定する上級読解術です。]]></description>
       <category><![CDATA[読解演習 Step 3]]></category>
-      <pubDate>Sat, 19 Sep 2026 00:33:57 GMT</pubDate>
+      <pubDate>Sat, 19 Sep 2026 00:43:29 GMT</pubDate>
     </item>
     <item>
       <title><![CDATA[【付録】ゼロから引ける！C++基本文法＆機能チートシート総覧]]></title>
@@ -157,7 +165,7 @@
       <guid isPermaLink="true">https://shirokuma-cpp.jp/guide-cpp-syntax-reference</guid>
       <description><![CDATA[〜変数・型・制御構文・ポインタ・参照・関数・クラス・STL・キャストまで逆引き完全リファレンス〜 - オブジェクト指向設計やゲーム開発を学ぶ中で、「あれ、この構文どう書くんだっけ？」「ポインタと参照の違いは何だっけ？」と迷った時に、いつでも瞬時に引き戻せる完全なC++文法クイックリファレンスです。基本データ型、入出力、制御構造、ポインタ/参照、関数・ラムダ式、クラス/構造体、必須STL（vector, map, string, unique_ptr）、そしてC++の型安全キャストまで、実動コードスニペットと注意点を網羅しています。]]></description>
       <category><![CDATA[付録：C++文法総覧]]></category>
-      <pubDate>Sat, 19 Sep 2026 00:33:57 GMT</pubDate>
+      <pubDate>Sat, 19 Sep 2026 00:43:29 GMT</pubDate>
     </item>
     <item>
       <title><![CDATA[品質保証特集：GoogleTest（gtest）とTDD（テスト駆動開発）実践入門]]></title>
@@ -165,7 +173,7 @@
       <guid isPermaLink="true">https://shirokuma-cpp.jp/guide-googletest-tdd</guid>
       <description><![CDATA[「動かすまでバグが分からない」からの脱却！CI/CDで壊れない堅牢なC++設計とテスト技法 - C++現場で必須とされるユニットテストフレームワーク「GoogleTest（gtest）」の導入・記述法と、テスト駆動開発（TDD）のRed-Green-Refactorサイクルを徹底解説。テスト容易性の高い疎結合設計（DI: 依存性注入）の真髄を学びます。]]></description>
       <category><![CDATA[品質保証・TDD特集]]></category>
-      <pubDate>Sat, 19 Sep 2026 00:33:57 GMT</pubDate>
+      <pubDate>Sat, 19 Sep 2026 00:43:29 GMT</pubDate>
     </item>
     <item>
       <title><![CDATA[テスター・新規参入者のためのC++コード読解術]]></title>
@@ -173,7 +181,7 @@
       <guid isPermaLink="true">https://shirokuma-cpp.jp/guide-code-reading</guid>
       <description><![CDATA[「設計図がない巨大リポジトリ」でも迷子にならない！エントリポイントからの探索術と依存の追い方 - 何万行もあるC++プロジェクトに配属されたテスターや新人プログラマーへ。クラス図や仕様書が古くても、コードそのものからシステムの全体像とデータフローを素早く正確に読み解くプロの探索テクニックを伝授します。]]></description>
       <category><![CDATA[現場実践手引き]]></category>
-      <pubDate>Sat, 19 Sep 2026 00:33:57 GMT</pubDate>
+      <pubDate>Sat, 19 Sep 2026 00:43:29 GMT</pubDate>
     </item>
     <item>
       <title><![CDATA[【特別コラム】現場で役立つデザインパターン入門 〜GoFの知恵と現代C++の設計美学〜]]></title>
@@ -181,7 +189,7 @@
       <guid isPermaLink="true">https://shirokuma-cpp.jp/column-design-patterns</guid>
       <description><![CDATA[「そもそも何のためにあるのか？」から典型3分類の実装コード、モダンC++でのスマートな進化と過剰設計の罠まで - 「デザインパターンという言葉は聞くけれど、なぜ必要なのか？」「いつ、どう使えばいいのか？」という疑問に答えます。建築思想からGoF（Gang of Four）による23パターンへの系譜、オブジェクト指向設計の原則（SOLID）、そして現場で頻出する代表的パターン（Singleton, Factory Method, Adapter, Strategy, Observer）を、C++の具体例コード付きで徹底解説。さらにモダンC++でのスマートな実装法や、初心者が陥りがちな「パターン中毒（過剰設計）」への処方箋までを体系化しました。]]></description>
       <category><![CDATA[特別コラム：デザインパターン]]></category>
-      <pubDate>Sat, 19 Sep 2026 00:33:57 GMT</pubDate>
+      <pubDate>Sat, 19 Sep 2026 00:43:29 GMT</pubDate>
     </item>
     <item>
       <title><![CDATA[C++プログラマのためのUML設計書入門]]></title>
@@ -189,7 +197,7 @@
       <guid isPermaLink="true">https://shirokuma-cpp.jp/guide-uml-design</guid>
       <description><![CDATA[〜コードと設計図の相互変換を完全マスター〜 - 「コードは書けるが設計書が書けない」「UMLの矢印の意味が分からない」というエンジニアへ。クラス図・シーケンス図・ステートマシン図の読み書きと、C++コードとの厳密な対応規則を徹底解説します。]]></description>
       <category><![CDATA[実践UML設計書]]></category>
-      <pubDate>Sat, 19 Sep 2026 00:33:57 GMT</pubDate>
+      <pubDate>Sat, 19 Sep 2026 00:43:29 GMT</pubDate>
     </item>
     <item>
       <title><![CDATA[【特別コラム】なぜ世界は今もC++で動いているのか？ 〜シリコンの鼓動とゼロオーバーヘッドの美学〜]]></title>
@@ -197,7 +205,7 @@
       <guid isPermaLink="true">https://shirokuma-cpp.jp/column-why-cpp-is-great</guid>
       <description><![CDATA[「難しい、だが代わりがいない」——火星探査機からUnreal Engine、AI基盤まで人類の限界を押し広げ続ける至高の言語 - 「C++は難しすぎる」「覚えることが多すぎる」と言われながらも、なぜ40年間にわたり世界最高峰のソフトウェアはC++で書かれ続けているのでしょうか？Unreal Engine 5、NASAの火星探査ローバー、SpaceXのロケット制御、Google Chrome、そしてPyTorch/TensorFlowのAIコアエンジン。人類がハードウェアの極限に挑むとき、常に選ばれるのはC++です。シリコンの物理限界を引き出す「ゼロオーバーヘッド原則」の美学、ガベージコレクションに頼らない「決定論的寿命」、そして泥臭いハードウェア制御から最高度の型抽象化までを縦横無尽に操るC++の圧倒的魅力を熱く語ります。]]></description>
       <category><![CDATA[特別コラム：C++のすばらしさ]]></category>
-      <pubDate>Sat, 19 Sep 2026 00:33:57 GMT</pubDate>
+      <pubDate>Sat, 19 Sep 2026 00:43:29 GMT</pubDate>
     </item>
     <item>
       <title><![CDATA[なぜC++は難しいと言われるのか？]]></title>
@@ -205,7 +213,7 @@
       <guid isPermaLink="true">https://shirokuma-cpp.jp/column-why-cpp-is-hard</guid>
       <description><![CDATA[〜40年の進化とゼロオーバーヘッドの代償〜 - 「C++は難解すぎて挫折した」「覚えることが多すぎる」と誰もが口を揃えます。しかし、その複雑さにはすべて40年の歴史的必然と設計哲学が存在します。理由を知れば、恐怖は納得へと変わります。]]></description>
       <category><![CDATA[言語思想コラム]]></category>
-      <pubDate>Sat, 19 Sep 2026 00:33:57 GMT</pubDate>
+      <pubDate>Sat, 19 Sep 2026 00:43:29 GMT</pubDate>
     </item>
     <item>
       <title><![CDATA[実際に組んで動かす！C++ローカル開発環境構築ガイド]]></title>
@@ -213,7 +221,7 @@
       <guid isPermaLink="true">https://shirokuma-cpp.jp/guide-environment-setup</guid>
       <description><![CDATA[〜VS Code ＋ CMake ＋ モダンコンパイラで始める実機ビルド＆デバッグ〜 - ブラウザ上の学習から一歩踏み出し、自分の手元のパソコン（Windows / Mac / Linux）でC++コードを書いてコンパイルし、ブレークポイントを打ってデバッグ実行するまでの完全な環境構築手順をゼロから解説します。]]></description>
       <category><![CDATA[実践環境構築]]></category>
-      <pubDate>Sat, 19 Sep 2026 00:33:57 GMT</pubDate>
+      <pubDate>Sat, 19 Sep 2026 00:43:29 GMT</pubDate>
     </item>
   </channel>
 </rss>

@@ -13,6 +13,7 @@ import { chapterL8 } from './chapters/chapterL8';
 import { chapterL9 } from './chapters/chapterL9';
 import { chapterL10 } from './chapters/chapterL10';
 import { chapterL11 } from './chapters/chapterL11';
+import { chapterL12 } from './chapters/chapterL12';
 import { chapterM4 } from './chapters/modern4';
 
 import { CODE_READING_GUIDE } from './guides/codeReading';
@@ -41,6 +42,7 @@ export const CLASSIC_CHAPTERS: Chapter[] = [
   chapterL9,  // C9: 多重継承の闇と仮想基底クラス（菱形継承）
   chapterL10, // C10: 静的ポリモーフィズム入門（CRTPとクラシックTemplate）
   chapterL11, // C11: 独自メモリアロケータと固定長プール管理
+  chapterL12, // C12: レガシーゲームエンジン統合アーキテクチャ
 ];
 
 /** 🚀 モダンコース（C++11〜C++17 / モダンC++・新世代設計編） */
@@ -106,20 +108,7 @@ export interface FutureChapterPreview {
 }
 
 export const UPCOMING_CHAPTERS: FutureChapterPreview[] = [
-  // 🏛️ レガシーC++コース 拡張予定（L12〜L20：本格ゲームエンジン＆現場低レイヤ実務編）
-  {
-    id: 1012,
-    slug: 'upcoming-l12',
-    title: '【L12】レガシーゲームエンジン統合アーキテクチャ',
-    subtitle: 'メインループ・レンダラ・物理・サウンドの疎結合オーケストレーション',
-    badge: 'レガシーC++ L12（準備中）',
-    isUpcoming: true,
-    track: 'classic',
-    beforePain: '各サブシステム（描画・物理・音声・入力）の初期化順や終了順が狂ってクラッシュ。メインループが巨大化して破綻する。',
-    afterSkill: '固定/可変デルタタイム制御、サブシステムのライフサイクル抽象化（IEngineSubsystem）、依存関係の明示的解決。',
-    gameEvolution: 'ゲーム全体のフレームレートが60FPSに安定し、各サブシステムが綺麗に独立協調動作！',
-    techKeywords: ['固定デルタタイム', 'サブシステム統合', 'ライフサイクル制御', 'ゲームループ設計'],
-  },
+  // 🏛️ レガシーC++コース 拡張予定（L13〜L20：本格ゲームエンジン＆現場低レイヤ実務編）
   {
     id: 1013,
     slug: 'upcoming-l13',

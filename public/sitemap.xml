@@ -73,6 +73,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://shirokuma-cpp.jp/chapter-12-game-engine-architecture</loc>
+    <lastmod>2026-09-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://shirokuma-cpp.jp/chapter-5-smart-pointers-raii</loc>
     <lastmod>2026-09-17</lastmod>
     <changefreq>monthly</changefreq>
