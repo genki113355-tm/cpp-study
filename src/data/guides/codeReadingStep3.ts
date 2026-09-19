@@ -307,5 +307,7 @@ int main() {
       correctIndex: 1,
       explanation: '正解です！派生クラスの宣言パターン（`: public ICommand`）を検索することで候補を一網打尽にし、さらに「その具象クラスをインスタンス化している Factory や登録箇所」を特定するのがプロの読解テクニックです。'
     }
-  ]
+  ],
+  prevChapterSlug: 'reading-step-2',
+  nextChapterSlug: 'reading-step-4'
 };

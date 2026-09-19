@@ -816,8 +816,8 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
           </div>
         </div>
 
-        {/* 3段階ステップカード */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {/* 読解演習ステップカード（全6段階） */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {READING_CHAPTERS.map((step, idx) => {
             const isCompleted = completedChapters.includes(step.id);
             const stepNum = idx + 1;
@@ -1650,7 +1650,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
                   : 'bg-slate-900 text-slate-400 hover:text-purple-300 border border-slate-800'
               }`}
             >
-              <span>🧭 読解・鑑識拡張 (R4〜R10)</span>
+              <span>🧭 読解・鑑識拡張 (R7〜R10)</span>
               <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-slate-800 text-purple-300">
                 {UPCOMING_CHAPTERS.filter((c) => c.track === 'reading').length}
               </span>

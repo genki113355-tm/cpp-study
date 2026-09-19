@@ -42,6 +42,9 @@ import { CPP_SYNTAX_REFERENCE_GUIDE } from './guides/cppSyntaxReference';
 import { CODE_READING_STEP_1 } from './guides/codeReadingStep1';
 import { CODE_READING_STEP_2 } from './guides/codeReadingStep2';
 import { CODE_READING_STEP_3 } from './guides/codeReadingStep3';
+import { CODE_READING_STEP_4 } from './guides/codeReadingStep4';
+import { CODE_READING_STEP_5 } from './guides/codeReadingStep5';
+import { CODE_READING_STEP_6 } from './guides/codeReadingStep6';
 
 /** 🏛️ レガシーC++コース（C言語・C++03 / クラシックOOP・現場実務編） */
 export const CLASSIC_CHAPTERS: Chapter[] = [
@@ -86,6 +89,9 @@ export const READING_CHAPTERS: Chapter[] = [
   CODE_READING_STEP_1, // R1: 手続き型データフローの追跡
   CODE_READING_STEP_2, // R2: ヘッダAPI仕様とクラス依存の解読
   CODE_READING_STEP_3, // R3: 多態性・vtable・動的挙動の追跡
+  CODE_READING_STEP_4, // R4: 非同期・マルチスレッド競合コードの読解術
+  CODE_READING_STEP_5, // R5: 巨大オープンソースリポジトリ実地読解（Box2D編）
+  CODE_READING_STEP_6, // R6: メモリ破壊コードの鑑識捜査（Use-After-Free / ASan）
 ];
 
 /** 📚 特集ガイド＆実践コラム（品質保証・読解術・言語思想・環境構築・UML設計・デザインパターン） */
@@ -296,46 +302,7 @@ export const UPCOMING_CHAPTERS: FutureChapterPreview[] = [
     techKeywords: ['C++26', '静的リフレクション', 'メタプログラミング', '自動コード生成'],
   },
 
-  // 🧭 読解演習トラック 拡張予定（R4〜R10：実践リバースエンジニアリング＆現場鑑識編）
-  {
-    id: 3004,
-    slug: 'upcoming-r4',
-    title: '【R4】非同期・マルチスレッド競合コードの読解術',
-    subtitle: 'mutex / atomic / レースコンディションの潜伏箇所を暴く',
-    badge: '読解演習 R4（準備中）',
-    isUpcoming: true,
-    track: 'reading',
-    beforePain: 'たまにしか再現しないクラッシュバグの調査で、どのスレッドがどのタイミングで共有メモリを壊しているのかコードから読めない。',
-    afterSkill: 'ロック順序の静的解析、std::atomic とメモリオーダー、クリティカルセクションの局所化を読み解くプロのデバッグ眼。',
-    gameEvolution: '非同期マルチスレッドで動くゲームエンジンの競合ポイントを一目で発見できるようになる！',
-    techKeywords: ['マルチスレッド読解', 'レースコンディション', 'ロック順序解析', 'デッドロック特定'],
-  },
-  {
-    id: 3005,
-    slug: 'upcoming-r5',
-    title: '【R5】巨大オープンソースリポジトリ実地読解（Box2D / SDL2編）',
-    subtitle: 'トップダウン探索と依存グラフ可視化で未知のエンジンを攻略',
-    badge: '読解演習 R5（準備中）',
-    isUpcoming: true,
-    track: 'reading',
-    beforePain: '業務で数十万行のオープンソースや社内フレームワークを渡され、ドキュメントがなくどこから読み始めればいいか圧倒される。',
-    afterSkill: 'エントリポイント特定、コアデータ構造の抽出、抽象化レイヤーの剥ぎ取りによる高速なリポジトリマッピング技術。',
-    gameEvolution: '世界水準の2D物理エンジン「Box2D」のソースコードを読み解き、自作ゲームへの組み込み方を完全理解！',
-    techKeywords: ['Box2D読解', 'オープンソース解読', '依存グラフ抽出', 'リバースエンジニアリング'],
-  },
-  {
-    id: 3006,
-    slug: 'upcoming-r6',
-    title: '【R6】メモリ破壊コードの鑑識捜査（Use-After-Free / ASan）',
-    subtitle: 'ヒープ破壊ログとAddressSanitizerレポートから真犯人を逆算特定',
-    badge: '読解演習 R6（準備中）',
-    isUpcoming: true,
-    track: 'reading',
-    beforePain: 'クラッシュした場所と、実際にメモリを壊した場所が離れていて迷宮入り。',
-    afterSkill: 'AddressSanitizer（ASan）レポートの読み方、解放済みポインタの生存追跡。',
-    gameEvolution: '敵死亡エフェクト再生中のUse-After-Freeバグコードを瞬時に特定！',
-    techKeywords: ['AddressSanitizer (ASan)', 'Use-After-Free', 'ヒープ破壊', 'クラッシュ鑑識'],
-  },
+  // 🧭 読解演習トラック 拡張予定（R7〜R10：リファクタリング＆リバースエンジニアリング編）
   {
     id: 3007,
     slug: 'upcoming-r7',
