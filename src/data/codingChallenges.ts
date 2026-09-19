@@ -721,6 +721,404 @@ int main() {
 }
 `,
   },
+
+  // M5: C++20 コルーチン
+  'chapter-modern-5-coroutines': {
+    id: 'challenge-m5',
+    chapterSlug: 'chapter-modern-5-coroutines',
+    chapterBadge: 'M5',
+    title: '演習M5：C++20 コルーチンで時間差ウェーブ攻撃を実装せよ！',
+    missionObjective: 'co_await を使って処理を一時中断できるコルーチン関数 bossSequence(stepTracker) を完成させ、メインループから resume() を呼び出して段階的に攻撃を進めるテストをパスさせてください。',
+    mentorAdvice: '「関数自身が時間の経過を制御し、必要なところで co_await でフレームを譲る」のがコルーチンの真髄じゃ！Update() の巨大 switch 文とは永久にお別れじゃぞ！',
+    initialCode: `#include <iostream>
+#include <coroutine>
+
+struct SimpleTask {
+    struct promise_type {
+        SimpleTask get_return_object() {
+            return SimpleTask{std::coroutine_handle<promise_type>::from_promise(*this)};
+        }
+        std::suspend_always initial_suspend() noexcept { return {}; }
+        std::suspend_always final_suspend() noexcept { return {}; }
+        void return_void() noexcept {}
+        void unhandled_exception() { std::terminate(); }
+    };
+    std::coroutine_handle<promise_type> handle;
+    ~SimpleTask() { if (handle) handle.destroy(); }
+    void resume() { if (handle && !handle.done()) handle.resume(); }
+    bool isDone() const { return !handle || handle.done(); }
+};
+
+struct YieldPoint {
+    bool await_ready() const noexcept { return false; }
+    void await_suspend(std::coroutine_handle<>) const noexcept {}
+    void await_resume() const noexcept {}
+};
+
+int g_attackPhase = 0;
+
+// TODO: co_await YieldPoint{} を使って3段階の攻撃シーケンスを実装してください
+// 1. g_attackPhase を 1 にセットし、co_await YieldPoint{}; で中断
+// 2. g_attackPhase を 2 にセットし、co_await YieldPoint{}; で中断
+// 3. g_attackPhase を 3 にセットして関数終了
+SimpleTask bossSequence() {
+    // ここにコルーチン実装
+}
+
+int main() {
+    std::cout << "--- M5 コルーチン時間差シーケンス テスト ---" << std::endl;
+    SimpleTask task = bossSequence();
+
+    std::cout << "Step 1 実行前: " << g_attackPhase << std::endl;
+    task.resume();
+    std::cout << "Step 1 実行後: " << g_attackPhase << std::endl;
+
+    task.resume();
+    std::cout << "Step 2 実行後: " << g_attackPhase << std::endl;
+
+    task.resume();
+    std::cout << "Step 3 実行後: " << g_attackPhase << std::endl;
+
+    if (g_attackPhase == 3 && task.isDone()) {
+        std::cout << "[CLEAR] M5_MISSION_SUCCESS" << std::endl;
+    } else {
+        std::cout << "[FAIL] シーケンスが期待通りに完了していません" << std::endl;
+    }
+    return 0;
+}
+`,
+    expectedOutputPattern: '[CLEAR] M5_MISSION_SUCCESS',
+    successMessage: '🎉 お見事！C++20 コルーチンの co_await による時間差シーケンスを完全マスターしました！',
+    hint: 'g_attackPhase = 1; co_await YieldPoint{}; g_attackPhase = 2; co_await YieldPoint{}; g_attackPhase = 3; のように直線的に記述します。',
+    solutionCode: `#include <iostream>
+#include <coroutine>
+
+struct SimpleTask {
+    struct promise_type {
+        SimpleTask get_return_object() {
+            return SimpleTask{std::coroutine_handle<promise_type>::from_promise(*this)};
+        }
+        std::suspend_always initial_suspend() noexcept { return {}; }
+        std::suspend_always final_suspend() noexcept { return {}; }
+        void return_void() noexcept {}
+        void unhandled_exception() { std::terminate(); }
+    };
+    std::coroutine_handle<promise_type> handle;
+    ~SimpleTask() { if (handle) handle.destroy(); }
+    void resume() { if (handle && !handle.done()) handle.resume(); }
+    bool isDone() const { return !handle || handle.done(); }
+};
+
+struct YieldPoint {
+    bool await_ready() const noexcept { return false; }
+    void await_suspend(std::coroutine_handle<>) const noexcept {}
+    void await_resume() const noexcept {}
+};
+
+int g_attackPhase = 0;
+
+SimpleTask bossSequence() {
+    g_attackPhase = 1;
+    co_await YieldPoint{};
+
+    g_attackPhase = 2;
+    co_await YieldPoint{};
+
+    g_attackPhase = 3;
+}
+
+int main() {
+    std::cout << "--- M5 コルーチン時間差シーケンス テスト ---" << std::endl;
+    SimpleTask task = bossSequence();
+
+    std::cout << "Step 1 実行前: " << g_attackPhase << std::endl;
+    task.resume();
+    std::cout << "Step 1 実行後: " << g_attackPhase << std::endl;
+
+    task.resume();
+    std::cout << "Step 2 実行後: " << g_attackPhase << std::endl;
+
+    task.resume();
+    std::cout << "Step 3 実行後: " << g_attackPhase << std::endl;
+
+    if (g_attackPhase == 3 && task.isDone()) {
+        std::cout << "[CLEAR] M5_MISSION_SUCCESS" << std::endl;
+    }
+    return 0;
+}
+`,
+  },
+
+  // M6: C++20 コンセプト
+  'chapter-modern-6-concepts': {
+    id: 'challenge-m6',
+    chapterSlug: 'chapter-modern-6-concepts',
+    chapterBadge: 'M6',
+    title: '演習M6：C++20 コンセプトで被ダメージ型を厳密に制約せよ！',
+    missionObjective: 'requires 式を用いて Damageable コンセプトを定義し、takeDamage(int) と getHp() -> int を持つ型だけを安全に受け取る hitEntity(Damageable auto&, int) 関数を完成させてください。',
+    mentorAdvice: '「この型は何ができなければならないか」をコンパイラに契約として伝えるのじゃ！SFINAEの黒魔術とは永遠にサヨナラじゃ！',
+    initialCode: `#include <iostream>
+#include <concepts>
+
+// TODO: Damageable コンセプトを定義してください
+// 1. target.takeDamage(int) が呼び出し可能であること
+// 2. target.getHp() の戻り値が std::convertible_to<int> であること
+template <typename T>
+concept Damageable = requires(T a, int dmg) {
+    // ここに制約を記述
+};
+
+struct AlienShip {
+    int hp = 100;
+    void takeDamage(int d) { hp -= d; }
+    int getHp() const { return hp; }
+};
+
+// TODO: Damageable コンセプトで制約された関数を完成させてください
+void hitEntity(auto& target, int dmg) {
+    // ここに実装
+}
+
+int main() {
+    std::cout << "--- M6 C++20 コンセプト制約テスト ---" << std::endl;
+    AlienShip alien;
+    hitEntity(alien, 35);
+
+    std::cout << "Alien HP: " << alien.getHp() << std::endl;
+
+    if (alien.getHp() == 65) {
+        std::cout << "[CLEAR] M6_MISSION_SUCCESS" << std::endl;
+    } else {
+        std::cout << "[FAIL] ダメージが正しく適用されていません" << std::endl;
+    }
+    return 0;
+}
+`,
+    expectedOutputPattern: '[CLEAR] M6_MISSION_SUCCESS',
+    successMessage: '🎉 素晴らしい！C++20 コンセプトによる美しい自己文書化ジェネリクスを習得しました！',
+    hint: 'concept Damageable = requires(T a, int dmg) { a.takeDamage(dmg); { a.getHp() } -> std::convertible_to<int>; }; と定義し、void hitEntity(Damageable auto& target, int dmg) { target.takeDamage(dmg); } と実装します。',
+    solutionCode: `#include <iostream>
+#include <concepts>
+
+template <typename T>
+concept Damageable = requires(T a, int dmg) {
+    a.takeDamage(dmg);
+    { a.getHp() } -> std::convertible_to<int>;
+};
+
+struct AlienShip {
+    int hp = 100;
+    void takeDamage(int d) { hp -= d; }
+    int getHp() const { return hp; }
+};
+
+void hitEntity(Damageable auto& target, int dmg) {
+    target.takeDamage(dmg);
+}
+
+int main() {
+    std::cout << "--- M6 C++20 コンセプト制約テスト ---" << std::endl;
+    AlienShip alien;
+    hitEntity(alien, 35);
+
+    std::cout << "Alien HP: " << alien.getHp() << std::endl;
+
+    if (alien.getHp() == 65) {
+        std::cout << "[CLEAR] M6_MISSION_SUCCESS" << std::endl;
+    }
+    return 0;
+}
+`,
+  },
+
+  // M7: C++20 Ranges & Views
+  'chapter-modern-7-ranges-views': {
+    id: 'challenge-m7',
+    chapterSlug: 'chapter-modern-7-ranges-views',
+    chapterBadge: 'M7',
+    title: '演習M7：C++20 Ranges パイプラインで迎撃目標をゼロアロケーション抽出せよ！',
+    missionObjective: 'std::views::filter と std::views::take をパイプライン演算子（|）で繋ぎ、生存中（isAlive == true）かつ脅威度（threatLevel >= 3）の敵上位2体の合計HPを計算してください。',
+    mentorAdvice: '中間 vector は1バイトも作るでないぞ！パイプラインでオンデマンドに吸い上げるゼロアロケーションの美学を味わうのじゃ！',
+    initialCode: `#include <iostream>
+#include <vector>
+#include <ranges>
+
+struct EnemyContact {
+    int id;
+    int hp;
+    int threatLevel;
+    bool isAlive;
+};
+
+int main() {
+    std::vector<EnemyContact> contacts = {
+        {1, 50,  1, true},
+        {2, 120, 4, true},   // 合致1 (HP: 120)
+        {3, 200, 5, false},  // 撃破済み
+        {4, 80,  3, true},   // 合致2 (HP: 80)
+        {5, 90,  5, true}    // 合致3（ただし take(2) で除外されるべき）
+    };
+
+    int totalHp = 0;
+
+    // TODO: contacts からパイプライン演算子 (|) を使って
+    // 1. isAlive が true
+    // 2. threatLevel が 3 以上
+    // 3. 先頭 2 件を取り出す (std::views::take(2))
+    // のビューを作成し、for ループで totalHp に hp を加算してください
+    
+    // auto pipeline = ...;
+
+    std::cout << "--- M7 Ranges & Views 抽出テスト ---" << std::endl;
+    std::cout << "選定敵2体の合計HP: " << totalHp << " (期待値: 200)" << std::endl;
+
+    if (totalHp == 200) {
+        std::cout << "[CLEAR] M7_MISSION_SUCCESS" << std::endl;
+    } else {
+        std::cout << "[FAIL] 合計HPが期待値と異なります" << std::endl;
+    }
+    return 0;
+}
+`,
+    expectedOutputPattern: '[CLEAR] M7_MISSION_SUCCESS',
+    successMessage: '🎉 完璧です！C++20 Ranges による遅延評価パイプラインで、ゼロアロケーション走査を極めました！',
+    hint: 'auto view = contacts | std::views::filter([](const auto& e){ return e.isAlive && e.threatLevel >= 3; }) | std::views::take(2); for (const auto& e : view) totalHp += e.hp; と記述します。',
+    solutionCode: `#include <iostream>
+#include <vector>
+#include <ranges>
+
+struct EnemyContact {
+    int id;
+    int hp;
+    int threatLevel;
+    bool isAlive;
+};
+
+int main() {
+    std::vector<EnemyContact> contacts = {
+        {1, 50,  1, true},
+        {2, 120, 4, true},   // 合致1 (HP: 120)
+        {3, 200, 5, false},  // 撃破済み
+        {4, 80,  3, true},   // 合致2 (HP: 80)
+        {5, 90,  5, true}    // 合致3
+    };
+
+    int totalHp = 0;
+
+    auto pipeline = contacts 
+        | std::views::filter([](const auto& e) { return e.isAlive; })
+        | std::views::filter([](const auto& e) { return e.threatLevel >= 3; })
+        | std::views::take(2);
+
+    for (const auto& e : pipeline) {
+        totalHp += e.hp;
+    }
+
+    std::cout << "--- M7 Ranges & Views 抽出テスト ---" << std::endl;
+    std::cout << "選定敵2体の合計HP: " << totalHp << " (期待値: 200)" << std::endl;
+
+    if (totalHp == 200) {
+        std::cout << "[CLEAR] M7_MISSION_SUCCESS" << std::endl;
+    }
+    return 0;
+}
+`,
+  },
+
+  // M8: C++20 モジュール
+  'chapter-modern-8-modules': {
+    id: 'challenge-m8',
+    chapterSlug: 'chapter-modern-8-modules',
+    chapterBadge: 'M8',
+    title: '演習M8：モジュールアーキテクチャによるクリーンなカプセル化を体得せよ！',
+    missionObjective: 'モジュール境界設計の原則に従い、公開インターフェース（Public API）と非公開ヘルパー（Private Core）の責務を分離したゲームエンジン初期化システムを完成させてください。',
+    mentorAdvice: '「外部に見せるもの（export）」と「モジュール内部に隠蔽するもの」の境界線をビシッと引くのがモジュール設計の要諦じゃ！',
+    initialCode: `#include <iostream>
+#include <string>
+
+// モジュール内部専用（非公開ヘルパー）
+namespace Internal {
+    int calculateInitialMemory() {
+        return 1024 * 64; // 64KB
+    }
+}
+
+// モジュール外部へエクスポートされる公開クラス
+class EngineModuleFacade {
+private:
+    int allocatedMemory_ = 0;
+    bool initialized_ = false;
+
+public:
+    // TODO: startup() を実装してください
+    // 1. Internal::calculateInitialMemory() を呼んで allocatedMemory_ にセット
+    // 2. initialized_ を true にセット
+    void startup() {
+        // ここに実装
+    }
+
+    int getAllocatedMemory() const { return allocatedMemory_; }
+    bool isReady() const { return initialized_; }
+};
+
+int main() {
+    std::cout << "--- M8 モジュール境界初期化テスト ---" << std::endl;
+    EngineModuleFacade engine;
+    engine.startup();
+
+    std::cout << "エンジン状態: " << (engine.isReady() ? "Ready" : "Not Ready") << std::endl;
+    std::cout << "確保メモリ: " << engine.getAllocatedMemory() << " Bytes" << std::endl;
+
+    if (engine.isReady() && engine.getAllocatedMemory() == 65536) {
+        std::cout << "[CLEAR] M8_MISSION_SUCCESS" << std::endl;
+    } else {
+        std::cout << "[FAIL] 初期化が期待値と異なります" << std::endl;
+    }
+    return 0;
+}
+`,
+    expectedOutputPattern: '[CLEAR] M8_MISSION_SUCCESS',
+    successMessage: '🎉 祝・全課程修了！C++20 モジュールによるクリーンアーキテクチャを完全制覇しました！',
+    hint: 'allocatedMemory_ = Internal::calculateInitialMemory(); initialized_ = true; と実装します。',
+    solutionCode: `#include <iostream>
+#include <string>
+
+namespace Internal {
+    int calculateInitialMemory() {
+        return 1024 * 64;
+    }
+}
+
+class EngineModuleFacade {
+private:
+    int allocatedMemory_ = 0;
+    bool initialized_ = false;
+
+public:
+    void startup() {
+        allocatedMemory_ = Internal::calculateInitialMemory();
+        initialized_ = true;
+    }
+
+    int getAllocatedMemory() const { return allocatedMemory_; }
+    bool isReady() const { return initialized_; }
+};
+
+int main() {
+    std::cout << "--- M8 モジュール境界初期化テスト ---" << std::endl;
+    EngineModuleFacade engine;
+    engine.startup();
+
+    std::cout << "エンジン状態: " << (engine.isReady() ? "Ready" : "Not Ready") << std::endl;
+    std::cout << "確保メモリ: " << engine.getAllocatedMemory() << " Bytes" << std::endl;
+
+    if (engine.isReady() && engine.getAllocatedMemory() == 65536) {
+        std::cout << "[CLEAR] M8_MISSION_SUCCESS" << std::endl;
+    }
+    return 0;
+}
+`,
+  },
 };
 
 /** 自由実験室（Online Playground）用のプリセットテンプレート一覧 */

@@ -15,6 +15,10 @@ import { chapterL10 } from './chapters/chapterL10';
 import { chapterL11 } from './chapters/chapterL11';
 import { chapterL12 } from './chapters/chapterL12';
 import { chapterM4 } from './chapters/modern4';
+import { chapterM5 } from './chapters/modern5';
+import { chapterM6 } from './chapters/modern6';
+import { chapterM7 } from './chapters/modern7';
+import { chapterM8 } from './chapters/modern8';
 
 import { CODE_READING_GUIDE } from './guides/codeReading';
 import { WHY_CPP_IS_HARD_COLUMN } from './guides/whyCppIsHard';
@@ -45,12 +49,16 @@ export const CLASSIC_CHAPTERS: Chapter[] = [
   chapterL12, // C12: レガシーゲームエンジン統合アーキテクチャ
 ];
 
-/** 🚀 モダンコース（C++11〜C++17 / モダンC++・新世代設計編） */
+/** 🚀 モダンコース（C++11〜C++20 / モダンC++・新世代設計編） */
 export const MODERN_CHAPTERS: Chapter[] = [
   chapter5,  // M1: スマートポインタとRAII
   chapterM2, // M2: ムーブセマンティクスとモダンC++機能
   chapter7,  // M3: 継承より合成とECS
   chapterM4, // M4: 現代的型システム (variant, optional, constexpr)
+  chapterM5, // M5: C++20 コルーチンによる非同期ゲームループ
+  chapterM6, // M6: C++20 コンセプトと型制約
+  chapterM7, // M7: C++20 Ranges & Views による関数型パイプライン
+  chapterM8, // M8: C++20 モジュール完全移行ガイド
 ];
 
 /** 🧭 コード読解演習トラック（段階的実践読解編） */
@@ -214,59 +222,7 @@ export const UPCOMING_CHAPTERS: FutureChapterPreview[] = [
     techKeywords: ['自作ゲームエンジンアーキテクチャ', '全サブシステム統合', 'C++03の集大成', 'モダンC++への架け橋'],
   },
 
-  // 🚀 モダンC++コース 拡張予定（M5〜M8：C++20〜C++23新世代機能編）
-  {
-    id: 2005,
-    slug: 'upcoming-m5',
-    title: '【M5】C++20 コルーチン（Coroutines）による非同期ゲームループ',
-    subtitle: 'co_await / co_yield でステートマシン地獄を解消する',
-    badge: 'モダンC++ M5（準備中）',
-    isUpcoming: true,
-    track: 'modern',
-    beforePain: 'ボスの多段行動パターンや会話シーンを実装するために巨大な状態変数とタイマーカウント管理でコードが散乱。',
-    afterSkill: 'C++20 コルーチン（co_await / co_yield）による中断可能な処理記述。逐次処理のように直感的に非同期ゲームシーケンスを実装。',
-    gameEvolution: 'ボスの複雑な時間差ウェーブ攻撃やイベント演出が美しい直線的コードで動作！',
-    techKeywords: ['C++20 コルーチン', 'co_await / co_yield', '非同期シーケンス', 'ステートマシン解消'],
-  },
-  {
-    id: 2006,
-    slug: 'upcoming-m6',
-    title: '【M6】C++20 コンセプト（Concepts）と契約プログラミング',
-    subtitle: 'テンプレートの難解なエラーメッセージを完全駆逐する',
-    badge: 'モダンC++ M6（準備中）',
-    isUpcoming: true,
-    track: 'modern',
-    beforePain: 'テンプレートに誤った型を渡した瞬間、コンパイラが数百行の暗号のような難解エラーメッセージを吐き出して原因不明に。',
-    afterSkill: 'C++20 concepts と requires 節による型の制約定義。コンパイル時に分かりやすいエラーメッセージと自己文書化を実現。',
-    gameEvolution: 'あらゆるゲームオブジェクトを安全に受け取れる強固なジェネリック衝突判定システムが完成！',
-    techKeywords: ['C++20 Concepts', 'requires節', '制約付きテンプレート', '自己文書化設計'],
-  },
-  {
-    id: 2007,
-    slug: 'upcoming-m7',
-    title: '【M7】C++20 Ranges & Views による関数型パイプライン',
-    subtitle: 'ループを書かないエレガントなゲームデータフィルタリング',
-    badge: 'モダンC++ M7（準備中）',
-    isUpcoming: true,
-    track: 'modern',
-    beforePain: '「生きている敵の中から、HPが半分以下で、自機から一定距離内にいる敵」を抽出するのにネストしたfor/if文が何段も積み重なる。',
-    afterSkill: 'std::ranges とパイプ演算子（|）による遅延評価フィルタリング。一時コレクションを生成しない超高速な関数型記述。',
-    gameEvolution: '大量の敵や弾の抽出・整列・更新処理がたった1行のエレガントなパイプラインで動作！',
-    techKeywords: ['C++20 Ranges', 'std::views', 'パイプライン演算子', '遅延評価 (Lazy Evaluation)'],
-  },
-  {
-    id: 2008,
-    slug: 'upcoming-m8',
-    title: '【M8】C++20 モジュール（Modules）完全移行ガイド',
-    subtitle: '#include ヘッダ地獄からの脱却と超高速ビルドの実現',
-    badge: 'モダンC++ M8（準備中）',
-    isUpcoming: true,
-    track: 'modern',
-    beforePain: '巨大な #include 地獄によって1ファイルの変更で全体が再コンパイルされ、ビルドに数分〜数十分待たされる苦痛。',
-    afterSkill: 'C++20 モジュール（import / export module）の導入。マクロ汚染の根絶とコンパイル速度の劇的向上（ビルド時間1/5以下）。',
-    gameEvolution: '巨大化したゲームプロジェクト全体が数秒で瞬時にビルド完了する快適な開発体験！',
-    techKeywords: ['C++20 Modules', 'import / export', 'プリプロセッサ脱却', '超高速コンパイル'],
-  },
+  // 🚀 モダンC++コース 拡張予定（M9〜：C++23新世代機能編）
   {
     id: 2009,
     slug: 'upcoming-m9',

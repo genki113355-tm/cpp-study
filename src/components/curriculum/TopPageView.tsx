@@ -165,6 +165,34 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
       gameEvolution: 'どんなフレームレートでも完全決定論的に60FPS挙動！レンダラ・物理・サウンドが整然と協調動作する本格エンジン化。',
       techKeywords: ['固定デルタタイム', 'アキュムレータ', 'IEngineSubsystem', 'ヘッドレス設計', '逆順シャットダウン'],
     },
+    17: {
+      architecturalRole: 'C++20 コルーチン（co_await）＆非同期時間軸シーケンサ',
+      beforePain: 'ボスの多段行動パターンや会話イベントを実装するために、フラグやタイマーが乱立して Update() の switch 文が爆発。',
+      afterSkill: 'C++20 コルーチン（co_await / co_yield）による中断と再開。Promise型・Handle・Awaiterの内部構造理解と直線的シナリオ記述。',
+      gameEvolution: 'ボスの時間差ウェーブ攻撃やプロシージャル弾幕生成が、直線的で美しいゼロオーバーヘッドコードで動作！',
+      techKeywords: ['C++20 コルーチン', 'co_await / co_yield', 'Promise型', 'Awaiter', '非同期ゲームタスク'],
+    },
+    18: {
+      architecturalRole: 'C++20 コンセプト（Concepts）＆契約プログラミング型制約',
+      beforePain: 'テンプレートに間違った型を渡した瞬間、数百行の解読不能な暗号エラーが吐き出され、SFINAEの黒魔術で可読性が崩壊。',
+      afterSkill: 'C++20 concepts と requires 節による自己文書化された型契約。包摂関係によるオーバーロードの賢い自動優先選択。',
+      gameEvolution: 'あらゆるゲームオブジェクト（自機/敵/弾）を安全に受け取れる強固なゼロオーバーヘッド衝突判定システムが完成！',
+      techKeywords: ['C++20 Concepts', 'requires節', '型制約', '自己文書化ジェネリクス', '包摂オーバーロード'],
+    },
+    19: {
+      architecturalRole: 'C++20 Ranges & Views ＆ 関数型ゼロアロケーションパイプライン',
+      beforePain: '「生存中かつ特定HP以下の敵」を抽出するためにネストしたfor/if文が積み重なり、中間 vector へのコピーでヒープを浪費。',
+      afterSkill: 'std::views とパイプ演算子（|）による遅延評価（Lazy Evaluation）。中間配列を作らないゼロヒープアロケーション走査と射影（Projection）。',
+      gameEvolution: '防空レーダー索敵や優先迎撃ターゲット選定が、たった1行の美しい関数型パイプラインで超高速稼働！',
+      techKeywords: ['C++20 Ranges', 'std::views', 'パイプライン演算子 (|)', '遅延評価 (Lazy Evaluation)', '射影 (Projection)'],
+    },
+    20: {
+      architecturalRole: 'C++20 モジュール（Modules）＆ヘッダレス超高速ビルド境界',
+      beforePain: '#include テキストコピペによるマクロ汚染（windows.h の min/max 破壊）、多重パースによる数十分のビルド待ち地獄。',
+      afterSkill: 'C++20 モジュール（export module / import）による完全なマクロ隔離とカプセル化。BMI（バイナリ中間表現）によるビルド時間1/5化。',
+      gameEvolution: '巨大化したゲームエンジン全体が数秒で瞬時にビルド完了！第1章スパゲティから辿り着いた現代C++の最高到達点！',
+      techKeywords: ['C++20 Modules', 'export / import', 'マクロ完全隔離', 'BMI高速ビルド', 'モジュールパーティション'],
+    },
     201: {
       architecturalRole: '手続き型データフロー＆状態変数ライフサイクルの解読',
       beforePain: '何百行もある手続き型コードで、変数がどこで宣言され、ループ内でどう書き換わっているか見失う。',
@@ -1210,9 +1238,9 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
           <div className="rounded-2xl border-2 border-cyan-500/30 bg-gradient-to-b from-cyan-950/20 via-slate-900/90 to-slate-950 p-6 sm:p-8 space-y-5 shadow-xl relative overflow-hidden">
             <div className="flex items-center justify-between">
               <span className="text-xs font-mono font-bold px-3 py-1 rounded-full bg-cyan-950 text-cyan-300 border border-cyan-500/40 flex items-center gap-1.5">
-                <span>🚀 モダンコース（全4章）</span>
+                <span>🚀 モダンコース（全8章）</span>
               </span>
-              <span className="text-xs font-mono text-slate-400">C++11 〜 C++17 基準</span>
+              <span className="text-xs font-mono text-slate-400">C++11 〜 C++20 基準</span>
             </div>
 
             <div className="space-y-2">
@@ -1220,13 +1248,13 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
                 <span>モダンC++・新世代設計編</span>
               </h3>
               <p className="text-xs sm:text-sm text-slate-300 leading-relaxed font-sans">
-                スマートポインタによる「生new/deleteの完全撲滅」、巨大データのコピーをゼロコスト化する「ムーブセマンティクス（T&&）」、ラムダ式、そして深い継承ツリーの崩壊（菱形継承の死）を乗り越える最先端の「継承より合成（ECS）」まで、新世代のソフトウェアアーキテクチャを身につけます。
+                スマートポインタによる「生new/deleteの完全撲滅」、巨大データのコピーをゼロコスト化する「ムーブセマンティクス（T&&）」、ラムダ式、最先端の「継承より合成（ECS）」から、C++20 の4大新機能「コルーチン」「コンセプト」「Ranges」「モジュール」まで、新世代のソフトウェアアーキテクチャを完全に身につけます。
               </p>
             </div>
 
             {/* 学べる章一覧 */}
             <div className="space-y-2 pt-2 border-t border-slate-800">
-              <span className="text-xs font-mono font-bold text-cyan-300 block">カリキュラム構成 (M1〜M4) :</span>
+              <span className="text-xs font-mono font-bold text-cyan-300 block">カリキュラム構成 (M1〜M8) :</span>
               <ul className="text-xs sm:text-sm text-slate-300 space-y-1.5 font-mono">
                 <li className="flex items-center gap-2">
                   <span className="text-cyan-400 font-bold">M1:</span> スマートポインタとRAII（unique_ptr, shared_ptr, 所有権規律）
@@ -1239,6 +1267,18 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
                 </li>
                 <li className="flex items-center gap-2">
                   <span className="text-cyan-400 font-bold">M4:</span> 現代的型システム（std::variant, optional, constexpr）
+                </li>
+                <li className="flex items-center gap-2">
+                  <span className="text-cyan-400 font-bold">M5:</span> C++20 コルーチン（co_await / co_yield, 非同期ゲームタスク）
+                </li>
+                <li className="flex items-center gap-2">
+                  <span className="text-cyan-400 font-bold">M6:</span> C++20 コンセプト（requires節, 型制約, 暗号エラー撲滅）
+                </li>
+                <li className="flex items-center gap-2">
+                  <span className="text-cyan-400 font-bold">M7:</span> C++20 Ranges & Views（パイプライン演算子, 遅延評価, ゼロアロケーション）
+                </li>
+                <li className="flex items-center gap-2">
+                  <span className="text-cyan-400 font-bold">M8:</span> C++20 モジュール（export / import, ヘッダ地獄脱却, 超高速ビルド）
                 </li>
               </ul>
             </div>

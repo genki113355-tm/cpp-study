@@ -103,6 +103,30 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://shirokuma-cpp.jp/chapter-modern-5-coroutines</loc>
+    <lastmod>2026-09-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://shirokuma-cpp.jp/chapter-modern-6-concepts</loc>
+    <lastmod>2026-09-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://shirokuma-cpp.jp/chapter-modern-7-ranges-views</loc>
+    <lastmod>2026-09-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://shirokuma-cpp.jp/chapter-modern-8-modules</loc>
+    <lastmod>2026-09-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://shirokuma-cpp.jp/reading-step-1</loc>
     <lastmod>2026-09-17</lastmod>
     <changefreq>monthly</changefreq>

@@ -294,6 +294,6 @@ void applyItemEffect(PlayerShip& player, const ItemData& item) {
     }
   ],
   prevChapterSlug: 'chapter-7-advanced-ecs-patterns',
-  nextChapterSlug: undefined
+  nextChapterSlug: 'chapter-modern-5-coroutines'
 };
 
