@@ -1465,10 +1465,10 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
                         : 'bg-cyan-950/80 border-cyan-500/40 text-cyan-300'
                     }`}>
                       {isReading
-                        ? `🧭 読解 【R】${code}`
+                        ? `🧭 読解 【R】Step ${code.replace(/^[CMR]/, '')}`
                         : isClassic
-                        ? `🏛️ レガシー 【L】第${code.replace(/^[CM]/, '')}章`
-                        : `🚀 モダン 【M】第${code.replace(/^[CM]/, '')}章`}
+                        ? `🏛️ レガシー 【L】第${code.replace(/^[CML]/, '')}章`
+                        : `🚀 モダン 【M】第${code.replace(/^[CML]/, '')}章`}
                     </span>
                     <span className="font-mono text-xs px-2.5 py-0.5 rounded bg-slate-800 text-slate-300 border border-slate-700">
                       {chapter.badge}

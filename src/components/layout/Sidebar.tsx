@@ -90,10 +90,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
         {/* カリキュラム章リスト */}
         <div className="p-3 space-y-2">
           {/* コース切り替えタブボタン */}
-          <div className="grid grid-cols-5 gap-1 p-1 bg-slate-900 rounded-xl border border-slate-800 text-[10px] font-mono">
+          <div className="grid grid-cols-5 gap-1 p-1 bg-slate-900 rounded-xl border border-slate-800 text-[9.5px] sm:text-[10px] font-mono whitespace-nowrap select-none">
             <button
               onClick={() => setActiveTab('all')}
-              className={`py-1 rounded-lg font-bold transition text-center ${
+              className={`py-1 rounded-lg font-bold transition text-center whitespace-nowrap px-0.5 ${
                 activeTab === 'all'
                   ? 'bg-slate-700 text-white shadow'
                   : 'text-slate-400 hover:text-slate-200'
@@ -103,7 +103,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
             </button>
             <button
               onClick={() => setActiveTab('classic')}
-              className={`py-1 rounded-lg font-bold transition text-center ${
+              className={`py-1 rounded-lg font-bold transition text-center whitespace-nowrap px-0.5 ${
                 activeTab === 'classic'
                   ? 'bg-amber-500 text-slate-950 shadow'
                   : 'text-slate-400 hover:text-amber-300'
@@ -113,7 +113,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
             </button>
             <button
               onClick={() => setActiveTab('modern')}
-              className={`py-1 rounded-lg font-bold transition text-center ${
+              className={`py-1 rounded-lg font-bold transition text-center whitespace-nowrap px-0.5 ${
                 activeTab === 'modern'
                   ? 'bg-cyan-500 text-slate-950 shadow'
                   : 'text-slate-400 hover:text-cyan-300'
@@ -123,7 +123,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
             </button>
             <button
               onClick={() => setActiveTab('reading')}
-              className={`py-1 rounded-lg font-bold transition text-center ${
+              className={`py-1 rounded-lg font-bold transition text-center whitespace-nowrap px-0.5 ${
                 activeTab === 'reading'
                   ? 'bg-purple-500 text-slate-950 shadow'
                   : 'text-slate-400 hover:text-purple-300'
@@ -133,7 +133,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
             </button>
             <button
               onClick={() => setActiveTab('guide')}
-              className={`py-1 rounded-lg font-bold transition text-center ${
+              className={`py-1 rounded-lg font-bold transition text-center whitespace-nowrap px-0.5 ${
                 activeTab === 'guide'
                   ? 'bg-emerald-500 text-slate-950 shadow'
                   : 'text-slate-400 hover:text-emerald-300'
@@ -172,15 +172,15 @@ export const Sidebar: React.FC<SidebarProps> = ({
           {/* 🏛️ レガシーC++コースセクション */}
           {(activeTab === 'all' || activeTab === 'classic') && (
             <div className="space-y-1.5 pt-2">
-              <div className="px-2 py-1 text-[11px] font-mono font-bold text-amber-400/90 uppercase tracking-wider flex items-center justify-between">
-                <span>🏛️ レガシーC++コース（現場実務・C++03）</span>
-                <span className="text-[10px] bg-amber-950/80 text-amber-300 px-1.5 py-0.5 rounded border border-amber-500/30">L1〜L{CLASSIC_CHAPTERS.length}</span>
+              <div className="px-2 py-1 text-[11px] font-mono font-bold text-amber-400/90 uppercase tracking-wider flex items-center justify-between gap-1">
+                <span className="truncate">🏛️ レガシーC++（現場実務）</span>
+                <span className="text-[10px] bg-amber-950/80 text-amber-300 px-1.5 py-0.5 rounded border border-amber-500/30 flex-shrink-0">L1〜L{CLASSIC_CHAPTERS.length}</span>
               </div>
 
               {CLASSIC_CHAPTERS.map((ch) => {
                 const isActive = ch.slug === currentChapterSlug;
                 const isCompleted = completedChapters.includes(ch.id);
-                const chNum = (ch.courseChapterCode || `C${ch.id}`).replace(/^[CM]/, '');
+                const chNum = (ch.courseChapterCode || `C${ch.id}`).replace(/^[CML]/, '');
 
                 return (
                   <div
@@ -237,15 +237,15 @@ export const Sidebar: React.FC<SidebarProps> = ({
           {/* 🚀 モダンコースセクション */}
           {(activeTab === 'all' || activeTab === 'modern') && (
             <div className="space-y-1.5 pt-2">
-              <div className="px-2 py-1 text-[11px] font-mono font-bold text-cyan-400/90 uppercase tracking-wider flex items-center justify-between">
-                <span>🚀 モダンコース（モダンC++・新世代）</span>
-                <span className="text-[10px] bg-cyan-950/80 text-cyan-300 px-1.5 py-0.5 rounded border border-cyan-500/30">M1〜M{MODERN_CHAPTERS.length}</span>
+              <div className="px-2 py-1 text-[11px] font-mono font-bold text-cyan-400/90 uppercase tracking-wider flex items-center justify-between gap-1">
+                <span className="truncate">🚀 モダンC++（新世代）</span>
+                <span className="text-[10px] bg-cyan-950/80 text-cyan-300 px-1.5 py-0.5 rounded border border-cyan-500/30 flex-shrink-0">M1〜M{MODERN_CHAPTERS.length}</span>
               </div>
 
               {MODERN_CHAPTERS.map((ch) => {
                 const isActive = ch.slug === currentChapterSlug;
                 const isCompleted = completedChapters.includes(ch.id);
-                const chNum = (ch.courseChapterCode || `M${ch.id}`).replace(/^[CM]/, '');
+                const chNum = (ch.courseChapterCode || `M${ch.id}`).replace(/^[CML]/, '');
 
                 return (
                   <div
@@ -302,9 +302,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
           {/* 🧭 コード読解演習トラックセクション */}
           {(activeTab === 'all' || activeTab === 'reading') && (
             <div className="space-y-1.5 pt-3 border-t border-slate-800/80">
-              <div className="px-2 py-1 text-[11px] font-mono font-bold text-purple-400/90 uppercase tracking-wider flex items-center justify-between">
-                <span>🧭 コード読解演習トラック</span>
-                <span className="text-[10px] bg-purple-950/80 text-purple-300 px-1.5 py-0.5 rounded border border-purple-500/30">
+              <div className="px-2 py-1 text-[11px] font-mono font-bold text-purple-400/90 uppercase tracking-wider flex items-center justify-between gap-1">
+                <span className="truncate">🧭 コード読解（現場鑑識）</span>
+                <span className="text-[10px] bg-purple-950/80 text-purple-300 px-1.5 py-0.5 rounded border border-purple-500/30 flex-shrink-0">
                   R1〜R{READING_CHAPTERS.length}
                 </span>
               </div>
@@ -312,7 +312,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
               {READING_CHAPTERS.map((ch) => {
                 const isActive = ch.slug === currentChapterSlug;
                 const isCompleted = completedChapters.includes(ch.id);
-                const chNum = (ch.courseChapterCode || `R${ch.id}`).replace(/^[CM]/, '');
+                const chNum = (ch.courseChapterCode || `R${ch.id}`).replace(/^[CMR]/, '');
 
                 return (
                   <div
@@ -347,7 +347,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                           isActive ? 'text-purple-300' : 'text-slate-200'
                         }`}
                       >
-                        【R】{ch.courseChapterCode || `Step ${chNum}`}
+                        【R】Step {chNum}
                       </span>
                     </div>
 
@@ -369,9 +369,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
           {/* 📚 特集ガイド＆実践コラムセクション */}
           {(activeTab === 'all' || activeTab === 'guide') && (
             <div className="space-y-1.5 pt-3 border-t border-slate-800/80">
-              <div className="px-2 py-1 text-[11px] font-mono font-bold text-emerald-400/90 uppercase tracking-wider flex items-center justify-between">
-                <span>📚 特集ガイド＆品質保証</span>
-                <span className="text-[10px] bg-emerald-950/80 text-emerald-300 px-1.5 py-0.5 rounded border border-emerald-500/30">現場手引き</span>
+              <div className="px-2 py-1 text-[11px] font-mono font-bold text-emerald-400/90 uppercase tracking-wider flex items-center justify-between gap-1">
+                <span className="truncate">📚 特集ガイド＆コラム</span>
+                <span className="text-[10px] bg-emerald-950/80 text-emerald-300 px-1.5 py-0.5 rounded border border-emerald-500/30 flex-shrink-0">現場手引き</span>
               </div>
 
               {SPECIAL_GUIDES.map((guide) => {

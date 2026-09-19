@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { Chapter, CodeHighlightTarget, CodeFile } from '../../types/curriculum';
-import { CLASSIC_CHAPTERS, MODERN_CHAPTERS } from '../../data/chapters';
+import { CLASSIC_CHAPTERS, MODERN_CHAPTERS, READING_CHAPTERS } from '../../data/chapters';
 import { DialogueBubble } from './DialogueBubble';
 import { CodeViewer } from './CodeViewer';
 import { ConceptDiagram } from './ConceptDiagram';
@@ -38,20 +38,24 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
   const allCodeFiles = useMemo(() => {
     const files: CodeFile[] = [];
     const seen = new Set<string>();
+
     chapter.sections.forEach((s) => {
-      (s.codeFiles || []).forEach((f) => {
-        if (!seen.has(f.filename)) {
-          seen.add(f.filename);
-          files.push(f);
-        }
-      });
+      if (s.codeFiles) {
+        s.codeFiles.forEach((f) => {
+          if (!seen.has(f.filename)) {
+            seen.add(f.filename);
+            files.push(f);
+          }
+        });
+      }
     });
+
     return files;
   }, [chapter]);
 
-  const handleSelectOption = (quizId: string, optionIndex: number, correctIndex: number) => {
-    setSelectedAnswers((prev) => ({ ...prev, [quizId]: optionIndex }));
-    setShowExplanations((prev) => ({ ...prev, [quizId]: true }));
+  const handleSelectOption = (questionId: string, optionIndex: number, correctIndex: number) => {
+    setSelectedAnswers((prev) => ({ ...prev, [questionId]: optionIndex }));
+    setShowExplanations((prev) => ({ ...prev, [questionId]: true }));
 
     if (optionIndex === correctIndex) {
       confetti({
@@ -64,6 +68,7 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
   };
 
   const isClassic = chapter.courseTrack === 'classic';
+  const isReading = chapter.courseTrack === 'reading';
   const isGuide = chapter.courseTrack === 'guide' || chapter.category === 'guide' || chapter.category === 'column';
   const code = chapter.courseChapterCode || `Ch.${chapter.id}`;
 
@@ -84,31 +89,39 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
         </span>
       );
     }
+    if (isReading) {
+      return (
+        <span className="text-xs sm:text-sm font-mono font-bold uppercase tracking-widest px-3.5 py-1.5 rounded-full border flex items-center gap-2 shadow-sm bg-purple-950/80 text-purple-300 border-purple-500/40">
+          <span className="w-2.5 h-2.5 rounded-full animate-ping inline-block bg-purple-400" />
+          🧭 コード読解演習トラック 【R】Step {code.replace(/^[CMR]/, '')}
+        </span>
+      );
+    }
     if (isClassic) {
       return (
         <span className="text-xs sm:text-sm font-mono font-bold uppercase tracking-widest px-3.5 py-1.5 rounded-full border flex items-center gap-2 shadow-sm bg-amber-950/80 text-amber-300 border-amber-500/40">
           <span className="w-2.5 h-2.5 rounded-full animate-ping inline-block bg-amber-400" />
-          🏛️ レガシーC++コース 【L】第{code.replace(/^[CM]/, '')}章
+          🏛️ レガシーC++コース 【L】第{code.replace(/^[CML]/, '')}章
         </span>
       );
     }
     return (
       <span className="text-xs sm:text-sm font-mono font-bold uppercase tracking-widest px-3.5 py-1.5 rounded-full border flex items-center gap-2 shadow-sm bg-cyan-950/80 text-cyan-300 border-cyan-500/40">
         <span className="w-2.5 h-2.5 rounded-full animate-ping inline-block bg-cyan-400" />
-        🚀 モダンコース 【M】第{code.replace(/^[CM]/, '')}章
+        🚀 モダンコース 【M】第{code.replace(/^[CML]/, '')}章
       </span>
     );
   };
 
   const getBorderColor = () => {
-    if (chapter.category === 'column') return 'border-purple-500/30';
+    if (chapter.category === 'column' || isReading) return 'border-purple-500/30';
     if (isGuide) return 'border-emerald-500/30';
     if (isClassic) return 'border-amber-500/30';
     return 'border-cyan-500/30';
   };
 
   const getGlowColor = () => {
-    if (chapter.category === 'column') return 'bg-purple-500/10';
+    if (chapter.category === 'column' || isReading) return 'bg-purple-500/10';
     if (isGuide) return 'bg-emerald-500/10';
     if (isClassic) return 'bg-amber-500/10';
     return 'bg-cyan-500/10';
@@ -526,7 +539,9 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
           <button
             onClick={() => onNavigate(chapter.nextChapterSlug!)}
             className={`flex items-center gap-2.5 px-7 py-3.5 rounded-xl font-bold text-sm sm:text-base font-mono transition shadow-xl active:scale-95 ml-auto text-slate-950 ${
-              isClassic
+              isReading
+                ? 'bg-purple-500 hover:bg-purple-400 shadow-purple-500/30'
+                : isClassic
                 ? 'bg-amber-500 hover:bg-amber-400 shadow-amber-500/20'
                 : 'bg-cyan-500 hover:bg-cyan-400 shadow-cyan-500/30'
             }`}
@@ -541,13 +556,15 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
               <span>
                 {isGuide
                   ? `🎉 本ガイド・コラムの読了お疲れ様でした！実践・学習にお役立てください！`
+                  : isReading
+                  ? `🧭 コード読解演習トラック（全${READING_CHAPTERS.length}ステップ）読了！現場鑑識の基礎を制覇しました！🎓`
                   : isClassic
                   ? `🏛️ レガシーC++コース（現行${CLASSIC_CHAPTERS.length}章）読破！お疲れ様でした！🎓`
                   : `🚀 モダンコース（現行${MODERN_CHAPTERS.length}章）読破！お疲れ様でした！🎓`}
               </span>
             </span>
 
-            {/* ガイド以外の場合はもう片方のコースへの誘導ボタン */}
+            {/* ガイド以外の場合は他コースへの誘導ボタン */}
             {!isGuide && (
               isClassic ? (
                 <button
@@ -555,6 +572,14 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
                   className="flex items-center gap-2 px-5 py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-bold font-mono text-xs sm:text-sm transition shadow-lg shadow-cyan-500/30 active:scale-95"
                 >
                   <span>🚀 モダン【M】第1章へ挑戦する</span>
+                  <ArrowRight className="w-4 h-4" />
+                </button>
+              ) : isReading ? (
+                <button
+                  onClick={() => onNavigate('chapter-1-spaghetti-to-oop')}
+                  className="flex items-center gap-2 px-5 py-3 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-bold font-mono text-xs sm:text-sm transition shadow-lg shadow-amber-500/20 active:scale-95"
+                >
+                  <span>🏛️ レガシー【L】第1章へ挑戦する</span>
                   <ArrowRight className="w-4 h-4" />
                 </button>
               ) : (

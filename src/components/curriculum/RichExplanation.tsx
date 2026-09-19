@@ -48,8 +48,8 @@ export const RichExplanation: React.FC<RichExplanationProps> = ({ content }) => 
             <thead className="bg-slate-900 text-cyan-300 font-mono border-b border-slate-800">
               <tr>
                 {headerRow.map((h, i) => (
-                  <th key={i} className="p-3 font-bold">
-                    {h.trim()}
+                  <th key={i} className="p-3 font-bold align-top whitespace-nowrap sm:whitespace-normal">
+                    {renderFormattedText(h.trim())}
                   </th>
                 ))}
               </tr>
@@ -58,7 +58,7 @@ export const RichExplanation: React.FC<RichExplanationProps> = ({ content }) => 
               {bodyRows.map((row, rIdx) => (
                 <tr key={rIdx} className="hover:bg-slate-900/40 transition-colors">
                   {row.map((cell, cIdx) => (
-                    <td key={cIdx} className="p-3">
+                    <td key={cIdx} className="p-3 align-top leading-relaxed">
                       {renderFormattedText(cell.trim())}
                     </td>
                   ))}
@@ -186,7 +186,22 @@ export const RichExplanation: React.FC<RichExplanationProps> = ({ content }) => 
       continue;
     }
 
-    // 見出し ###
+    // 見出し #### (小見出し)
+    if (trimmed.startsWith("####")) {
+      const headingText = trimmed.replace(/^####\s*/, "").replace(/^[■\s]*/, "");
+      renderedElements.push(
+        <h5
+          key={`h5-${i}`}
+          className="text-base sm:text-lg font-bold text-slate-100 font-mono pt-4 pb-1 flex items-center gap-2.5 text-cyan-200"
+        >
+          <span className="w-1.5 h-4 bg-cyan-400/80 rounded-sm flex-shrink-0" />
+          <span>{renderFormattedText(headingText)}</span>
+        </h5>
+      );
+      continue;
+    }
+
+    // 見出し ### (大見出し)
     if (trimmed.startsWith("###")) {
       const headingText = trimmed.replace(/^###\s*/, "").replace(/^[■\s]*/, "");
       renderedElements.push(
@@ -194,8 +209,8 @@ export const RichExplanation: React.FC<RichExplanationProps> = ({ content }) => 
           key={`h4-${i}`}
           className="text-lg sm:text-xl md:text-2xl font-bold text-cyan-300 font-mono pt-5 pb-2 border-b border-slate-800/80 flex items-center gap-3"
         >
-          <span className="w-2.5 h-5 bg-cyan-400 rounded-sm" />
-          <span>{headingText}</span>
+          <span className="w-2.5 h-5 bg-cyan-400 rounded-sm flex-shrink-0" />
+          <span>{renderFormattedText(headingText)}</span>
         </h4>
       );
       continue;
@@ -268,29 +283,48 @@ export const RichExplanation: React.FC<RichExplanationProps> = ({ content }) => 
   );
 };
 
-// **太字** と `インラインコード` のレンダリングヘルパー
+// **太字**、`インラインコード`、*イタリック*、および <br> 改行タグのレンダリングヘルパー
 function renderFormattedText(text: string): React.ReactNode {
-  const parts = text.split(/(\*\*.*?\*\*|`.*?`)/g);
+  // 1. <br> または <br/> または <br /> で分割
+  const brSegments = text.split(/<br\s*\/?>/gi);
 
-  return parts.map((part, i) => {
-    if (part.startsWith("**") && part.endsWith("**")) {
-      return (
-        <strong key={i} className="font-bold text-cyan-200">
-          {part.slice(2, -2)}
-        </strong>
-      );
-    }
-    if (part.startsWith("`") && part.endsWith("`")) {
-      return (
-        <code
-          key={i}
-          className="px-2 py-0.5 rounded bg-slate-950 text-cyan-300 font-mono text-xs sm:text-sm border border-slate-800 mx-0.5"
-        >
-          {part.slice(1, -1)}
-        </code>
-      );
-    }
-    return part;
+  return brSegments.map((segment, segIdx) => {
+    // 2. **太字**、`コード`、*斜体* で分割
+    const parts = segment.split(/(\*\*.*?\*\*|`.*?`|\*.*?\*)/g);
+    const content = parts.map((part, i) => {
+      if (part.startsWith("**") && part.endsWith("**")) {
+        return (
+          <strong key={i} className="font-bold text-cyan-200">
+            {part.slice(2, -2)}
+          </strong>
+        );
+      }
+      if (part.startsWith("`") && part.endsWith("`")) {
+        return (
+          <code
+            key={i}
+            className="px-2 py-0.5 rounded bg-slate-950 text-cyan-300 font-mono text-xs sm:text-sm border border-slate-800 mx-0.5"
+          >
+            {part.slice(1, -1)}
+          </code>
+        );
+      }
+      if (part.startsWith("*") && part.endsWith("*") && !part.startsWith("**")) {
+        return (
+          <em key={i} className="italic text-slate-400">
+            {part.slice(1, -1)}
+          </em>
+        );
+      }
+      return part;
+    });
+
+    return (
+      <React.Fragment key={segIdx}>
+        {segIdx > 0 && <br />}
+        {content}
+      </React.Fragment>
+    );
   });
 }
 

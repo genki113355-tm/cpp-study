@@ -121,7 +121,7 @@ export const CodeViewer: React.FC<CodeViewerProps> = ({ files, targetHighlight }
     <div className="rounded-xl overflow-hidden border border-slate-800 bg-[#0c121e] shadow-2xl my-6">
       {/* 上部ヘッダー：タブバー */}
       <div className="flex items-center justify-between bg-slate-900/90 border-b border-slate-800 px-4 py-2.5 flex-wrap gap-2.5">
-        <div className="flex items-center gap-1.5 overflow-x-auto max-w-full pb-1 sm:pb-0 scrollbar-none">
+        <div className="flex items-center gap-1.5 overflow-x-auto max-w-full pb-1 sm:pb-0 no-scrollbar select-none">
           {files.map((file, idx) => {
             const isActive = idx === activeTab;
             const isHeader = file.filename.endsWith('.h');
@@ -129,20 +129,20 @@ export const CodeViewer: React.FC<CodeViewerProps> = ({ files, targetHighlight }
               <button
                 key={file.filename}
                 onClick={() => setActiveTab(idx)}
-                className={`flex items-center gap-2 px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-mono transition-all duration-150 ${
+                className={`flex items-center gap-2 px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-mono transition-all duration-150 flex-shrink-0 whitespace-nowrap ${
                   isActive
                     ? 'bg-slate-800 text-cyan-400 border border-cyan-500/50 shadow-md font-bold'
                     : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'
                 }`}
               >
                 {isHeader ? (
-                  <FileText className="w-4 h-4 text-purple-400" />
+                  <FileText className="w-4 h-4 text-purple-400 flex-shrink-0" />
                 ) : (
-                  <FileCode className="w-4 h-4 text-cyan-400" />
+                  <FileCode className="w-4 h-4 text-cyan-400 flex-shrink-0" />
                 )}
                 <span>{file.filename}</span>
                 {file.isMain && (
-                  <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
+                  <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse flex-shrink-0" />
                 )}
               </button>
             );
@@ -217,10 +217,10 @@ export const CodeViewer: React.FC<CodeViewerProps> = ({ files, targetHighlight }
                 key={line.lineNumber}
                 className={`flex items-stretch transition-all duration-300 ${
                   isBlinking
-                    ? 'bg-amber-500/30 border-l-4 border-amber-400 pl-3 -ml-4 pr-4 shadow-lg shadow-amber-500/20'
+                    ? 'bg-amber-500/30 border-l-4 border-amber-400 pl-3 pr-4 shadow-lg shadow-amber-500/20'
                     : isHighlighted
-                    ? 'bg-cyan-500/10 border-l-4 border-cyan-400 pl-3 -ml-4 pr-4'
-                    : 'hover:bg-slate-800/30 px-4'
+                    ? 'bg-cyan-500/10 border-l-4 border-cyan-400 pl-3 pr-4'
+                    : 'border-l-4 border-transparent pl-3 pr-4 hover:bg-slate-800/30'
                 }`}
               >
                 {/* 行番号 */}
