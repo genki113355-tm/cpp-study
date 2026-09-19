@@ -16,6 +16,7 @@ import { AffiliatePromoBanner } from '../affiliate/AffiliatePromoBanner';
 import { ShareButtons } from '../common/ShareButtons';
 import { CodeChallengeRunner } from '../playground/CodeChallengeRunner';
 import { CODING_CHALLENGES } from '../../data/codingChallenges';
+import { getChapterEvolution } from '../../data/chapterEvolution';
 
 interface ChapterViewProps {
   chapter: Chapter;
@@ -199,25 +200,38 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
       </div>
 
       {/* ブラウザ内インベーダーゲームエミュレータ（ゲーム章のみ） */}
-      {chapter.gameVersion && chapter.gameVersion !== 'none' && (
-        <section>
-          <div className="flex items-center justify-between mb-3 flex-wrap gap-2">
-            <h2 className="text-xl sm:text-2xl font-bold text-white flex items-center gap-2 font-mono">
-              <span className="text-cyan-400">#</span>
-              <span>実機エミュレータ：{code} {chapter.title}</span>
-            </h2>
-            <span className="text-xs sm:text-sm text-slate-400 font-mono">
-              キーボードまたはボタンで操作可能
-            </span>
-          </div>
-          <GameEmulator
-            key={chapter.slug}
-            version={chapter.gameVersion}
-            chapterCode={code}
-            chapterTitle={chapter.title}
-          />
-        </section>
-      )}
+      {chapter.gameVersion && chapter.gameVersion !== 'none' && (() => {
+        const evolution = getChapterEvolution(code, chapter.gameVersion);
+        return (
+          <section className="space-y-2">
+            <div className="flex items-center justify-between flex-wrap gap-2">
+              <div>
+                <h2 className="text-xl sm:text-2xl font-bold text-white flex items-center gap-2 font-mono">
+                  <span className="text-cyan-400">#</span>
+                  <span>実機エミュレータ：{code} {chapter.title}</span>
+                </h2>
+                <div className="mt-1 flex items-center gap-2 flex-wrap text-xs sm:text-sm font-mono">
+                  <span className="px-2 py-0.5 rounded bg-amber-950/80 border border-amber-500/40 text-amber-300 font-bold flex items-center gap-1">
+                    <span>🔄 前の章からの進化点</span>
+                  </span>
+                  <span className="text-slate-300 font-medium">
+                    {evolution.headline}
+                  </span>
+                </div>
+              </div>
+              <span className="text-xs sm:text-sm text-slate-400 font-mono">
+                キーボードまたはボタンで操作可能
+              </span>
+            </div>
+            <GameEmulator
+              key={chapter.slug}
+              version={chapter.gameVersion}
+              chapterCode={code}
+              chapterTitle={chapter.title}
+            />
+          </section>
+        );
+      })()}
 
       {/* 📐 この章のプログラムに対応する公式UML設計書 */}
       {chapter.umlDiagram && (

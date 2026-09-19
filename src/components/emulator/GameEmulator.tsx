@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { RotateCcw, Sparkles, Terminal, Gamepad2, Info, Sliders, Smartphone, Pause, Play } from 'lucide-react';
 import confetti from 'canvas-confetti';
+import { getChapterEvolution } from '../../data/chapterEvolution';
 
 interface GameEmulatorProps {
   version: 'v1_spaghetti' | 'v2_classes' | 'v3_dynamic' | 'v4_polymorphism' | 'v5_smart_pointers' | 'v6_patterns' | 'v7_ecs_final';
@@ -127,6 +128,7 @@ export const GameEmulator: React.FC<GameEmulatorProps> = ({ version, chapterCode
   const [enemySpeedMul, setEnemySpeedMul] = useState<number>(1.0);
   const [sandboxTripleShot, setSandboxTripleShot] = useState<boolean>(false);
   const [showVirtualPad, setShowVirtualPad] = useState<boolean>(true);
+  const [showEvolutionDiff, setShowEvolutionDiff] = useState<boolean>(false);
 
   const invaderDirRef = useRef<number>(1);
   const invaderTimerRef = useRef<number>(0);
@@ -953,6 +955,7 @@ export const GameEmulator: React.FC<GameEmulatorProps> = ({ version, chapterCode
 
   const vInfo = getVersionBadge();
   const titleInfo = getTitleScreenInfo();
+  const evolution = getChapterEvolution(chapterCode, version);
   const activeUfo = invaders.find((inv) => inv.type === 'ufo' && inv.alive);
 
   return (
@@ -978,6 +981,19 @@ export const GameEmulator: React.FC<GameEmulatorProps> = ({ version, chapterCode
         </div>
 
         <div className="flex items-center gap-1.5 flex-wrap">
+          <button
+            onClick={() => setShowEvolutionDiff((prev) => !prev)}
+            className={`flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-mono font-bold transition border active:scale-95 shadow-sm ${
+              showEvolutionDiff
+                ? 'bg-amber-500 text-slate-950 border-amber-400 shadow-amber-500/30'
+                : 'bg-slate-800 hover:bg-slate-700 text-amber-300 border-amber-500/30'
+            }`}
+            title="前の章（前世代）とのゲーム機能・C++設計の進化差分を表示"
+          >
+            <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+            <span>前章からの変化</span>
+          </button>
+
           <button
             onClick={() => setIsSandboxOpen((prev) => !prev)}
             className={`flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-mono font-bold transition border active:scale-95 shadow-sm ${
@@ -1013,6 +1029,57 @@ export const GameEmulator: React.FC<GameEmulatorProps> = ({ version, chapterCode
           </button>
         </div>
       </div>
+
+      {/* 🔄 前章からの進化差分（Changelog）パネル */}
+      {showEvolutionDiff && (
+        <div className="mb-4 p-4 rounded-2xl bg-gradient-to-b from-slate-900/95 to-slate-950 border-2 border-amber-500/50 shadow-2xl space-y-3 font-mono text-xs sm:text-sm animate-fadeIn">
+          <div className="flex items-center justify-between border-b border-slate-800 pb-2.5 flex-wrap gap-2">
+            <div className="flex items-center gap-2 text-amber-300 font-bold">
+              <Sparkles className="w-4 h-4 text-amber-400" />
+              <span>🔄 前の章（{evolution.previousChapter}）との違い・進化差分</span>
+            </div>
+            <button
+              onClick={() => setShowEvolutionDiff(false)}
+              className="text-xs text-slate-400 hover:text-white underline font-mono"
+            >
+              閉じる
+            </button>
+          </div>
+
+          <div className="p-3 rounded-xl bg-amber-950/40 border border-amber-500/30 text-amber-200 text-xs sm:text-sm font-sans font-bold leading-relaxed">
+            ✨ {evolution.headline}
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+            {evolution.diffItems.map((item, idx) => (
+              <div key={idx} className="p-3 rounded-xl bg-slate-950 border border-slate-800 space-y-2 flex flex-col justify-between">
+                <div className="text-cyan-400 font-bold text-xs flex items-center gap-1.5 border-b border-slate-800/80 pb-1">
+                  <span>📌</span>
+                  <span>{item.label}</span>
+                </div>
+                <div className="space-y-1.5 flex-1">
+                  <div className="text-xs text-rose-300/90 bg-rose-950/40 p-2 rounded-lg border border-rose-900/40">
+                    <span className="font-bold text-rose-400 block text-[10px] mb-0.5">【前章での状態】</span>
+                    <span className="leading-snug">{item.before}</span>
+                  </div>
+                  <div className="text-xs text-emerald-300 bg-emerald-950/40 p-2 rounded-lg border border-emerald-900/40">
+                    <span className="font-bold text-emerald-400 block text-[10px] mb-0.5">【本章での進化！】</span>
+                    <span className="leading-snug font-semibold">{item.after}</span>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="p-3 rounded-xl bg-slate-950 border border-cyan-500/30 text-xs text-slate-300 flex items-start gap-2.5">
+            <Info className="w-4 h-4 text-cyan-400 flex-shrink-0 mt-0.5" />
+            <div className="leading-relaxed">
+              <span className="text-cyan-300 font-bold">💡 C++設計アーキテクチャの背景: </span>
+              <span className="font-sans">{evolution.cppArchitecturePoint}</span>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* C++定数・インタラクティブ実験室（サンドボックス）パネル */}
       {isSandboxOpen && (
@@ -1119,10 +1186,21 @@ export const GameEmulator: React.FC<GameEmulatorProps> = ({ version, chapterCode
         </div>
       )}
 
-      {/* バージョンごとの特徴ガイダンス */}
-      <div className="mb-2 px-3 py-1.5 rounded-lg bg-slate-900/80 border border-slate-800 text-xs text-slate-300 flex items-center gap-2 font-mono">
-        <Info className="w-4 h-4 text-cyan-400 flex-shrink-0" />
-        <span className="leading-relaxed">{vInfo.desc}</span>
+      {/* 🔄 前章からの進化クイックバー ＆ バージョンガイダンス */}
+      <div className="mb-2 px-3 py-1.5 rounded-lg bg-slate-900/80 border border-slate-800 text-xs text-slate-300 flex items-center justify-between gap-2 font-mono flex-wrap">
+        <div className="flex items-center gap-2 flex-1 min-w-0">
+          <span className="px-1.5 py-0.5 rounded bg-amber-950/80 border border-amber-500/40 text-amber-300 font-bold text-[10px] sm:text-[11px] flex-shrink-0 flex items-center gap-1">
+            <Sparkles className="w-3 h-3 text-amber-400" />
+            <span>前章（{evolution.previousChapter}）からの変化</span>
+          </span>
+          <span className="truncate text-slate-200 font-sans text-xs">{evolution.headline}</span>
+        </div>
+        <button
+          onClick={() => setShowEvolutionDiff((prev) => !prev)}
+          className="text-[11px] text-cyan-400 hover:text-cyan-300 underline flex-shrink-0 font-bold ml-auto"
+        >
+          {showEvolutionDiff ? '差分を閉じる ▲' : '前章との違いを見る ▼'}
+        </button>
       </div>
 
       {/* レトロCRT風コンソール画面 */}
@@ -1276,22 +1354,40 @@ export const GameEmulator: React.FC<GameEmulatorProps> = ({ version, chapterCode
                 </div>
               )}
 
-              {/* 特徴リスト */}
-              <div className="bg-slate-900/80 rounded-xl border border-slate-800 p-2.5 sm:p-3 text-left space-y-1.5 font-mono text-[11px] sm:text-xs text-slate-300">
-                <div className="text-cyan-400 font-bold mb-1 flex items-center gap-1.5 text-[11px] sm:text-xs">
-                  <Sparkles className="w-3.5 h-3.5" />
-                  <span>このバージョンのC++設計ポイント:</span>
-                </div>
-                {titleInfo.features.map((feat, idx) => (
-                  <div key={idx} className="flex items-start gap-1.5">
-                    <span className="text-cyan-400 font-bold">•</span>
-                    <span className="leading-snug">{feat}</span>
+              {/* 🔄 前章からのゲーム進化差分（Before / After 比較） */}
+              <div className="bg-slate-900/90 rounded-xl border-2 border-amber-500/40 p-2.5 sm:p-3 text-left space-y-2 font-mono text-[11px] sm:text-xs shadow-lg">
+                <div className="flex items-center justify-between gap-1 flex-wrap border-b border-slate-800 pb-1.5">
+                  <div className="text-amber-300 font-bold flex items-center gap-1.5 text-xs">
+                    <Sparkles className="w-3.5 h-3.5 text-amber-400 flex-shrink-0" />
+                    <span>前章（{evolution.previousChapter}）からの進化点:</span>
                   </div>
-                ))}
+                  <span className="text-[10px] text-slate-400">
+                    C++設計 ＆ ゲーム挙動差分
+                  </span>
+                </div>
+
+                <div className="text-amber-100 font-sans font-bold text-xs sm:text-sm leading-snug">
+                  ✨ {evolution.headline}
+                </div>
+
+                <div className="space-y-1.5 pt-0.5">
+                  {evolution.diffItems.map((item, idx) => (
+                    <div key={idx} className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 text-[10px] sm:text-[11px] bg-slate-950/70 p-1.5 rounded-lg border border-slate-800/80">
+                      <div className="text-rose-300/90 flex items-start gap-1">
+                        <span className="text-rose-400 font-bold flex-shrink-0">【前章】</span>
+                        <span className="leading-tight">{item.before}</span>
+                      </div>
+                      <div className="text-emerald-300 flex items-start gap-1">
+                        <span className="text-emerald-400 font-bold flex-shrink-0">【本章】</span>
+                        <span className="leading-tight font-bold">{item.after}</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
 
-              <p className="text-[10px] sm:text-xs text-slate-400 font-mono italic">
-                💡 {titleInfo.hint}
+              <p className="text-[10px] sm:text-xs text-slate-400 font-mono italic leading-relaxed text-left px-1">
+                💡 <span className="text-cyan-300 font-bold">C++設計の狙い: </span>{evolution.cppArchitecturePoint}
               </p>
 
               {/* スタートボタン */}
