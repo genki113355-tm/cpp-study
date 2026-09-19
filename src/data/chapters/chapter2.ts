@@ -330,7 +330,59 @@ public:
     int getX() const { return m_x; }
     int getY() const { return m_y; }
 };
-`
+`,
+          lineExplanations: [
+            {
+              line: 1,
+              title: '多重インクルード防止ガード',
+              summary: 'このヘッダファイルが複数の .cpp から重複して読み込まれ、型が二重定義エラーを起こすのを防ぐコンパイラ指示文です。',
+              tokens: [
+                { token: '#pragma', explanation: 'コンパイラへの直接の特別指令記号' },
+                { token: 'once', explanation: '「1回のビルドで1度だけ読み込め」という標準的指示' }
+              ],
+              pitfall: 'これを書かないと、複数のソースからインクルードされた際に「クラスの再定義エラー」となりビルドが失敗します。'
+            },
+            {
+              line: 5,
+              title: 'カプセル化（データ隠蔽境界）',
+              summary: 'これより下に書かれた変数や関数は、クラスの外部（main関数など）から直接触ることが一切できなくなります。',
+              tokens: [
+                { token: 'private', explanation: 'アクセス指定子。クラス内部のメンバ関数からしかアクセスできない私有領域' },
+                { token: ':', explanation: 'ここから非公開スコープが始まる区切り' }
+              ],
+              pitfall: 'もし公開（public）のままにしておくと、不注意なコードが player.m_x = -999; と画面外へワープさせてしまい、バグ調査で全コードを捜索する羽目になります。'
+            },
+            {
+              line: 10,
+              title: 'コンストラクタ宣言（生成時の初期状態を強制）',
+              summary: 'Playerオブジェクトが生み出される瞬間に自動実行される特殊関数。初期座標（startX, startY）を受け取ることを義務付けます。',
+              tokens: [
+                { token: 'Player', explanation: '戻り値のない、クラス名と同名の特殊関数（コンストラクタ）' },
+                { token: '(int startX, int startY)', explanation: '生成時に外部から渡されなければならない必須の初期パラメータ' }
+              ],
+              pitfall: '初期化関数を用意せずに放置すると、変数が不定値（メモリのゴミデータ）のまま動いてしまい、起動直後にクラッシュする原因になります。'
+            },
+            {
+              line: 14,
+              title: 'オブジェクト間協調（参照渡しによる直接操作）',
+              summary: '弾（Bullet）の実体への参照を受け取り、自機の頭上から発射させます。弾のデータを無駄にコピーせず、元の実体を直接書き換えます。',
+              tokens: [
+                { token: 'Bullet&', explanation: '型名の後ろの & は「参照（エイリアス）」。巨大な実体をコピーせず呼び出し元の実体を直接指す' },
+                { token: 'bullet', explanation: '操作対象となる弾オブジェクトの引数名' }
+              ],
+              pitfall: '& を付け忘れて値渡し（Bullet bullet）にすると、弾のコピーが作られて元の弾は発射されないという典型的なバグが発生します。'
+            },
+            {
+              line: 16,
+              title: 'const メンバ関数（読み取り専用ゲッター）',
+              summary: 'private に隠された座標を外部が安全に知るための窓口。末尾の const は「この関数は内部変数を絶対に書き換えない」というコンパイラへの誓約です。',
+              tokens: [
+                { token: 'int getX()', explanation: 'X座標の数値を外部へ返す関数' },
+                { token: 'const', explanation: '自身のメンバ変数を変更しないことを保証する修飾子' }
+              ],
+              pitfall: 'const を付け忘れると、const Player& など読み取り専用参照で受け取った関数の中で getX() が呼べなくなり、コンパイルエラーの原因になります。'
+            }
+          ]
         },
         {
           filename: 'Player.cpp',
@@ -361,7 +413,48 @@ void Player::shoot(Bullet& bullet) {
         bullet.spawn(m_x + 1, m_y - 1);
     }
 }
-`
+`,
+          lineExplanations: [
+            {
+              line: 4,
+              title: 'メンバ初期化子リスト（直接初期化の原則）',
+              summary: '関数の本体 {} が始まる前に、メンバ変数を初期化するC++特有の強力な記法。代入ではなく直接初期化が行われます。',
+              tokens: [
+                { token: 'Player::', explanation: 'スコープ解決演算子。「Playerクラスに属する」ことを明示' },
+                { token: ': m_x(startX), m_y(startY)', explanation: 'メンバ初期化子リスト。コロンの後に各変数の初期値を括弧で指定' },
+                { token: '{}', explanation: '初期化完了後の追加処理。何もしなければ空のままでOK' }
+              ],
+              pitfall: '{ m_x = startX; } と代入で書くと、一度デフォルト構築された後に代入される2度手間になり、constメンバや参照型メンバは初期化できずコンパイルエラーになります。'
+            },
+            {
+              line: 6,
+              title: 'メンバ関数の定義（自律行動の実装）',
+              summary: 'Playerクラスが自ら左へ移動する振る舞い。Player:: を冠することで、どのクラスのメソッドかを指定します。',
+              tokens: [
+                { token: 'void', explanation: '戻り値がないことを示す型' },
+                { token: 'Player::moveLeft()', explanation: 'Playerクラスの moveLeft 関数本体の実装' }
+              ]
+            },
+            {
+              line: 8,
+              title: '自律的な境界防衛（責任の自己完結）',
+              summary: '自機自身が「画面の左端（壁）より内側にいるか」をチェックしてから座標を減らします。',
+              tokens: [
+                { token: 'if (m_x > 1)', explanation: '左壁（X=1）の内側か判定' },
+                { token: 'm_x--;', explanation: '条件を満たす時だけ安全に左へ1マス前進' }
+              ],
+              pitfall: 'この判定をmain関数側で行うと、自機を動かすたびにプログラマが境界判定を書くことになり、書き忘れで壁突き抜けバグが再発します。'
+            },
+            {
+              line: 20,
+              title: 'オブジェクト間の協調（Tell, Don\'t Ask 原則）',
+              summary: '自機が弾オブジェクトに対し「spawnせよ」とメッセージを送信。弾の状態を外から詮索せず、弾自身に発射させます。',
+              tokens: [
+                { token: 'void Player::shoot(...)', explanation: '弾を発射するメソッド' },
+                { token: 'bullet.spawn(...)', explanation: '受け取った弾実体に対して直接発射命令を指示' }
+              ]
+            }
+          ]
         },
         {
           filename: 'Invader.h',

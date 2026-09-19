@@ -1,9 +1,10 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import { Copy, Check, FileText, FileCode, Sparkles, AlertTriangle } from 'lucide-react';
+import { Copy, Check, FileText, FileCode, Sparkles, AlertTriangle, Microscope } from 'lucide-react';
 import Prism from 'prismjs';
 import 'prismjs/components/prism-c';
 import 'prismjs/components/prism-cpp';
 import { CodeFile, CodeHighlightTarget } from '../../types/curriculum';
+import { getFileLineExplanations } from '../../utils/codeAnatomyEngine';
 
 interface CodeViewerProps {
   files: CodeFile[];
@@ -15,8 +16,34 @@ export const CodeViewer: React.FC<CodeViewerProps> = ({ files, targetHighlight }
   const [copied, setCopied] = useState<boolean>(false);
   const [highlightCoreLines, setHighlightCoreLines] = useState<boolean>(true);
   const [blinkLineNumber, setBlinkLineNumber] = useState<number | null>(null);
+  const [anatomyMode, setAnatomyMode] = useState<boolean>(false);
+  const [expandedLines, setExpandedLines] = useState<Set<number>>(new Set());
 
   const currentFile = files[activeTab] || files[0];
+
+  // ファイルごとの行解剖解説マップ（手動定義 ＋ 自動解析）
+  const explanationsMap = useMemo(() => {
+    return currentFile ? getFileLineExplanations(currentFile) : new Map();
+  }, [currentFile]);
+
+  const anatomyCount = explanationsMap.size;
+
+  // タブ切り替え時に個別展開状態をリセット
+  useEffect(() => {
+    setExpandedLines(new Set());
+  }, [activeTab]);
+
+  const toggleLineExpanded = (lineNum: number) => {
+    setExpandedLines((prev) => {
+      const next = new Set(prev);
+      if (next.has(lineNum)) {
+        next.delete(lineNum);
+      } else {
+        next.add(lineNum);
+      }
+      return next;
+    });
+  };
 
   const isAntiPatternFile = useMemo(() => {
     if (!currentFile) return false;
@@ -168,8 +195,29 @@ export const CodeViewer: React.FC<CodeViewerProps> = ({ files, targetHighlight }
           })}
         </div>
 
-        {/* コントロール群（核心行ハイライト ＆ コピーボタン） */}
+        {/* コントロール群（1行解剖モード ＆ 核心行ハイライト ＆ コピーボタン） */}
         <div className="flex items-center gap-2 flex-wrap">
+          {/* 初心者向け：1行解剖モード（一括展開トグル） */}
+          {anatomyCount > 0 && (
+            <button
+              onClick={() => setAnatomyMode((prev) => !prev)}
+              className={`flex items-center gap-1.5 px-3 py-1.5 text-xs rounded-xl font-mono transition border active:scale-95 cursor-pointer ${
+                anatomyMode
+                  ? 'bg-amber-950/90 text-amber-300 border-amber-500/50 shadow-md shadow-amber-500/20 font-bold'
+                  : 'bg-slate-800/80 text-amber-400/80 border-slate-700 hover:text-amber-300 hover:border-amber-500/40'
+              }`}
+              title="初心者向け：各行の構文・キーワードを1行ずつ分解解説（解剖モード）"
+            >
+              <Microscope className="w-3.5 h-3.5 text-amber-400" />
+              <span>1行解剖モード</span>
+              <span className={`px-1.5 py-0.2 rounded text-[10px] font-bold ${
+                anatomyMode ? 'bg-amber-900/80 text-amber-200' : 'bg-slate-900 text-slate-400'
+              }`}>
+                {anatomyCount}
+              </span>
+            </button>
+          )}
+
           {coreLineCount > 0 && (
             <button
               onClick={() => setHighlightCoreLines(prev => !prev)}
@@ -245,44 +293,129 @@ export const CodeViewer: React.FC<CodeViewerProps> = ({ files, targetHighlight }
           {processedLines.map((line) => {
             const isHighlighted = highlightCoreLines && line.isCore;
             const isBlinking = blinkLineNumber === line.lineNumber;
-            return (
-              <div
-                id={`code-line-${activeTab}-${line.lineNumber}`}
-                key={line.lineNumber}
-                className={`flex items-stretch transition-all duration-300 ${
-                  isBlinking
-                    ? 'bg-amber-500/30 border-l-4 border-amber-400 pl-3 pr-4 shadow-lg shadow-amber-500/20'
-                    : isHighlighted
-                    ? 'bg-cyan-500/10 border-l-4 border-cyan-400 pl-3 pr-4'
-                    : 'border-l-4 border-transparent pl-3 pr-4 hover:bg-slate-800/30'
-                }`}
-              >
-                {/* 行番号 */}
-                <span className={`w-10 text-right pr-4 select-none flex-shrink-0 text-xs sm:text-sm font-mono ${
-                  isBlinking ? 'text-amber-400 font-black' : isHighlighted ? 'text-cyan-400 font-bold' : 'text-slate-600'
-                }`}>
-                  {line.lineNumber}
-                </span>
+            const explanation = explanationsMap.get(line.lineNumber);
+            const isExpanded = anatomyMode || expandedLines.has(line.lineNumber);
 
-                {/* コード本文 */}
-                <code
-                  className="flex-1 whitespace-pre"
-                  dangerouslySetInnerHTML={{ __html: line.html }}
-                />
-              </div>
+            return (
+              <React.Fragment key={line.lineNumber}>
+                <div
+                  id={`code-line-${activeTab}-${line.lineNumber}`}
+                  onClick={() => explanation && toggleLineExpanded(line.lineNumber)}
+                  className={`flex items-stretch transition-all duration-300 group ${
+                    explanation ? 'cursor-pointer' : ''
+                  } ${
+                    isBlinking
+                      ? 'bg-amber-500/30 border-l-4 border-amber-400 pl-2 pr-4 shadow-lg shadow-amber-500/20'
+                      : isHighlighted
+                      ? 'bg-cyan-500/10 border-l-4 border-cyan-400 pl-2 pr-4'
+                      : isExpanded && explanation
+                      ? 'bg-amber-950/20 border-l-4 border-amber-400/80 pl-2 pr-4'
+                      : 'border-l-4 border-transparent pl-2 pr-4 hover:bg-slate-800/30'
+                  }`}
+                >
+                  {/* 行番号 & 💡解剖アイコン */}
+                  <span className={`w-12 text-right pr-3 select-none flex-shrink-0 text-xs sm:text-sm font-mono flex items-center justify-end gap-1 ${
+                    isBlinking 
+                      ? 'text-amber-400 font-black' 
+                      : isHighlighted 
+                      ? 'text-cyan-400 font-bold' 
+                      : isExpanded && explanation
+                      ? 'text-amber-300 font-bold'
+                      : 'text-slate-600'
+                  }`}>
+                    {explanation && (
+                      <span 
+                        title="クリックでこの行の構文解剖カードを展開"
+                        className={`text-[11px] transition-transform ${
+                          isExpanded ? 'text-amber-400 scale-125' : 'text-amber-400/50 group-hover:text-amber-300 group-hover:scale-110'
+                        }`}
+                      >
+                        💡
+                      </span>
+                    )}
+                    <span>{line.lineNumber}</span>
+                  </span>
+
+                  {/* コード本文 */}
+                  <code
+                    className="flex-1 whitespace-pre"
+                    dangerouslySetInnerHTML={{ __html: line.html }}
+                  />
+                </div>
+
+                {/* 🔬 行の解剖カード（Anatomy Card） */}
+                {explanation && isExpanded && (
+                  <div className="my-2 ml-14 mr-4 p-3.5 sm:p-4 rounded-2xl bg-gradient-to-br from-slate-900 via-[#0a1120] to-slate-950 border border-amber-500/40 shadow-xl shadow-amber-500/5 space-y-2.5 text-xs font-sans animate-fadeIn">
+                    <div className="flex items-center justify-between border-b border-slate-800/80 pb-1.5 flex-wrap gap-2">
+                      <div className="flex items-center gap-2 font-bold text-amber-300 font-mono text-xs sm:text-sm">
+                        <Microscope className="w-4 h-4 text-amber-400" />
+                        <span>行 {line.lineNumber} の解剖：{explanation.title}</span>
+                      </div>
+                      <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-amber-950 text-amber-400 border border-amber-500/40 font-bold">
+                        初心者サポート
+                      </span>
+                    </div>
+
+                    <p className="text-slate-200 leading-relaxed font-sans text-xs sm:text-sm">
+                      {explanation.summary}
+                    </p>
+
+                    {/* トークン分解 */}
+                    {explanation.tokens && explanation.tokens.length > 0 && (
+                      <div className="space-y-1 pt-1">
+                        <div className="text-[11px] font-mono font-bold text-slate-400">
+                          単語・記号の役割：
+                        </div>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5">
+                          {explanation.tokens.map((t: { token: string; explanation: string }, tIdx: number) => (
+                            <div
+                              key={tIdx}
+                              className="p-2 rounded-xl bg-slate-950/80 border border-slate-800/80 font-mono text-[11px] flex items-start gap-2"
+                            >
+                              <code className="text-cyan-300 bg-cyan-950/80 px-1.5 py-0.5 rounded border border-cyan-500/30 shrink-0 font-bold">
+                                {t.token}
+                              </code>
+                              <span className="text-slate-300 font-sans leading-snug">
+                                {t.explanation}
+                              </span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* 落とし穴 */}
+                    {explanation.pitfall && (
+                      <div className="p-2.5 rounded-xl bg-amber-950/30 border border-amber-500/30 text-[11px] sm:text-xs text-amber-200/90 flex items-start gap-2 font-sans leading-relaxed">
+                        <span className="text-sm shrink-0">⚠️</span>
+                        <div>
+                          <strong className="text-amber-300 font-bold">もし書かないと起きる問題：</strong>
+                          <span>{explanation.pitfall}</span>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </React.Fragment>
             );
           })}
         </pre>
       </div>
 
       {/* 下部ステータス */}
-      <div className="px-5 py-1.5 bg-slate-950 border-t border-slate-800/60 flex items-center justify-between text-xs text-slate-400 font-mono">
-        <div className="flex items-center gap-3">
+      <div className="px-5 py-2 bg-slate-950 border-t border-slate-800/60 flex items-center justify-between text-xs text-slate-400 font-mono flex-wrap gap-2">
+        <div className="flex items-center gap-3 flex-wrap">
           <span className="font-bold text-slate-300">{currentFile.filename}</span>
           {highlightCoreLines && coreLineCount > 0 && (
             <span className="text-cyan-400 text-[11px] flex items-center gap-1">
               <Sparkles className="w-3 h-3" />
               <span>設計核心行: {coreLineCount} 行強調中</span>
+            </span>
+          )}
+          {anatomyCount > 0 && (
+            <span className="text-amber-400 text-[11px] flex items-center gap-1">
+              <Microscope className="w-3 h-3" />
+              <span>解剖解説: {anatomyCount} 行（💡クリックで個別展開）</span>
             </span>
           )}
         </div>

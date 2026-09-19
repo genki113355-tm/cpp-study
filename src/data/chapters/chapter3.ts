@@ -493,7 +493,40 @@ void Game::run() {
         std::cout << "=========================================\\n";
     }
 }
-`
+`,
+          lineExplanations: [
+            {
+              line: 20,
+              title: 'std::vector への動的追加（自動メモリ確保）',
+              summary: '敵インスタンスを動的配列の末尾に追加。メモリが足りなければ vector が自動でヒープバッファを拡張してくれます。',
+              tokens: [
+                { token: 'm_invaders.push_back(...)', explanation: '末尾に要素を追加するメンバ関数' },
+                { token: 'Invader(...)', explanation: '指定座標で一時生成された敵オブジェクト' }
+              ],
+              pitfall: 'C言語の固定長配列（Invader invaders[6]）と違い、ゲーム実行中にサイズを自由に変更できます。'
+            },
+            {
+              line: 39,
+              title: 'パーティクルの動的生成（派手な演出の創出）',
+              summary: '敵が撃破された瞬間、計算された放射速度と寿命を持つ火花インスタンスをヒープ配列へ追加します。',
+              tokens: [
+                { token: 'm_particles.push_back(...)', explanation: '動的配列の末尾に火花を挿入' },
+                { token: 'Particle(...)', explanation: '座標、速度ベクトル、寿命、表示文字を渡して構築' }
+              ],
+              pitfall: 'C言語の malloc だとサイズ拡張時に realloc やポインタ再配置の事故が多発しますが、vector なら1行で完全自動化されます。'
+            },
+            {
+              line: 121,
+              title: 'erase-remove イディオム（寿命を迎えた要素の一括消去）',
+              summary: '寿命が尽きた火花粒子を一括で詰め、コンテナのサイズを物理的に縮小させます。C++の伝統的かつ強力な消去イディオムです。',
+              tokens: [
+                { token: 'm_particles.erase(...)', explanation: '不要になったイテレータ範囲の要素を物理削除し、デストラクタを呼ぶ' },
+                { token: 'std::remove_if(...)', explanation: '消去条件（isParticleDead）に一致する要素を末尾へ追いやり、有効要素の終端イテレータを返す' },
+                { token: 'm_particles.end()', explanation: '配列の末尾イテレータ' }
+              ],
+              pitfall: 'std::remove_if だけを呼んでもコンテナのサイズ（size()）は1つも減らず、末尾にゴミデータが残ります。必ず erase() と組み合わせて初めてメモリが解放されます！'
+            }
+          ]
         },
         {
           filename: 'main.cpp',

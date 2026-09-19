@@ -452,7 +452,49 @@ public:
     int getX() const { return m_x; }
     int getY() const { return m_y; }
     int getHp() const { return m_hp; }
-};`
+};`,
+          lineExplanations: [
+            {
+              line: 6,
+              title: 'protected アクセス指定子（派生クラスへの継承公開）',
+              summary: '外部（mainなど）からは非公開（privateと同等）ですが、子クラス（NormalEnemy等）からだけは直接読み書きを許可する指定です。',
+              tokens: [
+                { token: 'protected', explanation: '自分自身および派生クラスからのアクセスのみを許可するアクセス制限' },
+                { token: ':', explanation: 'ここから派生公開スコープが始まる区切り' }
+              ],
+              pitfall: 'private にすると子クラスが m_x を直接参照できなくなって不便になり、public にすると外部から改ざんされてカプセル化が崩壊します。'
+            },
+            {
+              line: 13,
+              title: 'デフォルト引数付き基底コンストラクタ',
+              summary: '派生クラスが生成される際に共通して初期化する座標とHPを受け取ります。HPが省略された場合はデフォルト値 1 となります。',
+              tokens: [
+                { token: 'int hp = 1', explanation: 'デフォルト引数。第3引数を省略して呼び出した場合は 1 が使われる' },
+                { token: ': m_x(x), m_y(y), m_hp(hp), m_alive(true)', explanation: 'メンバ初期化子リストによる直接初期化' }
+              ]
+            },
+            {
+              line: 18,
+              title: '仮想デストラクタ（メモリリーク防止の必須宣言）',
+              summary: '基底クラスのポインタ（Enemy*）経由で delete された際、正しい派生クラス（ShieldEnemy等）のデストラクタを逆順に実行させるための重要宣言です。',
+              tokens: [
+                { token: 'virtual', explanation: 'vtable経由の動的ディスパッチ（実行時型解決）を有効化' },
+                { token: '~Enemy()', explanation: 'Enemyクラスのデストラクタ' },
+                { token: '{}', explanation: '基底クラスでの破棄処理（空実装でOK）' }
+              ],
+              pitfall: '【超重要】virtual を付け忘れると、delete enemyPtr; した時に基底のデストラクタしか呼ばれず、子クラス側で確保したリソースが解放されない重大なメモリリークになります！'
+            },
+            {
+              line: 22,
+              title: '純粋仮想関数（インターフェース契約の強制）',
+              summary: '末尾に = 0 を付けることで、「基底クラスでは処理を実装しない。派生クラスは必ず独自の処理をオーバーライドせよ」とコンパイラに義務付けます。',
+              tokens: [
+                { token: 'virtual', explanation: '実行時に実際のオブジェクト型に応じて呼び分けられる関数' },
+                { token: '= 0', explanation: '純粋仮想関数（Pure Virtual）の印。このクラスは単独でインスタンス化できない抽象クラスとなる' }
+              ],
+              pitfall: '派生クラス側でこの関数の実装を書き忘れると、派生クラスも抽象クラス扱いとなりインスタンス生成時にコンパイルエラーになります。'
+            }
+          ]
         },
         {
           filename: 'NormalEnemy.h',
@@ -513,7 +555,37 @@ public:
     int getScore() const {
         return 200;
     }
-};`
+};`,
+          lineExplanations: [
+            {
+              line: 5,
+              title: 'public 継承（基底クラスの仕様を引き継ぐ）',
+              summary: 'Enemy クラスの性質（メンバ変数や仮想関数）をすべて継承し、Enemy の一種（is-a関係）として振る舞えるようにします。',
+              tokens: [
+                { token: 'class ShieldEnemy', explanation: '派生クラスの名前' },
+                { token: ': public Enemy', explanation: 'Enemyクラスをpublic（公開関係）で継承。基底ポインタ Enemy* に安全に代入可能' }
+              ],
+              pitfall: 'public を書き忘れて class ShieldEnemy : Enemy と書くと、C++ではデフォルトで private 継承になり、基底ポインタへの暗黙変換ができなくなります。'
+            },
+            {
+              line: 7,
+              title: '基底クラスコンストラクタの明示的呼び出し',
+              summary: '子クラスが構築される前に、まず親クラス（Enemy）のコンストラクタを引数（耐久値2）付きで呼び出して初期化します。',
+              tokens: [
+                { token: 'ShieldEnemy(int x, int y)', explanation: '子クラスのコンストラクタ' },
+                { token: ': Enemy(x, y, 2)', explanation: '親クラス Enemy のコンストラクタ呼び出し。装甲HPに 2 を渡す' }
+              ],
+              pitfall: '親クラスに引数なしのデフォルトコンストラクタがない場合、ここで親のコンストラクタを明示的に呼ばないとコンパイルエラーになります。'
+            },
+            {
+              line: 18,
+              title: 'ポリモーフィックなグリフ表現（カプセル化された変化）',
+              summary: 'シールドの残存耐久度に応じて、画面に描画される文字を自律的に切り替えます（HP2なら大文字S、HP1なら小文字s）。',
+              tokens: [
+                { token: 'return (m_hp > 1) ? \'S\' : \'s\';', explanation: '三項演算子で耐久度に応じた外観文字を返却' }
+              ]
+            }
+          ]
         },
         {
           filename: 'UfoEnemy.h',

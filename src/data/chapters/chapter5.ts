@@ -362,7 +362,47 @@ public:
     void processInput();
     void update();
     void render();
-};`
+};`,
+          lineExplanations: [
+            {
+              line: 3,
+              title: 'スマートポインタヘッダの読み込み',
+              summary: 'std::unique_ptr や std::shared_ptr、std::make_unique などの標準メモリ管理機能を使用するためにインクルードします。',
+              tokens: [
+                { token: '#include', explanation: 'プリプロセッサによる外部ヘッダ取り込み' },
+                { token: '<memory>', explanation: 'C++標準ライブラリのスマートポインタ定義ヘッダ' }
+              ]
+            },
+            {
+              line: 15,
+              title: '多態的オブジェクトの単独所有（生ポインタ撲滅）',
+              summary: '抽象基底クラス Enemy を継承した多彩な敵を、単独所有権（unique_ptr）付きで1つの動的配列に格納します。手動 delete は完全不要。',
+              tokens: [
+                { token: 'std::vector<...>', explanation: '動的配列コンテナ' },
+                { token: 'std::unique_ptr<Enemy>', explanation: '所有権を1箇所だけで保持するスマートポインタ。不要化時に自動 delete される' },
+                { token: 'm_enemies', explanation: '敵オブジェクト群を所有するメンバ変数' }
+              ],
+              pitfall: '第4章の生ポインタ（std::vector<Enemy*>）では delete ループの書き忘れで即リークしていましたが、unique_ptr なら破棄が100%自動保証されます。'
+            },
+            {
+              line: 16,
+              title: 'アイテムの単独所有コンテナ',
+              summary: '敵撃破時にドロップするアイテムカプセルを unique_ptr で管理。取得時や画面外消滅時に安全に寿命を全うします。',
+              tokens: [
+                { token: 'std::unique_ptr<Item>', explanation: 'Itemインスタンスの排他的所有権' }
+              ]
+            },
+            {
+              line: 32,
+              title: '= default によるデフォルトデストラクタ宣言',
+              summary: 'コンパイラに標準のデストラクタを自動生成させます。メンバ変数（unique_ptr群）が自動でクリーンアップされるため、解放ループは1行も不要です。',
+              tokens: [
+                { token: '~Game()', explanation: 'Gameクラスのデストラクタ' },
+                { token: '= default;', explanation: 'コンパイラ最適化されたデフォルト実装を要求する構文（C++11〜）' }
+              ],
+              pitfall: '手動でデストラクタ内に delete を書こうとすると、Rule of Zero（メンバ変数のRAIIに任せる原則）が崩れ、二重解放や解放漏れの温床になります。'
+            }
+          ]
         },
         {
           filename: 'Player.h',
@@ -399,7 +439,27 @@ public:
     void enableTripleShot() { m_hasTripleShot = true; }
     void addDrone(std::shared_ptr<BitDrone> drone);
     int  getDroneCount() const { return static_cast<int>(m_drones.size()); }
-};`
+};`,
+          lineExplanations: [
+            {
+              line: 15,
+              title: 'std::shared_ptr による共有所有（参照カウント管理）',
+              summary: '護衛ビットドローンを複数箇所（PlayerとGameなど）から同時に参照・所有できるよう、参照カウント方式の shared_ptr で保持します。',
+              tokens: [
+                { token: 'std::shared_ptr<BitDrone>', explanation: '所有者が増えるとカウント+1、減ると-1され、0になった瞬間に自動消滅するスマートポインタ' },
+                { token: 'm_drones', explanation: '自機に従属するビット機の配列' }
+              ],
+              pitfall: '双方向で shared_ptr を持ち合うと「循環参照」になり永遠にメモリが解放されなくなります。親への逆参照や監視には std::weak_ptr を使いましょう。'
+            },
+            {
+              line: 30,
+              title: 'shared_ptr の引数受け取り（所有権の共有参加）',
+              summary: '生成されたビット機の shared_ptr を受け取り、自機のメンバ配列に push_back して共同所有者（use_count + 1）になります。',
+              tokens: [
+                { token: 'std::shared_ptr<BitDrone> drone', explanation: '共有スマートポインタの値渡し。コピーに伴い参照カウントが安全にインクリメントされる' }
+              ]
+            }
+          ]
         },
         {
           filename: 'Item.h',

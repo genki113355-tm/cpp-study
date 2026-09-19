@@ -18,6 +18,14 @@ export interface DialogueItem {
   sideNote?: string;
 }
 
+export interface CodeExplanationItem {
+  line: number; // 1-indexed行番号
+  title: string; // 解剖タイトル（例: "メンバ初期化子リスト（初期化保証と高速化）"）
+  summary: string; // 初心者向け超訳
+  tokens?: { token: string; explanation: string }[]; // トークン（単語・記号）ごとの分解解説
+  pitfall?: string; // 「もし書かないとどうなるか？（落とし穴）」
+}
+
 export interface CodeFile {
   filename: string;
   language: string;
@@ -26,6 +34,7 @@ export interface CodeFile {
   code: string;
   highlightLines?: number[];
   diffType?: 'original' | 'refactored' | 'added';
+  lineExplanations?: CodeExplanationItem[]; // 行解剖データ
 }
 
 export interface VariableDoc {
