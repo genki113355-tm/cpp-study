@@ -1010,38 +1010,105 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
       <AffiliatePromoBanner type="reward" limit={3} />
 
       {/* 9. 姉妹メディア案内セクション */}
-      <section className="rounded-3xl border border-blue-500/30 bg-gradient-to-br from-slate-950 via-[#0a1528] to-slate-950 p-6 sm:p-8 shadow-2xl relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-80 h-80 bg-blue-500/10 rounded-full blur-3xl pointer-events-none" />
-        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 relative z-10">
-          <div className="flex items-start sm:items-center gap-4">
-            <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-blue-600 to-cyan-500 flex items-center justify-center text-3xl shadow-lg shadow-blue-500/20 flex-shrink-0">
-              🌊
-            </div>
-            <div className="space-y-1.5">
-              <div className="flex items-center gap-2 flex-wrap">
-                <span className="text-xs font-mono font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-blue-950 text-blue-300 border border-blue-500/40">
-                  姉妹メディア
-                </span>
-                <span className="text-xs font-mono text-slate-400">sonar-guide.jp</span>
+      <section className="space-y-4">
+        <div className="flex items-center gap-2">
+          <span className="text-xl">🔗</span>
+          <div>
+            <h2 className="text-xl sm:text-2xl font-bold text-white font-sans">
+              シロクマ先生の姉妹学習サイト
+            </h2>
+            <p className="text-xs sm:text-sm text-slate-400 font-sans">
+              目的に応じてシロクマ先生の姉妹メディアも合わせてご活用ください。
+            </p>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+          {/* 1. シロクマC++自動化ラボ */}
+          <div className="rounded-3xl border border-cyan-500/30 bg-gradient-to-br from-slate-950 via-[#071322] to-slate-950 p-6 sm:p-7 shadow-2xl relative overflow-hidden flex flex-col justify-between space-y-4 hover:border-cyan-400/60 transition-all">
+            <div className="absolute top-0 right-0 w-64 h-64 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none" />
+            <div className="space-y-3 relative z-10">
+              <div className="flex items-center justify-between gap-2 flex-wrap">
+                <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-cyan-600 to-blue-500 flex items-center justify-center text-2xl shadow-lg shadow-cyan-500/20 shrink-0">
+                  ⚡
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-xs font-mono font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-cyan-950 text-cyan-300 border border-cyan-500/40">
+                    C++自動化・実務効率化
+                  </span>
+                  <span className="text-xs font-mono text-slate-400">shirokuma-auto-cpp.jp</span>
+                </div>
               </div>
-              <h3 className="text-xl sm:text-2xl font-bold text-white font-sans">
-                水中音響・ソナー技術入門
-              </h3>
-              <p className="text-xs sm:text-sm text-slate-300 font-sans leading-relaxed max-w-2xl">
-                シロクマ先生がナビゲート！波の物理からFFT・LOFAR・TMA信号処理まで、音・動的グラフ・物理シミュレーターで直感的に学べる本格技術教育サイトです。
+
+              <div>
+                <h3 className="text-lg sm:text-xl font-bold text-white font-sans">
+                  シロクマC++自動化ラボ
+                </h3>
+                <p className="text-xs font-mono text-cyan-400 mt-0.5">
+                  Docker / pybind11 / CI・テスト自動化
+                </p>
+              </div>
+
+              <p className="text-xs sm:text-sm text-slate-300 font-sans leading-relaxed">
+                Python、Docker、CMake、CI/CDを活用して現場のC++開発を自動化！手動ビルドや目視テストを撲滅し、数理アルゴリズムの自動評価パイプラインを構築します。
               </p>
+            </div>
+
+            <div className="pt-2 relative z-10">
+              <a
+                href="https://shirokuma-auto-cpp.jp/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white font-bold font-mono text-xs sm:text-sm transition shadow-lg shadow-cyan-500/20 active:scale-95 flex items-center justify-center gap-2"
+              >
+                <span>自動化ラボを見る</span>
+                <ExternalLink className="w-4 h-4" />
+              </a>
             </div>
           </div>
 
-          <a
-            href="https://sonar-guide.jp/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="px-5 py-3 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 text-white font-bold font-mono text-xs sm:text-sm transition shadow-lg shadow-blue-500/20 active:scale-95 flex items-center gap-2 flex-shrink-0"
-          >
-            <span>サイトを見る</span>
-            <ExternalLink className="w-4 h-4" />
-          </a>
+          {/* 2. 水中音響・ソナー技術入門 */}
+          <div className="rounded-3xl border border-blue-500/30 bg-gradient-to-br from-slate-950 via-[#0a1528] to-slate-950 p-6 sm:p-7 shadow-2xl relative overflow-hidden flex flex-col justify-between space-y-4 hover:border-blue-400/60 transition-all">
+            <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl pointer-events-none" />
+            <div className="space-y-3 relative z-10">
+              <div className="flex items-center justify-between gap-2 flex-wrap">
+                <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-blue-600 to-cyan-500 flex items-center justify-center text-2xl shadow-lg shadow-blue-500/20 shrink-0">
+                  🌊
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-xs font-mono font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-blue-950 text-blue-300 border border-blue-500/40">
+                    水中音響・信号処理
+                  </span>
+                  <span className="text-xs font-mono text-slate-400">sonar-guide.jp</span>
+                </div>
+              </div>
+
+              <div>
+                <h3 className="text-lg sm:text-xl font-bold text-white font-sans">
+                  水中音響・ソナー技術入門
+                </h3>
+                <p className="text-xs font-mono text-blue-400 mt-0.5">
+                  波の物理 / FFT / LOFAR / 音響シミュレータ
+                </p>
+              </div>
+
+              <p className="text-xs sm:text-sm text-slate-300 font-sans leading-relaxed">
+                シロクマ先生がナビゲート！波の物理からFFT・LOFAR・TMA信号処理まで、音・動的グラフ・物理シミュレーターで直感的に学べる本格技術教育サイトです。
+              </p>
+            </div>
+
+            <div className="pt-2 relative z-10">
+              <a
+                href="https://sonar-guide.jp/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 text-white font-bold font-mono text-xs sm:text-sm transition shadow-lg shadow-blue-500/20 active:scale-95 flex items-center justify-center gap-2"
+              >
+                <span>ソナー入門を見る</span>
+                <ExternalLink className="w-4 h-4" />
+              </a>
+            </div>
+          </div>
         </div>
       </section>
 
