@@ -1023,7 +1023,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
           {/* 1. シロクマC++自動化ラボ */}
           <div className="rounded-3xl border border-cyan-500/30 bg-gradient-to-br from-slate-950 via-[#071322] to-slate-950 p-6 sm:p-7 shadow-2xl relative overflow-hidden flex flex-col justify-between space-y-4 hover:border-cyan-400/60 transition-all">
             <div className="absolute top-0 right-0 w-64 h-64 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none" />
@@ -1067,7 +1067,50 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
             </div>
           </div>
 
-          {/* 2. 水中音響・ソナー技術入門 */}
+          {/* 2. シロクマQt×C++ラボ */}
+          <div className="rounded-3xl border border-emerald-500/30 bg-gradient-to-br from-slate-950 via-[#071f1a] to-slate-950 p-6 sm:p-7 shadow-2xl relative overflow-hidden flex flex-col justify-between space-y-4 hover:border-emerald-400/60 transition-all">
+            <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
+            <div className="space-y-3 relative z-10">
+              <div className="flex items-center justify-between gap-2 flex-wrap">
+                <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-emerald-600 to-teal-500 flex items-center justify-center text-2xl shadow-lg shadow-emerald-500/20 shrink-0">
+                  🖥️
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-xs font-mono font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-emerald-950 text-emerald-300 border border-emerald-500/40">
+                    Linux × Qt GUI開発
+                  </span>
+                  <span className="text-xs font-mono text-slate-400">shirokuma-qt-cpp.jp</span>
+                </div>
+              </div>
+
+              <div>
+                <h3 className="text-lg sm:text-xl font-bold text-white font-sans">
+                  シロクマQt×C++ラボ
+                </h3>
+                <p className="text-xs font-mono text-emerald-400 mt-0.5">
+                  Qt / QML / 産業用計器・リアルタイム描画
+                </p>
+              </div>
+
+              <p className="text-xs sm:text-sm text-slate-300 font-sans leading-relaxed">
+                Linux環境で動くHMIや産業用計器ソフトウェアをQtで構築！シグナル＆スロット、マルチスレッド下での安全なデータ転送、リアルタイム描画ダッシュボードを体系的に学びます。
+              </p>
+            </div>
+
+            <div className="pt-2 relative z-10">
+              <a
+                href="https://shirokuma-qt-cpp.jp/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold font-mono text-xs sm:text-sm transition shadow-lg shadow-emerald-500/20 active:scale-95 flex items-center justify-center gap-2"
+              >
+                <span>Qtラボを見る</span>
+                <ExternalLink className="w-4 h-4" />
+              </a>
+            </div>
+          </div>
+
+          {/* 3. 水中音響・ソナー技術入門 */}
           <div className="rounded-3xl border border-blue-500/30 bg-gradient-to-br from-slate-950 via-[#0a1528] to-slate-950 p-6 sm:p-7 shadow-2xl relative overflow-hidden flex flex-col justify-between space-y-4 hover:border-blue-400/60 transition-all">
             <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl pointer-events-none" />
             <div className="space-y-3 relative z-10">

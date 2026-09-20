@@ -570,7 +570,30 @@ export const Sidebar: React.FC<SidebarProps> = ({
             </span>
           </a>
 
-          {/* 2. 水中音響・ソナー技術入門 */}
+          {/* 2. シロクマQt×C++ラボ */}
+          <a
+            href="https://shirokuma-qt-cpp.jp/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group flex items-center justify-between p-2.5 rounded-xl bg-slate-900/80 hover:bg-slate-800 border border-slate-800 hover:border-emerald-500/40 transition shadow-sm"
+          >
+            <div className="min-w-0 pr-2">
+              <div className="flex items-center gap-1.5">
+                <span className="text-xs">🖥️</span>
+                <div className="text-xs font-bold text-slate-200 group-hover:text-emerald-300 font-sans truncate">
+                  シロクマQt×C++ラボ
+                </div>
+              </div>
+              <div className="text-[10px] text-slate-400 mt-0.5 truncate font-sans">
+                Linux / Qt / リアルタイム計器HMI
+              </div>
+            </div>
+            <span className="text-xs text-slate-500 group-hover:text-emerald-400 font-mono flex-shrink-0">
+              ↗
+            </span>
+          </a>
+
+          {/* 3. 水中音響・ソナー技術入門 */}
           <a
             href="https://sonar-guide.jp/"
             target="_blank"
