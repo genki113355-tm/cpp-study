@@ -9,7 +9,7 @@
     "dev": "vite",
     "build": "tsc && vite build && node scripts/generate-seo.mjs",
     "preview": "vite preview",
-    "deploy": "npm run build && wrangler pages deploy dist --project-name cpp-invader-study"
+    "deploy": "npm run build && wrangler pages deploy dist --project-name cpp-invader-study --commit-dirty=true && git push origin main"
   },
   "dependencies": {
     "canvas-confetti": "^1.9.4",
