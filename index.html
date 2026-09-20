@@ -58,7 +58,12 @@
           "url": "https://shirokuma-cpp.jp/",
           "name": "シロクマC++ラボ",
           "description": "ゲーム開発の実践を通じて学ぶC++オブジェクト指向設計学習メディア",
-          "inLanguage": "ja"
+          "inLanguage": "ja",
+          "sameAs": [
+            "https://shirokuma-auto-cpp.jp/",
+            "https://shirokuma-qt-cpp.jp/",
+            "https://sonar-guide.jp/"
+          ]
         },
         {
           "@type": "Course",
@@ -84,7 +89,59 @@
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   </head>
   <body class="bg-[#090d16] text-slate-100 font-sans antialiased selection:bg-cyan-500 selection:text-white min-h-screen">
-    <div id="root"></div>
+    <div id="root">
+      <!-- SEO & Static Crawler Fallback (Replaced upon React hydration) -->
+      <header style="padding: 20px; border-bottom: 1px solid #1e293b; text-align: center;">
+        <h1 style="font-size: 24px; color: #38bdf8;">シロクマC++ラボ 〜ゲーム開発で学ぶオブジェクト指向開発 レガシー設計からモダン設計まで〜</h1>
+        <p style="color: #94a3b8; font-size: 14px;">インベーダーゲーム風シューティング開発の実践を通じて学ぶモダンC++・オブジェクト指向設計学習メディア</p>
+      </header>
+
+      <main style="max-width: 1200px; margin: 0 auto; padding: 20px;">
+        <section>
+          <h2>カリキュラム概要</h2>
+          <p>生ポインタ・手動メモリ管理によるレガシー設計の限界から、スマートポインタ・RAII・ポリモーフィズム・ECS（Entity Component System）・TDD（GoogleTest）によるモダン設計へのリファクタリングを10段階で実践習得します。</p>
+        </section>
+
+        <!-- 姉妹メディア相互リンク（静的クローラー・SEO認識用） -->
+        <footer style="margin-top: 40px; padding: 20px; border-top: 1px solid #1e293b;">
+          <nav aria-label="姉妹メディア・公式相互リンク">
+            <h3 style="font-size: 18px; color: #38bdf8; margin-bottom: 12px;">🔗 公式姉妹メディア（相互リンク）</h3>
+            <ul style="list-style: none; padding: 0; display: flex; flex-direction: column; gap: 10px;">
+              <li style="background: #0f172a; padding: 12px 16px; border-radius: 8px; border: 1px solid #334155;">
+                <a href="https://shirokuma-auto-cpp.jp/" rel="noopener" style="color: #38bdf8; font-weight: bold; text-decoration: none;">
+                  ⚡ シロクマC++自動化ラボ (https://shirokuma-auto-cpp.jp/)
+                </a>
+                <p style="color: #94a3b8; font-size: 13px; margin: 4px 0 0 0;">Docker, pybind11, CMake, GitHub Actions を用いたC++実務の手作業自動化・CI/CDエコシステム入門</p>
+              </li>
+              <li style="background: #0f172a; padding: 12px 16px; border-radius: 8px; border: 1px solid #334155;">
+                <a href="https://shirokuma-qt-cpp.jp/" rel="noopener" style="color: #34d399; font-weight: bold; text-decoration: none;">
+                  🖥️ シロクマQt×C++ラボ (https://shirokuma-qt-cpp.jp/)
+                </a>
+                <p style="color: #94a3b8; font-size: 13px; margin: 4px 0 0 0;">Linux / Qt / C++ で創るリアルタイム計器HMIダッシュボード＆組み込みGUIプログラミング実践</p>
+              </li>
+              <li style="background: #0f172a; padding: 12px 16px; border-radius: 8px; border: 1px solid #334155;">
+                <a href="https://sonar-guide.jp/" rel="noopener" style="color: #60a5fa; font-weight: bold; text-decoration: none;">
+                  🌊 水中音響・ソナー技術入門 (https://sonar-guide.jp/)
+                </a>
+                <p style="color: #94a3b8; font-size: 13px; margin: 4px 0 0 0;">音波の物理、FFT、LOFAR・DEMON信号処理など、C++の高速計算力を活かす水中音響・海洋工学の世界</p>
+              </li>
+            </ul>
+          </nav>
+        </footer>
+      </main>
+    </div>
+
+    <noscript>
+      <div style="padding: 20px; text-align: center; color: #cbd5e1; background: #0f172a;">
+        <p>JavaScriptを有効にすると、インタラクティブなゲーム実行、オンラインPlayground、コード差分比較機能をご利用いただけます。</p>
+        <p>姉妹サイト:
+          <a href="https://shirokuma-auto-cpp.jp/" style="color: #38bdf8;">シロクマC++自動化ラボ</a> |
+          <a href="https://shirokuma-qt-cpp.jp/" style="color: #34d399;">シロクマQt×C++ラボ</a> |
+          <a href="https://sonar-guide.jp/" style="color: #60a5fa;">水中音響・ソナー技術入門</a>
+        </p>
+      </div>
+    </noscript>
+
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

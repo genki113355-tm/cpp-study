@@ -1,4 +1,4 @@
-﻿import fs from 'fs';
+import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { createServer } from 'vite';
@@ -134,6 +134,31 @@ async function generateSEO() {
           <p style="color: #cbd5e1;">JavaScriptを実行すると、ブラウザ内インベーダーゲームエミュレータ、メモリマップ可視化、UMLクラス図、対話型解説、理解度クイズが起動します。</p>
           <p><a href="/#${article.slug}" style="display: inline-block; padding: 10px 20px; background: #0284c7; color: white; border-radius: 8px; text-decoration: none; font-weight: bold;">インタラクティブ学習を開始する →</a></p>
         </div>
+
+        <!-- 姉妹メディア公式相互リンク -->
+        <footer style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #1e293b;">
+          <h3 style="font-size: 16px; color: #38bdf8; margin-bottom: 10px;">🔗 公式姉妹メディア（相互リンク）</h3>
+          <ul style="list-style: none; padding: 0; display: flex; flex-direction: column; gap: 8px; font-size: 13px;">
+            <li>
+              <a href="https://shirokuma-auto-cpp.jp/" rel="noopener" style="color: #38bdf8; text-decoration: none; font-weight: bold;">
+                ⚡ シロクマC++自動化ラボ (https://shirokuma-auto-cpp.jp/)
+              </a>
+              - Docker / pybind11 / CI/CD 自動評価
+            </li>
+            <li>
+              <a href="https://shirokuma-qt-cpp.jp/" rel="noopener" style="color: #34d399; text-decoration: none; font-weight: bold;">
+                🖥️ シロクマQt×C++ラボ (https://shirokuma-qt-cpp.jp/)
+              </a>
+              - Linux / Qt / リアルタイム計器HMI
+            </li>
+            <li>
+              <a href="https://sonar-guide.jp/" rel="noopener" style="color: #60a5fa; text-decoration: none; font-weight: bold;">
+                🌊 水中音響・ソナー技術入門 (https://sonar-guide.jp/)
+              </a>
+              - 波の物理 / FFT / 音響シミュレータ
+            </li>
+          </ul>
+        </footer>
       </div>
     `;
 
@@ -190,7 +215,7 @@ async function generateSEO() {
 
     // root 内に初期セマンティックコンテンツを注入
     pageHtml = pageHtml.replace(
-      /<div id="root"><\/div>/s,
+      /<div id="root">[\s\S]*?<\/div>/s,
       `<div id="root">${initialContent}</div>`
     );
 
