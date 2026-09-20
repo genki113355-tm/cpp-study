@@ -52,7 +52,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
       {/* サイドバー本体 */}
       <aside
-        className={`fixed md:sticky top-0 md:top-[4.5rem] z-50 md:z-20 h-screen md:h-[calc(100vh-4.5rem)] w-72 sm:w-80 shrink-0 bg-[#0c121e] border-r border-slate-800 flex flex-col transition-transform duration-300 ease-in-out overflow-y-auto overscroll-contain scrollbar-thin ${
+        className={`fixed md:sticky top-0 md:top-[4.5rem] z-50 md:z-20 h-screen md:h-[calc(100vh-4.5rem)] w-72 sm:w-80 max-w-[85vw] shrink-0 bg-[#0c121e] border-r border-slate-800 flex flex-col transition-transform duration-300 ease-in-out overflow-y-auto overscroll-contain scrollbar-thin ${
           isOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'
         }`}
       >

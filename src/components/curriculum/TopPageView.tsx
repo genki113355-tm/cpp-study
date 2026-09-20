@@ -12,7 +12,9 @@ import {
   Shield,
   Trophy,
   Play,
-  Clock
+  Clock,
+  AlertTriangle,
+  Workflow
 } from 'lucide-react';
 import { 
   CLASSIC_CHAPTERS, 
@@ -24,6 +26,7 @@ import {
 import { Chapter } from '../../types/curriculum';
 import { getChapterMeta } from '../../data/chapterMetadata';
 import { AffiliatePromoBanner } from '../affiliate/AffiliatePromoBanner';
+import { GameEvolutionRoadmap } from './GameEvolutionRoadmap';
 
 interface TopPageViewProps {
   onSelectChapter: (slug: string) => void;
@@ -208,7 +211,143 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
         </div>
       </section>
 
-      {/* 2. 目的別クイックスタート（迷いをゼロにする最短ルート） */}
+      {/* 2. 【問題提起・課題駆動】「最初にこの設計の壁に答えられますか？」 */}
+      <section className="space-y-5">
+        <div className="border-l-4 border-amber-400 pl-4 space-y-1">
+          <div className="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full bg-amber-950/80 border border-amber-500/40 text-amber-300 font-mono text-xs font-semibold">
+            <AlertTriangle className="w-3.5 h-3.5 text-amber-400" />
+            <span>CHALLENGE-DRIVEN LEARNING / なぜ設計が必要なのか？</span>
+          </div>
+          <h2 className="text-xl sm:text-3xl font-black text-white font-sans tracking-tight">
+            最初に、この「4つの現場の壁」に答えられますか？
+          </h2>
+          <p className="text-xs sm:text-sm text-slate-400 font-sans">
+            文法を知っているだけでは防げない。C++開発で誰もが一度は地獄を見るリアルな破綻と、それを解決するアーキテクチャの進化。
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {/* 問い 1 */}
+          <div 
+            onClick={() => onSelectChapter('chapter-4-inheritance-polymorphism')}
+            className="p-5 rounded-2xl bg-gradient-to-br from-slate-900 via-[#0d1524] to-slate-950 border border-slate-800 hover:border-amber-500/50 transition-all cursor-pointer group shadow-lg flex flex-col justify-between"
+          >
+            <div className="space-y-2.5">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-mono font-bold px-2.5 py-0.5 rounded bg-amber-500/10 text-amber-400 border border-amber-500/30">
+                  Q1. 拡張性の壁
+                </span>
+                <span className="text-xs font-mono text-slate-500">Ch.4 (L4)</span>
+              </div>
+              <h3 className="text-base font-bold text-white group-hover:text-amber-300 transition-colors">
+                「敵の種類を10種類に増やしたら、何が壊れる？」
+              </h3>
+              <p className="text-xs text-slate-400 leading-relaxed font-sans">
+                更新・描画・当たり判定のいたる所に巨大な <code className="text-amber-300 font-mono bg-slate-950 px-1 py-0.5 rounded">switch(enemy.type)</code> が出現。敵を1体足すたびに既存コードを10箇所修正し、無関係な敵にバグが伝播する地獄。
+              </p>
+            </div>
+            <div className="pt-4 flex items-center justify-between text-xs font-mono font-bold text-amber-400 border-t border-slate-800/80 mt-3">
+              <span>解決策：vtableと動的多態性（開閉原則）</span>
+              <span className="group-hover:translate-x-1 transition-transform">解説へ →</span>
+            </div>
+          </div>
+
+          {/* 問い 2 */}
+          <div 
+            onClick={() => onSelectChapter('chapter-5-smart-pointers-raii')}
+            className="p-5 rounded-2xl bg-gradient-to-br from-slate-900 via-[#0d1524] to-slate-950 border border-slate-800 hover:border-cyan-500/50 transition-all cursor-pointer group shadow-lg flex flex-col justify-between"
+          >
+            <div className="space-y-2.5">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-mono font-bold px-2.5 py-0.5 rounded bg-cyan-500/10 text-cyan-400 border border-cyan-500/30">
+                  Q2. メモリ所有権の壁
+                </span>
+                <span className="text-xs font-mono text-slate-500">Ch.5 (M1)</span>
+              </div>
+              <h3 className="text-base font-bold text-white group-hover:text-cyan-300 transition-colors">
+                「ステージ遷移時にボスが消えない。誰が解放の責任を持つ？」
+              </h3>
+              <p className="text-xs text-slate-400 leading-relaxed font-sans">
+                生ポインタ <code className="text-cyan-300 font-mono bg-slate-950 px-1 py-0.5 rounded">Boss*</code> をGameManagerもSceneも保持。誰が <code className="text-cyan-300 font-mono bg-slate-950 px-1 py-0.5 rounded">delete</code> すべきか曖昧になり、二重解放（Double Free）即死クラッシュかメモリリークかの二者択一に。
+              </p>
+            </div>
+            <div className="pt-4 flex items-center justify-between text-xs font-mono font-bold text-cyan-400 border-t border-slate-800/80 mt-3">
+              <span>解決策：std::unique_ptr と RAII 所有権モデル</span>
+              <span className="group-hover:translate-x-1 transition-transform">解説へ →</span>
+            </div>
+          </div>
+
+          {/* 問い 3 */}
+          <div 
+            onClick={() => onSelectChapter('chapter-6-game-design-patterns')}
+            className="p-5 rounded-2xl bg-gradient-to-br from-slate-900 via-[#0d1524] to-slate-950 border border-slate-800 hover:border-purple-500/50 transition-all cursor-pointer group shadow-lg flex flex-col justify-between"
+          >
+            <div className="space-y-2.5">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-mono font-bold px-2.5 py-0.5 rounded bg-purple-500/10 text-purple-400 border border-purple-500/30">
+                  Q3. 結合度の壁
+                </span>
+                <span className="text-xs font-mono text-slate-500">Ch.6 (L5)</span>
+              </div>
+              <h3 className="text-base font-bold text-white group-hover:text-purple-300 transition-colors">
+                「敵が死んだ瞬間、UIスコア加算と爆発音をどこに書く？」
+              </h3>
+              <p className="text-xs text-slate-400 leading-relaxed font-sans">
+                EnemyクラスがSoundEngineやUIManagerに直接依存。音効や描画のない単体テストコードがリンクエラーで動かせなくなる泥沼密結合。
+              </p>
+            </div>
+            <div className="pt-4 flex items-center justify-between text-xs font-mono font-bold text-purple-400 border-t border-slate-800/80 mt-3">
+              <span>解決策：Observer パターンと疎結合イベント通知</span>
+              <span className="group-hover:translate-x-1 transition-transform">解説へ →</span>
+            </div>
+          </div>
+
+          {/* 問い 4 */}
+          <div 
+            onClick={() => onSelectChapter('chapter-11-memory-pool-allocator')}
+            className="p-5 rounded-2xl bg-gradient-to-br from-slate-900 via-[#0d1524] to-slate-950 border border-slate-800 hover:border-emerald-500/50 transition-all cursor-pointer group shadow-lg flex flex-col justify-between"
+          >
+            <div className="space-y-2.5">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-mono font-bold px-2.5 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
+                  Q4. リアルタイム性能の壁
+                </span>
+                <span className="text-xs font-mono text-slate-500">Ch.11 (M11)</span>
+              </div>
+              <h3 className="text-base font-bold text-white group-hover:text-emerald-300 transition-colors">
+                「弾を毎秒1000発撃ったら、なぜ突然ゲームがカクつく？」
+              </h3>
+              <p className="text-xs text-slate-400 leading-relaxed font-sans">
+                毎フレームの <code className="text-emerald-300 font-mono bg-slate-950 px-1 py-0.5 rounded">new / delete</code> によるヒープ断片化とOSカーネル呼び出しコスト。ガベージコレクションがないC++だからこそ、アロケーション戦略がフレームレートを左右する。
+              </p>
+            </div>
+            <div className="pt-4 flex items-center justify-between text-xs font-mono font-bold text-emerald-400 border-t border-slate-800/80 mt-3">
+              <span>解決策：固定長ブロック・メモリプールアロケータ</span>
+              <span className="group-hover:translate-x-1 transition-transform">解説へ →</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 3. 【主線コンテンツ】ゲーム設計進化ロードマップ（10段階の進化ストーリー） */}
+      <section className="space-y-4">
+        <div className="border-l-4 border-cyan-400 pl-4 space-y-1">
+          <div className="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full bg-cyan-950/80 border border-cyan-500/40 text-cyan-300 font-mono text-xs font-semibold">
+            <Workflow className="w-3.5 h-3.5 text-cyan-400" />
+            <span>GAME REFACTORING STORY / 主線ロードマップ</span>
+          </div>
+          <h2 className="text-xl sm:text-3xl font-black text-white font-sans tracking-tight">
+            1本のゲームを10段階で進化させる「設計進化マップ」
+          </h2>
+          <p className="text-xs sm:text-sm text-slate-400 font-sans">
+            動くだけのベタ書きコードから、現代の商用ゲームエンジン同等のECSアーキテクチャまで。各ステージの「Beforeの痛点」と「Afterのスキル」をクリックして対比できます。
+          </p>
+        </div>
+
+        <GameEvolutionRoadmap onSelectChapter={onSelectChapter} />
+      </section>
+
+      {/* 4. 目的別クイックスタート（迷いをゼロにする最短ルート） */}
       <section className="space-y-4">
         <div className="flex items-center gap-2">
           <Zap className="w-5 h-5 text-amber-400" />
@@ -1009,73 +1148,116 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
       {/* 8. 勉強を頑張った自分へのご褒美・お取り寄せグルメPR */}
       <AffiliatePromoBanner type="reward" limit={3} />
 
-      {/* 9. 姉妹メディア案内セクション */}
-      <section className="space-y-4">
-        <div className="flex items-center gap-2">
-          <span className="text-xl">🔗</span>
+      {/* 9. シロクマ技術学習エコシステム（4サイト連携ロードマップ） */}
+      <section className="space-y-6">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-600 to-indigo-600 flex items-center justify-center text-xl shadow-lg shadow-cyan-500/20 shrink-0">
+            🌐
+          </div>
           <div>
-            <h2 className="text-xl sm:text-2xl font-bold text-white font-sans">
-              シロクマ先生の姉妹学習サイト
+            <div className="flex items-center gap-2 flex-wrap">
+              <span className="text-[10px] sm:text-xs font-mono font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-cyan-950 text-cyan-400 border border-cyan-500/30">
+                4サイト連携エコシステム
+              </span>
+              <span className="text-xs text-slate-400 font-mono">Shirokuma Engineering Ecosystem</span>
+            </div>
+            <h2 className="text-xl sm:text-2xl font-bold text-white font-sans mt-0.5">
+              シロクマ技術学習エコシステム ＆ 姉妹サイト
             </h2>
             <p className="text-xs sm:text-sm text-slate-400 font-sans">
-              目的に応じてシロクマ先生の姉妹メディアも合わせてご活用ください。
+              4つの専門メディアが有機的に連携。C++設計の土台から実務HMI・CI/CD自動化・先端信号処理まで、実務エンジニアへのステップアップを完全支援します。
             </p>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
-          {/* 1. シロクマC++自動化ラボ */}
-          <div className="rounded-3xl border border-cyan-500/30 bg-gradient-to-br from-slate-950 via-[#071322] to-slate-950 p-6 sm:p-7 shadow-2xl relative overflow-hidden flex flex-col justify-between space-y-4 hover:border-cyan-400/60 transition-all">
-            <div className="absolute top-0 right-0 w-64 h-64 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none" />
-            <div className="space-y-3 relative z-10">
-              <div className="flex items-center justify-between gap-2 flex-wrap">
-                <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-cyan-600 to-blue-500 flex items-center justify-center text-2xl shadow-lg shadow-cyan-500/20 shrink-0">
-                  ⚡
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="text-xs font-mono font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-cyan-950 text-cyan-300 border border-cyan-500/40">
-                    C++自動化・実務効率化
-                  </span>
-                  <span className="text-xs font-mono text-slate-400">shirokuma-auto-cpp.jp</span>
-                </div>
-              </div>
-
-              <div>
-                <h3 className="text-lg sm:text-xl font-bold text-white font-sans">
-                  シロクマC++自動化ラボ
-                </h3>
-                <p className="text-xs font-mono text-cyan-400 mt-0.5">
-                  Docker / pybind11 / CI・テスト自動化
-                </p>
-              </div>
-
-              <p className="text-xs sm:text-sm text-slate-300 font-sans leading-relaxed">
-                Python、Docker、CMake、CI/CDを活用して現場のC++開発を自動化！手動ビルドや目視テストを撲滅し、数理アルゴリズムの自動評価パイプラインを構築します。
-              </p>
-            </div>
-
-            <div className="pt-2 relative z-10">
-              <a
-                href="https://shirokuma-auto-cpp.jp/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white font-bold font-mono text-xs sm:text-sm transition shadow-lg shadow-cyan-500/20 active:scale-95 flex items-center justify-center gap-2"
-              >
-                <span>自動化ラボを見る</span>
-                <ExternalLink className="w-4 h-4" />
-              </a>
-            </div>
+        {/* 4ステップ連携パイプライン */}
+        <div className="rounded-3xl border border-slate-800 bg-gradient-to-b from-slate-900/90 to-slate-950 p-5 sm:p-7 shadow-2xl space-y-4">
+          <div className="flex items-center justify-between gap-2">
+            <span className="text-xs font-mono font-bold text-cyan-400 flex items-center gap-1.5">
+              <Workflow className="w-4 h-4" /> 4サイトを巡る実践エンジニア成長ロードマップ
+            </span>
+            <span className="text-[11px] text-slate-400 font-mono hidden sm:inline">基礎設計 ➔ 実務UI ➔ 品質自動化 ➔ 専門応用</span>
           </div>
 
-          {/* 2. シロクマQt×C++ラボ */}
-          <div className="rounded-3xl border border-emerald-500/30 bg-gradient-to-br from-slate-950 via-[#071f1a] to-slate-950 p-6 sm:p-7 shadow-2xl relative overflow-hidden flex flex-col justify-between space-y-4 hover:border-emerald-400/60 transition-all">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+            {/* STEP 1: 当サイト */}
+            <div className="p-4 rounded-2xl bg-slate-950/90 border-2 border-cyan-500/70 shadow-lg shadow-cyan-500/10 relative overflow-hidden flex flex-col justify-between">
+              <div className="space-y-1.5">
+                <div className="flex items-center justify-between">
+                  <span className="text-[11px] font-mono text-cyan-400 font-bold">STEP 1【当サイト】</span>
+                  <span className="text-[9px] font-mono font-bold px-2 py-0.5 rounded-full bg-cyan-500 text-slate-950 animate-pulse">
+                    現在地
+                  </span>
+                </div>
+                <div className="text-sm font-bold text-white">シロクマC++ラボ</div>
+                <div className="text-[11px] text-cyan-300/80 font-mono">C++設計 / OOP / RAII / ECS</div>
+                <p className="text-[11px] text-slate-300 leading-relaxed pt-1">
+                  1本のゲームを題材に、生ポインタやswitch分岐を撲滅。「壊れない設計とモダンC++」の基礎体力を確立します。
+                </p>
+              </div>
+              <div className="mt-3 pt-2 border-t border-cyan-500/20 text-[10px] text-cyan-400 font-mono flex items-center gap-1">
+                <span>🎯 全44章のカリキュラム学習</span>
+              </div>
+            </div>
+
+            {/* STEP 2: Qt×C++ */}
+            <div className="p-4 rounded-2xl bg-slate-950/60 border border-emerald-500/30 hover:border-emerald-500/60 transition flex flex-col justify-between">
+              <div className="space-y-1.5">
+                <div className="text-[11px] font-mono text-emerald-400 font-bold">STEP 2【UI / HMI】</div>
+                <div className="text-sm font-bold text-white">シロクマQt×C++ラボ</div>
+                <div className="text-[11px] text-emerald-300/80 font-mono">Qt / QML / Linux HMI</div>
+                <p className="text-[11px] text-slate-300 leading-relaxed pt-1">
+                  設計したコアロジックを産業用計器やリアルタイムダッシュボードへ接続。GUIとワーカースレッドの分離を習得。
+                </p>
+              </div>
+              <div className="mt-3 pt-2 border-t border-emerald-500/20 text-[10px] text-emerald-400 font-mono flex items-center gap-1">
+                <span>🖥️ 計器・可視化GUIの実装</span>
+              </div>
+            </div>
+
+            {/* STEP 3: 自動化ラボ */}
+            <div className="p-4 rounded-2xl bg-slate-950/60 border border-blue-500/30 hover:border-blue-500/60 transition flex flex-col justify-between">
+              <div className="space-y-1.5">
+                <div className="text-[11px] font-mono text-blue-400 font-bold">STEP 3【品質 / CI/CD】</div>
+                <div className="text-sm font-bold text-white">シロクマC++自動化ラボ</div>
+                <div className="text-[11px] text-blue-300/80 font-mono">Python / Docker / CI・テスト</div>
+                <p className="text-[11px] text-slate-300 leading-relaxed pt-1">
+                  手動ビルド・目視テストを根絶。CMake・Docker・GitHub Actions・ASanで自動化パイプラインを構築。
+                </p>
+              </div>
+              <div className="mt-3 pt-2 border-t border-blue-500/20 text-[10px] text-blue-400 font-mono flex items-center gap-1">
+                <span>⚡ 開発・テスト工程の完全自動化</span>
+              </div>
+            </div>
+
+            {/* STEP 4: ソナー入門 */}
+            <div className="p-4 rounded-2xl bg-slate-950/60 border border-indigo-500/30 hover:border-indigo-500/60 transition flex flex-col justify-between">
+              <div className="space-y-1.5">
+                <div className="text-[11px] font-mono text-indigo-400 font-bold">STEP 4【先端応用】</div>
+                <div className="text-sm font-bold text-white">水中音響・ソナー技術入門</div>
+                <div className="text-[11px] text-indigo-300/80 font-mono">音響・FFT・LOFAR・TMA</div>
+                <p className="text-[11px] text-slate-300 leading-relaxed pt-1">
+                  C++・GUI・自動化の技術を、最高難度の実世界リアルタイム信号処理・数理物理シミュレーションへ応用。
+                </p>
+              </div>
+              <div className="mt-3 pt-2 border-t border-indigo-500/20 text-[10px] text-indigo-400 font-mono flex items-center gap-1">
+                <span>🌊 実応用・信号処理の最前線</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* 姉妹サイト3枚の詳細カード */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
+          {/* 1. シロクマQt×C++ラボ */}
+          <div className="rounded-3xl border border-emerald-500/30 bg-gradient-to-br from-slate-950 via-[#071f1a] to-slate-950 p-5 sm:p-7 shadow-2xl relative overflow-hidden flex flex-col justify-between space-y-4 hover:border-emerald-400/60 transition-all">
             <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
             <div className="space-y-3 relative z-10">
               <div className="flex items-center justify-between gap-2 flex-wrap">
                 <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-emerald-600 to-teal-500 flex items-center justify-center text-2xl shadow-lg shadow-emerald-500/20 shrink-0">
                   🖥️
                 </div>
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 flex-wrap">
                   <span className="text-xs font-mono font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-emerald-950 text-emerald-300 border border-emerald-500/40">
                     Linux × Qt GUI開発
                   </span>
@@ -1110,16 +1292,59 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
             </div>
           </div>
 
-          {/* 3. 水中音響・ソナー技術入門 */}
-          <div className="rounded-3xl border border-blue-500/30 bg-gradient-to-br from-slate-950 via-[#0a1528] to-slate-950 p-6 sm:p-7 shadow-2xl relative overflow-hidden flex flex-col justify-between space-y-4 hover:border-blue-400/60 transition-all">
-            <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl pointer-events-none" />
+          {/* 2. シロクマC++自動化ラボ */}
+          <div className="rounded-3xl border border-cyan-500/30 bg-gradient-to-br from-slate-950 via-[#071322] to-slate-950 p-5 sm:p-7 shadow-2xl relative overflow-hidden flex flex-col justify-between space-y-4 hover:border-cyan-400/60 transition-all">
+            <div className="absolute top-0 right-0 w-64 h-64 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none" />
             <div className="space-y-3 relative z-10">
               <div className="flex items-center justify-between gap-2 flex-wrap">
-                <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-blue-600 to-cyan-500 flex items-center justify-center text-2xl shadow-lg shadow-blue-500/20 shrink-0">
+                <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-cyan-600 to-blue-500 flex items-center justify-center text-2xl shadow-lg shadow-cyan-500/20 shrink-0">
+                  ⚡
+                </div>
+                <div className="flex items-center gap-2 flex-wrap">
+                  <span className="text-xs font-mono font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-cyan-950 text-cyan-300 border border-cyan-500/40">
+                    C++自動化・実務効率化
+                  </span>
+                  <span className="text-xs font-mono text-slate-400">shirokuma-auto-cpp.jp</span>
+                </div>
+              </div>
+
+              <div>
+                <h3 className="text-lg sm:text-xl font-bold text-white font-sans">
+                  シロクマC++自動化ラボ
+                </h3>
+                <p className="text-xs font-mono text-cyan-400 mt-0.5">
+                  Docker / pybind11 / CI・テスト自動化
+                </p>
+              </div>
+
+              <p className="text-xs sm:text-sm text-slate-300 font-sans leading-relaxed">
+                Python、Docker、CMake、CI/CDを活用して現場のC++開発を自動化！手動ビルドや目視テストを撲滅し、数理アルゴリズムの自動評価パイプラインを構築します。
+              </p>
+            </div>
+
+            <div className="pt-2 relative z-10">
+              <a
+                href="https://shirokuma-auto-cpp.jp/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white font-bold font-mono text-xs sm:text-sm transition shadow-lg shadow-cyan-500/20 active:scale-95 flex items-center justify-center gap-2"
+              >
+                <span>自動化ラボを見る</span>
+                <ExternalLink className="w-4 h-4" />
+              </a>
+            </div>
+          </div>
+
+          {/* 3. 水中音響・ソナー技術入門 */}
+          <div className="rounded-3xl border border-indigo-500/30 bg-gradient-to-br from-slate-950 via-[#0a1528] to-slate-950 p-5 sm:p-7 shadow-2xl relative overflow-hidden flex flex-col justify-between space-y-4 hover:border-indigo-400/60 transition-all">
+            <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none" />
+            <div className="space-y-3 relative z-10">
+              <div className="flex items-center justify-between gap-2 flex-wrap">
+                <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-indigo-600 to-cyan-500 flex items-center justify-center text-2xl shadow-lg shadow-indigo-500/20 shrink-0">
                   🌊
                 </div>
-                <div className="flex items-center gap-2">
-                  <span className="text-xs font-mono font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-blue-950 text-blue-300 border border-blue-500/40">
+                <div className="flex items-center gap-2 flex-wrap">
+                  <span className="text-xs font-mono font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-indigo-950 text-indigo-300 border border-indigo-500/40">
                     水中音響・信号処理
                   </span>
                   <span className="text-xs font-mono text-slate-400">sonar-guide.jp</span>
@@ -1130,7 +1355,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
                 <h3 className="text-lg sm:text-xl font-bold text-white font-sans">
                   水中音響・ソナー技術入門
                 </h3>
-                <p className="text-xs font-mono text-blue-400 mt-0.5">
+                <p className="text-xs font-mono text-indigo-400 mt-0.5">
                   波の物理 / FFT / LOFAR / 音響シミュレータ
                 </p>
               </div>
@@ -1145,7 +1370,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
                 href="https://sonar-guide.jp/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 text-white font-bold font-mono text-xs sm:text-sm transition shadow-lg shadow-blue-500/20 active:scale-95 flex items-center justify-center gap-2"
+                className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-indigo-600 to-cyan-600 hover:from-indigo-500 hover:to-cyan-500 text-white font-bold font-mono text-xs sm:text-sm transition shadow-lg shadow-indigo-500/20 active:scale-95 flex items-center justify-center gap-2"
               >
                 <span>ソナー入門を見る</span>
                 <ExternalLink className="w-4 h-4" />

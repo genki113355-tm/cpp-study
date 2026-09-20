@@ -31,13 +31,13 @@ export const Footer: React.FC = () => {
               rel="noopener noreferrer"
               className="group flex items-center justify-between gap-3 p-3 rounded-2xl bg-slate-900/90 hover:bg-slate-850 border border-slate-800 hover:border-cyan-500/40 transition-all shadow-lg text-left"
             >
-              <div className="flex items-center gap-3 min-w-0">
+              <div className="flex items-center gap-3 min-w-0 flex-1">
                 <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-600 to-blue-500 flex items-center justify-center text-white text-xl flex-shrink-0 shadow-md">
                   ⚡
                 </div>
-                <div className="min-w-0">
-                  <div className="flex items-center gap-2 flex-wrap">
-                    <span className="text-[10px] uppercase font-mono px-1.5 py-0.5 rounded bg-cyan-950 text-cyan-300 border border-cyan-500/30 font-bold">
+                <div className="min-w-0 flex-1">
+                  <div className="flex items-center gap-1.5 flex-wrap">
+                    <span className="text-[10px] uppercase font-mono px-1.5 py-0.5 rounded bg-cyan-950 text-cyan-300 border border-cyan-500/30 font-bold flex-shrink-0">
                       姉妹サイト
                     </span>
                     <span className="font-bold text-slate-200 group-hover:text-cyan-300 transition text-sm font-sans truncate">
@@ -49,7 +49,7 @@ export const Footer: React.FC = () => {
                   </p>
                 </div>
               </div>
-              <span className="text-slate-500 group-hover:text-cyan-400 transition font-mono text-sm pr-1">
+              <span className="text-slate-500 group-hover:text-cyan-400 transition font-mono text-sm pr-1 flex-shrink-0">
                 ↗
               </span>
             </a>
@@ -61,13 +61,13 @@ export const Footer: React.FC = () => {
               rel="noopener noreferrer"
               className="group flex items-center justify-between gap-3 p-3 rounded-2xl bg-slate-900/90 hover:bg-slate-850 border border-slate-800 hover:border-emerald-500/40 transition-all shadow-lg text-left"
             >
-              <div className="flex items-center gap-3 min-w-0">
+              <div className="flex items-center gap-3 min-w-0 flex-1">
                 <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-500 flex items-center justify-center text-white text-xl flex-shrink-0 shadow-md">
                   🖥️
                 </div>
-                <div className="min-w-0">
-                  <div className="flex items-center gap-2 flex-wrap">
-                    <span className="text-[10px] uppercase font-mono px-1.5 py-0.5 rounded bg-emerald-950 text-emerald-300 border border-emerald-500/30 font-bold">
+                <div className="min-w-0 flex-1">
+                  <div className="flex items-center gap-1.5 flex-wrap">
+                    <span className="text-[10px] uppercase font-mono px-1.5 py-0.5 rounded bg-emerald-950 text-emerald-300 border border-emerald-500/30 font-bold flex-shrink-0">
                       姉妹サイト
                     </span>
                     <span className="font-bold text-slate-200 group-hover:text-emerald-300 transition text-sm font-sans truncate">
@@ -79,7 +79,7 @@ export const Footer: React.FC = () => {
                   </p>
                 </div>
               </div>
-              <span className="text-slate-500 group-hover:text-emerald-400 transition font-mono text-sm pr-1">
+              <span className="text-slate-500 group-hover:text-emerald-400 transition font-mono text-sm pr-1 flex-shrink-0">
                 ↗
               </span>
             </a>
@@ -91,13 +91,13 @@ export const Footer: React.FC = () => {
               rel="noopener noreferrer"
               className="group flex items-center justify-between gap-3 p-3 rounded-2xl bg-slate-900/90 hover:bg-slate-850 border border-slate-800 hover:border-blue-500/40 transition-all shadow-lg text-left"
             >
-              <div className="flex items-center gap-3 min-w-0">
+              <div className="flex items-center gap-3 min-w-0 flex-1">
                 <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 to-cyan-500 flex items-center justify-center text-white text-xl flex-shrink-0 shadow-md">
                   🌊
                 </div>
-                <div className="min-w-0">
-                  <div className="flex items-center gap-2 flex-wrap">
-                    <span className="text-[10px] uppercase font-mono px-1.5 py-0.5 rounded bg-blue-950 text-blue-300 border border-blue-500/30 font-bold">
+                <div className="min-w-0 flex-1">
+                  <div className="flex items-center gap-1.5 flex-wrap">
+                    <span className="text-[10px] uppercase font-mono px-1.5 py-0.5 rounded bg-blue-950 text-blue-300 border border-blue-500/30 font-bold flex-shrink-0">
                       姉妹サイト
                     </span>
                     <span className="font-bold text-slate-200 group-hover:text-cyan-300 transition text-sm font-sans truncate">
@@ -109,7 +109,7 @@ export const Footer: React.FC = () => {
                   </p>
                 </div>
               </div>
-              <span className="text-slate-500 group-hover:text-cyan-400 transition font-mono text-sm pr-1">
+              <span className="text-slate-500 group-hover:text-cyan-400 transition font-mono text-sm pr-1 flex-shrink-0">
                 ↗
               </span>
             </a>
