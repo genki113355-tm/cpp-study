@@ -103,111 +103,141 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
         <div className="absolute top-0 right-0 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none" />
         <div className="absolute bottom-0 left-0 w-96 h-96 bg-blue-600/10 rounded-full blur-3xl pointer-events-none" />
 
-        <div className="relative z-10 max-w-3xl space-y-5">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-950/80 border border-cyan-500/40 text-cyan-300 font-mono text-xs font-semibold">
-            <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
-            <span>ゲーム開発で学ぶ C++ オブジェクト指向＆実践設計メディア</span>
-          </div>
+        <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+          {/* 左側：キャッチコピー・解説・バッジ・CTA */}
+          <div className="lg:col-span-7 space-y-5">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-950/80 border border-cyan-500/40 text-cyan-300 font-mono text-xs font-semibold">
+              <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
+              <span>ゲーム開発で学ぶ C++ オブジェクト指向＆実践設計メディア</span>
+            </div>
 
-          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight text-white font-sans leading-tight flex items-center gap-3.5 sm:gap-5 flex-wrap">
-            <span className="w-12 h-12 sm:w-16 sm:h-16 lg:w-20 lg:h-20 rounded-full border-2 sm:border-3 border-cyan-400/80 bg-slate-900 shadow-[0_0_25px_rgba(6,182,212,0.4)] shrink-0 inline-flex items-center justify-center overflow-hidden">
-              <img
-                src="/images/polar-bear-guide-pointing.png"
-                alt="シロクマ先生"
-                className="w-full h-full object-cover"
-              />
-            </span>
-            <span>シロクマC++ラボ</span>
-          </h1>
+            <h1 className="text-3xl sm:text-5xl lg:text-5xl xl:text-6xl font-black tracking-tight text-white font-sans leading-tight flex items-center gap-3.5 sm:gap-4 flex-wrap">
+              <span className="w-12 h-12 sm:w-16 sm:h-16 rounded-full border-2 border-cyan-400/80 bg-slate-900 shadow-[0_0_25px_rgba(6,182,212,0.4)] shrink-0 inline-flex items-center justify-center overflow-hidden">
+                <img
+                  src="/images/polar-bear-guide-pointing.png"
+                  alt="シロクマ先生"
+                  className="w-full h-full object-cover"
+                />
+              </span>
+              <span>シロクマC++ラボ</span>
+            </h1>
 
-          <p className="text-lg sm:text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-cyan-300 to-emerald-300 leading-snug">
-            動くだけのコードから、現場で生き抜く「一生モノの設計力」へ。
-          </p>
+            <p className="text-lg sm:text-xl xl:text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-cyan-300 to-emerald-300 leading-snug">
+              動くだけのコードから、現場で生き抜く「一生モノの設計力」へ。
+            </p>
 
-          <p className="text-sm sm:text-base text-slate-300 leading-relaxed font-sans">
-            ブラウザで遊べるインベーダー風ゲームを段階的にリファクタリング！
-            main関数500行のスパゲティコード（C言語）から、クラス化、動的メモリ、vtable、RAII、ECS、そして最新C++20まで。
-            実戦に即した「なぜその設計が必要なのか」を体感しながらマスターできます。
-          </p>
+            <p className="text-sm sm:text-base text-slate-300 leading-relaxed font-sans">
+              ブラウザで遊べるインベーダー風ゲームを段階的にリファクタリング！
+              main関数500行のスパゲティコード（C言語）から、クラス化、動的メモリ、vtable、RAII、ECS、そして最新C++20まで。
+              実戦に即した「なぜその設計が必要なのか」を体感しながらマスターできます。
+            </p>
 
-          {/* 実績バッジ群 */}
-          <div className="flex flex-wrap gap-2 pt-1 text-xs font-mono text-slate-300">
-            <span className="px-3 py-1 rounded-lg bg-slate-950/80 border border-slate-800 text-slate-300">全44記事 公開中</span>
-            <span className="px-3 py-1 rounded-lg bg-slate-950/80 border border-slate-800 text-slate-300">完全無料・登録不要</span>
-            <span className="px-3 py-1 rounded-lg bg-slate-950/80 border border-cyan-500/30 text-cyan-300">🎮 Webエミュレータ搭載</span>
-            <span className="px-3 py-1 rounded-lg bg-slate-950/80 border border-emerald-500/30 text-emerald-300">💻 ブラウザ実行演習完備</span>
-          </div>
+            {/* 実績バッジ群 */}
+            <div className="flex flex-wrap gap-2 pt-1 text-xs font-mono text-slate-300">
+              <span className="px-3 py-1 rounded-lg bg-slate-950/80 border border-slate-800 text-slate-300">全44記事 公開中</span>
+              <span className="px-3 py-1 rounded-lg bg-slate-950/80 border border-slate-800 text-slate-300">完全無料・登録不要</span>
+              <span className="px-3 py-1 rounded-lg bg-slate-950/80 border border-cyan-500/30 text-cyan-300">🎮 Webエミュレータ搭載</span>
+              <span className="px-3 py-1 rounded-lg bg-slate-950/80 border border-emerald-500/30 text-emerald-300">💻 実行演習完備</span>
+            </div>
 
-          {/* 学習開始・再開 CTA ボタン（最初から学ぶ / 続きから学ぶ） */}
-          <div className="pt-2 grid grid-cols-1 sm:grid-cols-2 gap-3">
-            {/* 1. 最初から学ぶ */}
-            <button
-              type="button"
-              onClick={() => onSelectChapter(ALL_CHAPTERS[0].slug)}
-              className="py-3 px-5 rounded-2xl bg-slate-800/90 hover:bg-slate-700 text-white font-bold font-mono text-xs sm:text-sm transition border border-slate-700 hover:border-slate-600 flex items-center justify-center gap-2 shadow-lg active:scale-95 cursor-pointer"
-            >
-              <span>🚀 最初から学ぶ</span>
-              <span className="text-[11px] text-slate-400 font-normal">（第1章）</span>
-            </button>
-
-            {/* 2. 続きから学ぶ */}
-            {isAllCompleted ? (
+            {/* 学習開始・再開 CTA ボタン（最初から学ぶ / 続きから学ぶ） */}
+            <div className="pt-2 grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {/* 1. 最初から学ぶ */}
               <button
                 type="button"
-                onClick={onOpenMilestoneModal}
-                className="py-3 px-5 rounded-2xl bg-gradient-to-r from-amber-500 to-yellow-400 hover:from-amber-400 hover:to-yellow-300 text-slate-950 font-black font-mono text-xs sm:text-sm transition shadow-lg shadow-amber-500/20 flex items-center justify-center gap-2 active:scale-95 cursor-pointer"
+                onClick={() => onSelectChapter(ALL_CHAPTERS[0].slug)}
+                className="py-3 px-5 rounded-2xl bg-slate-800/90 hover:bg-slate-700 text-white font-bold font-mono text-xs sm:text-sm transition border border-slate-700 hover:border-slate-600 flex items-center justify-center gap-2 shadow-lg active:scale-95 cursor-pointer"
               >
-                <Trophy className="w-4 h-4 text-slate-950" />
-                <span>👑 全課程制覇！修了証を確認</span>
+                <span>🚀 最初から学ぶ</span>
+                <span className="text-[11px] text-slate-400 font-normal">（第1章）</span>
               </button>
-            ) : hasProgress ? (
-              <button
-                type="button"
-                onClick={() => onSelectChapter(nextUncompletedChapter.slug)}
-                className="py-3 px-5 rounded-2xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-black font-mono text-xs sm:text-sm transition shadow-lg shadow-cyan-500/30 flex items-center justify-center gap-2 active:scale-95 cursor-pointer"
-              >
-                <Play className="w-4 h-4 fill-current" />
-                <span>▶ 続きから学ぶ</span>
-                <span className="text-[11px] font-normal opacity-90 truncate max-w-[130px] sm:max-w-[180px]">
-                  （{nextUncompletedChapter.courseChapterCode ? `第${nextUncompletedChapter.courseChapterCode.replace(/^[CML]/, '')}章` : nextUncompletedChapter.title.slice(0, 10)}）
-                </span>
-              </button>
-            ) : (
-              <button
-                type="button"
-                disabled
-                className="py-3 px-5 rounded-2xl bg-slate-900/60 text-slate-600 border border-slate-800/80 font-mono text-xs sm:text-sm flex items-center justify-center gap-2 cursor-not-allowed opacity-60"
-                title="まずは第1章から始めましょう！"
-              >
-                <span>続きから学ぶ（未開始）</span>
-              </button>
+
+              {/* 2. 続きから学ぶ */}
+              {isAllCompleted ? (
+                <button
+                  type="button"
+                  onClick={onOpenMilestoneModal}
+                  className="py-3 px-5 rounded-2xl bg-gradient-to-r from-amber-500 to-yellow-400 hover:from-amber-400 hover:to-yellow-300 text-slate-950 font-black font-mono text-xs sm:text-sm transition shadow-lg shadow-amber-500/20 flex items-center justify-center gap-2 active:scale-95 cursor-pointer"
+                >
+                  <Trophy className="w-4 h-4 text-slate-950" />
+                  <span>👑 全課程制覇！修了証を確認</span>
+                </button>
+              ) : hasProgress ? (
+                <button
+                  type="button"
+                  onClick={() => onSelectChapter(nextUncompletedChapter.slug)}
+                  className="py-3 px-5 rounded-2xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-black font-mono text-xs sm:text-sm transition shadow-lg shadow-cyan-500/30 flex items-center justify-center gap-2 active:scale-95 cursor-pointer"
+                >
+                  <Play className="w-4 h-4 fill-current" />
+                  <span>▶ 続きから学ぶ</span>
+                  <span className="text-[11px] font-normal opacity-90 truncate max-w-[130px] sm:max-w-[180px]">
+                    （{nextUncompletedChapter.courseChapterCode ? `第${nextUncompletedChapter.courseChapterCode.replace(/^[CML]/, '')}章` : nextUncompletedChapter.title.slice(0, 10)}）
+                  </span>
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  disabled
+                  className="py-3 px-5 rounded-2xl bg-slate-900/60 text-slate-600 border border-slate-800/80 font-mono text-xs sm:text-sm flex items-center justify-center gap-2 cursor-not-allowed opacity-60"
+                  title="まずは第1章から始めましょう！"
+                >
+                  <span>続きから学ぶ（未開始）</span>
+                </button>
+              )}
+            </div>
+
+            {/* 学習進捗 & 修了証への導線 */}
+            {onOpenMilestoneModal && (
+              <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                <div className="p-3 rounded-2xl bg-slate-950/80 border border-slate-800 flex-1 flex items-center justify-between gap-3 text-xs font-mono">
+                  <div className="flex items-center gap-2 text-slate-300">
+                    <span className="w-2 h-2 rounded-full bg-cyan-400" />
+                    <span>学習進捗：</span>
+                    <span className="text-cyan-300 font-bold">{completedChapters.length} / {ALL_CHAPTERS.length} 章完了</span>
+                  </div>
+                  <div className="text-cyan-400 font-bold">
+                    {Math.round((completedChapters.length / ALL_CHAPTERS.length) * 100)}%
+                  </div>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={onOpenMilestoneModal}
+                  className="py-3 px-4 rounded-2xl bg-gradient-to-r from-amber-500 to-yellow-400 hover:from-amber-400 hover:to-yellow-300 text-slate-950 font-bold font-mono text-xs sm:text-sm transition flex items-center justify-center gap-2 shadow-lg shadow-amber-500/20 active:scale-95 cursor-pointer flex-shrink-0"
+                >
+                  <Trophy className="w-4 h-4 text-slate-950" />
+                  <span>🏆 公式修了証・進捗引継ぎ</span>
+                </button>
+              </div>
             )}
           </div>
 
-          {/* 学習進捗 & 修了証への導線 */}
-          {onOpenMilestoneModal && (
-            <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
-              <div className="p-3 rounded-2xl bg-slate-950/80 border border-slate-800 flex-1 flex items-center justify-between gap-3 text-xs font-mono">
-                <div className="flex items-center gap-2 text-slate-300">
-                  <span className="w-2 h-2 rounded-full bg-cyan-400" />
-                  <span>学習進捗：</span>
-                  <span className="text-cyan-300 font-bold">{completedChapters.length} / {ALL_CHAPTERS.length} 章完了</span>
-                </div>
-                <div className="text-cyan-400 font-bold">
-                  {Math.round((completedChapters.length / ALL_CHAPTERS.length) * 100)}%
-                </div>
+          {/* 右側：サイトの意図に合った2頭身シロクマ先生＆ペンギン開発ラボイラスト */}
+          <div className="lg:col-span-5 flex flex-col items-center justify-center">
+            <div className="w-full max-w-md lg:max-w-none rounded-3xl border-2 border-cyan-500/40 shadow-2xl shadow-cyan-950/80 overflow-hidden relative group bg-slate-950/90">
+              <div className="aspect-[4/3] w-full overflow-hidden bg-slate-900">
+                <img
+                  src="/images/shirokuma_chibi_game_lab.jpg"
+                  alt="シロクマ先生とペンギン生徒がレトロゲーム開発に熱中するC++ラボ"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                />
               </div>
-
-              <button
-                type="button"
-                onClick={onOpenMilestoneModal}
-                className="py-3 px-4 rounded-2xl bg-gradient-to-r from-amber-500 to-yellow-400 hover:from-amber-400 hover:to-yellow-300 text-slate-950 font-bold font-mono text-xs sm:text-sm transition flex items-center justify-center gap-2 shadow-lg shadow-amber-500/20 active:scale-95 cursor-pointer flex-shrink-0"
-              >
-                <Trophy className="w-4 h-4 text-slate-950" />
-                <span>🏆 公式修了証・進捗引継ぎ</span>
-              </button>
+              <div className="p-3.5 sm:p-4 bg-gradient-to-t from-slate-950 via-slate-950/95 to-slate-900/90 border-t border-cyan-500/20">
+                <div className="flex items-center justify-between gap-2">
+                  <span className="text-xs font-mono font-bold text-cyan-300 flex items-center gap-1.5">
+                    <Sparkles className="w-3.5 h-3.5 text-cyan-400 shrink-0" />
+                    シロクマ先生＆ペンギンの開発ラボ
+                  </span>
+                  <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-cyan-950 text-cyan-400 border border-cyan-500/30 font-semibold">
+                    C++ × GAME DEV
+                  </span>
+                </div>
+                <p className="text-[11px] text-slate-300 font-sans mt-1 leading-relaxed">
+                  「インベーダーゲームを動かしながら、壊れないC++設計を一緒にマスターしよう！」
+                </p>
+              </div>
             </div>
-          )}
+          </div>
         </div>
       </section>
 

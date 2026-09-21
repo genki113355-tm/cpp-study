@@ -212,117 +212,101 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
 
   return (
     <div className="w-full max-w-[1500px] mx-auto py-6 sm:py-8 space-y-12">
-      {/* 章ヘッダーバナー（司令室イラスト付き） */}
-      <div className={`relative rounded-3xl bg-gradient-to-br from-slate-900 via-[#0c121e] to-slate-950 p-4 sm:p-8 md:p-10 border shadow-2xl overflow-hidden ${getBorderColor()}`}>
+      {/* 章ヘッダーバナー（タイトル・学習メタデータ・到達目標・解説） */}
+      <div className={`relative rounded-3xl bg-gradient-to-br from-slate-900 via-[#0c121e] to-slate-950 p-5 sm:p-8 md:p-10 border shadow-2xl overflow-hidden ${getBorderColor()}`}>
         {/* 背景の淡いグロー */}
         <div className={`absolute top-0 right-0 w-96 h-96 rounded-full blur-3xl pointer-events-none ${getGlowColor()}`} />
 
-        <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-8">
-          <div className="flex-1 space-y-4">
-            {/* メインタイトル */}
-            <h1 className="text-2xl min-[400px]:text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black text-white tracking-tight leading-tight break-words sm:break-keep">
+        <div className="relative z-10 space-y-5">
+          {/* パンくずリスト & シェアボタン（最上部に配置して操作性を向上） */}
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <nav aria-label="パンくずリスト" className="flex items-center gap-2 text-xs sm:text-sm font-mono flex-wrap">
+              <button
+                onClick={() => onNavigate('top')}
+                className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-slate-800/90 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700 transition shadow-sm cursor-pointer"
+                title="トップページへ戻る"
+              >
+                <span>🏠</span>
+                <span>TOP</span>
+              </button>
+              <span className="text-slate-600">/</span>
+              {getTrackBadge()}
+              <span className="text-xs sm:text-sm font-mono text-slate-300 font-semibold px-2.5 py-1 rounded-lg bg-slate-800/80 border border-slate-700">
+                {chapter.badge}
+              </span>
+              <button
+                type="button"
+                onClick={() => onToggleComplete ? onToggleComplete(chapter.id) : onComplete(chapter.id)}
+                className={`inline-flex items-center gap-1.5 text-xs sm:text-sm font-mono px-3 py-1 rounded-full border font-bold transition cursor-pointer active:scale-95 ${
+                  isCompleted
+                    ? 'bg-emerald-950/90 text-emerald-300 border-emerald-500/50 shadow-sm shadow-emerald-500/20 hover:bg-emerald-900/60'
+                    : 'bg-slate-800/80 text-slate-400 border-slate-700 hover:text-slate-200 hover:bg-slate-700'
+                }`}
+                title={isCompleted ? '読了済み（クリックで未読了に戻す）' : '未読了（クリックで読了完了にする）'}
+              >
+                <CheckCircle2 className={`w-3.5 h-3.5 ${isCompleted ? 'text-emerald-400' : 'text-slate-500'}`} />
+                <span>{isCompleted ? '読了完了' : '未読了（完了にする）'}</span>
+              </button>
+            </nav>
+
+            <ShareButtons
+              title={`${chapter.title} - ${chapter.subtitle} | シロクマC++ラボ`}
+              text={`C++オブジェクト指向設計カリキュラム：${chapter.description.slice(0, 60)}...`}
+              variant="compact"
+            />
+          </div>
+
+          {/* メインタイトル */}
+          <div className="space-y-2">
+            <h1 className="text-2xl min-[400px]:text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white tracking-tight leading-tight break-words">
               {chapter.title}
             </h1>
-
-            <p className="text-base sm:text-xl md:text-2xl text-cyan-300 font-medium leading-snug break-words sm:break-keep">
+            <p className="text-base sm:text-xl md:text-2xl text-cyan-300 font-medium leading-snug break-words">
               {chapter.subtitle}
             </p>
+          </div>
 
-            {/* パンくずリスト & シェアボタン（タイトルの下に配置） */}
-            <div className="flex flex-wrap items-center justify-between gap-3 pt-1">
-              <nav aria-label="パンくずリスト" className="flex items-center gap-2 text-xs sm:text-sm font-mono flex-wrap">
-                <button
-                  onClick={() => onNavigate('top')}
-                  className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-slate-800/90 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700 transition shadow-sm"
-                  title="トップページへ戻る"
-                >
-                  <span>🏠</span>
-                  <span>TOP</span>
-                </button>
-                <span className="text-slate-600">/</span>
-                {getTrackBadge()}
-                <span className="text-xs sm:text-sm font-mono text-slate-300 font-semibold px-2.5 py-1 rounded-lg bg-slate-800/80 border border-slate-700">
-                  {chapter.badge}
-                </span>
-                <button
-                  type="button"
-                  onClick={() => onToggleComplete ? onToggleComplete(chapter.id) : onComplete(chapter.id)}
-                  className={`inline-flex items-center gap-1.5 text-xs sm:text-sm font-mono px-3 py-1 rounded-full border font-bold transition cursor-pointer active:scale-95 ${
-                    isCompleted
-                      ? 'bg-emerald-950/90 text-emerald-300 border-emerald-500/50 shadow-sm shadow-emerald-500/20 hover:bg-emerald-900/60'
-                      : 'bg-slate-800/80 text-slate-400 border-slate-700 hover:text-slate-200 hover:bg-slate-700'
-                  }`}
-                  title={isCompleted ? '読了済み（クリックで未読了に戻す）' : '未読了（クリックで読了完了にする）'}
-                >
-                  <CheckCircle2 className={`w-3.5 h-3.5 ${isCompleted ? 'text-emerald-400' : 'text-slate-500'}`} />
-                  <span>{isCompleted ? '読了完了' : '未読了（完了にする）'}</span>
-                </button>
-              </nav>
-
-              <ShareButtons
-                title={`${chapter.title} - ${chapter.subtitle} | シロクマC++ラボ`}
-                text={`C++オブジェクト指向設計カリキュラム：${chapter.description.slice(0, 60)}...`}
-                variant="compact"
-              />
-            </div>
-
-            {/* 学習メタデータ・ステータスバー（目安時間・重要度・難易度・到達目標） */}
-            <div className="p-3.5 sm:p-4 rounded-2xl bg-slate-950/80 border border-slate-800/90 space-y-2.5 shadow-lg">
-              <div className="flex flex-wrap items-center gap-2 sm:gap-2.5 text-xs sm:text-sm font-mono">
-                {/* 読了・演習目安時間 */}
-                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-slate-900 border border-slate-700/80 text-slate-200">
-                  <Clock className="w-3.5 h-3.5 text-cyan-400" />
-                  <span>目安: <strong>{meta.readingTimeText}</strong></span>
-                </div>
-
-                {/* 重要度 */}
-                <div className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-lg border font-bold ${meta.badgeClasses.importance}`}>
-                  <Flame className="w-3.5 h-3.5 text-current" />
-                  <span>重要度: {meta.importanceStars}（{meta.importanceLabel}）</span>
-                </div>
-
-                {/* 難易度 */}
-                <div className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-lg border font-semibold ${meta.badgeClasses.difficulty}`}>
-                  <Target className="w-3.5 h-3.5 text-current" />
-                  <span>難易度: {meta.difficulty}</span>
-                </div>
-
-                {/* クイズ有無 */}
-                {chapter.quiz && chapter.quiz.length > 0 && (
-                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-purple-950/80 border border-purple-500/40 text-purple-300 font-semibold">
-                    <HelpCircle className="w-3.5 h-3.5 text-purple-400" />
-                    <span>クイズ{chapter.quiz.length}問あり</span>
-                  </div>
-                )}
+          {/* 学習メタデータ・ステータスバー（目安時間・重要度・難易度・到達目標） */}
+          <div className="p-3.5 sm:p-5 rounded-2xl bg-slate-950/80 border border-slate-800/90 space-y-3 shadow-lg">
+            <div className="flex flex-wrap items-center gap-2 sm:gap-2.5 text-xs sm:text-sm font-mono">
+              {/* 読了・演習目安時間 */}
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-slate-900 border border-slate-700/80 text-slate-200">
+                <Clock className="w-3.5 h-3.5 text-cyan-400" />
+                <span>目安: <strong>{meta.readingTimeText}</strong></span>
               </div>
 
-              {meta.keyTakeaway && (
-                <div className="text-xs sm:text-sm text-slate-300 flex items-start gap-2 pt-1.5 border-t border-slate-800/80">
-                  <span className="text-amber-400 font-bold shrink-0 font-mono">🎯 到達目標:</span>
-                  <span className="font-sans leading-relaxed text-slate-300">{meta.keyTakeaway}</span>
+              {/* 重要度 */}
+              <div className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-lg border font-bold ${meta.badgeClasses.importance}`}>
+                <Flame className="w-3.5 h-3.5 text-current" />
+                <span>重要度: {meta.importanceStars}（{meta.importanceLabel}）</span>
+              </div>
+
+              {/* 難易度 */}
+              <div className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-lg border font-semibold ${meta.badgeClasses.difficulty}`}>
+                <Target className="w-3.5 h-3.5 text-current" />
+                <span>難易度: {meta.difficulty}</span>
+              </div>
+
+              {/* クイズ有無 */}
+              {chapter.quiz && chapter.quiz.length > 0 && (
+                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-purple-950/80 border border-purple-500/40 text-purple-300 font-semibold">
+                  <HelpCircle className="w-3.5 h-3.5 text-purple-400" />
+                  <span>クイズ{chapter.quiz.length}問あり</span>
                 </div>
               )}
             </div>
 
-            <p className="text-base sm:text-lg md:text-xl text-slate-300 pt-2 leading-relaxed font-sans">
-              {chapter.description}
-            </p>
+            {meta.keyTakeaway && (
+              <div className="text-xs sm:text-sm text-slate-300 flex items-start gap-2 pt-2 border-t border-slate-800/80">
+                <span className="text-amber-400 font-bold shrink-0 font-mono">🎯 到達目標:</span>
+                <span className="font-sans leading-relaxed text-slate-300">{meta.keyTakeaway}</span>
+              </div>
+            )}
           </div>
 
-          {/* 司令室のシロクマ先生＆ペンギン生徒イラストバナー */}
-          <div className="w-full lg:w-96 h-44 sm:h-56 rounded-2xl overflow-hidden border-2 border-emerald-500/40 shadow-2xl shadow-emerald-950/60 flex-shrink-0 relative group">
-            <img
-              src="/images/characters_mission.jpg"
-              alt="シロクマ先生とペンギン生徒の作戦司令室"
-              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-transparent to-transparent flex items-end p-3.5">
-              <span className="text-xs sm:text-sm font-mono text-emerald-300 flex items-center gap-2 font-bold">
-                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                POLAR FLEET HQ : MISSION BRIEFING
-              </span>
-            </div>
-          </div>
+          <p className="text-sm sm:text-base md:text-lg text-slate-300 leading-relaxed font-sans max-w-5xl">
+            {chapter.description}
+          </p>
         </div>
       </div>
 
