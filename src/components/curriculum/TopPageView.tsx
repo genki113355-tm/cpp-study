@@ -14,7 +14,10 @@ import {
   Play,
   Clock,
   AlertTriangle,
-  Workflow
+  Workflow,
+  Search,
+  Tag,
+  X
 } from 'lucide-react';
 import { 
   CLASSIC_CHAPTERS, 
@@ -27,6 +30,33 @@ import { Chapter } from '../../types/curriculum';
 import { getChapterMeta } from '../../data/chapterMetadata';
 import { AffiliatePromoBanner } from '../affiliate/AffiliatePromoBanner';
 import { GameEvolutionRoadmap } from './GameEvolutionRoadmap';
+
+interface KeywordIndexItem {
+  name: string;
+  category: string;
+  slug: string;
+  badge: string;
+  desc: string;
+}
+
+const KEYWORD_INDEX: KeywordIndexItem[] = [
+  { name: 'RAII / リソース管理', category: 'モダン設計', slug: 'chapter-5-smart-pointers-raii', badge: 'Ch.5 (M1)', desc: 'コンストラクタで確保しデストラクタで解放' },
+  { name: 'スマートポインタ (unique_ptr)', category: 'モダン設計', slug: 'chapter-5-smart-pointers-raii', badge: 'Ch.5 (M1)', desc: '単独所有権・生deleteの完全撲滅' },
+  { name: '共有ポインタ (shared_ptr)', category: 'モダン設計', slug: 'chapter-6-observer-pattern', badge: 'Ch.6 (M2)', desc: '循環参照なき共同所有と弱参照' },
+  { name: '固定長メモリプール / アロケータ', category: '極限性能', slug: 'chapter-11-memory-pool', badge: 'Ch.11 (L11)', desc: '断片化撲滅・O(1)定数時間の高速メモリ切り売り' },
+  { name: '動的多態性 / vtable / 仮想関数', category: 'OOP基礎', slug: 'chapter-4-inheritance-polymorphism', badge: 'Ch.4 (L4)', desc: 'switch分岐の破綻を解消する開閉原則' },
+  { name: 'Observer パターン (イベント通知)', category: 'デザインパターン', slug: 'chapter-6-observer-pattern', badge: 'Ch.6 (M2)', desc: '実績解除・効果音とゲーム本体の完全疎結合' },
+  { name: 'State パターン (シーン遷移)', category: 'デザインパターン', slug: 'chapter-6-observer-pattern', badge: 'Ch.6 (M2)', desc: '巨大if文を排除したゲームループ状態制御' },
+  { name: 'Strategy パターン (アルゴリズム分離)', category: 'デザインパターン', slug: 'chapter-6-observer-pattern', badge: 'Ch.6 (M2)', desc: '敵の弾幕軌道やAIロジックを実行時に差し替え' },
+  { name: 'ECS (Entity Component System)', category: '最先端設計', slug: 'chapter-7-ecs-architecture', badge: 'Ch.7 (M3)', desc: '深層多重継承を排し、データ指向で動的アセンブル' },
+  { name: '静的多態性 / CRTP', category: '現場鑑識', slug: 'reading-step-3-crtp-static-polymorphism', badge: 'R3', desc: 'vtableテーブル参照コスト0の静的ポリモーフィズム' },
+  { name: 'マルチスレッド競合 / Data Race鑑識', category: '現場鑑識', slug: 'reading-step-4-multithread-datarace', badge: 'R4', desc: 'スレッド競合の特定とstd::mutex / atomic排他制御' },
+  { name: 'Use-After-Free / ASanメモリ鑑識', category: '現場鑑識', slug: 'reading-step-6-uaf-address-sanitizer', badge: 'R6', desc: '解放後メモリへのアクセス破壊とAddressSanitizer検知' },
+  { name: 'TDD / GoogleTest (テスト駆動開発)', category: '開発手法', slug: 'guide-tdd-googletest', badge: 'G4', desc: 'テストファーストで壊れないC++リファクタリング' },
+  { name: 'UML 設計図 (クラス図 / シーケンス図)', category: '設計図解', slug: 'guide-uml-design', badge: 'G3', desc: 'ゲームアーキテクチャの視覚化と実装への落とし込み' },
+  { name: 'SOLID原則 (C++実践思想)', category: '設計思想', slug: 'column-solid-principles', badge: '思想', desc: '単一責任・開閉・リスコフ・インターフェース・依存性逆転' },
+  { name: 'ゼロオーバーヘッド原則', category: '設計思想', slug: 'column-zero-overhead-principle', badge: '思想', desc: '使わない機能には1バイト・1クロックの代償も払わない' },
+];
 
 interface TopPageViewProps {
   onSelectChapter: (slug: string) => void;
@@ -42,6 +72,20 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
   onOpenMilestoneModal,
 }) => {
   const [activeTab, setActiveTab] = useState<'classic' | 'modern' | 'reading' | 'guides'>('classic');
+  const [searchQuery, setSearchQuery] = useState<string>('');
+
+  const searchResults = useMemo(() => {
+    const q = searchQuery.trim().toLowerCase();
+    if (!q) return [];
+    return ALL_CHAPTERS.filter((ch) => {
+      const matchTitle = ch.title.toLowerCase().includes(q);
+      const matchSub = ch.subtitle.toLowerCase().includes(q);
+      const matchDesc = ch.description.toLowerCase().includes(q);
+      const matchSlug = ch.slug.toLowerCase().includes(q);
+      const matchCode = (ch.courseChapterCode || '').toLowerCase().includes(q);
+      return matchTitle || matchSub || matchDesc || matchSlug || matchCode;
+    });
+  }, [searchQuery]);
 
   const nextUncompletedChapter = useMemo(() => {
     return ALL_CHAPTERS.find((c) => !completedChapters.includes(c.id)) || ALL_CHAPTERS[0];
@@ -708,6 +752,119 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
             </div>
           </div>
         </div>
+      </section>
+
+      {/* 4. 【SEO・回遊性】重要設計キーワード・逆引きインデックス ＆ クイック検索 */}
+      <section className="space-y-4 rounded-3xl border border-slate-800 bg-gradient-to-b from-slate-900/90 to-slate-950 p-5 sm:p-7 shadow-2xl">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-800/80 pb-4">
+          <div className="space-y-1">
+            <div className="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full bg-cyan-950/80 border border-cyan-500/40 text-cyan-300 font-mono text-xs font-semibold">
+              <Tag className="w-3.5 h-3.5 text-cyan-400" />
+              <span>KEYWORD INDEX / 用語・設計思想から探す</span>
+            </div>
+            <h2 className="text-xl sm:text-2xl font-bold text-white font-sans">
+              重要設計キーワード・逆引きインデックス
+            </h2>
+            <p className="text-xs sm:text-sm text-slate-400 font-sans">
+              全44記事の中から、現場で直面する技術課題や設計用語からダイレクトに解説章へアクセスできます。
+            </p>
+          </div>
+
+          {/* クイック検索フォーム */}
+          <div className="relative w-full md:w-72 shrink-0">
+            <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="技術用語を検索 (例: RAII, ECS, メモリ)..."
+              className="w-full pl-9 pr-8 py-2 rounded-xl bg-slate-950 border border-slate-700 text-xs font-mono text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition"
+            />
+            {searchQuery && (
+              <button
+                type="button"
+                onClick={() => setSearchQuery('')}
+                className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white transition cursor-pointer"
+                title="クリア"
+              >
+                <X className="w-3.5 h-3.5" />
+              </button>
+            )}
+          </div>
+        </div>
+
+        {/* 検索中なら検索結果を表示 */}
+        {searchQuery ? (
+          <div className="space-y-2 py-2">
+            <div className="flex items-center justify-between text-xs font-mono text-slate-400">
+              <span>「{searchQuery}」の検索結果: {searchResults.length}件</span>
+              <button
+                onClick={() => setSearchQuery('')}
+                className="text-cyan-400 hover:underline cursor-pointer"
+              >
+                検索をリセット
+              </button>
+            </div>
+            {searchResults.length === 0 ? (
+              <div className="p-6 text-center text-xs font-mono text-slate-500 bg-slate-950/50 rounded-2xl border border-slate-800">
+                一致する章が見つかりませんでした。別の用語をお試しください。
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5 max-h-96 overflow-y-auto pr-1">
+                {searchResults.map((ch) => (
+                  <div
+                    key={ch.id}
+                    onClick={() => onSelectChapter(ch.slug)}
+                    className="p-3 rounded-xl bg-slate-950/80 hover:bg-slate-900 border border-slate-800 hover:border-cyan-500/50 transition cursor-pointer flex flex-col justify-between gap-1.5 shadow-sm group"
+                  >
+                    <div className="flex items-center justify-between gap-1">
+                      <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-cyan-950 text-cyan-300 border border-cyan-500/30 font-bold">
+                        {ch.badge}
+                      </span>
+                      <span className="text-[10px] font-mono text-slate-500">
+                        {ch.courseChapterCode || `Ch.${ch.id}`}
+                      </span>
+                    </div>
+                    <div className="text-xs font-bold text-white group-hover:text-cyan-300 font-sans line-clamp-1">
+                      {ch.title}
+                    </div>
+                    <p className="text-[11px] text-slate-400 font-sans line-clamp-2 leading-relaxed">
+                      {ch.subtitle}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        ) : (
+          /* 通常時は逆引きキーワードタグ一覧 */
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5 pt-2">
+            {KEYWORD_INDEX.map((kw, idx) => (
+              <div
+                key={idx}
+                onClick={() => onSelectChapter(kw.slug)}
+                className="p-3 rounded-2xl bg-slate-950/70 hover:bg-slate-900/90 border border-slate-800 hover:border-cyan-500/50 transition-all cursor-pointer group flex flex-col justify-between gap-2 shadow-sm"
+              >
+                <div>
+                  <div className="flex items-center justify-between gap-1">
+                    <span className="text-[9.5px] font-mono px-1.5 py-0.5 rounded bg-slate-900 text-slate-400 border border-slate-800 font-semibold">
+                      {kw.category}
+                    </span>
+                    <span className="text-[10px] font-mono font-bold text-cyan-400">
+                      {kw.badge}
+                    </span>
+                  </div>
+                  <h3 className="text-xs font-bold text-white group-hover:text-cyan-300 font-mono mt-1.5 transition-colors">
+                    {kw.name}
+                  </h3>
+                </div>
+                <p className="text-[10.5px] text-slate-400 font-sans leading-tight line-clamp-2">
+                  {kw.desc}
+                </p>
+              </div>
+            ))}
+          </div>
+        )}
       </section>
 
       {/* 4. カリキュラム全目次（コンパクト・ディレクトリ） */}

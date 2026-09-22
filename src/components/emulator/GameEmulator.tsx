@@ -1245,7 +1245,21 @@ export const GameEmulator: React.FC<GameEmulatorProps> = ({
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
+
+    // 高DPI（Retina）ディスプレイ対応：devicePixelRatio倍に内部バッファを拡大し、ドットボケを防止
+    const dpr = typeof window !== 'undefined' ? (window.devicePixelRatio || 1) : 1;
+    const logicalWidth = 600;
+    const logicalHeight = 300;
+
+    if (canvas.width !== logicalWidth * dpr || canvas.height !== logicalHeight * dpr) {
+      canvas.width = logicalWidth * dpr;
+      canvas.height = logicalHeight * dpr;
+    }
+
+    ctx.save();
+    ctx.scale(dpr, dpr);
     drawCanvasGame(ctx);
+    ctx.restore();
   });
 
   const getVersionBadge = () => {

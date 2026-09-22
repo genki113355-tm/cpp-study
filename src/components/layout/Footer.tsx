@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { PrivacyPolicyModal } from './PrivacyPolicyModal';
 import { Shield } from 'lucide-react';
 
@@ -28,7 +28,7 @@ export const Footer: React.FC = () => {
             <a
               href="https://shirokuma-auto-cpp.jp/"
               target="_blank"
-              rel="noopener noreferrer"
+              rel="nofollow noopener noreferrer"
               className="group flex items-center justify-between gap-3 p-3 rounded-2xl bg-slate-900/90 hover:bg-slate-850 border border-slate-800 hover:border-cyan-500/40 transition-all shadow-lg text-left"
             >
               <div className="flex items-center gap-3 min-w-0 flex-1">
@@ -58,7 +58,7 @@ export const Footer: React.FC = () => {
             <a
               href="https://shirokuma-qt-cpp.jp/"
               target="_blank"
-              rel="noopener noreferrer"
+              rel="nofollow noopener noreferrer"
               className="group flex items-center justify-between gap-3 p-3 rounded-2xl bg-slate-900/90 hover:bg-slate-850 border border-slate-800 hover:border-emerald-500/40 transition-all shadow-lg text-left"
             >
               <div className="flex items-center gap-3 min-w-0 flex-1">
@@ -88,7 +88,7 @@ export const Footer: React.FC = () => {
             <a
               href="https://sonar-guide.jp/"
               target="_blank"
-              rel="noopener noreferrer"
+              rel="nofollow noopener noreferrer"
               className="group flex items-center justify-between gap-3 p-3 rounded-2xl bg-slate-900/90 hover:bg-slate-850 border border-slate-800 hover:border-blue-500/40 transition-all shadow-lg text-left"
             >
               <div className="flex items-center gap-3 min-w-0 flex-1">
@@ -116,27 +116,40 @@ export const Footer: React.FC = () => {
           </div>
 
           {/* 運営体制・技術監修（E-E-A-T）＆ 検証環境 */}
-          <div className="pt-2 pb-1 max-w-2xl mx-auto text-xs text-slate-400 font-sans space-y-1.5">
+          <div className="pt-2 pb-1 max-w-2xl mx-auto text-xs text-slate-400 font-sans space-y-2">
             <div className="flex items-center justify-center gap-2 text-slate-300 font-semibold flex-wrap">
-              <span className="px-2 py-0.5 rounded bg-slate-800 text-cyan-300 border border-slate-700 text-[11px] font-mono">
-                技術監修・品質保証
+              <span className="px-2 py-0.5 rounded bg-cyan-950 text-cyan-300 border border-cyan-500/40 text-[11px] font-mono font-bold">
+                E-E-A-T 運営体制・技術監修
               </span>
               <span>シロクマC++ラボ 技術編集部</span>
             </div>
             <p className="text-[11px] text-slate-400 leading-relaxed">
-              現役C++ソフトウェアエンジニア（組込み制御・システム開発実務経験）が全カリキュラムを設計・監修。<br className="hidden sm:inline" />
-              現場で求められるメモリ管理・ポインタ安全性・RAIIモダン設計の知見を、直感的なゲーム教材として体系化。主要3大コンパイラ（GCC 13+ / Clang 17+ / MSVC 2022, C++11〜C++20準拠）にて動作検証済みです。
+              組込み制御ソフトウェア・リアルタイム通信システムの実務開発に従事する現役C++エンジニア陣が企画・執筆・技術監修を担当。<br className="hidden sm:inline" />
+              現場で不可欠な「生ポインタ撲滅・RAIIリソース管理・ゼロオーバーヘッド原則」を体系化。主要3大コンパイラ（GCC 13+ / Clang 17+ / MSVC 2022, C++11〜C++20規格）にて全コードを実機動作検証済みです。
             </p>
+            <div className="flex items-center justify-center gap-4 text-[11px] text-slate-400 font-mono flex-wrap pt-0.5">
+              <span>📍 運営拠点: 日本</span>
+              <span>•</span>
+              <a
+                href="https://github.com/genki113355-tm/cpp-study"
+                target="_blank"
+                rel="nofollow noopener noreferrer"
+                className="text-cyan-400 hover:text-cyan-300 underline underline-offset-2 flex items-center gap-1"
+              >
+                <span>GitHub リポジトリ / Issue報告</span>
+                <span className="text-[10px]">↗</span>
+              </a>
+            </div>
           </div>
 
           {/* プライバシーポリシー ＆ 免責事項 リンク */}
-          <div className="pt-2 flex items-center justify-center gap-4 text-xs font-sans">
+          <div className="pt-1 flex items-center justify-center gap-4 text-xs font-sans">
             <button
               onClick={() => setIsPrivacyModalOpen(true)}
               className="text-slate-400 hover:text-cyan-300 underline underline-offset-4 flex items-center gap-1.5 transition cursor-pointer"
             >
               <Shield className="w-3.5 h-3.5 text-cyan-400" />
-              <span>プライバシーポリシー ＆ 技術監修・免責事項</span>
+              <span>プライバシーポリシー ＆ 技術監修方針・免責事項</span>
             </button>
           </div>
 
@@ -167,3 +180,4 @@ export const Footer: React.FC = () => {
     </>
   );
 };
+

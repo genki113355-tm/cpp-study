@@ -514,6 +514,19 @@ export const MilestoneModal: React.FC<MilestoneModalProps> = ({
                 )}
               </div>
 
+              {/* キャッシュ消去による進捗消失防止ガイダンス */}
+              <div className="p-3 sm:p-3.5 rounded-2xl bg-amber-950/30 border border-amber-500/30 text-xs text-amber-200/90 flex items-start gap-2.5">
+                <AlertCircle className="w-4 h-4 text-amber-400 flex-shrink-0 mt-0.5" />
+                <div className="space-y-0.5 font-sans">
+                  <p className="font-bold text-amber-300 font-mono text-[11px]">
+                    ⚠️ ブラウザのキャッシュ・履歴消去による進捗消失にご注意ください
+                  </p>
+                  <p className="text-[11px] text-slate-300 leading-relaxed">
+                    本サイトは登録不要で利用できるため、学習進捗はお使いのブラウザ（localStorage）に保存されています。ブラウザの「閲覧履歴・Cookieの消去」を実行すると進捗がリセットされるため、大切な学習記録は定期的に下の「引継ぎコード」をコピーしてメモ帳等にバックアップしてください。
+                  </p>
+                </div>
+              </div>
+
               {/* フィードバックメッセージ表示 */}
               {backupMessage && (
                 <div
