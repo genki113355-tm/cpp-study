@@ -274,6 +274,24 @@ const CHAPTER_METADATA_MAP: Record<number, {
     difficulty: '上級',
     keyTakeaway: 'SFINAE / enable_if / Concepts の皮をむき、型制約と真のシグネチャを解読',
   },
+  208: {
+    readingTimeMinutes: 30,
+    importance: 3,
+    difficulty: '上級',
+    keyTakeaway: 'キャラクタライゼーションテストとマクロ無毒化によるレガシー外科手術',
+  },
+  209: {
+    readingTimeMinutes: 30,
+    importance: 3,
+    difficulty: '上級',
+    keyTakeaway: 'MiniDumpとx64レジスタ（RCX/RAX）からのクラッシュ現場逆算特定',
+  },
+  210: {
+    readingTimeMinutes: 30,
+    importance: 3,
+    difficulty: '上級',
+    keyTakeaway: '前方宣言による物理依存切断とDIP依存性逆転による神クラス解体',
+  },
 
   // 📚 ガイド＆コラム (G1〜G5, COL1〜COL3)
   103: {

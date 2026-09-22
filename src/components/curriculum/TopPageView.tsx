@@ -57,6 +57,9 @@ const KEYWORD_INDEX: KeywordIndexItem[] = [
   { name: 'マルチスレッド競合 / Data Race鑑識', category: '現場鑑識', slug: 'reading-step-4-multithread-datarace', badge: 'R4', desc: 'スレッド競合の特定とstd::mutex / atomic排他制御' },
   { name: 'Use-After-Free / ASanメモリ鑑識', category: '現場鑑識', slug: 'reading-step-6-uaf-address-sanitizer', badge: 'R6', desc: '解放後メモリへのアクセス破壊とAddressSanitizer検知' },
   { name: 'SFINAE / テンプレート型制約 (enable_if / Concepts)', category: '現場鑑識', slug: 'reading-step-7', badge: 'R7', desc: 'コンパイル時メタ言語とオーバーロード選別の解読' },
+  { name: '仕様化テスト / レガシーマクロ解体', category: '現場鑑識', slug: 'reading-step-8', badge: 'R8', desc: '二重評価バグ根絶とゴールデンマスターによる安全な改修' },
+  { name: 'MiniDump解析 / 逆アセンブラ鑑識', category: '現場鑑識', slug: 'reading-step-9', badge: 'R9', desc: '最適化行ズレ突破・x64レジスタからのクラッシュ現場特定' },
+  { name: '神クラス解体 / 依存性逆転 (DIP)', category: '現場鑑識', slug: 'reading-step-10', badge: 'R10', desc: '前方宣言による物理依存切断と抽象インターフェース手術' },
   { name: 'TDD / GoogleTest (テスト駆動開発)', category: '開発手法', slug: 'guide-tdd-googletest', badge: 'G4', desc: 'テストファーストで壊れないC++リファクタリング' },
   { name: 'UML 設計図 (クラス図 / シーケンス図)', category: '設計図解', slug: 'guide-uml-design', badge: 'G3', desc: 'ゲームアーキテクチャの視覚化と実装への落とし込み' },
   { name: 'SOLID原則 (C++実践思想)', category: '設計思想', slug: 'column-solid-principles', badge: '思想', desc: '単一責任・開閉・リスコフ・インターフェース・依存性逆転' },
@@ -871,6 +874,9 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
                   <span>#R5 Box2D解読</span>
                   <span>#R6 メモリ破壊捜査</span>
                   <span>#R7 難解テンプレート</span>
+                  <span>#R8 魔境解体</span>
+                  <span>#R9 ダンプ鑑識</span>
+                  <span>#R10 構造鑑識</span>
                 </div>
               </div>
             </div>

@@ -253,6 +253,24 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://shirokuma-tech.jp/cpp/reading-step-8</loc>
+    <lastmod>2026-09-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://shirokuma-tech.jp/cpp/reading-step-9</loc>
+    <lastmod>2026-09-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://shirokuma-tech.jp/cpp/reading-step-10</loc>
+    <lastmod>2026-09-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://shirokuma-tech.jp/cpp/guide-environment-setup</loc>
     <lastmod>2026-09-17</lastmod>
     <changefreq>monthly</changefreq>

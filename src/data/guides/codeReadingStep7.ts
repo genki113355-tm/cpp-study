@@ -12,6 +12,7 @@ export const CODE_READING_STEP_7: Chapter = {
   description: 'オープンソースのライブラリ（nlohmann/json, Boost, Eigen）やSTLのヘッダファイルを開いた瞬間、画面を埋め尽くす `template <typename T, typename std::enable_if<...>::type...>` という暗号に圧倒されたことはありませんか？コンパイラに「特定の型だけに関数を適用させる」ための高度な型制約技術（SFINAE）と、C++20の Concepts によるモダン記法を徹底解剖。「玉ねぎの皮むき法」で装飾を剥ぎ取り、数千行のエラーメッセージの真犯人を1秒で見抜くプロの鑑識眼を養成します。',
   gameVersion: 'none',
   prevChapterSlug: 'reading-step-6',
+  nextChapterSlug: 'reading-step-8',
   sections: [
     {
       id: 'step7-overview',
