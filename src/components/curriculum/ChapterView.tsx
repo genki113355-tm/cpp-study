@@ -970,6 +970,31 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
             </div>
           )}
         </div>
+      {/* 4ラボ循環バトンタッチカード（最終章・コース読破時） */}
+      {!chapter.nextChapterSlug && (
+        <div className="my-8 p-6 sm:p-7 rounded-2xl bg-gradient-to-r from-amber-950/80 via-slate-900 to-[#1a1205] border border-amber-500/40 flex flex-col md:flex-row items-center justify-between gap-5 shadow-2xl relative overflow-hidden">
+          <div className="absolute -top-12 -right-12 w-48 h-48 bg-amber-500/10 rounded-full blur-2xl pointer-events-none" />
+          <div className="space-y-2 text-center md:text-left relative z-10">
+            <div className="flex items-center justify-center md:justify-start gap-2 text-xs font-mono text-amber-300 font-bold">
+              <span className="px-2.5 py-0.5 rounded-full bg-amber-950 border border-amber-500/40">NEXT STAGE ⚡</span>
+              <span>シロクマ技術探検隊・第2ステージ</span>
+            </div>
+            <h4 className="text-lg sm:text-xl font-black text-white">
+              C++設計を極めたら、次は【開発自動化ラボ】で手作業を全自動化！
+            </h4>
+            <p className="text-xs sm:text-sm text-slate-300 max-w-2xl leading-relaxed">
+              手動ビルドや泥臭いテストを根絶！CMakeビルド自動化、Dockerコンテナ化、Python(pytest)、AddressSanitizer、GitHub ActionsによるCI/CD完全構築ガイド。
+            </p>
+          </div>
+          <a
+            href="/auto/"
+            className="px-6 py-3.5 rounded-xl bg-gradient-to-r from-amber-500 to-yellow-400 hover:from-amber-400 hover:to-yellow-300 text-slate-950 font-black text-sm whitespace-nowrap shadow-xl hover:shadow-amber-500/25 transition transform hover:scale-105 active:scale-95 flex items-center gap-2 flex-shrink-0 relative z-10"
+          >
+            <span>開発自動化ラボへ進む</span>
+            <span>➔</span>
+          </a>
+        </div>
+      )}
       </div>
 
       {/* 章ナビゲーションフッター */}

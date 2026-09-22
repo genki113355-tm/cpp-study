@@ -254,6 +254,51 @@ export const RichExplanation: React.FC<RichExplanationProps> = ({ content }) => 
       continue;
     }
 
+    // 引用・キャラクターTipsブロック ( > で始まる行 )
+    if (trimmed.startsWith("> ")) {
+      const quoteText = trimmed.slice(2);
+      const isShirokuma = quoteText.includes("🐻‍❄️") || quoteText.includes("シロクマ先生") || quoteText.includes("シロクマ君");
+      const isPenguin = quoteText.includes("🐧") || quoteText.includes("ペンギン");
+
+      if (isShirokuma) {
+        renderedElements.push(
+          <div key={`tip-sh-${i}`} className="my-5 rounded-2xl bg-gradient-to-r from-cyan-950/60 to-slate-900 border border-cyan-500/40 p-4 sm:p-5 flex items-start gap-3.5 shadow-lg relative overflow-hidden">
+            <div className="w-10 h-10 rounded-xl bg-slate-900 border border-cyan-500/50 flex items-center justify-center text-xl flex-shrink-0 shadow-inner">
+              🐻‍❄️
+            </div>
+            <div className="flex-1 text-sm sm:text-base text-cyan-100 leading-relaxed font-sans">
+              <strong className="text-cyan-300 font-bold block mb-1 font-mono text-xs uppercase tracking-wider">🐻‍❄️ シロクマ先生の落とし穴回避Tips</strong>
+              {renderFormattedText(quoteText.replace(/^[🐻‍❄️\s]*シロクマ[先生君]*[の指南・Tips]*[:：]?\s*/, ''))}
+            </div>
+          </div>
+        );
+        continue;
+      }
+
+      if (isPenguin) {
+        renderedElements.push(
+          <div key={`tip-pen-${i}`} className="my-5 rounded-2xl bg-gradient-to-r from-amber-950/60 to-slate-900 border border-amber-500/40 p-4 sm:p-5 flex items-start gap-3.5 shadow-lg relative overflow-hidden">
+            <div className="w-10 h-10 rounded-xl bg-slate-900 border border-amber-500/50 flex items-center justify-center text-xl flex-shrink-0 shadow-inner">
+              🐧
+            </div>
+            <div className="flex-1 text-sm sm:text-base text-amber-100 leading-relaxed font-sans">
+              <strong className="text-amber-300 font-bold block mb-1 font-mono text-xs uppercase tracking-wider">🐧 ペンギン生徒のなるほどメモ</strong>
+              {renderFormattedText(quoteText.replace(/^[🐧\s]*ペンギン[生徒先輩のメモ・気づき]*[:：]?\s*/, ''))}
+            </div>
+          </div>
+        );
+        continue;
+      }
+
+      // 一般の引用
+      renderedElements.push(
+        <blockquote key={`quote-${i}`} className="my-4 border-l-4 border-cyan-500/60 pl-4 py-2 italic text-slate-300 bg-slate-900/40 rounded-r-xl">
+          {renderFormattedText(quoteText)}
+        </blockquote>
+      );
+      continue;
+    }
+
     // 通常段落
     renderedElements.push(
       <p key={`p-${i}`} className="text-base sm:text-lg text-slate-200 leading-relaxed font-sans">
