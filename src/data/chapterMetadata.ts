@@ -120,6 +120,30 @@ const CHAPTER_METADATA_MAP: Record<number, {
     difficulty: '中級',
     keyTakeaway: 'ビットマスク・論理積/論理和による高速フラグ管理',
   },
+  26: {
+    readingTimeMinutes: 20,
+    importance: 2,
+    difficulty: '上級',
+    keyTakeaway: 'pthread/Win32による並行処理とワーカースレッドプール自作',
+  },
+  27: {
+    readingTimeMinutes: 20,
+    importance: 2,
+    difficulty: '上級',
+    keyTakeaway: 'グローバルnewオーバーライドによるファイル名・行番号付きリーク検知',
+  },
+  28: {
+    readingTimeMinutes: 20,
+    importance: 2,
+    difficulty: '上級',
+    keyTakeaway: 'Berkeley Sockets UDP通信と推測航法（Dead Reckoning）',
+  },
+  29: {
+    readingTimeMinutes: 25,
+    importance: 3,
+    difficulty: '上級',
+    keyTakeaway: 'L1〜L19の全技術を結集した自作ゲームエンジンの完成とモダンC++への飛躍',
+  },
 
   // 🚀 モダン実践編 (M1〜M14)
   5: {

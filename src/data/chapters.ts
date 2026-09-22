@@ -18,6 +18,10 @@ import { chapterL13 } from './chapters/chapterL13';
 import { chapterL14 } from './chapters/chapterL14';
 import { chapterL15 } from './chapters/chapterL15';
 import { chapterL16 } from './chapters/chapterL16';
+import { chapterL17 } from './chapters/chapterL17';
+import { chapterL18 } from './chapters/chapterL18';
+import { chapterL19 } from './chapters/chapterL19';
+import { chapterL20 } from './chapters/chapterL20';
 import { chapterM4 } from './chapters/modern4';
 import { chapterM5 } from './chapters/modern5';
 import { chapterM6 } from './chapters/modern6';
@@ -65,6 +69,10 @@ export const CLASSIC_CHAPTERS: Chapter[] = [
   chapterL14, // C14: 空間分割と超高速衝突判定
   chapterL15, // C15: データ駆動設計（Data-Driven）とスクリプトローダー
   chapterL16, // C16: ビット演算・ビットフラグとステータス異常系
+  chapterL17, // C17: レガシーマルチスレッドとロックフリータスクキュー
+  chapterL18, // C18: 自作メモリリーク検知器とクラッシュダンプ解析
+  chapterL19, // C19: リアルタイム通信とパケットシリアライズ
+  chapterL20, // C20: 商用品質レガシーゲームエンジンの集大成とモダンC++への架け橋
 ];
 
 /** 🚀 モダンコース（C++11〜C++20 / モダンC++・新世代設計編） */
@@ -144,60 +152,6 @@ export interface FutureChapterPreview {
 }
 
 export const UPCOMING_CHAPTERS: FutureChapterPreview[] = [
-  // 🏛️ レガシーC++コース 拡張予定（L17〜L20：本格ゲームエンジン＆現場低レイヤ実務編）
-  {
-    id: 1017,
-    slug: 'upcoming-l17',
-    title: '【L17】レガシーマルチスレッドとロックフリータスクキュー',
-    subtitle: 'pthread / Win32時代の泥臭い排他制御とワーカースレッドプール',
-    badge: 'レガシーC++ L17（準備中）',
-    isUpcoming: true,
-    track: 'classic',
-    beforePain: 'ステージ間のリソース読み込みや重い計算処理でゲーム画面が一瞬フリーズ。排他制御を誤ってデッドロック多発。',
-    afterSkill: 'スレッドプールの自作、mutex/条件変数を用いたプロデューサー・コンシューマーキュー、レースコンディションの完全防御。',
-    gameEvolution: 'ゲームプレイを一切止めずに裏で次ステージのリソースをバックグラウンド非同期ロード！ロード画面ゼロへ！',
-    techKeywords: ['マルチスレッド', 'ワーカースレッドプール', 'ミューテックス/条件変数', '非同期バックグラウンド読込'],
-  },
-  {
-    id: 1018,
-    slug: 'upcoming-l18',
-    title: '【L18】自作メモリリーク検知器とクラッシュダンプ解析',
-    subtitle: 'グローバル new/delete オーバーライドによる確保履歴トラッキングとコールスタック記録',
-    badge: 'レガシーC++ L18（準備中）',
-    isUpcoming: true,
-    track: 'classic',
-    beforePain: '「ゲーム終了時に32バイトだけメモリリークしている」と警告が出るが、何万行のコードのどこで確保されたか分からない。',
-    afterSkill: 'グローバル operator new/delete のオーバーロードによる確保サイズ・ファイル名・行番号・スタックトレースの自動記録機構の自作。',
-    gameEvolution: 'ゲーム内デバッグコンソールにリアルタイムメモリ使用量とリーク警告がリアルタイム表示！',
-    techKeywords: ['グローバルnewオーバーライド', 'メモリリーク検知器', 'コールスタック追跡', 'クラッシュダンプ解析'],
-  },
-  {
-    id: 1019,
-    slug: 'upcoming-l19',
-    title: '【L19】リアルタイム通信とパケットシリアライズ',
-    subtitle: 'Berkeley Sockets (UDP/TCP) による自機同期・補間・エンディアン変換',
-    badge: 'レガシーC++ L19（準備中）',
-    isUpcoming: true,
-    track: 'classic',
-    beforePain: 'ネットワーク対戦で異なるCPU環境（エンディアン違い）同士で通信すると座標データが壊れる。パケット遅延で敵がワープする。',
-    afterSkill: 'ソケットAPI（UDP/TCP）通信、htonl/ntohlによるエンディアン変換、デッドレコニング（推測航法）と位置補間アルゴリズム。',
-    gameEvolution: '2台のPCでLAN対戦・2人協力プレイインベーダーが実現！滑らかな同期通信！',
-    techKeywords: ['Berkeley Sockets', 'エンディアン変換', 'デッドレコニング推測航法', 'リアルタイム通信同期'],
-  },
-  {
-    id: 1020,
-    slug: 'upcoming-l20',
-    title: '【L20】商用品質レガシーゲームエンジンの完成',
-    subtitle: 'C1〜C19の全技術を結集したアーキテクチャの完成とモダンC++への架け橋',
-    badge: 'レガシーC++ L20（準備中）',
-    isUpcoming: true,
-    track: 'classic',
-    beforePain: 'これまで学んだメモリプール、空間分割、リソース管理、マルチスレッド、通信がバラバラの知識になってしまっている。',
-    afterSkill: '全サブシステムを1つの堅牢な自作2Dゲームエンジンとして統合。クラシックC++設計の極致を体得し、モダンC++（C++11〜23）の進化の必然性を実感する。',
-    gameEvolution: '最初の Stage 1 のスパゲティコードから完全に生まれ変わった、商用グレードの自作ゲームエンジン「ShirokumaEngine」が完成！',
-    techKeywords: ['自作ゲームエンジンアーキテクチャ', '全サブシステム統合', 'C++03の集大成', 'モダンC++への架け橋'],
-  },
-
   // 🚀 モダンC++コース 拡張予定（C++20発展・C++23/26次世代編）
   {
     id: 2015,

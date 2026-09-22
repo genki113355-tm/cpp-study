@@ -283,7 +283,7 @@ ${sitemapUrls}
 
   fs.writeFileSync(path.join(distDir, 'sitemap.xml'), sitemapXml, 'utf8');
   fs.writeFileSync(path.join(rootDir, 'public', 'sitemap.xml'), sitemapXml, 'utf8');
-  console.log('✅ Generated updated sitemap.xml with 25 articles');
+  console.log(`✅ Generated updated sitemap.xml with ${ALL_ARTICLES.length + 1} URLs`);
 
   console.log('🎉 SEO Generation Finished Successfully!');
 }

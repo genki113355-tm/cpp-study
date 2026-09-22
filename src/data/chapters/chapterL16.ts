@@ -11,7 +11,7 @@ export const chapterL16: Chapter = {
   gameVersion: 'v2_classes',
   description: '「無敵状態」「毒」「暗黒」「氷結スロー」「麻痺」「バリア」「飛行」「バーサーク」…ゲームには無数のステータスや属性フラグが存在します。これらを bool 変数としてクラスに1つずつ持たせると、メモリの無駄遣い（構造体のアライメントパディング）が発生するだけでなく、「氷結かつ毒状態の時だけ特効ダメージ」といった複合条件の判定コードが膨大な if-else の迷宮と化します。本章では、ハードウェアの基本原理である【ビット演算（AND, OR, XOR, NOT, シフト）】を徹底的に使いこなし、1つの整数（4バイトで32個、8バイトで64個）で状態を一括管理する【ビットフラグ（Bitmask）】の極意を伝授。生ビットフィールドの落とし穴から、C++の型安全性を損なわない【enum class に対するビット演算子オーバーロード手法】までを完璧にマスターします。',
   prevChapterSlug: 'chapter-classic-15-data-driven',
-  nextChapterSlug: undefined,
+  nextChapterSlug: 'chapter-classic-17-multithreading',
   sections: [
     {
       id: 'sec-l16-bool-overhead',

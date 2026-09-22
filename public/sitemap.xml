@@ -103,6 +103,30 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://shirokuma-tech.jp/cpp/chapter-classic-17-multithreading</loc>
+    <lastmod>2026-09-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://shirokuma-tech.jp/cpp/chapter-classic-18-memory-leak-tracker</loc>
+    <lastmod>2026-09-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://shirokuma-tech.jp/cpp/chapter-classic-19-network-sockets</loc>
+    <lastmod>2026-09-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://shirokuma-tech.jp/cpp/chapter-classic-20-legacy-engine-culmination</loc>
+    <lastmod>2026-09-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://shirokuma-tech.jp/cpp/chapter-5-smart-pointers-raii</loc>
     <lastmod>2026-09-17</lastmod>
     <changefreq>monthly</changefreq>

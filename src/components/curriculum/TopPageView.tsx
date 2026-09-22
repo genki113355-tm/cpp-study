@@ -731,9 +731,9 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <span className="text-xs font-mono font-bold px-3 py-1 rounded-full bg-amber-950 text-amber-300 border border-amber-500/40">
-                  全16章（L1〜L16）
+                  全{CLASSIC_CHAPTERS.length}章（L1〜L{CLASSIC_CHAPTERS.length}）
                 </span>
-                <span className="text-xs font-mono text-slate-400">進捗: {classicCompleted} / 16 完了</span>
+                <span className="text-xs font-mono text-slate-400">進捗: {classicCompleted} / {CLASSIC_CHAPTERS.length} 完了</span>
               </div>
 
               <div>
@@ -756,6 +756,8 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
                   <span>#L4 vtable多態性</span>
                   <span>#L5 State/Observer</span>
                   <span>#L11 メモリプール</span>
+                  <span>#L17 スレッドプール</span>
+                  <span>#L20 自作エンジン統合</span>
                 </div>
               </div>
             </div>
@@ -777,7 +779,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
                 }}
                 className="py-3 px-4 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-300 font-mono text-xs text-center transition cursor-pointer"
               >
-                全16章の目次を見る ↓
+                全{CLASSIC_CHAPTERS.length}章の目次を見る ↓
               </button>
             </div>
           </div>
@@ -1104,7 +1106,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
                 aria-label="コース選択ドロップダウン"
                 className="w-full sm:w-auto py-2 px-3 rounded-xl bg-slate-950 border border-slate-700 text-white font-mono text-xs cursor-pointer focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition shadow-inner font-bold"
               >
-                <option value="classic">🏛️ クラシック基礎編 (全16章 / L1〜L16)</option>
+                <option value="classic">🏛️ クラシック基礎編 (全{CLASSIC_CHAPTERS.length}章 / L1〜L{CLASSIC_CHAPTERS.length})</option>
                 <option value="modern">🚀 モダン実践編 (全14章 / M1〜M14)</option>
                 <option value="reading">🧭 コード読解演習 (全{READING_CHAPTERS.length}章 / R1〜R{READING_CHAPTERS.length})</option>
                 <option value="guides">📚 現場特集・チートシート (全8本 / G1〜G5, コラム)</option>
@@ -1146,11 +1148,11 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
                     ? 'bg-amber-950 text-amber-300 border-amber-500/50'
                     : 'bg-slate-900 text-slate-400 border-slate-800'
                 }`}>
-                  16章
+                  {CLASSIC_CHAPTERS.length}章
                 </span>
               </div>
               <p className="text-[11px] text-slate-400 pl-6.5 font-sans truncate">
-                L1〜L16 / C言語・OOPの原点
+                L1〜L{CLASSIC_CHAPTERS.length} / C言語・OOPの原点
               </p>
             </button>
 
@@ -1273,9 +1275,9 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
                 'bg-emerald-400 shadow-sm shadow-emerald-400/50'
               }`} />
               <span className="text-slate-300 truncate">
-                {activeTab === 'classic' && '🏛️ クラシック基礎編（全16章・L1〜L16）：500行スパゲティコードからクラス化、動的メモリ、vtable多態性まで徹底リファクタ'}
+                {activeTab === 'classic' && `🏛️ クラシック基礎編（全${CLASSIC_CHAPTERS.length}章・L1〜L${CLASSIC_CHAPTERS.length}）：500行スパゲティコードからクラス化、動的メモリ、vtable多態性、マルチスレッド、自作エンジンまで徹底リファクタ`}
                 {activeTab === 'modern' && '🚀 モダン実践編（全14章・M1〜M14）：スマートポインタ、ムーブ、ラムダ、ECS、C++20コルーチンまで現代実戦規格'}
-                {activeTab === 'reading' && '🧭 コード読解演習（全6ステップ・R1〜R6）：OSS実地解読、マルチスレッド競合、メモリ破壊（ASan）のプロ鑑識法'}
+                {activeTab === 'reading' && `🧭 コード読解演習（全${READING_CHAPTERS.length}ステップ・R1〜R${READING_CHAPTERS.length}）：OSS実地解読、マルチスレッド競合、メモリ破壊（ASan）、型パズル解読のプロ鑑識法`}
                 {activeTab === 'guides' && '📚 現場特集・実践チートシート（全8本）：実践ガイド（G1〜G5：環境構築・文法・読解・UML・GoogleTest）＋ 特別コラム3編'}
               </span>
             </div>
