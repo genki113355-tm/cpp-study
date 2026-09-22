@@ -100,6 +100,22 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
   const [isGameModalOpen, setIsGameModalOpen] = useState<boolean>(false);
   const [showInlineGame, setShowInlineGame] = useState<boolean>(false);
   const [viewMode, setViewMode] = useState<ViewMode>('all');
+  const [scrollProgress, setScrollProgress] = useState<number>(0);
+
+  // 記事読了スクロールプログレスの計算
+  useEffect(() => {
+    const handleScroll = () => {
+      const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+      if (totalHeight > 0) {
+        const progress = Math.min(100, Math.max(0, (window.scrollY / totalHeight) * 100));
+        setScrollProgress(progress);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [chapter.slug]);
 
   // 章切り替え時に表示モードをデフォルト（すべて表示）にリセット
   useEffect(() => {
@@ -249,7 +265,19 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
   };
 
   return (
-    <div className="w-full max-w-[1500px] mx-auto py-6 sm:py-8 space-y-12">
+    <>
+      {/* 読了スクロールプログレスバー（最上部固定） */}
+      <div 
+        className="fixed top-0 left-0 right-0 h-1 z-50 bg-slate-950/40 pointer-events-none"
+        aria-hidden="true"
+      >
+        <div 
+          className="h-full bg-gradient-to-r from-cyan-400 via-amber-400 to-emerald-400 transition-all duration-75 ease-out shadow-[0_0_10px_rgba(6,182,212,0.6)]"
+          style={{ width: `${scrollProgress}%` }}
+        />
+      </div>
+
+      <div className="w-full max-w-[1500px] mx-auto py-6 sm:py-8 space-y-12">
       {/* 章ヘッダーバナー（タイトル・学習メタデータ・到達目標・解説） */}
       <div className={`relative rounded-3xl bg-gradient-to-br from-slate-900 via-[#0c121e] to-slate-950 p-5 sm:p-8 md:p-10 border shadow-2xl overflow-hidden ${getBorderColor()}`}>
         {/* 背景の淡いグロー */}
@@ -377,6 +405,55 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
           </p>
         </div>
       </div>
+
+      {/* 📌 目次（クイックジャンプナビゲーション） */}
+      {chapter.sections && chapter.sections.length > 0 && (
+        <nav aria-label="章内目次" className="rounded-2xl bg-gradient-to-r from-slate-900/90 via-[#0a101d] to-slate-900/90 border border-slate-800/90 p-3.5 sm:p-4 shadow-lg backdrop-blur-sm -my-2">
+          <div className="flex items-center justify-between mb-2.5">
+            <span className="text-xs font-mono font-bold text-slate-300 flex items-center gap-1.5">
+              <span className="text-cyan-400">📌</span>
+              <span>この章の目次（クイックジャンプ）</span>
+            </span>
+            <span className="text-[11px] font-mono text-slate-500">
+              全{chapter.sections.length}セクション {chapter.quiz && chapter.quiz.length > 0 ? '+ クイズ' : ''}
+            </span>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {chapter.sections.map((sec, idx) => {
+              const titleMatch = sec.title.match(/^(\d+\.\d+)\s*(.*)/);
+              const secNum = titleMatch ? titleMatch[1] : `${idx + 1}`;
+              const secTitle = titleMatch ? titleMatch[2] : sec.title;
+              return (
+                <button
+                  key={sec.id}
+                  type="button"
+                  onClick={() => {
+                    document.getElementById(sec.id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                  }}
+                  className="px-2.5 py-1 rounded-xl bg-slate-950/80 hover:bg-slate-800 border border-slate-800 hover:border-cyan-500/50 text-slate-300 hover:text-cyan-300 text-xs font-mono transition flex items-center gap-1.5 cursor-pointer shadow-sm active:scale-95"
+                  title={`${secNum} ${secTitle} へスクロール`}
+                >
+                  <span className="text-cyan-400 font-bold">{secNum}</span>
+                  <span className="truncate max-w-[180px] sm:max-w-[240px] font-sans">{secTitle}</span>
+                </button>
+              );
+            })}
+            {chapter.quiz && chapter.quiz.length > 0 && (
+              <button
+                type="button"
+                onClick={() => {
+                  document.getElementById('chapter-quiz')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }}
+                className="px-2.5 py-1 rounded-xl bg-purple-950/60 hover:bg-purple-900/70 border border-purple-500/40 hover:border-purple-400 text-purple-300 text-xs font-mono transition flex items-center gap-1.5 cursor-pointer shadow-sm active:scale-95 sm:ml-auto"
+                title="理解度チェッククイズへスクロール"
+              >
+                <span>🎯</span>
+                <span className="font-bold">理解度クイズ ({chapter.quiz.length}問)</span>
+              </button>
+            )}
+          </div>
+        </nav>
+      )}
 
       {/* 🧭 表示モード切替（選択式であることを明確化したラジオボタン ＆ プルダウンリスト） */}
       <div className="sticky top-18 z-30 -my-4 py-3 bg-[#090d16]/95 backdrop-blur-md border-y border-slate-800/80">
@@ -696,7 +773,7 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
 
         return (
           <React.Fragment key={section.id}>
-            <section className="space-y-6 pt-12 pb-8 border-t border-slate-800/80">
+            <section id={section.id} className="space-y-6 pt-12 pb-8 border-t border-slate-800/80 scroll-mt-24">
             <div>
               <div className="flex items-center gap-3.5 flex-wrap">
                 {sectionNum && (
@@ -888,7 +965,7 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
 
       {/* 理解度確認クイズ */}
       {(viewMode === 'all' || viewMode === 'practice') && chapter.quiz && chapter.quiz.length > 0 && (
-        <section className="rounded-3xl bg-gradient-to-b from-slate-900 to-slate-950 border border-cyan-500/30 p-6 sm:p-10 space-y-8 shadow-2xl my-8">
+        <section id="chapter-quiz" className="rounded-3xl bg-gradient-to-b from-slate-900 to-slate-950 border border-cyan-500/30 p-6 sm:p-10 space-y-8 shadow-2xl my-8 scroll-mt-24">
           <div className="flex items-center gap-3 text-cyan-400 font-mono font-bold text-xl sm:text-2xl border-b border-slate-800 pb-4">
             <HelpCircle className="w-7 h-7" />
             <span>理解度チェッククイズ</span>
@@ -1221,5 +1298,6 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
         )}
       </div>
     </div>
+    </>
   );
 };

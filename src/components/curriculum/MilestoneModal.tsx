@@ -119,18 +119,19 @@ export const MilestoneModal: React.FC<MilestoneModalProps> = ({
       title: '🏛️ クラシックC++＆オブジェクト指向設計 マスター',
       shortTitle: 'クラシック基礎修了証',
       icon: '🏛️',
-      trackName: 'クラシック基礎編 (L1〜L16)',
+      trackName: 'クラシック基礎編 (L1〜L20)',
       total: CLASSIC_CHAPTERS.length,
       completedCount: classicCount,
       isUnlocked: classicCount >= CLASSIC_CHAPTERS.length,
       skills: [
         'C言語手続き型からC++オブジェクト指向への移行',
         'カプセル化（class/struct）とメンバ隠蔽',
-        '継承と派生クラスの設計',
-        '仮想関数・動的多態性（vtableとオーバーライド）',
+        '継承と派生クラスの設計・多態性（vtable）',
         '動的メモリ確保（new/deleteの責任境界と落とし穴）',
+        'ポインタ演算・手動メモリアライメント・バイナリ通信',
+        '自作メモリプール・マルチスレッド・ゲームエンジン極限設計',
       ],
-      description: 'レガシーなC言語的ベタ書きコードから、クラス分割・仮想関数・メモリ管理の基礎を完全に習得した証明です。',
+      description: 'レガシーなC言語的ベタ書きコードから、クラス分割・仮想関数・メモリ管理・ゲームエンジン極限設計までを完全に習得した証明です。',
       badgeColor: 'from-amber-600 to-amber-800 border-amber-500/50 text-amber-300',
     },
     {
@@ -168,6 +169,8 @@ export const MilestoneModal: React.FC<MilestoneModalProps> = ({
         'マルチスレッド競合（Data Race）の特定と排他制御',
         'Box2D物理エンジン解読 & Use-After-Free・ASan鑑識',
         '難解テンプレート・SFINAE・Concepts の型制約解読',
+        '依存性逆転（DIP）による巨大神クラス解体リファクタ',
+        'クラッシュダンプ（MiniDump）と逆アセンブラ鑑識',
       ],
       description: '他人が書いた謎コードやOSSコードを読み解き、競合やメモリ破壊を捜査・解決できる現場即戦力の証明です。',
       badgeColor: 'from-purple-600 to-purple-900 border-purple-500/50 text-purple-300',
@@ -228,7 +231,7 @@ export const MilestoneModal: React.FC<MilestoneModalProps> = ({
     const text = encodeURIComponent(
       `🏆 【シロクマC++ラボ】「${m.title}」の公式修了証を獲得しました！\nゲーム開発を通してレガシー設計からモダンC++（RAII・スマートポインタ・現場鑑識）まで走破！\n\n#cpp #シロクマCPPラボ #プログラミング学習`
     );
-    const url = encodeURIComponent('https://shirokuma-cpp.jp');
+    const url = encodeURIComponent('https://shirokuma-tech.jp/cpp');
     window.open(`https://twitter.com/intent/tweet?text=${text}&url=${url}`, '_blank', 'noopener,noreferrer');
   };
 
@@ -362,7 +365,7 @@ export const MilestoneModal: React.FC<MilestoneModalProps> = ({
                 {/* 公式認証印 ＆ 日付 */}
                 <div className="pt-4 flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-slate-800 text-xs font-mono text-slate-400">
                   <div>
-                    発行日：2026年9月19日<br />
+                    発行日：{new Date().toLocaleDateString('ja-JP', { year: 'numeric', month: 'long', day: 'numeric' })}<br />
                     検証：主要3大コンパイラ (GCC / Clang / MSVC)
                   </div>
                   <div className="flex items-center gap-2 text-amber-300 border border-amber-500/40 px-3 py-1.5 rounded-xl bg-amber-950/40 font-bold">

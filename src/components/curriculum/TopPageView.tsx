@@ -20,7 +20,10 @@ import {
   X,
   Gamepad2,
   Rocket,
-  Cpu
+  Cpu,
+  Target,
+  Compass,
+  RotateCcw
 } from 'lucide-react';
 import { 
   CLASSIC_CHAPTERS, 
@@ -83,6 +86,67 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
 }) => {
   const [activeTab, setActiveTab] = useState<'classic' | 'modern' | 'reading' | 'guides'>('classic');
   const [searchQuery, setSearchQuery] = useState<string>('');
+  const [diagnosisStep, setDiagnosisStep] = useState<number>(0); // 0: 未開始, 1: 経験レベル, 2: 目的, 3: 結果
+  const [diagnosisResult, setDiagnosisResult] = useState<{
+    slug: string;
+    code: string;
+    title: string;
+    reason: string;
+    track: 'classic' | 'modern' | 'reading';
+  } | null>(null);
+
+  const handleSelectExperience = (exp: 'c_beginner' | 'c_ok' | 'cpp_ok') => {
+    if (exp === 'c_beginner') {
+      setDiagnosisResult({
+        slug: 'chapter-1-spaghetti-to-oop',
+        code: 'L1',
+        title: 'レガシー第1章：構造化設計の限界',
+        reason: 'まずは「main関数1つのコード」がなぜ破綻するのかを体感し、C言語とC++の境界線を学ぶのが最短ルートです！',
+        track: 'classic',
+      });
+      setDiagnosisStep(3);
+    } else if (exp === 'c_ok') {
+      setDiagnosisResult({
+        slug: 'chapter-2-classes-and-files',
+        code: 'L2',
+        title: 'レガシー第2章：クラス化と責務のカプセル化',
+        reason: 'C言語の構造体からC++のclass（privateカプセル化）への進化を、自機Playerクラスを通して直感的に理解できます！',
+        track: 'classic',
+      });
+      setDiagnosisStep(3);
+    } else {
+      setDiagnosisStep(2);
+    }
+  };
+
+  const handleSelectGoal = (goal: 'modern' | 'reading' | 'extreme') => {
+    if (goal === 'modern') {
+      setDiagnosisResult({
+        slug: 'chapter-5-smart-pointers-raii',
+        code: 'M1',
+        title: 'モダン第1章：スマートポインタとRAII',
+        reason: '生deleteを完全に撲滅する unique_ptr / shared_ptr と決定論的寿命管理（RAII）から、現代C++の世界へ飛び込みましょう！',
+        track: 'modern',
+      });
+    } else if (goal === 'reading') {
+      setDiagnosisResult({
+        slug: 'reading-step-1',
+        code: 'R1',
+        title: 'コード読解演習 Step 1：手続き型データフローの追跡',
+        reason: '仕様書のない他人のコードをどう追跡するか、実務即戦力の鑑識眼を段階的に養成します！',
+        track: 'reading',
+      });
+    } else {
+      setDiagnosisResult({
+        slug: 'chapter-11-memory-pool-allocator',
+        code: 'L11',
+        title: 'レガシー第11章：独自メモリアロケータと固定長プール管理',
+        reason: 'ヒープ断片化を撲滅し、毎フレームのnew/deleteをO(1)定数時間に変えるゲームエンジン極限アーキテクチャを学びます！',
+        track: 'classic',
+      });
+    }
+    setDiagnosisStep(3);
+  };
 
   const searchResults = useMemo(() => {
     const q = searchQuery.trim().toLowerCase();
@@ -482,6 +546,206 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
           >
             <span>特別コラム全文を読む →</span>
           </button>
+        </div>
+      </section>
+
+      {/* 1.5 【初心者支援】30秒・学習ルート診断ナビゲーション */}
+      <section className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-slate-900 via-[#0c162d] to-slate-950 border-2 border-cyan-500/30 p-5 sm:p-7 shadow-xl shadow-cyan-950/20">
+        <div className="absolute top-0 right-0 w-80 h-80 bg-cyan-500/5 rounded-full blur-3xl pointer-events-none -mr-20 -mt-20" />
+        
+        <div className="relative z-10 space-y-5">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800 pb-4">
+            <div className="space-y-1">
+              <div className="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full bg-cyan-950/80 border border-cyan-500/40 text-cyan-300 font-mono text-xs font-bold">
+                <Compass className="w-3.5 h-3.5 text-cyan-400" />
+                <span>NAVIGATION / 迷わない学習ナビ</span>
+              </div>
+              <h2 className="text-lg sm:text-2xl font-black text-white font-sans tracking-tight flex items-center gap-2">
+                🧭 あなたに最適なスタート地点は？ 30秒・学習ルート診断
+              </h2>
+            </div>
+            {diagnosisStep > 1 && (
+              <button
+                type="button"
+                onClick={() => {
+                  setDiagnosisStep(1);
+                  setDiagnosisResult(null);
+                }}
+                className="self-start sm:self-auto text-xs font-mono text-slate-400 hover:text-cyan-300 flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800/80 border border-slate-700 hover:border-cyan-500/50 transition cursor-pointer"
+              >
+                <RotateCcw className="w-3.5 h-3.5" />
+                <span>最初からやり直す</span>
+              </button>
+            )}
+          </div>
+
+          {diagnosisStep === 1 && (
+            <div className="space-y-3">
+              <div className="text-sm sm:text-base font-bold text-cyan-200">
+                Q1. 現在のプログラミング・C言語の経験値はどれくらいですか？
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                <button
+                  type="button"
+                  onClick={() => handleSelectExperience('c_beginner')}
+                  className="p-4 rounded-xl bg-slate-800/60 hover:bg-cyan-950/40 border border-slate-700/80 hover:border-cyan-400 text-left transition-all duration-200 group cursor-pointer hover:shadow-lg hover:shadow-cyan-950/50 flex flex-col justify-between"
+                >
+                  <div className="space-y-1.5">
+                    <span className="text-xl">🌱</span>
+                    <div className="text-sm font-bold text-white group-hover:text-cyan-300 transition-colors">
+                      完全初学者・C言語も不安
+                    </div>
+                    <p className="text-xs text-slate-400 leading-relaxed font-sans">
+                      ポインタやメモリがよく分からない。まずは土台から着実に学びたい。
+                    </p>
+                  </div>
+                  <div className="mt-3 text-xs font-mono text-cyan-400 flex items-center gap-1">
+                    <span>選択する</span>
+                    <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
+                  </div>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => handleSelectExperience('c_ok')}
+                  className="p-4 rounded-xl bg-slate-800/60 hover:bg-cyan-950/40 border border-slate-700/80 hover:border-cyan-400 text-left transition-all duration-200 group cursor-pointer hover:shadow-lg hover:shadow-cyan-950/50 flex flex-col justify-between"
+                >
+                  <div className="space-y-1.5">
+                    <span className="text-xl">🌿</span>
+                    <div className="text-sm font-bold text-white group-hover:text-cyan-300 transition-colors">
+                      C言語は基本わかる
+                    </div>
+                    <p className="text-xs text-slate-400 leading-relaxed font-sans">
+                      構造体やポインタは知っているが、C++のクラスやOOPの必要性を体感したい。
+                    </p>
+                  </div>
+                  <div className="mt-3 text-xs font-mono text-cyan-400 flex items-center gap-1">
+                    <span>選択する</span>
+                    <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
+                  </div>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => handleSelectExperience('cpp_ok')}
+                  className="p-4 rounded-xl bg-slate-800/60 hover:bg-cyan-950/40 border border-slate-700/80 hover:border-cyan-400 text-left transition-all duration-200 group cursor-pointer hover:shadow-lg hover:shadow-cyan-950/50 flex flex-col justify-between"
+                >
+                  <div className="space-y-1.5">
+                    <span className="text-xl">⚡</span>
+                    <div className="text-sm font-bold text-white group-hover:text-cyan-300 transition-colors">
+                      他言語経験者 / C++既習
+                    </div>
+                    <p className="text-xs text-slate-400 leading-relaxed font-sans">
+                      文法の基本は把握している。モダン機能や実務コード読解、極限設計へ進みたい。
+                    </p>
+                  </div>
+                  <div className="mt-3 text-xs font-mono text-cyan-400 flex items-center gap-1">
+                    <span>目的の選択へ進む</span>
+                    <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
+                  </div>
+                </button>
+              </div>
+            </div>
+          )}
+
+          {diagnosisStep === 2 && (
+            <div className="space-y-3">
+              <div className="text-sm sm:text-base font-bold text-cyan-200">
+                Q2. 今回もっとも身につけたいテーマ・学習目的は何ですか？
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                <button
+                  type="button"
+                  onClick={() => handleSelectGoal('modern')}
+                  className="p-4 rounded-xl bg-slate-800/60 hover:bg-blue-950/40 border border-slate-700/80 hover:border-blue-400 text-left transition-all duration-200 group cursor-pointer hover:shadow-lg hover:shadow-blue-950/50 flex flex-col justify-between"
+                >
+                  <div className="space-y-1.5">
+                    <span className="text-xl">🛡️</span>
+                    <div className="text-sm font-bold text-white group-hover:text-blue-300 transition-colors">
+                      現代的モダンC++を極める
+                    </div>
+                    <p className="text-xs text-slate-400 leading-relaxed font-sans">
+                      生deleteを撲滅するスマートポインタ（RAII）やC++20 Ranges・Conceptsを学びたい。
+                    </p>
+                  </div>
+                  <div className="mt-3 text-xs font-mono text-blue-400 flex items-center gap-1">
+                    <span>結果を見る</span>
+                    <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
+                  </div>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => handleSelectGoal('reading')}
+                  className="p-4 rounded-xl bg-slate-800/60 hover:bg-emerald-950/40 border border-slate-700/80 hover:border-emerald-400 text-left transition-all duration-200 group cursor-pointer hover:shadow-lg hover:shadow-emerald-950/50 flex flex-col justify-between"
+                >
+                  <div className="space-y-1.5">
+                    <span className="text-xl">🔍</span>
+                    <div className="text-sm font-bold text-white group-hover:text-emerald-300 transition-colors">
+                      実務コード読解・鑑識眼をつける
+                    </div>
+                    <p className="text-xs text-slate-400 leading-relaxed font-sans">
+                      仕様書のない巨大リポジトリや他人の難解コードをスラスラ読み解く力を鍛えたい。
+                    </p>
+                  </div>
+                  <div className="mt-3 text-xs font-mono text-emerald-400 flex items-center gap-1">
+                    <span>結果を見る</span>
+                    <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
+                  </div>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => handleSelectGoal('extreme')}
+                  className="p-4 rounded-xl bg-slate-800/60 hover:bg-purple-950/40 border border-slate-700/80 hover:border-purple-400 text-left transition-all duration-200 group cursor-pointer hover:shadow-lg hover:shadow-purple-950/50 flex flex-col justify-between"
+                >
+                  <div className="space-y-1.5">
+                    <span className="text-xl">⚙️</span>
+                    <div className="text-sm font-bold text-white group-hover:text-purple-300 transition-colors">
+                      極限低レイヤ・ゲームエンジン設計
+                    </div>
+                    <p className="text-xs text-slate-400 leading-relaxed font-sans">
+                      メモリプール、キャッシュ効率化、マルチスレッドなど究極の性能設計に挑みたい。
+                    </p>
+                  </div>
+                  <div className="mt-3 text-xs font-mono text-purple-400 flex items-center gap-1">
+                    <span>結果を見る</span>
+                    <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
+                  </div>
+                </button>
+              </div>
+            </div>
+          )}
+
+          {diagnosisStep === 3 && diagnosisResult && (
+            <div className="p-5 sm:p-6 rounded-xl bg-cyan-950/40 border-2 border-cyan-400/50 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5 animate-in fade-in duration-300">
+              <div className="space-y-2">
+                <div className="flex items-center gap-2">
+                  <Target className="w-5 h-5 text-cyan-400" />
+                  <span className="text-xs font-mono font-bold uppercase tracking-wider text-cyan-400">
+                    おすすめのスタート章
+                  </span>
+                  <span className="text-xs font-mono font-bold px-2 py-0.5 rounded bg-cyan-500/20 text-cyan-300 border border-cyan-400/30">
+                    {diagnosisResult.code}
+                  </span>
+                </div>
+                <h3 className="text-base sm:text-xl font-black text-white">
+                  {diagnosisResult.title}
+                </h3>
+                <p className="text-xs sm:text-sm text-slate-300 font-sans leading-relaxed max-w-2xl">
+                  {diagnosisResult.reason}
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => onSelectChapter(diagnosisResult.slug)}
+                className="w-full sm:w-auto px-6 py-3 rounded-xl bg-gradient-to-r from-cyan-400 to-blue-500 hover:from-cyan-300 hover:to-blue-400 text-slate-950 font-mono font-bold text-sm shadow-lg shadow-cyan-500/30 active:scale-95 transition cursor-pointer shrink-0 flex items-center justify-center gap-2"
+              >
+                <span>この章から始める</span>
+                <ArrowRight className="w-4 h-4" />
+              </button>
+            </div>
+          )}
         </div>
       </section>
 
