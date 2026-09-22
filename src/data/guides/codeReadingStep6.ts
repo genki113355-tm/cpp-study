@@ -12,6 +12,7 @@ export const CODE_READING_STEP_6: Chapter = {
   description: 'C/C++開発で最も恐ろしいバグは「メモリを不正に解放・破壊した瞬間にはクラッシュせず、数分後や全く無関係な関数の中で突然死ぬ」というメモリ破壊です。現代の開発現場で必須の AddressSanitizer (ASan) のスタックトレースとヒープ割り当て/解放ログをプロの眼力で読み解き、Use-After-Free（解放後メモリ参照）の真犯人を逆算特定する鑑識技術を体得します。',
   gameVersion: 'none',
   prevChapterSlug: 'reading-step-5',
+  nextChapterSlug: 'reading-step-7',
   sections: [
     {
       id: 'step6-overview',

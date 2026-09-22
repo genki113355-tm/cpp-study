@@ -56,6 +56,7 @@ const KEYWORD_INDEX: KeywordIndexItem[] = [
   { name: '静的多態性 / CRTP', category: '現場鑑識', slug: 'reading-step-3-crtp-static-polymorphism', badge: 'R3', desc: 'vtableテーブル参照コスト0の静的ポリモーフィズム' },
   { name: 'マルチスレッド競合 / Data Race鑑識', category: '現場鑑識', slug: 'reading-step-4-multithread-datarace', badge: 'R4', desc: 'スレッド競合の特定とstd::mutex / atomic排他制御' },
   { name: 'Use-After-Free / ASanメモリ鑑識', category: '現場鑑識', slug: 'reading-step-6-uaf-address-sanitizer', badge: 'R6', desc: '解放後メモリへのアクセス破壊とAddressSanitizer検知' },
+  { name: 'SFINAE / テンプレート型制約 (enable_if / Concepts)', category: '現場鑑識', slug: 'reading-step-7', badge: 'R7', desc: 'コンパイル時メタ言語とオーバーロード選別の解読' },
   { name: 'TDD / GoogleTest (テスト駆動開発)', category: '開発手法', slug: 'guide-tdd-googletest', badge: 'G4', desc: 'テストファーストで壊れないC++リファクタリング' },
   { name: 'UML 設計図 (クラス図 / シーケンス図)', category: '設計図解', slug: 'guide-uml-design', badge: 'G3', desc: 'ゲームアーキテクチャの視覚化と実装への落とし込み' },
   { name: 'SOLID原則 (C++実践思想)', category: '設計思想', slug: 'column-solid-principles', badge: '思想', desc: '単一責任・開閉・リスコフ・インターフェース・依存性逆転' },
@@ -183,7 +184,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
 
             {/* 実績バッジ群 */}
             <div className="flex flex-wrap gap-2 pt-1 text-xs font-mono text-slate-300">
-              <span className="px-3 py-1 rounded-lg bg-slate-950/80 border border-slate-800 text-slate-300">全44記事 公開中</span>
+              <span className="px-3 py-1 rounded-lg bg-slate-950/80 border border-slate-800 text-slate-300">全{ALL_CHAPTERS.length}記事 公開中</span>
               <span className="px-3 py-1 rounded-lg bg-slate-950/80 border border-slate-800 text-slate-300">完全無料・登録不要</span>
               <button
                 type="button"
@@ -842,9 +843,9 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <span className="text-xs font-mono font-bold px-3 py-1 rounded-full bg-purple-950 text-purple-300 border border-purple-500/40">
-                  全6ステップ（R1〜R6）
+                  全{READING_CHAPTERS.length}ステップ（R1〜R{READING_CHAPTERS.length}）
                 </span>
-                <span className="text-xs font-mono text-slate-400">進捗: {readingCompleted} / 6 完了</span>
+                <span className="text-xs font-mono text-slate-400">進捗: {readingCompleted} / {READING_CHAPTERS.length} 完了</span>
               </div>
 
               <div>
@@ -867,6 +868,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
                   <span>#R4 スレッド競合</span>
                   <span>#R5 Box2D解読</span>
                   <span>#R6 メモリ破壊捜査</span>
+                  <span>#R7 難解テンプレート</span>
                 </div>
               </div>
             </div>
@@ -888,7 +890,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
                 }}
                 className="py-3 px-4 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-300 font-mono text-xs text-center transition cursor-pointer"
               >
-                全6章の目次を見る ↓
+                全{READING_CHAPTERS.length}章の目次を見る ↓
               </button>
             </div>
           </div>
@@ -1072,7 +1074,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
             <span>CURRICULUM DIRECTORY</span>
           </div>
           <h2 className="text-2xl sm:text-3xl font-extrabold text-white font-sans">
-            カリキュラム全目次（全44章）
+            カリキュラム全目次（全{ALL_CHAPTERS.length}章）
           </h2>
           <p className="text-xs sm:text-sm text-slate-400 font-sans">
             各章をクリックすると、詳細な解説・対比コード・ブラウザ演習ページが開きます。
@@ -1104,7 +1106,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
               >
                 <option value="classic">🏛️ クラシック基礎編 (全16章 / L1〜L16)</option>
                 <option value="modern">🚀 モダン実践編 (全14章 / M1〜M14)</option>
-                <option value="reading">🧭 コード読解演習 (全6章 / R1〜R6)</option>
+                <option value="reading">🧭 コード読解演習 (全{READING_CHAPTERS.length}章 / R1〜R{READING_CHAPTERS.length})</option>
                 <option value="guides">📚 現場特集・チートシート (全8本 / G1〜G5, コラム)</option>
               </select>
             </div>
@@ -1216,11 +1218,11 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
                     ? 'bg-purple-950 text-purple-300 border-purple-500/50'
                     : 'bg-slate-900 text-slate-400 border-slate-800'
                 }`}>
-                  6章
+                  {READING_CHAPTERS.length}章
                 </span>
               </div>
               <p className="text-[11px] text-slate-400 pl-6.5 font-sans truncate">
-                R1〜R6 / 現場鑑識・OSS解読
+                R1〜R{READING_CHAPTERS.length} / 現場鑑識・OSS解読
               </p>
             </button>
 
@@ -1579,7 +1581,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
                 </p>
               </div>
               <div className="mt-3 pt-2 border-t border-cyan-500/20 text-[10px] text-cyan-400 font-mono flex items-center gap-1">
-                <span>🎯 全44章のカリキュラム学習</span>
+                <span>🎯 全{ALL_CHAPTERS.length}章のカリキュラム学習</span>
               </div>
             </div>
 

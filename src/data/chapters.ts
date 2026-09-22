@@ -45,6 +45,7 @@ import { CODE_READING_STEP_3 } from './guides/codeReadingStep3';
 import { CODE_READING_STEP_4 } from './guides/codeReadingStep4';
 import { CODE_READING_STEP_5 } from './guides/codeReadingStep5';
 import { CODE_READING_STEP_6 } from './guides/codeReadingStep6';
+import { CODE_READING_STEP_7 } from './guides/codeReadingStep7';
 
 /** 🏛️ レガシーC++コース（C言語・C++03 / クラシックOOP・現場実務編） */
 export const CLASSIC_CHAPTERS: Chapter[] = [
@@ -92,6 +93,7 @@ export const READING_CHAPTERS: Chapter[] = [
   CODE_READING_STEP_4, // R4: 非同期・マルチスレッド競合コードの読解術
   CODE_READING_STEP_5, // R5: 巨大オープンソースリポジトリ実地読解（Box2D編）
   CODE_READING_STEP_6, // R6: メモリ破壊コードの鑑識捜査（Use-After-Free / ASan）
+  CODE_READING_STEP_7, // R7: 難解テンプレート＆メタプログラミングの解読術（型パズル鑑識）
 ];
 
 /** 📚 特集ガイド＆実践コラム（開発環境・文法・読解術・UML設計・品質保証・デザインパターン・言語思想） */

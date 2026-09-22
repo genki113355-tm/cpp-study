@@ -244,6 +244,12 @@ const CHAPTER_METADATA_MAP: Record<number, {
     difficulty: '上級',
     keyTakeaway: 'AddressSanitizerログから解放後メモリ参照（UAF）の犯人特定',
   },
+  207: {
+    readingTimeMinutes: 20,
+    importance: 2,
+    difficulty: '上級',
+    keyTakeaway: 'SFINAE / enable_if / Concepts の皮をむき、型制約と真のシグネチャを解読',
+  },
 
   // 📚 ガイド＆コラム (G1〜G5, COL1〜COL3)
   103: {
