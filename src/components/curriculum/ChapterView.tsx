@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { Chapter, CodeHighlightTarget, CodeFile } from '../../types/curriculum';
 import { CLASSIC_CHAPTERS, MODERN_CHAPTERS, READING_CHAPTERS } from '../../data/chapters';
 import { DialogueBubble } from './DialogueBubble';
+import { Avatar } from '../common/Avatar';
 import { CodeViewer } from './CodeViewer';
 import { ConceptDiagram } from './ConceptDiagram';
 import { ParadigmComparisonView } from './ParadigmComparisonView';
@@ -828,27 +829,48 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
             </div>
           )}
 
-          {/* キーポイント・まとめ */}
+          {/* キーポイント・シロクマ先生の指導吹き出し */}
           {(viewMode === 'all' || viewMode === 'learn') && section.takeaways && section.takeaways.length > 0 && (
-            <div className="rounded-2xl bg-slate-900/90 border border-slate-800 p-6 space-y-4 my-6">
-              <h3 className="text-base sm:text-lg font-mono font-bold text-cyan-400 flex items-center gap-2.5">
-                <Lightbulb className="w-5 h-5" />
-                <span>シロクマ先生の重要ポイントまとめ</span>
-              </h3>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                {section.takeaways.map((takeaway, idx) => (
-                  <div
-                    key={idx}
-                    className="p-4 rounded-xl bg-slate-950/80 border border-slate-800/80 space-y-2"
-                  >
-                    <div className="text-sm sm:text-base font-bold text-slate-100">
-                      {takeaway.title}
+            <div className="my-7 flex items-start gap-3 sm:gap-4.5">
+              {/* シロクマ先生アバター ＆ ネームタグ */}
+              <div className="flex flex-col items-center shrink-0">
+                <Avatar character="shirokuma" emotion="teaching" size="md" />
+                <span className="text-[11px] font-bold font-mono mt-1.5 px-2.5 py-0.5 rounded-full bg-cyan-950/80 text-cyan-300 border border-cyan-500/40 whitespace-nowrap shadow-sm">
+                  シロクマ先生
+                </span>
+              </div>
+
+              {/* 吹き出し本体（全幅でゆったり自然に読めるレイアウト） */}
+              <div className="flex-1 min-w-0 rounded-3xl rounded-tl-sm bg-gradient-to-br from-[#0c1424] via-[#090f1d] to-[#050811] border-2 border-cyan-500/40 p-5 sm:p-6 shadow-xl shadow-cyan-950/30 space-y-3">
+                {/* 吹き出し内バッジ */}
+                <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md bg-cyan-950/90 border border-cyan-500/30 text-cyan-300 text-xs font-mono font-bold">
+                  <Lightbulb className="w-3.5 h-3.5 text-cyan-400 shrink-0" />
+                  <span>指導官の重要ポイントまとめ</span>
+                </div>
+
+                {/* テイクアウェイ一覧 */}
+                <div className="space-y-3.5 pt-1">
+                  {section.takeaways.map((takeaway, idx, arr) => (
+                    <div
+                      key={idx}
+                      className={idx > 0 ? "pt-3.5 border-t border-cyan-900/40 space-y-1.5" : "space-y-1.5"}
+                    >
+                      <div className="flex items-center gap-2">
+                        {arr.length > 1 && (
+                          <span className="flex items-center justify-center w-5 h-5 rounded-full bg-cyan-950 text-cyan-300 border border-cyan-500/40 text-xs font-mono font-bold shrink-0">
+                            {idx + 1}
+                          </span>
+                        )}
+                        <h4 className="text-base sm:text-lg font-bold text-white tracking-tight [text-wrap:balance]">
+                          {takeaway.title}
+                        </h4>
+                      </div>
+                      <p className={`text-sm sm:text-base text-slate-200 leading-relaxed font-sans [text-wrap:pretty] ${arr.length > 1 ? 'pl-0 sm:pl-7' : ''}`}>
+                        {takeaway.description}
+                      </p>
                     </div>
-                    <div className="text-xs sm:text-sm text-slate-300 leading-relaxed font-sans">
-                      {takeaway.description}
-                    </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
             </div>
           )}
