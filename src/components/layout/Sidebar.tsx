@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { CheckCircle2, Circle, Clock, X, ChevronDown, ChevronUp, Trophy } from 'lucide-react';
 import { ALL_CHAPTERS, CLASSIC_CHAPTERS, MODERN_CHAPTERS, READING_CHAPTERS, SPECIAL_GUIDES, UPCOMING_CHAPTERS } from '../../data/chapters';
 import { CourseTrack } from '../../types/curriculum';
@@ -37,9 +37,71 @@ export const Sidebar: React.FC<SidebarProps> = ({
   const [activeTab, setActiveTab] = useState<'all' | CourseTrack>('all');
   const [isUpcomingExpanded, setIsUpcomingExpanded] = useState<boolean>(false);
 
+  const [expandedCategories, setExpandedCategories] = useState<{
+    classic: boolean;
+    modern: boolean;
+    reading: boolean;
+    guide: boolean;
+  }>(() => {
+    try {
+      const saved = localStorage.getItem('cpp_study_sidebar_categories');
+      if (saved) {
+        return JSON.parse(saved);
+      }
+    } catch (e) {}
+    return {
+      classic: true,
+      modern: true,
+      reading: true,
+      guide: true,
+    };
+  });
+
+  const toggleCategory = (key: 'classic' | 'modern' | 'reading' | 'guide') => {
+    setExpandedCategories(prev => {
+      const next = { ...prev, [key]: !prev[key] };
+      try {
+        localStorage.setItem('cpp_study_sidebar_categories', JSON.stringify(next));
+      } catch (e) {}
+      return next;
+    });
+  };
+
+  const areAllExpanded = Object.values(expandedCategories).every(Boolean);
+
+  const toggleAllCategories = () => {
+    const nextState = !areAllExpanded;
+    const next = {
+      classic: nextState,
+      modern: nextState,
+      reading: nextState,
+      guide: nextState,
+    };
+    setExpandedCategories(next);
+    try {
+      localStorage.setItem('cpp_study_sidebar_categories', JSON.stringify(next));
+    } catch (e) {}
+  };
+
+  // 閲覧中の章が属するカテゴリを自動展開
+  useEffect(() => {
+    if (!currentChapterSlug || currentChapterSlug === 'top') return;
+
+    if (CLASSIC_CHAPTERS.some(ch => ch.slug === currentChapterSlug)) {
+      setExpandedCategories(prev => (prev.classic ? prev : { ...prev, classic: true }));
+    } else if (MODERN_CHAPTERS.some(ch => ch.slug === currentChapterSlug)) {
+      setExpandedCategories(prev => (prev.modern ? prev : { ...prev, modern: true }));
+    } else if (READING_CHAPTERS.some(ch => ch.slug === currentChapterSlug)) {
+      setExpandedCategories(prev => (prev.reading ? prev : { ...prev, reading: true }));
+    } else if (SPECIAL_GUIDES.some(g => g.slug === currentChapterSlug)) {
+      setExpandedCategories(prev => (prev.guide ? prev : { ...prev, guide: true }));
+    }
+  }, [currentChapterSlug]);
+
   const classicCount = CLASSIC_CHAPTERS.filter(c => completedChapters.includes(c.id)).length;
   const modernCount = MODERN_CHAPTERS.filter(c => completedChapters.includes(c.id)).length;
   const readingCount = READING_CHAPTERS.filter(c => completedChapters.includes(c.id)).length;
+  const guideCount = SPECIAL_GUIDES.filter(c => completedChapters.includes(c.id)).length;
 
   return (
     <>
@@ -183,299 +245,404 @@ export const Sidebar: React.FC<SidebarProps> = ({
             <span className="text-xs text-slate-500 group-hover:text-cyan-400 font-mono">▶</span>
           </div>
 
+          {/* 一括開閉ツールバー（全一覧タブ時のみ表示） */}
+          {activeTab === 'all' && (
+            <div className="flex items-center justify-between px-1.5 pt-2 pb-0.5 text-[10.5px] font-mono text-slate-400 select-none">
+              <span className="font-semibold text-slate-400">カテゴリ一覧</span>
+              <button
+                type="button"
+                onClick={toggleAllCategories}
+                className="text-cyan-400 hover:text-cyan-300 transition-colors flex items-center gap-1 hover:underline cursor-pointer"
+              >
+                <span>{areAllExpanded ? 'すべて折りたたむ' : 'すべて展開'}</span>
+                <ChevronDown
+                  className={`w-3 h-3 text-cyan-400 transition-transform duration-200 ${
+                    areAllExpanded ? 'rotate-180' : ''
+                  }`}
+                />
+              </button>
+            </div>
+          )}
+
           {/* 🏛️ レガシーC++コースセクション */}
           {(activeTab === 'all' || activeTab === 'classic') && (
             <div className="space-y-1.5 pt-2">
-              <div className="px-2 py-1 text-[11px] font-mono font-bold text-amber-400/90 uppercase tracking-wider flex items-center justify-between gap-1">
-                <span className="truncate">🏛️ レガシーC++（現場実務）</span>
-                <span className="text-[10px] bg-amber-950/80 text-amber-300 px-1.5 py-0.5 rounded border border-amber-500/30 flex-shrink-0">L1〜L{CLASSIC_CHAPTERS.length}</span>
-              </div>
-
-              {CLASSIC_CHAPTERS.map((ch) => {
-                const isActive = ch.slug === currentChapterSlug;
-                const isCompleted = completedChapters.includes(ch.id);
-                const chNum = (ch.courseChapterCode || `C${ch.id}`).replace(/^[CML]/, '');
-                const meta = getChapterMeta(ch);
-
-                return (
-                  <div
-                    key={ch.id}
-                    className={`group relative rounded-xl p-2.5 transition-all duration-150 cursor-pointer border ${
-                      isActive
-                        ? 'bg-amber-950/30 border-amber-500/60 shadow-md shadow-amber-950/30'
-                        : 'border-transparent hover:bg-slate-800/60 hover:border-slate-700/60'
+              <button
+                type="button"
+                onClick={() => toggleCategory('classic')}
+                className="w-full px-2 py-1.5 text-[11px] font-mono font-bold text-amber-400/90 uppercase tracking-wider flex items-center justify-between gap-1 rounded-lg hover:bg-amber-950/40 transition cursor-pointer select-none group"
+              >
+                <div className="flex items-center gap-1.5 truncate">
+                  <ChevronDown
+                    className={`w-3.5 h-3.5 text-amber-400/70 group-hover:text-amber-300 transition-transform duration-200 shrink-0 ${
+                      activeTab === 'classic' || expandedCategories.classic ? 'rotate-0' : '-rotate-90'
                     }`}
-                    onClick={() => {
-                      onSelectChapter(ch.slug);
-                      if (window.innerWidth < 768) onClose();
-                    }}
-                  >
-                    <div className="flex items-center gap-2">
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          onToggleComplete(ch.id);
-                        }}
-                        className="text-slate-500 hover:text-amber-400 transition flex-shrink-0"
-                        title={isCompleted ? '未完了に戻す' : '完了にする'}
-                      >
-                        {isCompleted ? (
-                          <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-                        ) : (
-                          <Circle className="w-4 h-4" />
-                        )}
-                      </button>
-                      <span
-                        className={`text-xs font-mono font-bold ${
-                          isActive ? 'text-amber-300' : 'text-slate-200'
-                        }`}
-                      >
-                        【L】第{chNum}章
-                      </span>
-                      <span className="ml-auto text-[10px] font-mono text-slate-500 group-hover:text-slate-400 shrink-0">
-                        {meta.readingTimeMinutes}分
-                      </span>
-                    </div>
+                  />
+                  <span className="truncate">🏛️ レガシーC++（現場実務）</span>
+                </div>
+                <div className="flex items-center gap-1.5 shrink-0">
+                  <span className="text-[9.5px] text-slate-400 font-mono">
+                    {classicCount}/{CLASSIC_CHAPTERS.length}
+                  </span>
+                  <span className="text-[10px] bg-amber-950/80 text-amber-300 px-1.5 py-0.5 rounded border border-amber-500/30">
+                    L1〜L{CLASSIC_CHAPTERS.length}
+                  </span>
+                </div>
+              </button>
 
-                    <div className="mt-1 pl-6">
-                      <p
-                        className={`text-xs font-medium leading-snug line-clamp-2 break-words ${
-                          isActive ? 'text-white font-bold' : 'text-slate-300 group-hover:text-slate-100'
+              {(activeTab === 'classic' || expandedCategories.classic) && (
+                <div className="space-y-1.5">
+                  {CLASSIC_CHAPTERS.map((ch) => {
+                    const isActive = ch.slug === currentChapterSlug;
+                    const isCompleted = completedChapters.includes(ch.id);
+                    const chNum = (ch.courseChapterCode || `C${ch.id}`).replace(/^[CML]/, '');
+                    const meta = getChapterMeta(ch);
+
+                    return (
+                      <div
+                        key={ch.id}
+                        className={`group relative rounded-xl p-2.5 transition-all duration-150 cursor-pointer border ${
+                          isActive
+                            ? 'bg-amber-950/30 border-amber-500/60 shadow-md shadow-amber-950/30'
+                            : 'border-transparent hover:bg-slate-800/60 hover:border-slate-700/60'
                         }`}
+                        onClick={() => {
+                          onSelectChapter(ch.slug);
+                          if (window.innerWidth < 768) onClose();
+                        }}
                       >
-                        {getCleanSidebarTitle(ch.title)}
-                      </p>
-                    </div>
-                  </div>
-                );
-              })}
+                        <div className="flex items-center gap-2">
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              onToggleComplete(ch.id);
+                            }}
+                            className="text-slate-500 hover:text-amber-400 transition flex-shrink-0"
+                            title={isCompleted ? '未完了に戻す' : '完了にする'}
+                          >
+                            {isCompleted ? (
+                              <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                            ) : (
+                              <Circle className="w-4 h-4" />
+                            )}
+                          </button>
+                          <span
+                            className={`text-xs font-mono font-bold ${
+                              isActive ? 'text-amber-300' : 'text-slate-200'
+                            }`}
+                          >
+                            【L】第{chNum}章
+                          </span>
+                          <span className="ml-auto text-[10px] font-mono text-slate-500 group-hover:text-slate-400 shrink-0">
+                            {meta.readingTimeMinutes}分
+                          </span>
+                        </div>
+
+                        <div className="mt-1 pl-6">
+                          <p
+                            className={`text-xs font-medium leading-snug line-clamp-2 break-words ${
+                              isActive ? 'text-white font-bold' : 'text-slate-300 group-hover:text-slate-100'
+                            }`}
+                          >
+                            {getCleanSidebarTitle(ch.title)}
+                          </p>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
             </div>
           )}
 
           {/* 🚀 モダンコースセクション */}
           {(activeTab === 'all' || activeTab === 'modern') && (
             <div className="space-y-1.5 pt-2">
-              <div className="px-2 py-1 text-[11px] font-mono font-bold text-cyan-400/90 uppercase tracking-wider flex items-center justify-between gap-1">
-                <span className="truncate">🚀 モダンC++（新世代）</span>
-                <span className="text-[10px] bg-cyan-950/80 text-cyan-300 px-1.5 py-0.5 rounded border border-cyan-500/30 flex-shrink-0">M1〜M{MODERN_CHAPTERS.length}</span>
-              </div>
-
-              {MODERN_CHAPTERS.map((ch) => {
-                const isActive = ch.slug === currentChapterSlug;
-                const isCompleted = completedChapters.includes(ch.id);
-                const chNum = (ch.courseChapterCode || `M${ch.id}`).replace(/^[CML]/, '');
-                const meta = getChapterMeta(ch);
-
-                return (
-                  <div
-                    key={ch.id}
-                    className={`group relative rounded-xl p-2.5 transition-all duration-150 cursor-pointer border ${
-                      isActive
-                        ? 'bg-cyan-950/30 border-cyan-500/60 shadow-md shadow-cyan-950/30'
-                        : 'border-transparent hover:bg-slate-800/60 hover:border-slate-700/60'
+              <button
+                type="button"
+                onClick={() => toggleCategory('modern')}
+                className="w-full px-2 py-1.5 text-[11px] font-mono font-bold text-cyan-400/90 uppercase tracking-wider flex items-center justify-between gap-1 rounded-lg hover:bg-cyan-950/40 transition cursor-pointer select-none group"
+              >
+                <div className="flex items-center gap-1.5 truncate">
+                  <ChevronDown
+                    className={`w-3.5 h-3.5 text-cyan-400/70 group-hover:text-cyan-300 transition-transform duration-200 shrink-0 ${
+                      activeTab === 'modern' || expandedCategories.modern ? 'rotate-0' : '-rotate-90'
                     }`}
-                    onClick={() => {
-                      onSelectChapter(ch.slug);
-                      if (window.innerWidth < 768) onClose();
-                    }}
-                  >
-                    <div className="flex items-center gap-2">
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          onToggleComplete(ch.id);
-                        }}
-                        className="text-slate-500 hover:text-cyan-400 transition flex-shrink-0"
-                        title={isCompleted ? '未完了に戻す' : '完了にする'}
-                      >
-                        {isCompleted ? (
-                          <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-                        ) : (
-                          <Circle className="w-4 h-4" />
-                        )}
-                      </button>
-                      <span
-                        className={`text-xs font-mono font-bold ${
-                          isActive ? 'text-cyan-300' : 'text-slate-200'
-                        }`}
-                      >
-                        【M】第{chNum}章
-                      </span>
-                      <span className="ml-auto text-[10px] font-mono text-slate-500 group-hover:text-slate-400 shrink-0">
-                        {meta.readingTimeMinutes}分
-                      </span>
-                    </div>
+                  />
+                  <span className="truncate">🚀 モダンC++（新世代）</span>
+                </div>
+                <div className="flex items-center gap-1.5 shrink-0">
+                  <span className="text-[9.5px] text-slate-400 font-mono">
+                    {modernCount}/{MODERN_CHAPTERS.length}
+                  </span>
+                  <span className="text-[10px] bg-cyan-950/80 text-cyan-300 px-1.5 py-0.5 rounded border border-cyan-500/30 flex-shrink-0">
+                    M1〜M{MODERN_CHAPTERS.length}
+                  </span>
+                </div>
+              </button>
 
-                    <div className="mt-1 pl-6">
-                      <p
-                        className={`text-xs font-medium leading-snug line-clamp-2 break-words ${
-                          isActive ? 'text-white font-bold' : 'text-slate-300 group-hover:text-slate-100'
+              {(activeTab === 'modern' || expandedCategories.modern) && (
+                <div className="space-y-1.5">
+                  {MODERN_CHAPTERS.map((ch) => {
+                    const isActive = ch.slug === currentChapterSlug;
+                    const isCompleted = completedChapters.includes(ch.id);
+                    const chNum = (ch.courseChapterCode || `M${ch.id}`).replace(/^[CML]/, '');
+                    const meta = getChapterMeta(ch);
+
+                    return (
+                      <div
+                        key={ch.id}
+                        className={`group relative rounded-xl p-2.5 transition-all duration-150 cursor-pointer border ${
+                          isActive
+                            ? 'bg-cyan-950/30 border-cyan-500/60 shadow-md shadow-cyan-950/30'
+                            : 'border-transparent hover:bg-slate-800/60 hover:border-slate-700/60'
                         }`}
+                        onClick={() => {
+                          onSelectChapter(ch.slug);
+                          if (window.innerWidth < 768) onClose();
+                        }}
                       >
-                        {getCleanSidebarTitle(ch.title)}
-                      </p>
-                    </div>
-                  </div>
-                );
-              })}
+                        <div className="flex items-center gap-2">
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              onToggleComplete(ch.id);
+                            }}
+                            className="text-slate-500 hover:text-cyan-400 transition flex-shrink-0"
+                            title={isCompleted ? '未完了に戻す' : '完了にする'}
+                          >
+                            {isCompleted ? (
+                              <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                            ) : (
+                              <Circle className="w-4 h-4" />
+                            )}
+                          </button>
+                          <span
+                            className={`text-xs font-mono font-bold ${
+                              isActive ? 'text-cyan-300' : 'text-slate-200'
+                            }`}
+                          >
+                            【M】第{chNum}章
+                          </span>
+                          <span className="ml-auto text-[10px] font-mono text-slate-500 group-hover:text-slate-400 shrink-0">
+                            {meta.readingTimeMinutes}分
+                          </span>
+                        </div>
+
+                        <div className="mt-1 pl-6">
+                          <p
+                            className={`text-xs font-medium leading-snug line-clamp-2 break-words ${
+                              isActive ? 'text-white font-bold' : 'text-slate-300 group-hover:text-slate-100'
+                            }`}
+                          >
+                            {getCleanSidebarTitle(ch.title)}
+                          </p>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
             </div>
           )}
 
           {/* 🧭 コード読解演習トラックセクション */}
           {(activeTab === 'all' || activeTab === 'reading') && (
             <div className="space-y-1.5 pt-3 border-t border-slate-800/80">
-              <div className="px-2 py-1 text-[11px] font-mono font-bold text-purple-400/90 uppercase tracking-wider flex items-center justify-between gap-1">
-                <span className="truncate">🧭 コード読解（現場鑑識）</span>
-                <span className="text-[10px] bg-purple-950/80 text-purple-300 px-1.5 py-0.5 rounded border border-purple-500/30 flex-shrink-0">
-                  R1〜R{READING_CHAPTERS.length}
-                </span>
-              </div>
-
-              {READING_CHAPTERS.map((ch) => {
-                const isActive = ch.slug === currentChapterSlug;
-                const isCompleted = completedChapters.includes(ch.id);
-                const chNum = (ch.courseChapterCode || `R${ch.id}`).replace(/^[CMR]/, '');
-                const meta = getChapterMeta(ch);
-
-                return (
-                  <div
-                    key={ch.id}
-                    className={`group relative rounded-xl p-2.5 transition-all duration-150 cursor-pointer border ${
-                      isActive
-                        ? 'bg-purple-950/30 border-purple-500/60 shadow-md shadow-purple-950/30'
-                        : 'border-transparent hover:bg-slate-800/60 hover:border-slate-700/60'
+              <button
+                type="button"
+                onClick={() => toggleCategory('reading')}
+                className="w-full px-2 py-1.5 text-[11px] font-mono font-bold text-purple-400/90 uppercase tracking-wider flex items-center justify-between gap-1 rounded-lg hover:bg-purple-950/40 transition cursor-pointer select-none group"
+              >
+                <div className="flex items-center gap-1.5 truncate">
+                  <ChevronDown
+                    className={`w-3.5 h-3.5 text-purple-400/70 group-hover:text-purple-300 transition-transform duration-200 shrink-0 ${
+                      activeTab === 'reading' || expandedCategories.reading ? 'rotate-0' : '-rotate-90'
                     }`}
-                    onClick={() => {
-                      onSelectChapter(ch.slug);
-                      if (window.innerWidth < 768) onClose();
-                    }}
-                  >
-                    <div className="flex items-center gap-2">
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          onToggleComplete(ch.id);
-                        }}
-                        className="text-slate-500 hover:text-purple-400 transition flex-shrink-0"
-                        title={isCompleted ? '未完了に戻す' : '完了にする'}
-                      >
-                        {isCompleted ? (
-                          <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-                        ) : (
-                          <Circle className="w-4 h-4" />
-                        )}
-                      </button>
-                      <span
-                        className={`text-xs font-mono font-bold ${
-                          isActive ? 'text-purple-300' : 'text-slate-200'
-                        }`}
-                      >
-                        【R】Step {chNum}
-                      </span>
-                      <span className="ml-auto text-[10px] font-mono text-slate-500 group-hover:text-slate-400 shrink-0">
-                        {meta.readingTimeMinutes}分
-                      </span>
-                    </div>
+                  />
+                  <span className="truncate">🧭 コード読解（現場鑑識）</span>
+                </div>
+                <div className="flex items-center gap-1.5 shrink-0">
+                  <span className="text-[9.5px] text-slate-400 font-mono">
+                    {readingCount}/{READING_CHAPTERS.length}
+                  </span>
+                  <span className="text-[10px] bg-purple-950/80 text-purple-300 px-1.5 py-0.5 rounded border border-purple-500/30 flex-shrink-0">
+                    R1〜R{READING_CHAPTERS.length}
+                  </span>
+                </div>
+              </button>
 
-                    <div className="mt-1 pl-6">
-                      <p
-                        className={`text-xs font-medium leading-snug line-clamp-2 break-words ${
-                          isActive ? 'text-white font-bold' : 'text-slate-300 group-hover:text-slate-100'
+              {(activeTab === 'reading' || expandedCategories.reading) && (
+                <div className="space-y-1.5">
+                  {READING_CHAPTERS.map((ch) => {
+                    const isActive = ch.slug === currentChapterSlug;
+                    const isCompleted = completedChapters.includes(ch.id);
+                    const chNum = (ch.courseChapterCode || `R${ch.id}`).replace(/^[CMR]/, '');
+                    const meta = getChapterMeta(ch);
+
+                    return (
+                      <div
+                        key={ch.id}
+                        className={`group relative rounded-xl p-2.5 transition-all duration-150 cursor-pointer border ${
+                          isActive
+                            ? 'bg-purple-950/30 border-purple-500/60 shadow-md shadow-purple-950/30'
+                            : 'border-transparent hover:bg-slate-800/60 hover:border-slate-700/60'
                         }`}
+                        onClick={() => {
+                          onSelectChapter(ch.slug);
+                          if (window.innerWidth < 768) onClose();
+                        }}
                       >
-                        {getCleanSidebarTitle(ch.title)}
-                      </p>
-                    </div>
-                  </div>
-                );
-              })}
+                        <div className="flex items-center gap-2">
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              onToggleComplete(ch.id);
+                            }}
+                            className="text-slate-500 hover:text-purple-400 transition flex-shrink-0"
+                            title={isCompleted ? '未完了に戻す' : '完了にする'}
+                          >
+                            {isCompleted ? (
+                              <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                            ) : (
+                              <Circle className="w-4 h-4" />
+                            )}
+                          </button>
+                          <span
+                            className={`text-xs font-mono font-bold ${
+                              isActive ? 'text-purple-300' : 'text-slate-200'
+                            }`}
+                          >
+                            【R】Step {chNum}
+                          </span>
+                          <span className="ml-auto text-[10px] font-mono text-slate-500 group-hover:text-slate-400 shrink-0">
+                            {meta.readingTimeMinutes}分
+                          </span>
+                        </div>
+
+                        <div className="mt-1 pl-6">
+                          <p
+                            className={`text-xs font-medium leading-snug line-clamp-2 break-words ${
+                              isActive ? 'text-white font-bold' : 'text-slate-300 group-hover:text-slate-100'
+                            }`}
+                          >
+                            {getCleanSidebarTitle(ch.title)}
+                          </p>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
             </div>
           )}
 
           {/* 📚 特集ガイド＆実践コラムセクション */}
           {(activeTab === 'all' || activeTab === 'guide') && (
             <div className="space-y-1.5 pt-3 border-t border-slate-800/80">
-              <div className="px-2 py-1 text-[11px] font-mono font-bold text-emerald-400/90 uppercase tracking-wider flex items-center justify-between gap-1">
-                <span className="truncate">📚 特集ガイド＆コラム</span>
-                <span className="text-[10px] bg-emerald-950/80 text-emerald-300 px-1.5 py-0.5 rounded border border-emerald-500/30 flex-shrink-0">現場手引き</span>
-              </div>
-
-              {SPECIAL_GUIDES.map((guide) => {
-                const isActive = guide.slug === currentChapterSlug;
-                const isCompleted = completedChapters.includes(guide.id);
-                const isColumn = guide.category === 'column';
-                const meta = getChapterMeta(guide);
-                const icon = guide.slug === 'guide-googletest-tdd'
-                  ? '🧪'
-                  : guide.slug === 'guide-code-reading' 
-                  ? '🧭' 
-                  : guide.slug === 'column-design-patterns'
-                  ? '🧩'
-                  : guide.slug === 'column-why-cpp-is-hard'
-                  ? '🧠' 
-                  : guide.slug === 'column-why-cpp-is-great'
-                  ? '🔥'
-                  : guide.slug === 'guide-uml-design'
-                  ? '📐'
-                  : '🛠️';
-
-                return (
-                  <div
-                    key={guide.id}
-                    className={`group relative rounded-xl p-2.5 transition-all duration-150 cursor-pointer border ${
-                      isActive
-                        ? isColumn
-                          ? 'bg-purple-950/30 border-purple-500/60 shadow-md shadow-purple-950/30'
-                          : 'bg-emerald-950/30 border-emerald-500/60 shadow-md shadow-emerald-950/30'
-                        : 'border-transparent hover:bg-slate-800/60 hover:border-slate-700/60'
+              <button
+                type="button"
+                onClick={() => toggleCategory('guide')}
+                className="w-full px-2 py-1.5 text-[11px] font-mono font-bold text-emerald-400/90 uppercase tracking-wider flex items-center justify-between gap-1 rounded-lg hover:bg-emerald-950/40 transition cursor-pointer select-none group"
+              >
+                <div className="flex items-center gap-1.5 truncate">
+                  <ChevronDown
+                    className={`w-3.5 h-3.5 text-emerald-400/70 group-hover:text-emerald-300 transition-transform duration-200 shrink-0 ${
+                      activeTab === 'guide' || expandedCategories.guide ? 'rotate-0' : '-rotate-90'
                     }`}
-                    onClick={() => {
-                      onSelectChapter(guide.slug);
-                      if (window.innerWidth < 768) onClose();
-                    }}
-                  >
-                    <div className="flex items-center gap-2">
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          onToggleComplete(guide.id);
-                        }}
-                        className="text-slate-500 hover:text-emerald-400 transition flex-shrink-0"
-                        title={isCompleted ? '未読了に戻す' : '読了にする'}
-                      >
-                        {isCompleted ? (
-                          <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-                        ) : (
-                          <Circle className="w-4 h-4" />
-                        )}
-                      </button>
-                      <span className="text-xs">{icon}</span>
-                      <span
-                        className={`text-xs font-mono font-bold ${
-                          isActive 
-                            ? isColumn ? 'text-purple-300' : 'text-emerald-300'
-                            : 'text-slate-200'
-                        }`}
-                      >
-                        {guide.badge}
-                      </span>
-                      <span className="ml-auto text-[10px] font-mono text-slate-500 group-hover:text-slate-400 shrink-0">
-                        {meta.readingTimeMinutes}分
-                      </span>
-                    </div>
+                  />
+                  <span className="truncate">📚 特集ガイド＆コラム</span>
+                </div>
+                <div className="flex items-center gap-1.5 shrink-0">
+                  <span className="text-[9.5px] text-slate-400 font-mono">
+                    {guideCount}/{SPECIAL_GUIDES.length}
+                  </span>
+                  <span className="text-[10px] bg-emerald-950/80 text-emerald-300 px-1.5 py-0.5 rounded border border-emerald-500/30 flex-shrink-0">
+                    現場手引き
+                  </span>
+                </div>
+              </button>
 
-                    <div className="mt-1 pl-6">
-                      <p
-                        className={`text-xs font-medium leading-relaxed line-clamp-2 break-words ${
-                          isActive ? 'text-white font-bold' : 'text-slate-300 group-hover:text-slate-100'
+              {(activeTab === 'guide' || expandedCategories.guide) && (
+                <div className="space-y-1.5">
+                  {SPECIAL_GUIDES.map((guide) => {
+                    const isActive = guide.slug === currentChapterSlug;
+                    const isCompleted = completedChapters.includes(guide.id);
+                    const isColumn = guide.category === 'column';
+                    const meta = getChapterMeta(guide);
+                    const icon = guide.slug === 'guide-googletest-tdd'
+                      ? '🧪'
+                      : guide.slug === 'guide-code-reading' 
+                      ? '🧭' 
+                      : guide.slug === 'column-design-patterns'
+                      ? '🧩'
+                      : guide.slug === 'column-why-cpp-is-hard'
+                      ? '🧠' 
+                      : guide.slug === 'column-why-cpp-is-great'
+                      ? '🔥'
+                      : guide.slug === 'guide-uml-design'
+                      ? '📐'
+                      : '🛠️';
+
+                    return (
+                      <div
+                        key={guide.id}
+                        className={`group relative rounded-xl p-2.5 transition-all duration-150 cursor-pointer border ${
+                          isActive
+                            ? isColumn
+                              ? 'bg-purple-950/30 border-purple-500/60 shadow-md shadow-purple-950/30'
+                              : 'bg-emerald-950/30 border-emerald-500/60 shadow-md shadow-emerald-950/30'
+                            : 'border-transparent hover:bg-slate-800/60 hover:border-slate-700/60'
                         }`}
+                        onClick={() => {
+                          onSelectChapter(guide.slug);
+                          if (window.innerWidth < 768) onClose();
+                        }}
                       >
-                        {guide.title}
-                      </p>
-                    </div>
-                  </div>
-                );
-              })}
+                        <div className="flex items-center gap-2">
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              onToggleComplete(guide.id);
+                            }}
+                            className="text-slate-500 hover:text-emerald-400 transition flex-shrink-0"
+                            title={isCompleted ? '未読了に戻す' : '読了にする'}
+                          >
+                            {isCompleted ? (
+                              <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                            ) : (
+                              <Circle className="w-4 h-4" />
+                            )}
+                          </button>
+                          <span className="text-xs">{icon}</span>
+                          <span
+                            className={`text-xs font-mono font-bold ${
+                              isActive 
+                                ? isColumn ? 'text-purple-300' : 'text-emerald-300'
+                                : 'text-slate-200'
+                            }`}
+                          >
+                            {guide.badge}
+                          </span>
+                          <span className="ml-auto text-[10px] font-mono text-slate-500 group-hover:text-slate-400 shrink-0">
+                            {meta.readingTimeMinutes}分
+                          </span>
+                        </div>
+
+                        <div className="mt-1 pl-6">
+                          <p
+                            className={`text-xs font-medium leading-relaxed line-clamp-2 break-words ${
+                              isActive ? 'text-white font-bold' : 'text-slate-300 group-hover:text-slate-100'
+                            }`}
+                          >
+                            {guide.title}
+                          </p>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
             </div>
           )}
         </div>
