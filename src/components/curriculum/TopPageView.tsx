@@ -172,9 +172,8 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
             </p>
 
             <p className="text-sm sm:text-base text-slate-300 leading-relaxed font-sans">
-              ブラウザで遊べるインベーダー風ゲームを段階的にリファクタリング！
-              main関数500行のスパゲティコード（C言語）から、クラス化、動的メモリ、vtable、RAII、ECS、そして最新C++20まで。
-              実戦に即した「なぜその設計が必要なのか」を体感しながらマスターできます。
+              ブラウザで遊べるインベーダー風ゲームを題材に、組込み・リアルタイム現場で求められる「静的メモリ・構造化・クラシックOOPの正解」から、現代の大規模開発で威力を発揮する「RAII・vtable・ECS・最新C++20」まで。
+              「なぜその環境でその設計が選ばれるのか」を体感しながらマスターできます。
             </p>
 
             {/* 実績バッジ群 */}
@@ -542,24 +541,24 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
 
               <div>
                 <h3 className="text-xl sm:text-2xl font-black text-white font-sans flex items-center gap-2">
-                  <span>🏛️ クラシックC++基礎編</span>
+                  <span>🏛️ クラシックC++現場実務編</span>
                 </h3>
-                <p className="text-xs font-mono text-amber-400 mt-0.5">C言語・C++03 / オブジェクト指向の原点と現場実務</p>
+                <p className="text-xs font-mono text-amber-400 mt-0.5">C言語・C++03 / 組込み・制約環境における【レガシーの正解】</p>
               </div>
 
               <p className="text-xs sm:text-sm text-slate-300 leading-relaxed font-sans">
-                main関数500行のベタ書きからスタートし、カプセル化、動的メモリ、継承・vtable、デザインパターンまで段階的にリファクタリング。組込み機器や既存システムの保守にも通じる、C++の基礎体力を鍛え上げます。
+                動的メモリ禁止・MISRA準拠・決定論的リアルタイム応答など、今なお現場でレガシーが推奨される理由と、その制約下で破綻させない「静的オブジェクトプール」「不透明ポインタ」「クラシックOOP」の真の正解を習得します。
               </p>
 
               <div className="p-3 rounded-xl bg-slate-950/70 border border-slate-800 text-xs font-mono space-y-1">
                 <div className="text-slate-400">主なテーマ:</div>
                 <div className="text-amber-300 flex flex-wrap gap-x-3 gap-y-1">
-                  <span>#L1 構造化の限界</span>
-                  <span>#L2 クラス化</span>
-                  <span>#L3 動的配列</span>
+                  <span>#L1 構造化設計の正解</span>
+                  <span>#L2 Opaqueポインタとクラス</span>
+                  <span>#L3 静的プール設計</span>
                   <span>#L4 vtable多態性</span>
                   <span>#L5 State/Observer</span>
-                  <span>#L10 CRTP</span>
+                  <span>#L11 メモリプール</span>
                 </div>
               </div>
             </div>
