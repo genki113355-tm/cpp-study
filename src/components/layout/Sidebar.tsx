@@ -648,28 +648,110 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
 
 
-        {/* 4サイト連携エコシステムへの導線（サイトワイド外部リンクによるペナルティリスクを回避し、TOPの公式エコシステムへ誘導） */}
-        <div className="p-3 border-t border-slate-800/80 bg-slate-950/40">
-          <button
-            onClick={() => {
-              onSelectChapter('top');
-              onClose?.();
-            }}
-            className="w-full py-2 px-3 rounded-xl bg-slate-900/90 hover:bg-slate-850 border border-slate-800 hover:border-cyan-500/40 text-[11px] font-mono text-slate-300 hover:text-cyan-300 transition flex items-center justify-between group cursor-pointer"
-          >
-            <span className="flex items-center gap-1.5 truncate">
-              <span>🌐</span>
-              <span>4サイト連携エコシステム</span>
+        {/* 技術学習エコシステム（相互リンク） */}
+        <div className="p-3 border-t border-slate-800/80 bg-slate-950/60 space-y-2 shrink-0">
+          <div className="text-[10px] font-mono text-slate-400 font-bold mb-1.5 flex items-center justify-between">
+            <span className="flex items-center gap-1.5 text-cyan-400">
+              <span>🔗</span>
+              <span>技術学習エコシステム</span>
             </span>
-            <span className="text-slate-500 group-hover:text-cyan-400 font-mono text-xs">→</span>
-          </button>
+            <span className="text-[9px] text-slate-400 font-mono px-1.5 py-0.5 rounded bg-slate-850 border border-slate-700/60">
+              相互リンク
+            </span>
+          </div>
+
+          <div className="space-y-1.5">
+            {/* 0. 総合トップ */}
+            <a
+              href="/"
+              className="group flex items-center justify-between p-2 rounded-xl bg-cyan-950/40 hover:bg-cyan-900/50 border border-cyan-500/30 hover:border-cyan-400/60 transition shadow-sm"
+            >
+              <div className="min-w-0 pr-2">
+                <div className="flex items-center gap-1.5">
+                  <span className="text-xs">🏛️</span>
+                  <div className="text-xs font-bold text-cyan-300 group-hover:text-white font-sans truncate">
+                    総合ポータル
+                  </div>
+                </div>
+                <div className="text-[10px] text-slate-400 mt-0.5 truncate font-sans">
+                  全4ラボの学習記録・修了証を集約
+                </div>
+              </div>
+              <span className="text-xs text-cyan-400 group-hover:text-white font-mono flex-shrink-0">
+                ➔
+              </span>
+            </a>
+
+            {/* 1. シロクマC++自動化ラボ */}
+            <a
+              href="/auto/"
+              className="group flex items-center justify-between p-2 rounded-xl bg-slate-900/80 hover:bg-slate-850 border border-slate-800 hover:border-amber-500/40 transition shadow-sm"
+            >
+              <div className="min-w-0 pr-2">
+                <div className="flex items-center gap-1.5">
+                  <span className="text-xs">⚡</span>
+                  <div className="text-xs font-bold text-slate-200 group-hover:text-amber-300 font-sans truncate">
+                    シロクマC++自動化ラボ
+                  </div>
+                </div>
+                <div className="text-[10px] text-slate-400 mt-0.5 truncate font-sans">
+                  Docker / pybind11 / 自動評価
+                </div>
+              </div>
+              <span className="text-xs text-slate-500 group-hover:text-amber-400 font-mono flex-shrink-0">
+                ↗
+              </span>
+            </a>
+
+            {/* 2. シロクマQt×C++ラボ */}
+            <a
+              href="/qt/"
+              className="group flex items-center justify-between p-2 rounded-xl bg-slate-900/80 hover:bg-slate-850 border border-slate-800 hover:border-cyan-500/40 transition shadow-sm"
+            >
+              <div className="min-w-0 pr-2">
+                <div className="flex items-center gap-1.5">
+                  <span className="text-xs">🖥️</span>
+                  <div className="text-xs font-bold text-slate-200 group-hover:text-cyan-300 font-sans truncate">
+                    シロクマQt×C++ラボ
+                  </div>
+                </div>
+                <div className="text-[10px] text-slate-400 mt-0.5 truncate font-sans">
+                  QML / 60fps波形描画 / 実務GUI
+                </div>
+              </div>
+              <span className="text-xs text-slate-500 group-hover:text-cyan-400 font-mono flex-shrink-0">
+                ↗
+              </span>
+            </a>
+
+            {/* 3. 水中音響・ソナー技術入門 */}
+            <a
+              href="/sonar/"
+              className="group flex items-center justify-between p-2 rounded-xl bg-slate-900/80 hover:bg-slate-850 border border-slate-800 hover:border-blue-500/40 transition shadow-sm"
+            >
+              <div className="min-w-0 pr-2">
+                <div className="flex items-center gap-1.5">
+                  <span className="text-xs">🌊</span>
+                  <div className="text-xs font-bold text-slate-200 group-hover:text-blue-300 font-sans truncate">
+                    水中音響・ソナー入門
+                  </div>
+                </div>
+                <div className="text-[10px] text-slate-400 mt-0.5 truncate font-sans">
+                  波の物理 / FFT / 音響解析
+                </div>
+              </div>
+              <span className="text-xs text-slate-500 group-hover:text-blue-400 font-mono flex-shrink-0">
+                ↗
+              </span>
+            </a>
+          </div>
         </div>
 
-        {/* キャラクター紹介（シロクマ先生 & ペンギンくん） */}
+        {/* キャラクター紹介（シロクマ先生 & ペンギン生徒） */}
         <div className="mt-auto border-t border-cyan-500/20 p-4 pb-6 bg-[#080d1a]/80 space-y-3 shrink-0">
           <div className="flex items-center gap-3">
             <img
-              src={getAssetUrl('/images/polar-bear-guide-pointing.png')}
+              src={getAssetUrl('/images/characters/shirokuma_sensei.png')}
               alt="シロクマ先生"
               className="w-10 h-10 rounded-full border-2 border-cyan-500 object-cover bg-slate-900 shadow-[0_0_10px_rgba(6,182,212,0.3)]"
             />
@@ -680,12 +762,12 @@ export const Sidebar: React.FC<SidebarProps> = ({
           </div>
           <div className="flex items-center gap-3">
             <img
-              src={getAssetUrl('/images/penguin-guide-simple.jpg')}
-              alt="ペンギンくん"
+              src={getAssetUrl('/images/characters/penguin_student.jpg')}
+              alt="ペンギン生徒"
               className="w-10 h-10 rounded-full border-2 border-slate-500 object-cover bg-slate-900 shadow"
             />
             <div>
-              <p className="text-sm font-bold text-white leading-none mb-1">ペンギンくん (Penguin)</p>
+              <p className="text-sm font-bold text-white leading-none mb-1">ペンギン生徒 (Student)</p>
               <p className="text-[10px] text-slate-400">手動評価に苦しむ若手エンジニア</p>
             </div>
           </div>

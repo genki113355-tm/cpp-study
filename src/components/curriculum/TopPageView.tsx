@@ -214,16 +214,16 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
 
 
   return (
-    <div className="w-full max-w-6xl mx-auto py-6 sm:py-10 px-2 sm:px-4 space-y-12 sm:space-y-16">
+    <div className="w-full max-w-6xl mx-auto py-4 sm:py-6 px-2 sm:px-4 space-y-8 sm:space-y-12">
       
       {/* 1. ヒーローセクション（サイトの存在意義・1秒で伝わるキャッチコピー） */}
-      <section className="relative rounded-3xl border border-cyan-500/30 bg-gradient-to-b from-slate-900/90 via-[#070b14] to-[#040810] p-6 sm:p-10 shadow-2xl overflow-hidden">
+      <section className="relative rounded-3xl border border-cyan-500/30 bg-gradient-to-b from-slate-900/90 via-[#070b14] to-[#040810] p-5 sm:p-8 shadow-2xl overflow-hidden">
         <div className="absolute top-0 right-0 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none" />
         <div className="absolute bottom-0 left-0 w-96 h-96 bg-blue-600/10 rounded-full blur-3xl pointer-events-none" />
 
         <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
           {/* 左側：キャッチコピー・解説・バッジ・CTA */}
-          <div className="lg:col-span-7 space-y-5">
+          <div className="lg:col-span-7 space-y-4">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-950/80 border border-cyan-500/40 text-cyan-300 font-mono text-xs font-semibold">
               <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
               <span>ゲーム開発で学ぶ C++ オブジェクト指向＆実践設計メディア</span>
@@ -232,7 +232,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
             <h1 className="text-3xl sm:text-5xl lg:text-5xl xl:text-6xl font-black tracking-tight text-white font-sans leading-tight flex items-center gap-3.5 sm:gap-4 flex-wrap">
               <span className="w-12 h-12 sm:w-16 sm:h-16 rounded-full border-2 border-cyan-400/80 bg-slate-900 shadow-[0_0_25px_rgba(6,182,212,0.4)] shrink-0 inline-flex items-center justify-center overflow-hidden">
                 <img
-                  src={getAssetUrl('/images/polar-bear-guide-pointing.png')}
+                  src={getAssetUrl('/images/characters/shirokuma_sensei.png')}
                   alt="シロクマ先生"
                   className="w-full h-full object-cover"
                 />
@@ -245,9 +245,31 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
             </p>
 
             <p className="text-sm sm:text-base text-slate-300 leading-relaxed font-sans">
-              ブラウザで遊べるインベーダー風ゲームを題材に、組込み・リアルタイム現場で求められる「静的メモリ・構造化・クラシックOOPの正解」から、現代の大規模開発で威力を発揮する「RAII・vtable・ECS・最新C++20」まで。
-              「なぜその環境でその設計が選ばれるのか」を体感しながらマスターできます。
+              ブラウザで遊べるインベーダー風ゲームを段階的にリファクタリング！main関数500行のスパゲティコード（C言語）から、クラス化、動的メモリ、vtable、RAII、ECS、そして最新C++20まで、実戦に即した「なぜその設計が必要なのか」を体感しながらマスターできます。
             </p>
+
+            {/* 🐻‍❄️＆🐧 初心者も安心のクイック対話メッセージ */}
+            <div className="p-3 sm:p-3.5 rounded-2xl bg-cyan-950/40 border border-cyan-500/30 flex items-start gap-3 shadow-md">
+              <div className="flex items-center -space-x-2 shrink-0 mt-0.5">
+                <img
+                  src={getAssetUrl('/images/characters/shirokuma_sensei.png')}
+                  alt="シロクマ先生"
+                  className="w-7 h-7 rounded-full object-cover border border-cyan-400/70 shadow"
+                />
+                <img
+                  src={getAssetUrl('/images/characters/penguin_student.jpg')}
+                  alt="ペンギン生徒"
+                  className="w-7 h-7 rounded-full object-cover border border-amber-400/70 shadow"
+                />
+              </div>
+              <div className="text-xs sm:text-sm text-slate-200 font-sans leading-relaxed">
+                <span className="text-amber-300 font-bold">ペンギン生徒: </span>
+                「C++って専門用語が多くて難しそう…」
+                <br className="hidden sm:inline" />
+                <span className="text-cyan-300 font-bold ml-0 sm:ml-2">シロクマ先生: </span>
+                「案ずるな！RAIIもvtableも最初は知らなくてよい。ゲームのバグを直す面白さを体験すれば、設計の極意は自然と身につくぞ！」
+              </div>
+            </div>
 
             {/* 実績バッジ群 */}
             <div className="flex flex-wrap gap-2 pt-1 text-xs font-mono text-slate-300">
@@ -265,30 +287,17 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
               <span className="px-3 py-1 rounded-lg bg-slate-950/80 border border-emerald-500/30 text-emerald-300">💻 実行演習完備</span>
             </div>
 
-            {/* 👾 すぐにゲームを遊ぶ（Webエミュレータ直接起動） */}
-            {onOpenGameModal && (
-              <div className="pt-2">
-                <button
-                  type="button"
-                  onClick={() => onOpenGameModal('v2_classes', 'L2', 'クラス化とファイル分割')}
-                  className="w-full py-3.5 px-6 rounded-2xl bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 hover:from-emerald-400 hover:via-teal-400 hover:to-cyan-400 text-slate-950 font-black font-mono text-sm sm:text-base transition-all duration-300 shadow-[0_0_30px_rgba(16,185,129,0.35)] hover:shadow-[0_0_45px_rgba(6,182,212,0.6)] flex items-center justify-center gap-3 active:scale-95 cursor-pointer border-2 border-emerald-300/40 group"
-                >
-                  <Gamepad2 className="w-5 h-5 text-slate-950 group-hover:scale-110 group-hover:rotate-6 transition-transform" />
-                  <span>👾 今すぐゲームを起動する ▶ [Webエミュレータ]</span>
-                </button>
-              </div>
-            )}
-
             {/* 学習開始・再開 CTA ボタン（最初から学ぶ / 続きから学ぶ） */}
-            <div className="pt-1 grid grid-cols-1 sm:grid-cols-2 gap-3">
-              {/* 1. 最初から学ぶ */}
+            <div className="pt-2 grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {/* 1. 最初から学ぶ（プライマリCTA：シアン発光） */}
               <button
                 type="button"
                 onClick={() => onSelectChapter(ALL_CHAPTERS[0].slug)}
-                className="py-3 px-5 rounded-2xl bg-slate-800/90 hover:bg-slate-700 text-white font-bold font-mono text-xs sm:text-sm transition border border-slate-700 hover:border-slate-600 flex items-center justify-center gap-2 shadow-lg active:scale-95 cursor-pointer"
+                className="py-3.5 px-6 rounded-2xl bg-gradient-to-r from-cyan-400 via-sky-400 to-blue-500 hover:from-cyan-300 hover:via-sky-300 hover:to-blue-400 text-slate-950 font-black font-mono text-sm sm:text-base transition-all duration-300 shadow-[0_0_25px_rgba(34,211,238,0.45)] hover:shadow-[0_0_35px_rgba(34,211,238,0.7)] flex items-center justify-center gap-2.5 active:scale-95 cursor-pointer border border-cyan-200/50 group"
               >
-                <span>🚀 最初から学ぶ</span>
-                <span className="text-[11px] text-slate-400 font-normal">（第1章）</span>
+                <Play className="w-4 h-4 fill-slate-950 group-hover:scale-110 transition-transform" />
+                <span>最初から学ぶ</span>
+                <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-slate-950/20 text-slate-950">（第1章へ）</span>
               </button>
 
               {/* 2. 続きから学ぶ */}
@@ -296,7 +305,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
                 <button
                   type="button"
                   onClick={onOpenMilestoneModal}
-                  className="py-3 px-5 rounded-2xl bg-gradient-to-r from-amber-500 to-yellow-400 hover:from-amber-400 hover:to-yellow-300 text-slate-950 font-black font-mono text-xs sm:text-sm transition shadow-lg shadow-amber-500/20 flex items-center justify-center gap-2 active:scale-95 cursor-pointer"
+                  className="py-3.5 px-5 rounded-2xl bg-gradient-to-r from-amber-500 to-yellow-400 hover:from-amber-400 hover:to-yellow-300 text-slate-950 font-black font-mono text-xs sm:text-sm transition shadow-lg shadow-amber-500/20 flex items-center justify-center gap-2 active:scale-95 cursor-pointer"
                 >
                   <Trophy className="w-4 h-4 text-slate-950" />
                   <span>👑 全課程制覇！修了証を確認</span>
@@ -305,11 +314,11 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
                 <button
                   type="button"
                   onClick={() => onSelectChapter(nextUncompletedChapter.slug)}
-                  className="py-3 px-5 rounded-2xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-black font-mono text-xs sm:text-sm transition shadow-lg shadow-cyan-500/30 flex items-center justify-center gap-2 active:scale-95 cursor-pointer"
+                  className="py-3.5 px-5 rounded-2xl bg-slate-800/90 hover:bg-slate-700 text-cyan-300 hover:text-white font-bold font-mono text-xs sm:text-sm transition border border-cyan-500/40 hover:border-cyan-400 shadow-md flex items-center justify-center gap-2 active:scale-95 cursor-pointer"
                 >
-                  <Play className="w-4 h-4 fill-current" />
-                  <span>▶ 続きから学ぶ</span>
-                  <span className="text-[11px] font-normal opacity-90 truncate max-w-[130px] sm:max-w-[180px]">
+                  <Play className="w-4 h-4 fill-current text-cyan-400" />
+                  <span>続きから学ぶ</span>
+                  <span className="text-[11px] font-normal opacity-90 truncate max-w-[120px] sm:max-w-[160px]">
                     （{nextUncompletedChapter.courseChapterCode ? `第${nextUncompletedChapter.courseChapterCode.replace(/^[CML]/, '')}章` : nextUncompletedChapter.title.slice(0, 10)}）
                   </span>
                 </button>
@@ -317,18 +326,51 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
                 <button
                   type="button"
                   disabled
-                  className="py-3 px-5 rounded-2xl bg-slate-900/60 text-slate-600 border border-slate-800/80 font-mono text-xs sm:text-sm flex items-center justify-center gap-2 cursor-not-allowed opacity-60"
-                  title="まずは第1章から始めましょう！"
+                  className="py-3.5 px-5 rounded-2xl bg-slate-900/50 text-slate-500 border border-slate-800/70 font-mono text-xs sm:text-sm flex items-center justify-center gap-2 cursor-not-allowed opacity-60"
                 >
                   <span>続きから学ぶ（未開始）</span>
                 </button>
               )}
             </div>
 
-            {/* 学習進捗 & 修了証への導線 */}
+            {/* 🧭 ペルソナ別クイックスタート（あなたの現在地から選ぶ） */}
+            <div className="pt-2 border-t border-slate-800/80">
+              <div className="text-[11px] font-mono text-slate-400 mb-2 flex items-center gap-1.5">
+                <Sparkles className="w-3 h-3 text-cyan-400" />
+                <span>あなたのレベルに合わせてスタート：</span>
+              </div>
+              <div className="flex flex-wrap gap-2 text-xs font-mono">
+                <button
+                  type="button"
+                  onClick={() => onSelectChapter('chapter-1-spaghetti-code')}
+                  className="px-2.5 py-1.5 rounded-xl bg-slate-900/90 hover:bg-cyan-950/70 border border-slate-800 hover:border-cyan-500/50 text-slate-300 hover:text-cyan-300 transition flex items-center gap-1.5 cursor-pointer"
+                >
+                  <span>🔰 初学者・基礎から</span>
+                  <span className="text-[10px] text-cyan-400">（L1〜）</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => onSelectChapter('chapter-3-dynamic-memory')}
+                  className="px-2.5 py-1.5 rounded-xl bg-slate-900/90 hover:bg-amber-950/70 border border-slate-800 hover:border-amber-500/50 text-slate-300 hover:text-amber-300 transition flex items-center gap-1.5 cursor-pointer"
+                >
+                  <span>💼 他言語経験者・メモリ管理</span>
+                  <span className="text-[10px] text-amber-400">（L3〜）</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => onSelectChapter('chapter-17-modern-cpp-migration')}
+                  className="px-2.5 py-1.5 rounded-xl bg-slate-900/90 hover:bg-emerald-950/70 border border-slate-800 hover:border-emerald-500/50 text-slate-300 hover:text-emerald-300 transition flex items-center gap-1.5 cursor-pointer"
+                >
+                  <span>🚀 最新C++20・ECS</span>
+                  <span className="text-[10px] text-emerald-400">（M1〜）</span>
+                </button>
+              </div>
+            </div>
+
+            {/* 学習進捗 & 修了証への導線（落ち着いたアンバー系のアウトライン） */}
             {onOpenMilestoneModal && (
-              <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
-                <div className="p-3 rounded-2xl bg-slate-950/80 border border-slate-800 flex-1 flex items-center justify-between gap-3 text-xs font-mono">
+              <div className="pt-1 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                <div className="p-2.5 px-3 rounded-2xl bg-slate-950/80 border border-slate-800 flex-1 flex items-center justify-between gap-3 text-xs font-mono">
                   <div className="flex items-center gap-2 text-slate-300">
                     <span className="w-2 h-2 rounded-full bg-cyan-400" />
                     <span>学習進捗：</span>
@@ -342,9 +384,9 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
                 <button
                   type="button"
                   onClick={onOpenMilestoneModal}
-                  className="py-3 px-4 rounded-2xl bg-gradient-to-r from-amber-500 to-yellow-400 hover:from-amber-400 hover:to-yellow-300 text-slate-950 font-bold font-mono text-xs sm:text-sm transition flex items-center justify-center gap-2 shadow-lg shadow-amber-500/20 active:scale-95 cursor-pointer flex-shrink-0"
+                  className="py-2.5 px-4 rounded-2xl bg-slate-950/80 hover:bg-amber-950/40 border border-amber-500/40 hover:border-amber-400/80 text-amber-300 font-bold font-mono text-xs transition flex items-center justify-center gap-2 shadow-sm active:scale-95 cursor-pointer flex-shrink-0"
                 >
-                  <Trophy className="w-4 h-4 text-slate-950" />
+                  <Trophy className="w-3.5 h-3.5 text-amber-400" />
                   <span>🏆 公式修了証・進捗引継ぎ</span>
                 </button>
               </div>
@@ -358,20 +400,39 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
               className="w-full max-w-md lg:max-w-none rounded-3xl border-2 border-cyan-500/40 shadow-2xl shadow-cyan-950/80 overflow-hidden relative group bg-slate-950/90 cursor-pointer"
               title="クリックしてゲームエミュレータを起動！"
             >
-              <div className="aspect-[4/3] w-full overflow-hidden bg-slate-900 relative">
+              <div className="aspect-[4/3] w-full overflow-hidden bg-gradient-to-br from-slate-950 via-slate-900 to-[#070e1c] relative flex items-center justify-center">
                 <img
                   src={getAssetUrl('/images/shirokuma_chibi_game_lab.jpg')}
                   alt="シロクマ先生とペンギン生徒がレトロゲーム開発に熱中するC++ラボ"
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 relative z-10"
+                  onError={(e) => {
+                    const target = e.currentTarget;
+                    if (!target.src.includes('characters_mission')) {
+                      target.src = getAssetUrl('/images/characters_mission.jpg');
+                    } else {
+                      target.style.display = 'none';
+                    }
+                  }}
                 />
-                <div className="absolute inset-0 bg-slate-950/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                  <span className="px-5 py-2.5 rounded-2xl bg-cyan-500 text-slate-950 font-mono font-black text-sm flex items-center gap-2 shadow-2xl shadow-cyan-500/50 scale-95 group-hover:scale-100 transition-transform">
+                {/* 画像背面のレトロアーケード・フォールバックプレビュー */}
+                <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center z-0 bg-gradient-to-b from-[#0a1124] to-[#040810]">
+                  <div className="text-4xl sm:text-5xl mb-3 animate-bounce">👾</div>
+                  <div className="font-mono text-cyan-400 font-black text-sm tracking-wider uppercase mb-1">
+                    INVASION RETRO LAB
+                  </div>
+                  <div className="text-xs text-slate-400 font-sans">
+                    ブラウザで直接動くC++エミュレータ
+                  </div>
+                </div>
+
+                <div className="absolute inset-0 bg-slate-950/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center z-20">
+                  <span className="px-5 py-2.5 rounded-2xl bg-cyan-400 text-slate-950 font-mono font-black text-sm flex items-center gap-2 shadow-2xl shadow-cyan-400/60 scale-95 group-hover:scale-100 transition-transform">
                     <Gamepad2 className="w-5 h-5 text-slate-950" />
                     <span>ゲームを起動する ▶</span>
                   </span>
                 </div>
               </div>
-              <div className="p-3.5 sm:p-4 bg-gradient-to-t from-slate-950 via-slate-950/95 to-slate-900/90 border-t border-cyan-500/20">
+              <div className="p-3.5 sm:p-4 bg-gradient-to-t from-slate-950 via-slate-950/95 to-slate-900/90 border-t border-cyan-500/20 relative z-10">
                 <div className="flex items-center justify-between gap-2">
                   <span className="text-xs font-mono font-bold text-cyan-300 flex items-center gap-1.5">
                     <Sparkles className="w-3.5 h-3.5 text-cyan-400 shrink-0" />
