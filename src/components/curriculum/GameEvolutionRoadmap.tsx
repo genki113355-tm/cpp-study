@@ -3,12 +3,14 @@ import {
   ArrowRight, 
   Workflow, 
   Sparkles, 
-  AlertTriangle 
+  AlertTriangle,
+  Gamepad2
 } from 'lucide-react';
 import { getAssetUrl } from '../../utils/assetPath';
 
 interface GameEvolutionRoadmapProps {
   onSelectChapter: (slug: string) => void;
+  onOpenGameModal?: (version: any, code?: string, title?: string) => void;
 }
 
 interface EvolutionStage {
@@ -18,6 +20,8 @@ interface EvolutionStage {
   tag: string;
   chapterSlug: string;
   chapterLabel: string;
+  gameVersion?: 'v1_spaghetti' | 'v2_classes' | 'v3_dynamic' | 'v4_polymorphism' | 'v5_smart_pointers' | 'v6_patterns' | 'v7_ecs_final';
+  chapterCode?: string;
   beforePain: string;
   afterSkill: string;
   storyQuote: {
@@ -28,7 +32,7 @@ interface EvolutionStage {
   codeSnippetAfter: string;
 }
 
-export const GameEvolutionRoadmap: React.FC<GameEvolutionRoadmapProps> = ({ onSelectChapter }) => {
+export const GameEvolutionRoadmap: React.FC<GameEvolutionRoadmapProps> = ({ onSelectChapter, onOpenGameModal }) => {
   const [selectedStageIndex, setSelectedStageIndex] = useState<number>(0);
 
   const stages: EvolutionStage[] = [
@@ -39,6 +43,8 @@ export const GameEvolutionRoadmap: React.FC<GameEvolutionRoadmapProps> = ({ onSe
       tag: 'C1: 構造化の限界',
       chapterSlug: 'chapter-1-spaghetti-to-oop',
       chapterLabel: 'Ch.1 (L1) へ進む',
+      gameVersion: 'v1_spaghetti',
+      chapterCode: 'L1',
       beforePain: '敵生成・当たり判定・描画・スコア・音効が全部1つのGameManagerに混在。500行を超え、変数1つ触るだけで全体が狂う恐怖。',
       afterSkill: '手続き型・グローバル状態の限界を自覚。「データと処理が分離している」ことがバグの根本原因だと理解する。',
       storyQuote: {
@@ -64,6 +70,8 @@ class GameManager {
       tag: 'C2: カプセル化と分割',
       chapterSlug: 'chapter-2-classes-and-files',
       chapterLabel: 'Ch.2 (L2) へ進む',
+      gameVersion: 'v2_classes',
+      chapterCode: 'L2',
       beforePain: '構造体のメンバ変数を外部から直接書き換え放題。意図しない座標破壊や不正なHP書き換えが多発。',
       afterSkill: 'アクセス指定子（private/public）で状態を保護。ヘッダ（.h）と実装（.cpp）を分割し、コンパイル依存を低減。',
       storyQuote: {
@@ -91,6 +99,8 @@ public:
       tag: 'C3: 動的メモリと寿命',
       chapterSlug: 'chapter-3-memory-management',
       chapterLabel: 'Ch.3 (L3) へ進む',
+      gameVersion: 'v3_dynamic',
+      chapterCode: 'L3',
       beforePain: '固定長配列 MAX_ENEMIES=10 の上限オーバーフロー。敵が死んだときの穴埋め処理とメモリ管理に忙殺される。',
       afterSkill: 'std::vector による動的生成。オブジェクトの生成・解放のライフサイクルを単一責任のマネージャー群へ委譲。',
       storyQuote: {
@@ -111,6 +121,8 @@ enemies.emplace_back(startX, startY); // 必要に応じて自動拡張、寿命
       tag: 'C4: 仮想関数とvtable',
       chapterSlug: 'chapter-4-inheritance-polymorphism',
       chapterLabel: 'Ch.4 (L4) へ進む',
+      gameVersion: 'v4_polymorphism',
+      chapterCode: 'L4',
       beforePain: '装甲敵、高速敵、ボス敵を足すたびに、update や draw の巨大 switch(type) 文すべてに修正が必要で既存の敵が巻き添えバグ。',
       afterSkill: 'Enemy基底クラスと仮想関数（virtual / override）。呼び出し側は enemy->update() を呼ぶだけで自律動作（開閉原則）。',
       storyQuote: {
@@ -141,6 +153,8 @@ for (auto& enemy : enemies) enemy->update();`
       tag: 'C9: 多重継承・菱形継承',
       chapterSlug: 'chapter-9-multiple-inheritance-diamond',
       chapterLabel: 'Ch.9 (L9) へ進む',
+      gameVersion: 'v2_classes',
+      chapterCode: 'L9',
       beforePain: 'Flyable（飛べる）と Shootable（撃てる）を多重継承したら基底クラスが2重実体化！親クラスの変更で全派生クラスが崩壊。',
       afterSkill: '「is-a関係」の過信への反省。継承はコード再利用の道具ではなく「型による抽象化」のためだけにあると知る。',
       storyQuote: {
@@ -164,6 +178,8 @@ class Boss : public FlyingEntity, public ShootingEntity {
       tag: 'M3: 継承より合成',
       chapterSlug: 'chapter-7-modern-architecture',
       chapterLabel: 'Ch.7 (M3) へ進む',
+      gameVersion: 'v5_smart_pointers',
+      chapterCode: 'M3',
       beforePain: 'クラス階層が深くなりすぎて「ちょっとだけ弾も撃てるザコ敵」を作るのに階層構造全体を破壊しなければならない。',
       afterSkill: '「継承より合成（Composition over Inheritance）」。オブジェクトを機能コンポーネントの集合として設計（Has-A関係）。',
       storyQuote: {
@@ -187,6 +203,8 @@ class Actor {
       tag: 'C5: State & Observer',
       chapterSlug: 'chapter-6-game-design-patterns',
       chapterLabel: 'Ch.5 (L5) へ進む',
+      gameVersion: 'v6_patterns',
+      chapterCode: 'L5',
       beforePain: 'ポーズ画面やタイトル画面を足すために main ループが巨大なフラグの迷宮（if isPaused && isTitle...）と化す。',
       afterSkill: 'Stateパターンによる画面状態の自律的カプセル化。Observerパターンによるスコア加算・実績通知の完全疎結合化。',
       storyQuote: {
@@ -215,6 +233,8 @@ public:
       tag: 'M1: スマートポインタとRAII',
       chapterSlug: 'chapter-5-smart-pointers-raii',
       chapterLabel: 'Ch.5 (M1) へ進む',
+      gameVersion: 'v5_smart_pointers',
+      chapterCode: 'M1',
       beforePain: 'Enemy* を誰が delete するのか分からず、二重解放（Double Free）で即死クラッシュ。あるいは解放忘れでメモリが枯渇。',
       afterSkill: '生 new/delete を 100% 撲滅！std::unique_ptr による単独所有権、std::move によるゼロコスト移譲、RAIIの絶対的安全性。',
       storyQuote: {
@@ -236,6 +256,8 @@ auto boss = std::make_unique<Enemy>();
       tag: '品質保証特集: GoogleTest',
       chapterSlug: 'guide-googletest-tdd',
       chapterLabel: '特集ガイドへ進む',
+      gameVersion: 'v6_patterns',
+      chapterCode: 'G4',
       beforePain: '当たり判定やスコア計算をテストするのに、毎回ゲームを起動して敵が出てくるまでキーボードを操作する重労働。',
       afterSkill: 'インターフェースへの依存（DIP）。描画や音効をモック化し、ゲームロジックだけをミリ秒単位でGoogleTest自動検証。',
       storyQuote: {
@@ -262,6 +284,8 @@ public:
       tag: 'M3: 最先端ECS',
       chapterSlug: 'chapter-7-modern-architecture',
       chapterLabel: 'Ch.7 (M3) へ進む',
+      gameVersion: 'v7_ecs_final',
+      chapterCode: 'M10',
       beforePain: '「最初は何から何まで1つのファイルだったな…」',
       afterSkill: 'データ指向のECS（Entity-Component-System）、ゼロコスト抽象化、variant/optionalによる型安全。最高速かつ極限の保守性を獲得！',
       storyQuote: {
@@ -339,13 +363,27 @@ ECS World ＋ RAII ＋ Stateマシン ＋ ゼロコスト抽象化 ＋ 単体テ
             </p>
           </div>
 
-          <button
-            onClick={() => onSelectChapter(currentStage.chapterSlug)}
-            className="px-5 py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-bold font-mono text-xs sm:text-sm flex items-center gap-2 transition shadow-lg shadow-cyan-500/20 active:scale-95 shrink-0"
-          >
-            <span>{currentStage.chapterLabel}</span>
-            <ArrowRight className="w-4 h-4" />
-          </button>
+          <div className="flex items-center gap-2.5 flex-wrap shrink-0">
+            {onOpenGameModal && currentStage.gameVersion && (
+              <button
+                type="button"
+                onClick={() => onOpenGameModal(currentStage.gameVersion, currentStage.chapterCode || `Stage ${currentStage.stage}`, currentStage.title)}
+                className="px-4 py-3 rounded-xl bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 hover:from-emerald-400 hover:to-cyan-400 text-slate-950 font-black font-mono text-xs sm:text-sm flex items-center gap-2 transition shadow-lg shadow-emerald-500/25 active:scale-95 cursor-pointer border border-emerald-300/40"
+                title={`${currentStage.title} のゲームエミュレータを今すぐ起動`}
+              >
+                <Gamepad2 className="w-4 h-4 text-slate-950 animate-pulse" />
+                <span>🎮 この世代のゲームを起動</span>
+              </button>
+            )}
+
+            <button
+              onClick={() => onSelectChapter(currentStage.chapterSlug)}
+              className="px-4 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-bold font-mono text-xs sm:text-sm flex items-center gap-2 transition border border-slate-700 hover:border-slate-600 active:scale-95 shrink-0 cursor-pointer shadow"
+            >
+              <span>{currentStage.chapterLabel}</span>
+              <ArrowRight className="w-4 h-4" />
+            </button>
+          </div>
         </div>
 
         {/* 苦痛（Before） vs 解決（After） */}

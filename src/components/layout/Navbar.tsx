@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react';
-import { Download, Menu, BookOpen, Play, Volume2, VolumeX } from 'lucide-react';
+import { Download, Menu, BookOpen, Play, Volume2, VolumeX, Gamepad2 } from 'lucide-react';
 import { CLASSIC_CHAPTERS, MODERN_CHAPTERS, READING_CHAPTERS, SPECIAL_GUIDES } from '../../data/chapters';
 import { audioManager } from '../../utils/audioManager';
 import { getAssetUrl } from '../../utils/assetPath';
@@ -10,6 +10,7 @@ interface NavbarProps {
   onToggleSidebar: () => void;
   onOpenSourceModal: () => void;
   onOpenPlaygroundModal?: () => void;
+  onOpenGameModal?: () => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -18,6 +19,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   onToggleSidebar,
   onOpenSourceModal,
   onOpenPlaygroundModal,
+  onOpenGameModal,
 }) => {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const activeItemRef = useRef<HTMLButtonElement>(null);
@@ -245,6 +247,19 @@ export const Navbar: React.FC<NavbarProps> = ({
               <Volume2 className="w-4 h-4 text-cyan-400 animate-pulse" />
             )}
           </button>
+
+          {/* 🎮 Webエミュレータ（ゲーム起動）クイックボタン */}
+          {onOpenGameModal && (
+            <button
+              onClick={onOpenGameModal}
+              className="flex items-center gap-1.5 px-3 py-2 sm:px-3.5 sm:py-2 rounded-xl bg-gradient-to-r from-emerald-500/20 via-teal-500/20 to-cyan-500/20 hover:from-emerald-500/35 hover:via-teal-500/35 hover:to-cyan-500/35 text-emerald-300 hover:text-emerald-200 border border-emerald-500/50 hover:border-emerald-400 text-xs sm:text-sm font-mono font-bold transition shadow-sm hover:shadow-[0_0_15px_rgba(16,185,129,0.25)] active:scale-95 cursor-pointer"
+              title="ブラウザでインベーダー風ゲーム（Webエミュレータ）を起動して遊ぶ"
+            >
+              <Gamepad2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-emerald-400 animate-pulse" />
+              <span className="hidden min-[480px]:inline">ゲーム起動</span>
+              <span className="inline min-[480px]:hidden">ゲーム</span>
+            </button>
+          )}
 
           {/* C++オンライン実行ラボ（Playground） */}
           {onOpenPlaygroundModal && (

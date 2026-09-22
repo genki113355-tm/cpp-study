@@ -25,6 +25,11 @@ const OnlinePlaygroundModal = React.lazy(() =>
 const MilestoneModal = React.lazy(() => 
   import('./components/curriculum/MilestoneModal').then((m) => ({ default: m.MilestoneModal }))
 );
+const GameEmulator = React.lazy(() => 
+  import('./components/emulator/GameEmulator').then((m) => ({ default: m.GameEmulator }))
+);
+
+type GlobalGameVersion = 'v1_spaghetti' | 'v2_classes' | 'v3_dynamic' | 'v4_polymorphism' | 'v5_smart_pointers' | 'v6_patterns' | 'v7_ecs_final';
 
 const PageLoadingFallback: React.FC = () => (
   <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4 text-cyan-400 font-mono">
@@ -57,6 +62,21 @@ export const App: React.FC = () => {
   const [isSourceModalOpen, setIsSourceModalOpen] = useState<boolean>(false);
   const [isPlaygroundModalOpen, setIsPlaygroundModalOpen] = useState<boolean>(false);
   const [isMilestoneModalOpen, setIsMilestoneModalOpen] = useState<boolean>(false);
+  const [isGlobalGameModalOpen, setIsGlobalGameModalOpen] = useState<boolean>(false);
+  const [globalGameVersion, setGlobalGameVersion] = useState<GlobalGameVersion>('v2_classes');
+  const [globalGameChapterCode, setGlobalGameChapterCode] = useState<string>('L2');
+  const [globalGameChapterTitle, setGlobalGameChapterTitle] = useState<string>('クラス化とファイル分割');
+
+  const handleOpenGameModal = (
+    version?: GlobalGameVersion,
+    code?: string,
+    title?: string
+  ) => {
+    if (version) setGlobalGameVersion(version);
+    if (code) setGlobalGameChapterCode(code);
+    if (title) setGlobalGameChapterTitle(title);
+    setIsGlobalGameModalOpen(true);
+  };
 
   // 初回ロード時のURL正規化（旧ハッシュURLで訪問された場合にクリーンパスへ補正）
   useEffect(() => {
@@ -143,6 +163,7 @@ export const App: React.FC = () => {
         onToggleSidebar={() => setIsSidebarOpen((prev) => !prev)}
         onOpenSourceModal={() => setIsSourceModalOpen(true)}
         onOpenPlaygroundModal={() => setIsPlaygroundModalOpen(true)}
+        onOpenGameModal={() => handleOpenGameModal('v2_classes', 'L2', 'クラス化とファイル分割')}
       />
 
       {/* メインエリア：サイドバー ＋ 広々としたカリキュラム本文 */}
@@ -165,6 +186,7 @@ export const App: React.FC = () => {
                 completedChapters={completedChapters}
                 onOpenPlaygroundModal={() => setIsPlaygroundModalOpen(true)}
                 onOpenMilestoneModal={() => setIsMilestoneModalOpen(true)}
+                onOpenGameModal={handleOpenGameModal}
               />
             ) : (
               <ChapterView
@@ -218,6 +240,27 @@ export const App: React.FC = () => {
               const saved = saveCompletedChapters([], VALID_CHAPTER_IDS);
               setCompletedChapters(saved);
             }}
+          />
+        </React.Suspense>
+      )}
+
+      {/* 🎮 Webエミュレータ（ゲーム）大画面モーダル（グローバル起動対応） */}
+      {isGlobalGameModalOpen && (
+        <React.Suspense fallback={
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-md">
+            <div className="flex items-center gap-3 p-6 rounded-2xl bg-slate-900 border border-cyan-500/50 text-cyan-400 font-mono text-sm shadow-2xl">
+              <div className="w-5 h-5 border-2 border-cyan-400 border-t-transparent rounded-full animate-spin" />
+              <span>RETRO SPACE SHOOTER 起動中...</span>
+            </div>
+          </div>
+        }>
+          <GameEmulator
+            key={`global-game-${globalGameVersion}`}
+            version={globalGameVersion}
+            chapterCode={globalGameChapterCode}
+            chapterTitle={globalGameChapterTitle}
+            isModal={true}
+            onClose={() => setIsGlobalGameModalOpen(false)}
           />
         </React.Suspense>
       )}

@@ -299,6 +299,10 @@ export const GameEmulator: React.FC<GameEmulatorProps> = ({
 
   // 弾丸の発射処理
   const shoot = useCallback(() => {
+    if (scene === 'title') {
+      setScene('playing');
+      return;
+    }
     if (scene !== 'playing') return;
 
     setBullets((prev) => {
@@ -368,6 +372,9 @@ export const GameEmulator: React.FC<GameEmulatorProps> = ({
 
   // 長押し連続移動用ヘルパー
   const startMove = (direction: 'left' | 'right') => {
+    if (scene === 'title') {
+      setScene('playing');
+    }
     if (direction === 'left') moveLeft();
     else moveRight();
 
@@ -411,10 +418,14 @@ export const GameEmulator: React.FC<GameEmulatorProps> = ({
         }
       }
 
-      // タイトル画面：SPACEキーでゲーム開始（State パターン）
+      // タイトル画面：任意の主要キー（SPACE, Enter, 矢印キー, A/D）で即座にゲーム開始
       if (scene === 'title') {
-        if (e.key === ' ' || e.key === 'Enter') {
+        if ([' ', 'Enter', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'a', 'd', 'w', 's', 'A', 'D', 'W', 'S'].includes(e.key)) {
+          e.preventDefault();
           setScene('playing');
+          if (['ArrowLeft', 'a', 'A'].includes(e.key)) moveLeft();
+          if (['ArrowRight', 'd', 'D'].includes(e.key)) moveRight();
+          if (e.key === ' ') shoot();
         }
         return;
       }
@@ -1863,10 +1874,14 @@ export const GameEmulator: React.FC<GameEmulatorProps> = ({
           </div>
         </div>
 
-        {/* タイトル・待機画面オーバーレイ（全バージョン共通） */}
+        {/* タイトル・待機画面オーバーレイ（全バージョン共通・ワンクリック即時プレイ対応） */}
         {scene === 'title' && (
-          <div className="absolute inset-0 bg-slate-950/90 backdrop-blur-md flex flex-col items-center justify-center p-3 sm:p-5 z-20 overflow-y-auto">
-            <div className="text-center max-w-lg w-full my-auto space-y-3">
+          <div
+            onClick={() => setScene('playing')}
+            className="absolute inset-0 bg-slate-950/92 backdrop-blur-md flex flex-col items-center justify-start sm:justify-center p-3 sm:p-5 z-20 overflow-y-auto cursor-pointer select-none group transition-all"
+            title="画面をクリックするとゲームを開始します"
+          >
+            <div className="text-center max-w-lg w-full my-auto space-y-3 py-2">
               {/* ステージバッジ */}
               <div className="flex items-center justify-center gap-2 flex-wrap">
                 <span className={`text-[10px] sm:text-xs px-2.5 py-0.5 rounded-full border font-mono font-bold ${titleInfo.stageColor}`}>
@@ -1892,6 +1907,23 @@ export const GameEmulator: React.FC<GameEmulatorProps> = ({
                   <span>章：{chapterTitle}</span>
                 </div>
               )}
+
+              {/* 🚀 最優先：巨大メインスタートボタン（絶対に隠れない中央配置） */}
+              <div className="pt-1 pb-1">
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setScene('playing');
+                  }}
+                  className="w-full sm:w-auto px-8 py-3.5 rounded-2xl bg-gradient-to-r from-cyan-400 via-sky-400 to-emerald-400 hover:from-cyan-300 hover:to-emerald-300 text-slate-950 font-black text-sm sm:text-base font-mono transition-all shadow-[0_0_35px_rgba(6,182,212,0.55)] hover:shadow-[0_0_55px_rgba(6,182,212,0.85)] active:scale-95 animate-pulse flex items-center justify-center gap-2.5 mx-auto border-2 border-white/50 cursor-pointer"
+                >
+                  <Play className="w-5 h-5 fill-slate-950 text-slate-950" />
+                  <span>ゲーム開始 ▶ [SPACE または 画面クリック]</span>
+                </button>
+                <div className="text-[11px] text-cyan-300 font-mono text-center mt-1.5 font-bold">
+                  👆 画面のどこをクリックしても、SPACE / 矢印キーでも即スタート！
+                </div>
+              </div>
 
               {/* 🔄 前章からのゲーム進化差分（L2以降） または 初章ミッション案内（L1） */}
               {!isFirstChapter ? (
@@ -1955,15 +1987,6 @@ export const GameEmulator: React.FC<GameEmulatorProps> = ({
                   </p>
                 </div>
               )}
-
-              {/* スタートボタン */}
-              <button
-                onClick={() => setScene('playing')}
-                className="w-full sm:w-auto px-8 py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-emerald-500 hover:from-cyan-400 hover:to-emerald-400 text-slate-950 font-black text-xs sm:text-sm font-mono transition shadow-lg shadow-cyan-500/30 active:scale-95 animate-pulse flex items-center justify-center gap-2 mx-auto"
-              >
-                <Play className="w-4 h-4 fill-slate-950" />
-                <span>ゲーム開始 ▶ [SPACE または クリック]</span>
-              </button>
             </div>
           </div>
         )}

@@ -17,7 +17,8 @@ import {
   Workflow,
   Search,
   Tag,
-  X
+  X,
+  Gamepad2
 } from 'lucide-react';
 import { 
   CLASSIC_CHAPTERS, 
@@ -64,6 +65,7 @@ interface TopPageViewProps {
   completedChapters: number[];
   onOpenPlaygroundModal?: () => void;
   onOpenMilestoneModal?: () => void;
+  onOpenGameModal?: (version?: any, code?: string, title?: string) => void;
 }
 
 export const TopPageView: React.FC<TopPageViewProps> = ({
@@ -71,6 +73,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
   completedChapters,
   onOpenPlaygroundModal: _onOpenPlaygroundModal,
   onOpenMilestoneModal,
+  onOpenGameModal,
 }) => {
   const [activeTab, setActiveTab] = useState<'classic' | 'modern' | 'reading' | 'guides'>('classic');
   const [searchQuery, setSearchQuery] = useState<string>('');
@@ -180,12 +183,34 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
             <div className="flex flex-wrap gap-2 pt-1 text-xs font-mono text-slate-300">
               <span className="px-3 py-1 rounded-lg bg-slate-950/80 border border-slate-800 text-slate-300">全44記事 公開中</span>
               <span className="px-3 py-1 rounded-lg bg-slate-950/80 border border-slate-800 text-slate-300">完全無料・登録不要</span>
-              <span className="px-3 py-1 rounded-lg bg-slate-950/80 border border-cyan-500/30 text-cyan-300">🎮 Webエミュレータ搭載</span>
+              <button
+                type="button"
+                onClick={() => onOpenGameModal ? onOpenGameModal('v2_classes', 'L2', 'クラス化とファイル分割') : onSelectChapter('chapter-2-classes-and-files')}
+                className="px-3 py-1 rounded-lg bg-cyan-950/80 hover:bg-cyan-900/90 border border-cyan-500/50 text-cyan-300 hover:text-cyan-100 transition active:scale-95 cursor-pointer flex items-center gap-1.5 shadow-sm hover:shadow-[0_0_15px_rgba(6,182,212,0.35)]"
+                title="Webエミュレータを今すぐ起動して遊ぶ"
+              >
+                <Gamepad2 className="w-3.5 h-3.5 text-cyan-400 animate-pulse" />
+                <span>🎮 Webエミュレータ起動</span>
+              </button>
               <span className="px-3 py-1 rounded-lg bg-slate-950/80 border border-emerald-500/30 text-emerald-300">💻 実行演習完備</span>
             </div>
 
+            {/* 👾 すぐにゲームを遊ぶ（Webエミュレータ直接起動） */}
+            {onOpenGameModal && (
+              <div className="pt-2">
+                <button
+                  type="button"
+                  onClick={() => onOpenGameModal('v2_classes', 'L2', 'クラス化とファイル分割')}
+                  className="w-full py-3.5 px-6 rounded-2xl bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 hover:from-emerald-400 hover:via-teal-400 hover:to-cyan-400 text-slate-950 font-black font-mono text-sm sm:text-base transition-all duration-300 shadow-[0_0_30px_rgba(16,185,129,0.35)] hover:shadow-[0_0_45px_rgba(6,182,212,0.6)] flex items-center justify-center gap-3 active:scale-95 cursor-pointer border-2 border-emerald-300/40 group"
+                >
+                  <Gamepad2 className="w-5 h-5 text-slate-950 group-hover:scale-110 group-hover:rotate-6 transition-transform" />
+                  <span>👾 今すぐゲームを起動する ▶ [Webエミュレータ]</span>
+                </button>
+              </div>
+            )}
+
             {/* 学習開始・再開 CTA ボタン（最初から学ぶ / 続きから学ぶ） */}
-            <div className="pt-2 grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div className="pt-1 grid grid-cols-1 sm:grid-cols-2 gap-3">
               {/* 1. 最初から学ぶ */}
               <button
                 type="button"
@@ -258,13 +283,23 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
 
           {/* 右側：サイトの意図に合った2頭身シロクマ先生＆ペンギン開発ラボイラスト */}
           <div className="lg:col-span-5 flex flex-col items-center justify-center">
-            <div className="w-full max-w-md lg:max-w-none rounded-3xl border-2 border-cyan-500/40 shadow-2xl shadow-cyan-950/80 overflow-hidden relative group bg-slate-950/90">
-              <div className="aspect-[4/3] w-full overflow-hidden bg-slate-900">
+            <div 
+              onClick={() => onOpenGameModal && onOpenGameModal('v2_classes', 'L2', 'クラス化とファイル分割')}
+              className="w-full max-w-md lg:max-w-none rounded-3xl border-2 border-cyan-500/40 shadow-2xl shadow-cyan-950/80 overflow-hidden relative group bg-slate-950/90 cursor-pointer"
+              title="クリックしてゲームエミュレータを起動！"
+            >
+              <div className="aspect-[4/3] w-full overflow-hidden bg-slate-900 relative">
                 <img
                   src={getAssetUrl('/images/shirokuma_chibi_game_lab.jpg')}
                   alt="シロクマ先生とペンギン生徒がレトロゲーム開発に熱中するC++ラボ"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 />
+                <div className="absolute inset-0 bg-slate-950/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                  <span className="px-5 py-2.5 rounded-2xl bg-cyan-500 text-slate-950 font-mono font-black text-sm flex items-center gap-2 shadow-2xl shadow-cyan-500/50 scale-95 group-hover:scale-100 transition-transform">
+                    <Gamepad2 className="w-5 h-5 text-slate-950" />
+                    <span>ゲームを起動する ▶</span>
+                  </span>
+                </div>
               </div>
               <div className="p-3.5 sm:p-4 bg-gradient-to-t from-slate-950 via-slate-950/95 to-slate-900/90 border-t border-cyan-500/20">
                 <div className="flex items-center justify-between gap-2">
@@ -272,8 +307,9 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
                     <Sparkles className="w-3.5 h-3.5 text-cyan-400 shrink-0" />
                     シロクマ先生＆ペンギンの開発ラボ
                   </span>
-                  <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-cyan-950 text-cyan-400 border border-cyan-500/30 font-semibold">
-                    C++ × GAME DEV
+                  <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-emerald-950 text-emerald-400 border border-emerald-500/40 font-bold flex items-center gap-1 group-hover:bg-emerald-500 group-hover:text-slate-950 transition-colors">
+                    <Play className="w-2.5 h-2.5 fill-current" />
+                    <span>PLAY GAME</span>
                   </span>
                 </div>
                 <p className="text-[11px] text-slate-300 font-sans mt-1 leading-relaxed">
@@ -418,7 +454,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
           </p>
         </div>
 
-        <GameEvolutionRoadmap onSelectChapter={onSelectChapter} />
+        <GameEvolutionRoadmap onSelectChapter={onSelectChapter} onOpenGameModal={onOpenGameModal} />
       </section>
 
       {/* 4. 目的別クイックスタート（迷いをゼロにする最短ルート） */}

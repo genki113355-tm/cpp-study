@@ -436,12 +436,24 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
             )}
           </div>
 
-          {/* 右側：現在の表示ステータス */}
-          <div className="text-xs font-mono text-slate-400 hidden lg:flex items-center gap-2">
-            <span>表示状態:</span>
-            <span className="text-cyan-400 font-bold">
-              {viewModeOptions.find((opt) => opt.id === viewMode)?.desc}
-            </span>
+          {/* 右側：現在の表示ステータス ＆ クイックゲーム起動 */}
+          <div className="text-xs font-mono text-slate-400 hidden sm:flex items-center gap-2.5">
+            {chapter.gameVersion && chapter.gameVersion !== 'none' && (
+              <button
+                onClick={() => setIsGameModalOpen(true)}
+                className="px-2.5 py-1 rounded-lg bg-emerald-950/80 hover:bg-emerald-900 border border-emerald-500/50 text-emerald-300 hover:text-emerald-200 font-bold transition flex items-center gap-1.5 active:scale-95 cursor-pointer shadow-sm"
+                title="この章のゲームを起動する"
+              >
+                <Gamepad2 className="w-3.5 h-3.5 text-emerald-400" />
+                <span>ゲーム起動</span>
+              </button>
+            )}
+            <div className="hidden lg:flex items-center gap-1.5">
+              <span>表示:</span>
+              <span className="text-cyan-400 font-bold">
+                {viewModeOptions.find((opt) => opt.id === viewMode)?.desc}
+              </span>
+            </div>
           </div>
         </div>
       </div>
