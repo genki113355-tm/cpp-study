@@ -40,6 +40,42 @@ import { getChapterMeta } from '../../data/chapterMetadata';
 
 type ViewMode = 'all' | 'learn' | 'code' | 'practice';
 
+interface ParsedChapterHeading {
+  prefix: string;
+  cleanTitle: string;
+  subNote?: string;
+}
+
+const parseChapterHeading = (title: string): ParsedChapterHeading => {
+  if (!title) return { prefix: '', cleanTitle: '', subNote: undefined };
+
+  let prefix = '';
+  let rest = title.trim();
+
+  // 1. コロン（全角/半角）で区切られたプレフィックス（例: "レガシー第1章", "モダン第2章"）
+  const prefixMatch = rest.match(/^([^：:]+)[：:]\s*(.*)$/);
+  if (prefixMatch) {
+    prefix = prefixMatch[1].trim();
+    rest = prefixMatch[2].trim();
+  }
+
+  // 2. 末尾の括弧（全角/半角）注記（例: "ビフォー：意図の不在", "ゼロコピー革命"）
+  let cleanTitle = rest;
+  let subNote: string | undefined = undefined;
+
+  const bracketMatch = rest.match(/^(.*?)[（\(]([^）\)]+)[）\)]\s*$/);
+  if (bracketMatch) {
+    cleanTitle = bracketMatch[1].trim();
+    subNote = bracketMatch[2].trim();
+  }
+
+  return {
+    prefix,
+    cleanTitle: cleanTitle || rest,
+    subNote,
+  };
+};
+
 interface ChapterViewProps {
   chapter: Chapter;
   onNavigate: (slug: string) => void;
@@ -258,14 +294,44 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
           </div>
 
           {/* メインタイトル */}
-          <div className="space-y-2">
-            <h1 className="text-2xl min-[400px]:text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white tracking-tight leading-tight break-words">
-              {chapter.title}
-            </h1>
-            <p className="text-base sm:text-xl md:text-2xl text-cyan-300 font-medium leading-snug break-words">
-              {chapter.subtitle}
-            </p>
-          </div>
+          {(() => {
+            const heading = parseChapterHeading(chapter.title);
+            return (
+              <div className="space-y-3">
+                {/* プレフィックスバッジ（章番号やトラック） */}
+                {heading.prefix && (
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono font-bold bg-cyan-950/80 text-cyan-300 border border-cyan-500/30 tracking-wide shadow-sm">
+                      <span>📖</span>
+                      <span>{heading.prefix}</span>
+                    </span>
+                    {chapter.courseChapterCode && (
+                      <span className="text-xs font-mono font-bold text-slate-400">
+                        [{chapter.courseChapterCode}]
+                      </span>
+                    )}
+                  </div>
+                )}
+
+                {/* 主見出し H1 */}
+                <h1 className="text-2xl min-[400px]:text-3xl sm:text-4xl md:text-5xl lg:text-[2.75rem] font-black text-white tracking-tight leading-snug [text-wrap:balance]">
+                  <span className="inline-block break-keep">{heading.cleanTitle}</span>
+                  {heading.subNote && (
+                    <span className="inline-block text-cyan-300/90 text-lg sm:text-2xl md:text-3xl font-bold ml-0 sm:ml-3 mt-1 sm:mt-0 font-sans break-keep">
+                      （{heading.subNote}）
+                    </span>
+                  )}
+                </h1>
+
+                {/* サブタイトル */}
+                {chapter.subtitle && (
+                  <p className="text-base sm:text-xl md:text-2xl text-cyan-300 font-medium leading-snug [text-wrap:pretty]">
+                    {chapter.subtitle}
+                  </p>
+                )}
+              </div>
+            );
+          })()}
 
           {/* 学習メタデータ・ステータスバー（目安時間・重要度・難易度・到達目標） */}
           <div className="p-3.5 sm:p-5 rounded-2xl bg-slate-950/80 border border-slate-800/90 space-y-3 shadow-lg">
@@ -305,7 +371,7 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
             )}
           </div>
 
-          <p className="text-sm sm:text-base md:text-lg text-slate-300 leading-relaxed font-sans max-w-5xl">
+          <p className="text-sm sm:text-base md:text-lg text-slate-300 leading-relaxed font-sans max-w-5xl [text-wrap:pretty]">
             {chapter.description}
           </p>
         </div>
@@ -489,10 +555,23 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
                     </span>
                   </div>
 
-                  <h3 className="text-lg sm:text-2xl font-black text-white font-mono flex items-center justify-center gap-2">
-                    <span className="text-cyan-400">👾</span>
-                    <span>RETRO SPACE SHOOTER : {code} {chapter.title}</span>
-                  </h3>
+                  {/* ゲームステーション見出し */}
+                  {(() => {
+                    const heading = parseChapterHeading(chapter.title);
+                    return (
+                      <div className="space-y-1.5 text-center">
+                        <div className="inline-flex items-center justify-center gap-2 text-xs sm:text-sm font-mono font-bold text-cyan-400 bg-cyan-950/60 px-3.5 py-1 rounded-full border border-cyan-500/30 shadow-sm">
+                          <span>👾</span>
+                          <span>RETRO SPACE SHOOTER</span>
+                          <span className="text-slate-500">•</span>
+                          <span className="text-cyan-300">{code}</span>
+                        </div>
+                        <h3 className="text-lg sm:text-2xl font-black text-white [text-wrap:balance] tracking-tight">
+                          <span className="inline-block break-keep">{heading.cleanTitle}</span>
+                        </h3>
+                      </div>
+                    );
+                  })()}
 
                   {/* L1以外の章のみ「前章からの進化点」を表示 */}
                   {!isFirstChapter ? (
@@ -624,13 +703,13 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
                     {sectionNum}
                   </span>
                 )}
-                <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-white tracking-tight">
+                <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-white tracking-tight [text-wrap:balance]">
                   {sectionTitle}
                 </h2>
               </div>
               {/* セクションリード文（解説モードまたはすべて表示時） */}
               {(viewMode === 'all' || viewMode === 'learn') && section.leadText && (
-                <p className="text-lg sm:text-xl text-slate-300 mt-4 leading-relaxed font-sans">
+                <p className="text-lg sm:text-xl text-slate-300 mt-4 leading-relaxed font-sans [text-wrap:pretty]">
                   {section.leadText}
                 </p>
               )}
@@ -683,7 +762,7 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
                         <span className="w-7 h-7 rounded-full bg-cyan-500/20 text-cyan-400 border border-cyan-500/40 flex items-center justify-center font-mono font-bold text-sm">
                           {step.stepNumber}
                         </span>
-                        <h4 className="font-bold text-base sm:text-lg text-slate-100 font-sans">
+                        <h4 className="font-bold text-base sm:text-lg text-slate-100 font-sans [text-wrap:balance]">
                           {step.title}
                         </h4>
                       </div>
@@ -693,7 +772,7 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
                         </code>
                       )}
                     </div>
-                    <p className="text-sm sm:text-base text-slate-300 leading-relaxed pl-10 font-sans">
+                    <p className="text-sm sm:text-base text-slate-300 leading-relaxed pl-10 font-sans [text-wrap:pretty]">
                       {step.description}
                     </p>
                     
