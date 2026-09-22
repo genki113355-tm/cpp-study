@@ -596,14 +596,11 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
       )}
 
       {/* 各セクションの展開（practiceモード時は演習に特化するため非表示） */}
-      {viewMode !== 'practice' && chapter.sections.map((section, sIdx) => {
+      {viewMode !== 'practice' && chapter.sections.map((section) => {
         // "1.1 タイトル" 形式の分解
         const titleMatch = section.title.match(/^(\d+\.\d+)\s*(.*)/);
         const sectionNum = titleMatch ? titleMatch[1] : null;
         const sectionTitle = titleMatch ? titleMatch[2] : section.title;
-
-        // セクション中間判定（セクションが2つ以上ある場合は中間に時短PRを挿入）
-        const isMiddleSection = sIdx === Math.floor((chapter.sections.length - 1) / 2);
 
         return (
           <React.Fragment key={section.id}>
@@ -765,9 +762,6 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
             </div>
           )}
         </section>
-        {isMiddleSection && viewMode === 'all' && (
-          <AffiliatePromoBanner type="busy" />
-        )}
       </React.Fragment>
     );
   })}
