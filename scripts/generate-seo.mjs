@@ -7,9 +7,9 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const rootDir = path.resolve(__dirname, '..');
 const distDir = path.resolve(rootDir, 'dist');
-const baseUrl = 'https://shirokuma-cpp.jp';
+const baseUrl = 'https://shirokuma-tech.jp/cpp';
 const siteTitle = 'シロクマC++ラボ 〜ゲーム開発で学ぶオブジェクト指向開発 レガシー設計からモダン設計まで〜';
-const siteDesc = '1本のインベーダーゲームを10段階でリファクタリングしながら学ぶ！レガシー生ポインタからモダンC++17、ECS設計、TDD、UML設計書、C++基本文法総覧まで完全網羅したオブジェクト指向実践学習メディア。';
+const siteDesc = '1本のインベーダーゲーム風のゲームを10段階でリファクタリングしながら学ぶ！レガシー生ポインタからモダンC++17、ECS設計、TDD、UML設計書、C++基本文法総覧まで完全網羅したオブジェクト指向実践学習メディア。';
 const ogImage = `${baseUrl}/images/characters_mission.jpg`;
 
 async function generateSEO() {
