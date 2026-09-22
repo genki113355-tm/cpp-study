@@ -18,7 +18,9 @@ import {
   Search,
   Tag,
   X,
-  Gamepad2
+  Gamepad2,
+  Rocket,
+  Cpu
 } from 'lucide-react';
 import { 
   CLASSIC_CHAPTERS, 
@@ -318,6 +320,164 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
               </div>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* 🌟 【特別コラム抜粋】なぜ世界は今もC++で動いているのか？ 〜シリコンの鼓動とゼロオーバーヘッドの美学〜 */}
+      <section className="relative rounded-3xl border border-cyan-500/40 bg-gradient-to-br from-slate-900 via-[#070e1c] to-slate-950 p-6 sm:p-9 shadow-2xl overflow-hidden space-y-6">
+        {/* 背景のネオングロー */}
+        <div className="absolute top-0 right-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute bottom-0 left-1/4 w-80 h-80 bg-blue-600/10 rounded-full blur-3xl pointer-events-none" />
+
+        {/* ヘッダー部分 */}
+        <div className="relative z-10 flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-cyan-500/20 pb-5">
+          <div className="space-y-2 max-w-3xl">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-950/90 border border-cyan-500/40 text-cyan-300 font-mono text-xs font-bold shadow-sm">
+              <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
+              <span>SPECIAL COLUMN DIGEST / 特別コラム抜粋</span>
+            </div>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-white font-sans tracking-tight leading-tight [text-wrap:balance]">
+              なぜ世界は今も<span className="text-cyan-400">C++</span>で動いているのか？
+              <span className="block text-lg sm:text-2xl text-slate-300 font-bold mt-1">
+                〜シリコンの鼓動とゼロオーバーヘッドの美学〜
+              </span>
+            </h2>
+            <p className="text-xs sm:text-sm text-slate-300 font-sans leading-relaxed [text-wrap:pretty]">
+              「難しい、だが代わりがいない」——火星探査機からUnreal Engine 5、AI基盤まで、人類がハードウェアの極限に挑むとき選ばれるのは常にC++です。なぜ40年間トップに君臨し続けるのか、その圧倒的な理由を解き明かします。
+            </p>
+          </div>
+
+          <button
+            type="button"
+            onClick={() => onSelectChapter('column-why-cpp-is-great')}
+            className="shrink-0 px-4 py-2.5 rounded-xl bg-cyan-500/20 hover:bg-cyan-500/30 text-cyan-300 border border-cyan-500/40 font-mono font-bold text-xs sm:text-sm transition flex items-center gap-2 cursor-pointer shadow-sm hover:scale-105 active:scale-95 self-start md:self-auto"
+          >
+            <span>📖 コラム全文を読む</span>
+            <ArrowRight className="w-4 h-4" />
+          </button>
+        </div>
+
+        {/* 1. 人類の最前線を独占するC++プロダクト（4大領域の実例カード） */}
+        <div className="relative z-10 space-y-3">
+          <div className="text-xs font-mono font-bold text-cyan-300 flex items-center gap-2 uppercase tracking-wider">
+            <Rocket className="w-4 h-4 text-cyan-400" />
+            <span>1. 世界の最前線は、すべてC++で書かれている</span>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
+            {/* Unreal Engine 5 */}
+            <div className="p-4 rounded-2xl bg-slate-950/70 border border-slate-800/80 hover:border-cyan-500/40 transition space-y-2">
+              <div className="flex items-center gap-2 text-amber-400 font-bold text-sm">
+                <span className="text-lg">🎮</span>
+                <span>Unreal Engine 5</span>
+              </div>
+              <p className="text-xs text-slate-300 leading-relaxed font-sans">
+                世界最高峰の3Dゲームエンジン。ナナイト（仮想化ポリゴン）やルーメン（大域照明）を毎秒60フレームで計算し尽くすのはC++の独壇場です。
+              </p>
+            </div>
+
+            {/* NASA & SpaceX */}
+            <div className="p-4 rounded-2xl bg-slate-950/70 border border-slate-800/80 hover:border-cyan-500/40 transition space-y-2">
+              <div className="flex items-center gap-2 text-cyan-400 font-bold text-sm">
+                <span className="text-lg">🚀</span>
+                <span>NASA探査機 ＆ SpaceX</span>
+              </div>
+              <p className="text-xs text-slate-300 leading-relaxed font-sans">
+                火星探査機（Perseverance）の自律走行や、Falcon 9の垂直着陸制御。通信遅延や極限環境下で1ミリ秒の狂いも許されない制御を担います。
+              </p>
+            </div>
+
+            {/* PyTorch / AI */}
+            <div className="p-4 rounded-2xl bg-slate-950/70 border border-slate-800/80 hover:border-cyan-500/40 transition space-y-2">
+              <div className="flex items-center gap-2 text-purple-400 font-bold text-sm">
+                <span className="text-lg">🧠</span>
+                <span>PyTorch / AIコア</span>
+              </div>
+              <p className="text-xs text-slate-300 leading-relaxed font-sans">
+                Pythonから呼び出される最先端AI。GPUを限界まで酷使して巨大テンソル演算を爆速実行するバックエンドは全てC++とCUDAで書かれています。
+              </p>
+            </div>
+
+            {/* Chrome & OS */}
+            <div className="p-4 rounded-2xl bg-slate-950/70 border border-slate-800/80 hover:border-cyan-500/40 transition space-y-2">
+              <div className="flex items-center gap-2 text-emerald-400 font-bold text-sm">
+                <span className="text-lg">⚡</span>
+                <span>Google Chrome ＆ OS基盤</span>
+              </div>
+              <p className="text-xs text-slate-300 leading-relaxed font-sans">
+                世界一使われているブラウザのV8エンジンや各種OSカーネル周辺。ハードウェアの物理性能を100%引き出す基盤を支えています。
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* 2. ゼロオーバーヘッド原則 ＆ 二刀流の極み（2カラム対比） */}
+        <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 gap-4 pt-1">
+          {/* ゼロオーバーヘッド原則 */}
+          <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-br from-slate-950/90 to-slate-900/60 border border-cyan-500/30 space-y-2.5">
+            <div className="flex items-center justify-between">
+              <div className="inline-flex items-center gap-1.5 text-xs font-mono font-bold text-cyan-300">
+                <Cpu className="w-4 h-4 text-cyan-400" />
+                <span>2. ゼロオーバーヘッド原則（Zero-Overhead）</span>
+              </div>
+              <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-cyan-950 text-cyan-400 border border-cyan-500/30">
+                C++至高の思想
+              </span>
+            </div>
+            <div className="text-xs sm:text-sm text-slate-200 font-bold">
+              「使わない機能のために、1バイト・1クロックの代償も払わない」
+            </div>
+            <p className="text-xs text-slate-300 leading-relaxed font-sans">
+              一般的なGC言語（Java/C#/Python）では、ゲームの最中に突発的なメモリ掃除（Stop the World）が起き、画面がカクつく（Stutter）リスクがあります。
+              一方C++の<strong>RAII（決定論的寿命）</strong>なら、スコープを抜けた瞬間に100%確定でメモリが解放され、<strong>16.6ms（60fps）のフレームタイムを寸分違わず完全死守</strong>できます。
+            </p>
+          </div>
+
+          {/* 二刀流の極み */}
+          <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-br from-slate-950/90 to-slate-900/60 border border-amber-500/30 space-y-2.5">
+            <div className="flex items-center justify-between">
+              <div className="inline-flex items-center gap-1.5 text-xs font-mono font-bold text-amber-300">
+                <Workflow className="w-4 h-4 text-amber-400" />
+                <span>3. 二刀流の極み（シリコン直結 ⇄ 超抽象化）</span>
+              </div>
+              <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-amber-950 text-amber-400 border border-amber-500/30">
+                唯一無二の表現力
+              </span>
+            </div>
+            <div className="text-xs sm:text-sm text-slate-200 font-bold">
+              泥臭いハードウェア制御から、現代数学の高階抽象化まで
+            </div>
+            <p className="text-xs text-slate-300 leading-relaxed font-sans">
+              ポインタ演算やSIMDベクトル命令、1ビット単位のメモリアライメント制御といった「シリコンの地肌」に触れながら、
+              同時に constexpr（コンパイル時計算）、CRTP、ECS（データ指向設計）といった<strong>ゼロコスト抽象化</strong>を縦横無尽に操れる唯一の言語です。
+            </p>
+          </div>
+        </div>
+
+        {/* 3. 指導官メッセージ ＆ 全文CTA */}
+        <div className="relative z-10 flex flex-col sm:flex-row items-center justify-between gap-4 p-4 sm:p-5 rounded-2xl bg-slate-950/80 border border-slate-800">
+          <div className="flex items-center gap-3.5">
+            <img
+              src={getAssetUrl('/images/polar-bear-guide-pointing.png')}
+              alt="シロクマ指導官"
+              className="w-12 h-12 rounded-full border-2 border-cyan-400 object-cover shrink-0 shadow-md"
+            />
+            <div className="space-y-0.5">
+              <div className="text-xs font-mono font-bold text-cyan-400">
+                🐻‍❄️ シロクマ指導官の激励
+              </div>
+              <p className="text-xs sm:text-sm text-slate-200 font-sans font-medium">
+                「C++でコンピュータの根本原理を味方につけたエンジニアは、将来どんな新しい言語が現れても決して迷子にならん！」
+              </p>
+            </div>
+          </div>
+
+          <button
+            type="button"
+            onClick={() => onSelectChapter('column-why-cpp-is-great')}
+            className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-mono font-bold text-xs sm:text-sm transition flex items-center justify-center gap-2 cursor-pointer shadow-lg shadow-cyan-500/20 active:scale-95 shrink-0"
+          >
+            <span>特別コラム全文を読む →</span>
+          </button>
         </div>
       </section>
 
