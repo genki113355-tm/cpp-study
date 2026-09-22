@@ -33,18 +33,21 @@ const PageLoadingFallback: React.FC = () => (
   </div>
 );
 
+const getSlugFromUrl = (): string => {
+  let path = window.location.pathname.replace(/^\/+/, '').replace(/\/+$/, '');
+  if (path === 'cpp') return 'top';
+  if (path.startsWith('cpp/')) path = path.slice(4);
+
+  if (path && getChapterBySlug(path)) return path;
+
+  const hash = window.location.hash.replace('#', '');
+  if (hash && getChapterBySlug(hash)) return hash;
+
+  return 'top';
+};
+
 export const App: React.FC = () => {
-  const [currentSlug, setCurrentSlug] = useState<string>(() => {
-    // 1. パスルーティングを優先（例: /chapter-1-spaghetti-to-oop）
-    const pathSlug = window.location.pathname.replace(/^\/+/, '').replace(/\/+$/, '');
-    if (pathSlug && getChapterBySlug(pathSlug)) return pathSlug;
-
-    // 2. 後方互換性のためハッシュもフォールバック判定
-    const hash = window.location.hash.replace('#', '');
-    if (hash && getChapterBySlug(hash)) return hash;
-
-    return 'top';
-  });
+  const [currentSlug, setCurrentSlug] = useState<string>(getSlugFromUrl);
 
   const [completedChapters, setCompletedChapters] = useState<number[]>(() => {
     return loadCompletedChapters(VALID_CHAPTER_IDS);
@@ -57,28 +60,20 @@ export const App: React.FC = () => {
 
   // 初回ロード時のURL正規化（旧ハッシュURLで訪問された場合にクリーンパスへ補正）
   useEffect(() => {
+    const isSub = window.location.pathname.startsWith('/cpp');
+    const prefix = isSub ? '/cpp' : '';
     const hash = window.location.hash.replace('#', '');
     if (hash && getChapterBySlug(hash)) {
-      window.history.replaceState(null, '', `/${hash}`);
+      window.history.replaceState(null, '', `${prefix}/${hash}`);
     } else if (currentSlug === 'top' && window.location.hash) {
-      window.history.replaceState(null, '', '/');
+      window.history.replaceState(null, '', prefix || '/');
     }
   }, []);
 
   // ブラウザの「戻る」「進む」キー操作（popstate）対応
   useEffect(() => {
     const handlePopState = () => {
-      const pathSlug = window.location.pathname.replace(/^\/+/, '').replace(/\/+$/, '');
-      if (pathSlug && getChapterBySlug(pathSlug)) {
-        setCurrentSlug(pathSlug);
-      } else {
-        const hash = window.location.hash.replace('#', '');
-        if (hash && getChapterBySlug(hash)) {
-          setCurrentSlug(hash);
-        } else {
-          setCurrentSlug('top');
-        }
-      }
+      setCurrentSlug(getSlugFromUrl());
     };
 
     window.addEventListener('popstate', handlePopState);
@@ -127,10 +122,12 @@ export const App: React.FC = () => {
   const activeChapter = currentChapter || ALL_CHAPTERS[0];
   const currentChapterId = currentSlug === 'top' ? 0 : activeChapter.id;
 
-  // 章選択時のクリーンURL遷移（HTML5 pushState）
+  // 章選択時のクリーンURL遷移（HTML5 pushState、/cpp/ サブディレクトリを自動考慮）
   const handleSelectChapter = (slug: string) => {
     setCurrentSlug(slug);
-    const targetPath = slug === 'top' ? '/' : `/${slug}`;
+    const isSub = window.location.pathname.startsWith('/cpp');
+    const prefix = isSub ? '/cpp' : '';
+    const targetPath = slug === 'top' ? (prefix || '/') : `${prefix}/${slug}`;
     if (window.location.pathname !== targetPath) {
       window.history.pushState(null, '', targetPath);
     }
