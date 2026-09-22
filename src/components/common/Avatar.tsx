@@ -1,5 +1,6 @@
 import React from 'react';
 import { CharacterId, CharacterEmotion } from '../../types/curriculum';
+import { getAssetUrl } from '../../utils/assetPath';
 
 interface AvatarProps {
   character: CharacterId;
@@ -26,7 +27,7 @@ export const Avatar: React.FC<AvatarProps> = ({
   // 画像2: /images/characters_victory.png (満面の笑顔・ハイタッチ・制帽)
   const isVictoryMood = emotion === 'happy' || emotion === 'smug';
 
-  let bgImage = isVictoryMood ? '/images/characters_victory.png' : '/images/characters_mission.jpg';
+  let bgImage = getAssetUrl(isVictoryMood ? '/images/characters_victory.png' : '/images/characters_mission.jpg');
   let bgSize = '320%';
   let bgPos = '0% 0%';
 

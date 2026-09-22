@@ -5,6 +5,7 @@ import {
   Sparkles, 
   AlertTriangle 
 } from 'lucide-react';
+import { getAssetUrl } from '../../utils/assetPath';
 
 interface GameEvolutionRoadmapProps {
   onSelectChapter: (slug: string) => void;
@@ -374,9 +375,19 @@ ECS World ＋ RAII ＋ Stateマシン ＋ ゼロコスト抽象化 ＋ 単体テ
 
         {/* シロクマ＆ペンギンのひとこと設計問答 */}
         <div className="p-4 rounded-2xl bg-slate-950/80 border border-slate-800 flex items-start gap-4">
-          <span className="text-3xl">
-            {currentStage.storyQuote.character === 'shirokuma' ? '🐻‍❄️' : '🐧'}
-          </span>
+          {currentStage.storyQuote.character === 'shirokuma' ? (
+            <img
+              src={getAssetUrl('/images/characters/shirokuma_sensei.png')}
+              alt="シロクマ"
+              className="w-10 h-10 rounded-xl object-cover border border-cyan-400/50 shadow flex-shrink-0 mt-0.5"
+            />
+          ) : (
+            <img
+              src={getAssetUrl('/images/characters/penguin_student.jpg')}
+              alt="ペンギン"
+              className="w-10 h-10 rounded-xl object-cover border border-amber-400/50 shadow flex-shrink-0 mt-0.5"
+            />
+          )}
           <div className="space-y-1">
             <div className="text-xs font-mono font-bold text-cyan-400">
               {currentStage.storyQuote.character === 'shirokuma' ? 'シロクマ君の素朴な疑問' : '先輩ペンギンの設計指南'}

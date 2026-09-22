@@ -6,6 +6,7 @@ import {
   Sparkles, 
   Check 
 } from 'lucide-react';
+import { getAssetUrl } from '../../utils/assetPath';
 
 interface PersonaTrackSelectorProps {
   onSelectChapter: (slug: string) => void;
@@ -93,16 +94,24 @@ export const PersonaTrackSelector: React.FC<PersonaTrackSelectorProps> = ({ onSe
               </p>
 
               {/* シロクマ＆先輩のミニ掛け合い */}
-              <div className="p-4 rounded-2xl bg-slate-950/80 border border-emerald-500/30 space-y-2">
+              <div className="p-4 rounded-2xl bg-slate-950/80 border border-emerald-500/30 space-y-3">
                 <div className="flex items-start gap-3">
-                  <span className="text-2xl">🐻‍❄️</span>
+                  <img
+                    src={getAssetUrl('/images/characters/shirokuma_sensei.png')}
+                    alt="シロクマ君"
+                    className="w-8 h-8 rounded-full object-cover border border-cyan-400/50 shadow flex-shrink-0 mt-0.5"
+                  />
                   <div className="text-xs sm:text-sm text-slate-300 font-sans">
                     <strong className="text-emerald-300 font-mono">シロクマ君: </strong>
                     「C++って機能が多すぎてどこから手をつければいいか迷子になってました…」
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
-                  <span className="text-2xl">🐧</span>
+                  <img
+                    src={getAssetUrl('/images/characters/penguin_student.jpg')}
+                    alt="先輩ペンギン"
+                    className="w-8 h-8 rounded-full object-cover border border-amber-400/50 shadow flex-shrink-0 mt-0.5"
+                  />
                   <div className="text-xs sm:text-sm text-slate-300 font-sans">
                     <strong className="text-cyan-300 font-mono">先輩ペンギン: </strong>
                     「最初は全部GameManagerに書くところからでいいんだ。そこから『動くけどヤバいコード』を1つずつ直していけば、自然とオブジェクト指向の神髄が身につくぞ！」

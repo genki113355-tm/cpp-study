@@ -4,6 +4,7 @@ import { UmlArrowGuideVisual } from "./uml/UmlArrowGuideVisual";
 import { UmlClassBoxVisual } from "./uml/UmlClassBoxVisual";
 import { UmlSequenceSvgDiagram } from "./uml/UmlSequenceSvgDiagram";
 import { UmlStateSvgDiagram } from "./uml/UmlStateSvgDiagram";
+import { getAssetUrl } from "../../utils/assetPath";
 
 interface RichExplanationProps {
   content: string;
@@ -263,11 +264,13 @@ export const RichExplanation: React.FC<RichExplanationProps> = ({ content }) => 
       if (isShirokuma) {
         renderedElements.push(
           <div key={`tip-sh-${i}`} className="my-5 rounded-2xl bg-gradient-to-r from-cyan-950/60 to-slate-900 border border-cyan-500/40 p-4 sm:p-5 flex items-start gap-3.5 shadow-lg relative overflow-hidden">
-            <div className="w-10 h-10 rounded-xl bg-slate-900 border border-cyan-500/50 flex items-center justify-center text-xl flex-shrink-0 shadow-inner">
-              🐻‍❄️
-            </div>
+            <img
+              src={getAssetUrl('/images/characters/shirokuma_sensei.png')}
+              alt="シロクマ先生"
+              className="w-11 h-11 rounded-xl object-cover border border-cyan-400/60 shadow-md flex-shrink-0"
+            />
             <div className="flex-1 text-sm sm:text-base text-cyan-100 leading-relaxed font-sans">
-              <strong className="text-cyan-300 font-bold block mb-1 font-mono text-xs uppercase tracking-wider">🐻‍❄️ シロクマ先生の落とし穴回避Tips</strong>
+              <strong className="text-cyan-300 font-bold block mb-1 font-mono text-xs uppercase tracking-wider">シロクマ先生の落とし穴回避Tips</strong>
               {renderFormattedText(quoteText.replace(/^[🐻‍❄️\s]*シロクマ[先生君]*[の指南・Tips]*[:：]?\s*/, ''))}
             </div>
           </div>
@@ -278,11 +281,13 @@ export const RichExplanation: React.FC<RichExplanationProps> = ({ content }) => 
       if (isPenguin) {
         renderedElements.push(
           <div key={`tip-pen-${i}`} className="my-5 rounded-2xl bg-gradient-to-r from-amber-950/60 to-slate-900 border border-amber-500/40 p-4 sm:p-5 flex items-start gap-3.5 shadow-lg relative overflow-hidden">
-            <div className="w-10 h-10 rounded-xl bg-slate-900 border border-amber-500/50 flex items-center justify-center text-xl flex-shrink-0 shadow-inner">
-              🐧
-            </div>
+            <img
+              src={getAssetUrl('/images/characters/penguin_student.jpg')}
+              alt="ペンギン生徒"
+              className="w-11 h-11 rounded-xl object-cover border border-amber-400/60 shadow-md flex-shrink-0"
+            />
             <div className="flex-1 text-sm sm:text-base text-amber-100 leading-relaxed font-sans">
-              <strong className="text-amber-300 font-bold block mb-1 font-mono text-xs uppercase tracking-wider">🐧 ペンギン生徒のなるほどメモ</strong>
+              <strong className="text-amber-300 font-bold block mb-1 font-mono text-xs uppercase tracking-wider">ペンギン生徒のなるほどメモ</strong>
               {renderFormattedText(quoteText.replace(/^[🐧\s]*ペンギン[生徒先輩のメモ・気づき]*[:：]?\s*/, ''))}
             </div>
           </div>

@@ -13,6 +13,7 @@ import { MemoryVisualizer } from './MemoryVisualizer';
 import { VariableInspector } from './VariableInspector';
 import { RichExplanation } from './RichExplanation';
 import { UmlDiagramViewer } from './UmlDiagramViewer';
+import { getAssetUrl } from '../../utils/assetPath';
 import { 
   CheckCircle, 
   CheckCircle2,
@@ -844,7 +845,7 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
                       {isCorrect && (
                         <div className="w-20 h-20 rounded-xl overflow-hidden border-2 border-emerald-400 flex-shrink-0 shadow-lg">
                           <img
-                            src="/images/characters_victory.png"
+                            src={getAssetUrl('/images/characters_victory.png')}
                             alt="ハイタッチ！"
                             className="w-full h-full object-cover"
                           />

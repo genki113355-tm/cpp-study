@@ -3,6 +3,7 @@ import { CheckCircle2, Circle, Clock, X, ChevronDown, ChevronUp, Trophy } from '
 import { ALL_CHAPTERS, CLASSIC_CHAPTERS, MODERN_CHAPTERS, READING_CHAPTERS, SPECIAL_GUIDES, UPCOMING_CHAPTERS } from '../../data/chapters';
 import { CourseTrack } from '../../types/curriculum';
 import { getChapterMeta } from '../../data/chapterMetadata';
+import { getAssetUrl } from '../../utils/assetPath';
 
 interface SidebarProps {
   currentChapterSlug: string;
@@ -559,7 +560,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
         <div className="mt-auto border-t border-cyan-500/20 p-4 pb-6 bg-[#080d1a]/80 space-y-3 shrink-0">
           <div className="flex items-center gap-3">
             <img
-              src="/images/polar-bear-guide-pointing.png"
+              src={getAssetUrl('/images/polar-bear-guide-pointing.png')}
               alt="シロクマ先生"
               className="w-10 h-10 rounded-full border-2 border-cyan-500 object-cover bg-slate-900 shadow-[0_0_10px_rgba(6,182,212,0.3)]"
             />
@@ -570,7 +571,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
           </div>
           <div className="flex items-center gap-3">
             <img
-              src="/images/penguin-guide-simple.jpg"
+              src={getAssetUrl('/images/penguin-guide-simple.jpg')}
               alt="ペンギンくん"
               className="w-10 h-10 rounded-full border-2 border-slate-500 object-cover bg-slate-900 shadow"
             />

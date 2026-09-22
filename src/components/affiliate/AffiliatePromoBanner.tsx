@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { BUSY_BANNERS, REWARD_BANNERS, A8BannerItem } from '../../data/affiliateBanners';
 import { Sparkles, Utensils, HeartHandshake, X } from 'lucide-react';
+import { getAssetUrl } from '../../utils/assetPath';
 
 interface AffiliatePromoBannerProps {
   type: 'busy' | 'reward';
@@ -95,7 +96,7 @@ export const AffiliatePromoBanner: React.FC<AffiliatePromoBannerProps> = ({
         <div className="flex items-center gap-3 p-3 rounded-2xl bg-slate-900/60 border border-slate-800/80 text-xs text-slate-300">
           <div className="w-9 h-9 rounded-xl overflow-hidden border border-slate-700 flex-shrink-0 shadow-sm">
             <img
-              src="/images/characters_mission.jpg"
+              src={getAssetUrl('/images/characters_mission.jpg')}
               alt={isBusy ? 'シロクマ指導官' : 'ペンギン通信士'}
               className={`w-full h-full object-cover ${
                 isBusy ? 'object-[20%_35%]' : 'object-[85%_55%]'

@@ -30,6 +30,7 @@ import { Chapter } from '../../types/curriculum';
 import { getChapterMeta } from '../../data/chapterMetadata';
 import { AffiliatePromoBanner } from '../affiliate/AffiliatePromoBanner';
 import { GameEvolutionRoadmap } from './GameEvolutionRoadmap';
+import { getAssetUrl } from '../../utils/assetPath';
 
 interface KeywordIndexItem {
   name: string;
@@ -158,7 +159,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
             <h1 className="text-3xl sm:text-5xl lg:text-5xl xl:text-6xl font-black tracking-tight text-white font-sans leading-tight flex items-center gap-3.5 sm:gap-4 flex-wrap">
               <span className="w-12 h-12 sm:w-16 sm:h-16 rounded-full border-2 border-cyan-400/80 bg-slate-900 shadow-[0_0_25px_rgba(6,182,212,0.4)] shrink-0 inline-flex items-center justify-center overflow-hidden">
                 <img
-                  src="/images/polar-bear-guide-pointing.png"
+                  src={getAssetUrl('/images/polar-bear-guide-pointing.png')}
                   alt="シロクマ先生"
                   className="w-full h-full object-cover"
                 />
@@ -261,7 +262,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
             <div className="w-full max-w-md lg:max-w-none rounded-3xl border-2 border-cyan-500/40 shadow-2xl shadow-cyan-950/80 overflow-hidden relative group bg-slate-950/90">
               <div className="aspect-[4/3] w-full overflow-hidden bg-slate-900">
                 <img
-                  src="/images/shirokuma_chibi_game_lab.jpg"
+                  src={getAssetUrl('/images/shirokuma_chibi_game_lab.jpg')}
                   alt="シロクマ先生とペンギン生徒がレトロゲーム開発に熱中するC++ラボ"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 />
@@ -1271,7 +1272,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
           <div className="bg-slate-900/60 border border-white/5 rounded-2xl p-8 flex flex-col items-center text-center relative overflow-hidden group hover:border-cyan-500/30 transition-colors shadow-xl">
             <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-cyan-500 to-transparent opacity-50"></div>
             <img
-              src="/images/polar-bear-guide-pointing.png"
+              src={getAssetUrl('/images/polar-bear-guide-pointing.png')}
               alt="シロクマ先生"
               className="w-32 h-32 rounded-full border-4 border-cyan-500 bg-slate-900 mb-6 object-cover shadow-[0_0_15px_rgba(6,182,212,0.3)] transition-transform group-hover:scale-105"
             />
@@ -1286,7 +1287,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
           <div className="bg-slate-900/60 border border-white/5 rounded-2xl p-8 flex flex-col items-center text-center relative overflow-hidden group hover:border-slate-400/30 transition-colors shadow-xl">
             <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-slate-400 to-transparent opacity-30"></div>
             <img
-              src="/images/penguin-guide-simple.jpg"
+              src={getAssetUrl('/images/penguin-guide-simple.jpg')}
               alt="ペンギンくん"
               className="w-32 h-32 rounded-full border-4 border-slate-500 bg-slate-900 mb-6 object-cover shadow-lg transition-transform group-hover:scale-105"
             />

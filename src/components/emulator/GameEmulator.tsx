@@ -3,6 +3,7 @@ import { RotateCcw, Sparkles, Terminal, Gamepad2, Info, Sliders, Smartphone, Pau
 import confetti from 'canvas-confetti';
 import { getChapterEvolution } from '../../data/chapterEvolution';
 import { audioManager } from '../../utils/audioManager';
+import { getAssetUrl } from '../../utils/assetPath';
 
 interface GameEmulatorProps {
   version: 'v1_spaghetti' | 'v2_classes' | 'v3_dynamic' | 'v4_polymorphism' | 'v5_smart_pointers' | 'v6_patterns' | 'v7_ecs_final';
@@ -2004,7 +2005,7 @@ export const GameEmulator: React.FC<GameEmulatorProps> = ({
               <div className="text-center max-w-sm">
                 <div className="w-36 h-20 mx-auto mb-2 rounded-xl overflow-hidden border-2 border-emerald-400 shadow-xl shadow-emerald-500/30">
                   <img
-                    src="/images/characters_victory.png"
+                    src={getAssetUrl('/images/characters_victory.png')}
                     alt="シロクマ先生とペンギン生徒のハイタッチ"
                     className="w-full h-full object-cover"
                   />
@@ -2036,7 +2037,7 @@ export const GameEmulator: React.FC<GameEmulatorProps> = ({
               <div className="text-center">
                 <div className="w-36 h-20 mx-auto mb-2 rounded-xl overflow-hidden border-2 border-rose-500 shadow-xl shadow-rose-500/30">
                   <img
-                    src="/images/characters_mission.jpg"
+                    src={getAssetUrl('/images/characters_mission.jpg')}
                     alt="シロクマ先生とペンギン生徒の作戦会議"
                     className="w-full h-full object-cover"
                   />

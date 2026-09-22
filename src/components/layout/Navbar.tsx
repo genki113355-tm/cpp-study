@@ -2,6 +2,7 @@ import React, { useRef, useEffect, useState } from 'react';
 import { Download, Menu, BookOpen, Play, Volume2, VolumeX } from 'lucide-react';
 import { CLASSIC_CHAPTERS, MODERN_CHAPTERS, READING_CHAPTERS, SPECIAL_GUIDES } from '../../data/chapters';
 import { audioManager } from '../../utils/audioManager';
+import { getAssetUrl } from '../../utils/assetPath';
 
 interface NavbarProps {
   currentChapterId: number;
@@ -69,7 +70,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           <div className="flex items-center gap-2.5 sm:gap-3 cursor-pointer select-none flex-shrink-0" onClick={() => onSelectChapter('top')}>
             <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-full border-2 border-cyan-400/80 overflow-hidden bg-slate-900 shadow-lg shadow-cyan-500/25 flex-shrink-0">
               <img
-                src="/images/polar-bear-guide-pointing.png"
+                src={getAssetUrl('/images/polar-bear-guide-pointing.png')}
                 alt="シロクマ先生"
                 className="w-full h-full object-cover"
               />

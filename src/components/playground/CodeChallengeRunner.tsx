@@ -15,6 +15,7 @@ import confetti from 'canvas-confetti';
 import { CodingChallenge } from '../../data/codingChallenges';
 import { compileCppCode, createGodboltUrl, CompileResult } from '../../services/cppCompilerService';
 import { InteractiveCodeEditor } from './InteractiveCodeEditor';
+import { getAssetUrl } from '../../utils/assetPath';
 
 interface CodeChallengeRunnerProps {
   challenge: CodingChallenge;
@@ -113,7 +114,7 @@ export const CodeChallengeRunner: React.FC<CodeChallengeRunnerProps> = ({ challe
         <div className="flex items-start gap-3.5 p-4 rounded-2xl bg-slate-900/80 border border-slate-800 text-xs sm:text-sm text-slate-200">
           <div className="w-10 h-10 rounded-xl overflow-hidden border border-cyan-500/40 flex-shrink-0 shadow-md">
             <img
-              src="/images/characters_mission.jpg"
+              src={getAssetUrl('/images/characters_mission.jpg')}
               alt="シロクマ指導官"
               className="w-full h-full object-cover object-[20%_35%]"
             />
@@ -343,7 +344,7 @@ export const CodeChallengeRunner: React.FC<CodeChallengeRunnerProps> = ({ challe
             <div className="p-4 sm:p-5 rounded-2xl bg-emerald-950/60 border-2 border-emerald-500/60 shadow-xl shadow-emerald-950/50 flex items-center gap-4">
               <div className="w-14 h-14 rounded-xl overflow-hidden border-2 border-emerald-400 flex-shrink-0 shadow-lg hidden sm:block">
                 <img
-                  src="/images/characters_victory.png"
+                  src={getAssetUrl('/images/characters_victory.png')}
                   alt="ハイタッチ！"
                   className="w-full h-full object-cover"
                 />

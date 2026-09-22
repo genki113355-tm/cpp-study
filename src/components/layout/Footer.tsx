@@ -1,6 +1,7 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { PrivacyPolicyModal } from './PrivacyPolicyModal';
 import { Shield } from 'lucide-react';
+import { getAssetUrl } from '../../utils/assetPath';
 
 export const Footer: React.FC = () => {
   const [isPrivacyModalOpen, setIsPrivacyModalOpen] = useState<boolean>(false);
@@ -12,7 +13,7 @@ export const Footer: React.FC = () => {
           <div className="flex items-center justify-center gap-2 text-slate-300 font-semibold flex-wrap">
             <span className="inline-flex items-center gap-2">
               <img
-                src="/images/polar-bear-guide-pointing.png"
+                src={getAssetUrl('/images/polar-bear-guide-pointing.png')}
                 alt="シロクマ先生"
                 className="w-5 h-5 rounded-full border border-cyan-400/60 object-cover inline-block shadow-sm"
               />
