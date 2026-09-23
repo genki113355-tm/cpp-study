@@ -2,7 +2,7 @@ import { Chapter } from '../../types/curriculum';
 
 export const chapterL12: Chapter = {
   id: 16,
-  slug: 'chapter-12-game-engine-architecture',
+  slug: 'chapter-classic-12-game-engine-architecture',
   courseTrack: 'classic',
   courseChapterCode: 'C12',
   title: 'レガシー第12章：レガシーゲームエンジン統合アーキテクチャ',
@@ -10,7 +10,7 @@ export const chapterL12: Chapter = {
   badge: 'レガシーC++ L12：ゲームエンジン統合',
   gameVersion: 'v2_classes',
   description: 'これまでの第1章〜第11章で、私たちはカプセル化、動的寿命、ポリモーフィズム、State/Observerパターン、演算子オーバーロード、ポインタ演算、コールバック、多重継承の回避、CRTP、そして独自メモリプールまで、C++の強力な設計技法を1つずつ習得してきました。しかし、実際の商用ゲームや実務の大規模システムでは、「個々の部品が動く」だけでは通用しません。描画、物理演算、入力、サウンド、シーン遷移といった巨大なサブシステム群を、どのような順序で初期化し、どのような時間軸で更新し、安全に終了させるのかという【エンジン骨格（オーケストレーション）】の設計が不可欠です。本章では、市販の2D/3Dゲームエンジン（Unreal EngineやUnityの内部コア）でも採用されている伝説の【固定デルタタイム（Fixed Timestep）ゲームループ】と、サブシステムの結合度を極限まで下げる【IEngineSubsystem ライフサイクル管理】を徹底解説。PCスペックやフレームレートに一切左右されない、決定論的で堅牢なゲームエンジンアーキテクチャを完成させます。',
-  prevChapterSlug: 'chapter-11-memory-pool-allocator',
+  prevChapterSlug: 'chapter-classic-11-memory-pool-allocator',
   nextChapterSlug: 'chapter-classic-13-asset-manager',
   sections: [
     {

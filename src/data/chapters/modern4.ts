@@ -2,7 +2,7 @@ import { Chapter } from '../../types/curriculum';
 
 export const chapterM4: Chapter = {
   id: 10,
-  slug: 'chapter-modern-4-modern-type-system',
+  slug: 'chapter-modern-7-modern-type-system',
   courseTrack: 'modern',
   courseChapterCode: 'M7',
   title: 'モダン第7章：【C++17】現代的型システムとゼロオーバーヘッド抽象化',

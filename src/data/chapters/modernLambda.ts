@@ -10,7 +10,7 @@ export const chapterModernLambda: Chapter = {
   badge: 'モダンC++ M3【C++11/14】：ラムダ式',
   gameVersion: 'v5_smart_pointers',
   description: 'C言語やレガシーC++03でコールバック関数を実現するには、「関数ポインタ」と「void* ユーザーデータ」を組み合わせるという、型安全性が脆弱で極めて書きづらい手法しかありませんでした。C++11で導入された【ラムダ式（無名関数）】は、関数のすぐそばに処理をインラインで記述できるだけでなく、周囲の変数を「キャプチャ（捕捉）」して状態を持つ関数オブジェクトを自動生成する革命的機能です。しかし、「参照キャプチャ（[&]）によるダングリング参照の未定義動作」や、「std::function のヒープ確保オーバーヘッド」など、現場のプロが最も警戒すべき落とし穴も存在します。本章では、値・参照・ムーブキャプチャ（C++14初期化キャプチャ）のメモリモデルから、C++14ジェネリックラムダ（auto引数）までを徹底解説し、最新のイベント駆動プログラミングの真髄を極めます。',
-  prevChapterSlug: 'modern-2-move-and-modern-features',
+  prevChapterSlug: 'chapter-modern-2-move-semantics',
   nextChapterSlug: 'chapter-modern-4-variadic-templates',
   sections: [
     {

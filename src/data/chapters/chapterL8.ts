@@ -2,7 +2,7 @@ import { Chapter } from '../../types/curriculum';
 
 export const chapterL8: Chapter = {
   id: 12,
-  slug: 'chapter-8-function-pointers-callbacks',
+  slug: 'chapter-classic-8-function-pointers-callbacks',
   courseTrack: 'classic',
   courseChapterCode: 'C8',
   title: 'レガシー第8章：関数ポインタとC++メンバ関数ポインタの怪',
@@ -716,6 +716,6 @@ int main() {
       explanation: '正解は「インスタンスポインタとメンバ関数ポインタをクラステンプレートでペアとして保持し、共通の抽象基底（IActionDelegate）を介して呼び出す委譲（Delegate）パターン」です。本章で実装した MemberDelegate<T> のように、インスタンスとメンバ関数ポインタをカプセル化して型消滅（Type Erasure）を行うことで、void* を1行も使わずに完全な型安全性と疎結合性を両立させていました。'
     }
   ],
-  prevChapterSlug: 'chapter-7-pointer-alignment-endian',
-  nextChapterSlug: 'chapter-9-multiple-inheritance-diamond'
+  prevChapterSlug: 'chapter-classic-7-pointer-alignment-endian',
+  nextChapterSlug: 'chapter-classic-9-multiple-inheritance-diamond'
 };

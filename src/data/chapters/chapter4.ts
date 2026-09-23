@@ -2,7 +2,7 @@ import { Chapter } from '../../types/curriculum';
 
 export const chapter4: Chapter = {
   id: 4,
-  slug: 'chapter-4-inheritance-and-polymorphism',
+  slug: 'chapter-classic-4-inheritance-polymorphism',
   courseTrack: 'classic',
   courseChapterCode: 'C4',
   title: 'レガシー第4章：継承とポリモーフィズム（敵のバリエーションと多態性）',
@@ -10,8 +10,8 @@ export const chapter4: Chapter = {
   badge: 'レガシーC++ C4：継承とポリモーフィズム',
   description: '通常インベーダーに加え、2回被弾が必要な装甲シールド敵（S）や、上空を高速横切るボーナスUFO（U）が登場！C言語の「巨大なswitch-case」による構造化設計の限界と破綻を暴き、C++の抽象基底クラス・純粋仮想関数・仮想関数テーブル（vtable）の驚異的な拡張性を徹底解説します。',
   gameVersion: 'v4_polymorphism',
-  prevChapterSlug: 'chapter-3-dynamic-lifecycle',
-  nextChapterSlug: 'chapter-6-design-patterns',
+  prevChapterSlug: 'chapter-classic-3-dynamic-lifecycle',
+  nextChapterSlug: 'chapter-classic-5-design-patterns',
   umlDiagram: {
     diagramType: 'class',
     title: '第4章プログラムのUMLクラス設計書（ポリモーフィズム）',

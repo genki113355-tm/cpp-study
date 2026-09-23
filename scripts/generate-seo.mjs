@@ -119,19 +119,137 @@ async function generateSEO() {
       '@graph': jsonLdGraph
     });
 
-    // 初期セマンティックHTML（JSオフのクローラー・ボット用）
+    // 前後ナビゲーションリンクの構築
+    let navLinksHtml = '';
+    if (article.prevChapterSlug || article.nextChapterSlug) {
+      navLinksHtml = `
+        <div style="display: flex; justify-content: space-between; align-items: center; margin: 30px 0; padding: 16px; background: #0f172a; border-radius: 12px; border: 1px solid #1e293b; font-size: 14px;">
+          <div>
+            ${article.prevChapterSlug ? `<a href="/${article.prevChapterSlug}" style="color: #38bdf8; text-decoration: none; font-weight: bold;">← 前の章へ進む</a>` : '<span style="color: #64748b;">（最初の章）</span>'}
+          </div>
+          <div>
+            ${article.nextChapterSlug ? `<a href="/${article.nextChapterSlug}" style="color: #38bdf8; text-decoration: none; font-weight: bold;">次の章へ進む →</a>` : '<span style="color: #64748b;">（最終章）</span>'}
+          </div>
+        </div>
+      `;
+    }
+
+    // 全セクションのHTML構築（見出し、リード、対話、コード、解説、要点）
+    let sectionsHtml = '';
+    if (article.sections && article.sections.length > 0) {
+      sectionsHtml = article.sections.map((sec, secIdx) => {
+        // 対話ブロック
+        let dialogueHtml = '';
+        if (sec.dialogueBefore && sec.dialogueBefore.length > 0) {
+          dialogueHtml = `
+            <div style="margin: 20px 0; display: flex; flex-direction: column; gap: 12px;">
+              ${sec.dialogueBefore.map(d => {
+                const isShirokuma = d.speaker === 'shirokuma';
+                const speakerName = isShirokuma ? '🐻‍❄️ シロクマ先生' : '🐧 ペンギン先輩';
+                const borderColor = isShirokuma ? '#0284c7' : '#059669';
+                const bgColor = isShirokuma ? '#0c1b33' : '#06281e';
+                return `
+                  <div style="padding: 14px 18px; border-left: 4px solid ${borderColor}; background: ${bgColor}; border-radius: 8px; font-size: 14px;">
+                    <div style="font-weight: bold; color: ${isShirokuma ? '#38bdf8' : '#34d399'}; margin-bottom: 6px;">${speakerName}</div>
+                    <div style="color: #e2e8f0; line-height: 1.6;">${escapeHtml(d.text)}</div>
+                  </div>
+                `;
+              }).join('')}
+            </div>
+          `;
+        }
+
+        // C++コードブロック
+        let codeFilesHtml = '';
+        if (sec.codeFiles && sec.codeFiles.length > 0) {
+          codeFilesHtml = sec.codeFiles.map(cf => `
+            <div style="margin: 20px 0; border-radius: 10px; overflow: hidden; border: 1px solid #334155; background: #030712;">
+              <div style="padding: 8px 16px; background: #0f172a; border-bottom: 1px solid #1e293b; color: #94a3b8; font-family: monospace; font-size: 12px; font-weight: bold;">
+                📄 ${escapeHtml(cf.filename)}
+              </div>
+              <pre style="margin: 0; padding: 16px; overflow-x: auto; font-family: 'Fira Code', monospace; font-size: 13px; line-height: 1.5; color: #f8fafc;"><code>${escapeHtml(cf.code)}</code></pre>
+            </div>
+          `).join('');
+        }
+
+        // 要点まとめ
+        let takeawaysHtml = '';
+        if (sec.takeaways && sec.takeaways.length > 0) {
+          takeawaysHtml = `
+            <div style="margin: 20px 0; padding: 16px; background: #1e1b4b; border: 1px solid #4338ca; border-radius: 10px;">
+              <div style="font-weight: bold; color: #a5b4fc; font-size: 14px; margin-bottom: 8px;">💡 このセクションの重要ポイント</div>
+              <ul style="margin: 0; padding-left: 20px; font-size: 13px; color: #e0e7ff; line-height: 1.6;">
+                ${sec.takeaways.map(t => `<li><strong>${escapeHtml(t.title)}</strong>: ${escapeHtml(t.description)}</li>`).join('')}
+              </ul>
+            </div>
+          `;
+        }
+
+        return `
+          <section style="margin: 40px 0; padding-bottom: 30px; border-bottom: 1px solid #1e293b;">
+            <h2 style="font-size: 22px; color: #38bdf8; margin-bottom: 12px;">${escapeHtml(sec.title)}</h2>
+            ${sec.leadText ? `<p style="font-size: 15px; color: #94a3b8; margin-bottom: 16px; line-height: 1.6;">${escapeHtml(sec.leadText)}</p>` : ''}
+            ${dialogueHtml}
+            ${sec.explanationText ? `<div style="font-size: 15px; color: #cbd5e1; line-height: 1.7; margin: 20px 0;">${escapeHtml(sec.explanationText).replace(/\\n/g, '<br/>')}</div>` : ''}
+            ${codeFilesHtml}
+            ${takeawaysHtml}
+          </section>
+        `;
+      }).join('');
+    }
+
+    // 理解度クイズHTML構築
+    let quizHtml = '';
+    if (article.quiz && article.quiz.length > 0) {
+      quizHtml = `
+        <section style="margin: 40px 0; padding: 24px; background: #0f172a; border: 1px solid #1e293b; border-radius: 16px;">
+          <h2 style="font-size: 20px; color: #fbbf24; margin-top: 0; margin-bottom: 16px;">📝 理解度チェッククイズ</h2>
+          ${article.quiz.map((q, qIdx) => `
+            <div style="margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px dashed #334155;">
+              <div style="font-weight: bold; color: #f8fafc; font-size: 15px; margin-bottom: 10px;">Q${qIdx + 1}. ${escapeHtml(q.question)}</div>
+              <ul style="list-style: none; padding: 0; margin: 0 0 12px 0; font-size: 14px; color: #94a3b8;">
+                ${q.options.map((opt, oIdx) => `<li style="padding: 4px 0;">${oIdx + 1}. ${escapeHtml(opt)}</li>`).join('')}
+              </ul>
+              <details style="background: #020617; padding: 10px 14px; border-radius: 8px; font-size: 13px; color: #38bdf8; border: 1px solid #1e293b;">
+                <summary style="cursor: pointer; font-weight: bold;">正解と解説を見る</summary>
+                <div style="margin-top: 8px; color: #cbd5e1; line-height: 1.5;">
+                  <strong style="color: #34d399;">正解：${escapeHtml(q.options[q.correctIndex])}</strong><br />
+                  ${escapeHtml(q.explanation)}
+                </div>
+              </details>
+            </div>
+          `).join('')}
+        </section>
+      `;
+    }
+
+    // 初期セマンティックHTML（JSオフのクローラー・ボット用完全本文）
     const initialContent = `
       <div style="max-width: 900px; margin: 40px auto; padding: 20px; font-family: sans-serif; line-height: 1.6; color: #e2e8f0; background: #0b1322; border-radius: 16px; border: 1px solid #1e293b;">
         <nav style="margin-bottom: 20px; font-size: 14px;">
-          <a href="/" style="color: #38bdf8; text-decoration: none;">🏠 TOP</a> / <span>${article.badge}</span>
+          <a href="/" style="color: #38bdf8; text-decoration: none;">🏠 TOP</a> / <span>${escapeHtml(article.badge)}</span>
         </nav>
-        <h1 style="font-size: 28px; margin-bottom: 12px; color: #ffffff;">${article.title}</h1>
-        <p style="font-size: 18px; color: #38bdf8; margin-bottom: 20px;"><strong>${article.subtitle}</strong></p>
-        <p style="font-size: 16px; color: #94a3b8; margin-bottom: 30px;">${article.description}</p>
+        <h1 style="font-size: 28px; margin-bottom: 12px; color: #ffffff;">${escapeHtml(article.title)}</h1>
+        <p style="font-size: 18px; color: #38bdf8; margin-bottom: 20px;"><strong>${escapeHtml(article.subtitle)}</strong></p>
+        <p style="font-size: 16px; color: #94a3b8; margin-bottom: 30px;">${escapeHtml(article.description)}</p>
+
+        <!-- 前後章ナビゲーション上部 -->
+        ${navLinksHtml}
+
         <hr style="border: 0; border-top: 1px solid #1e293b; margin: 30px 0;" />
-        <div style="background: #040810; padding: 20px; border-radius: 12px; border: 1px solid #0ea5e9;">
+
+        <!-- 本文全セクション（見出し・対話・C++コード・解説・要点） -->
+        ${sectionsHtml}
+
+        <!-- 理解度チェッククイズ -->
+        ${quizHtml}
+
+        <!-- 前後章ナビゲーション下部 -->
+        ${navLinksHtml}
+
+        <div style="background: #040810; padding: 20px; border-radius: 12px; border: 1px solid #0ea5e9; margin-top: 40px;">
           <h2 style="font-size: 20px; color: #38bdf8; margin-top: 0;">🐻‍❄️ シロクマC++ラボ インタラクティブ学習システム</h2>
-          <p style="color: #cbd5e1;">JavaScriptを実行すると、ブラウザ内インベーダーゲームエミュレータ、メモリマップ可視化、UMLクラス図、対話型解説、理解度クイズが起動します。</p>
+          <p style="color: #cbd5e1;">ブラウザでJavaScriptを有効にすると、ブラウザ内インベーダーゲームエミュレータ、メモリマップ可視化、UMLクラス図、対話型解説、理解度クイズが起動します。</p>
           <p><a href="/#${article.slug}" style="display: inline-block; padding: 10px 20px; background: #0284c7; color: white; border-radius: 8px; text-decoration: none; font-weight: bold;">インタラクティブ学習を開始する →</a></p>
         </div>
 

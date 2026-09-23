@@ -2,7 +2,7 @@ import { Chapter } from '../../types/curriculum';
 
 export const chapterL9: Chapter = {
   id: 13,
-  slug: 'chapter-9-multiple-inheritance-diamond',
+  slug: 'chapter-classic-9-multiple-inheritance-diamond',
   courseTrack: 'classic',
   courseChapterCode: 'C9',
   title: 'レガシー第9章：多重継承の闇と仮想基底クラス（菱形継承）',
@@ -586,6 +586,6 @@ int main() {
       explanation: '正解は「合成（has-a）を使うことで、菱形継承の罠やthisポインタ調整の複雑さを完全排除し、振る舞いを部品として柔軟に着脱・テストできるから」です。「空を飛ぶ」「弾を撃つ」といった振る舞いは親子関係（is-a）ではなく部品（has-a）として設計することで、オブジェクトの独立性を保ち、ダイヤモンド継承の死や不要な依存関係の肥大化を根本から防ぐことができます。'
     }
   ],
-  prevChapterSlug: 'chapter-8-function-pointers-callbacks',
-  nextChapterSlug: 'chapter-10-static-polymorphism-crtp'
+  prevChapterSlug: 'chapter-classic-8-function-pointers-callbacks',
+  nextChapterSlug: 'chapter-classic-10-static-polymorphism-crtp'
 };

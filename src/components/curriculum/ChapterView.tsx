@@ -29,7 +29,9 @@ import {
   Trophy,
   Clock,
   Flame,
-  Target
+  Target,
+  ExternalLink,
+  FolderCode
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { AffiliatePromoBanner } from '../affiliate/AffiliatePromoBanner';
@@ -75,6 +77,32 @@ const parseChapterHeading = (title: string): ParsedChapterHeading => {
     cleanTitle: cleanTitle || rest,
     subNote,
   };
+};
+
+const getGitHubCodeUrl = (slug: string): { url: string; label: string } => {
+  const repoBase = 'https://github.com/genki113355-tm/cpp-study/tree/main/cpp-projects';
+  if (slug === 'chapter-classic-1-spaghetti-code') {
+    return { url: `${repoBase}/chapter1`, label: 'Ch.1 実機ソースコード（chapter1/）' };
+  }
+  if (slug === 'chapter-classic-2-classes-and-files') {
+    return { url: `${repoBase}/chapter2`, label: 'Ch.2 実機ソースコード（chapter2/）' };
+  }
+  if (slug === 'chapter-classic-3-dynamic-lifecycle') {
+    return { url: `${repoBase}/chapter3`, label: 'Ch.3 実機ソースコード（chapter3/）' };
+  }
+  if (slug === 'chapter-classic-4-inheritance-polymorphism') {
+    return { url: `${repoBase}/chapter4`, label: 'Ch.4 実機ソースコード（chapter4/）' };
+  }
+  if (slug === 'chapter-modern-1-smart-pointers-raii') {
+    return { url: `${repoBase}/chapter5`, label: 'Ch.5 実機ソースコード（chapter5/）' };
+  }
+  if (slug === 'chapter-classic-5-design-patterns') {
+    return { url: `${repoBase}/chapter6`, label: 'Ch.6 実機ソースコード（chapter6/）' };
+  }
+  if (slug === 'chapter-modern-10-ecs') {
+    return { url: `${repoBase}/chapter7`, label: 'Ch.7 実機ソースコード（chapter7/）' };
+  }
+  return { url: repoBase, label: 'GitHub実機プロジェクト一覧（cpp-projects/）' };
 };
 
 interface ChapterViewProps {
@@ -297,7 +325,7 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
               </button>
               <span className="text-slate-600">/</span>
               {getTrackBadge()}
-              <span className="text-xs sm:text-sm font-mono text-slate-300 font-semibold px-2.5 py-1 rounded-lg bg-slate-800/80 border border-slate-700">
+              <span className="text-xs sm:text-sm font-mono text-slate-300 font-semibold px-2.5 py-1 rounded-lg bg-slate-800/80 border border-slate-700 truncate max-w-[140px] sm:max-w-none" title={chapter.badge}>
                 {chapter.badge}
               </span>
               <button
@@ -344,9 +372,9 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
 
                 {/* 主見出し H1 */}
                 <h1 className="text-2xl min-[400px]:text-3xl sm:text-4xl md:text-5xl lg:text-[2.75rem] font-black text-white tracking-tight leading-snug [text-wrap:balance]">
-                  <span className="inline-block break-keep">{heading.cleanTitle}</span>
+                  <span className="inline-block break-words sm:break-keep">{heading.cleanTitle}</span>
                   {heading.subNote && (
-                    <span className="inline-block text-cyan-300/90 text-lg sm:text-2xl md:text-3xl font-bold ml-0 sm:ml-3 mt-1 sm:mt-0 font-sans break-keep">
+                    <span className="inline-block text-cyan-300/90 text-lg sm:text-2xl md:text-3xl font-bold ml-0 sm:ml-3 mt-1 sm:mt-0 font-sans break-words sm:break-keep">
                       （{heading.subNote}）
                     </span>
                   )}
@@ -403,6 +431,40 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
           <p className="text-sm sm:text-base md:text-lg text-slate-300 leading-relaxed font-sans max-w-5xl [text-wrap:pretty]">
             {chapter.description}
           </p>
+
+          {/* 📂 GitHubコードスナップショット導線（タイポ時・ビルド確認用） */}
+          {(() => {
+            const githubInfo = getGitHubCodeUrl(chapter.slug);
+            return (
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3.5 sm:p-4 rounded-2xl bg-cyan-950/30 border border-cyan-500/30 shadow-md">
+                <div className="flex items-center gap-3">
+                  <div className="w-9 h-9 rounded-xl bg-cyan-500/20 border border-cyan-400/40 flex items-center justify-center text-cyan-300 shrink-0">
+                    <FolderCode className="w-5 h-5 text-cyan-400" />
+                  </div>
+                  <div className="space-y-0.5">
+                    <div className="text-xs font-mono font-bold text-cyan-300 flex items-center gap-1.5">
+                      <span>GitHub ソースコード・完成状態</span>
+                      <span className="text-[10px] px-1.5 py-0.5 rounded bg-cyan-900/60 border border-cyan-400/40 text-cyan-200">公式リポジトリ</span>
+                    </div>
+                    <p className="text-xs text-slate-300 font-sans">
+                      「タイポしてビルドが通らない」「完成状態のコードと見比べたい」場合は、GitHubの実機コードを参照してください。
+                    </p>
+                  </div>
+                </div>
+
+                <a
+                  href={githubInfo.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-4 py-2 rounded-xl bg-cyan-500/20 hover:bg-cyan-500/30 border border-cyan-400/50 hover:border-cyan-300 text-cyan-200 hover:text-white font-mono font-bold text-xs transition flex items-center justify-center gap-2 shrink-0 shadow-sm active:scale-95 cursor-pointer"
+                  title="GitHubでソースコードを閲覧（新しいタブで開く）"
+                >
+                  <ExternalLink className="w-3.5 h-3.5 text-cyan-400" />
+                  <span>{githubInfo.label} →</span>
+                </a>
+              </div>
+            );
+          })()}
         </div>
       </div>
 
@@ -1253,7 +1315,7 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
             {!isGuide && (
               isClassic ? (
                 <button
-                  onClick={() => onNavigate('chapter-5-smart-pointers-raii')}
+                  onClick={() => onNavigate('chapter-modern-1-smart-pointers-raii')}
                   className="flex items-center gap-2 px-5 py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-bold font-mono text-xs sm:text-sm transition shadow-lg shadow-cyan-500/30 active:scale-95 cursor-pointer"
                 >
                   <span>🚀 モダン【M】第1章へ挑戦する</span>

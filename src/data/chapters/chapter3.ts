@@ -2,7 +2,7 @@ import { Chapter } from '../../types/curriculum';
 
 export const chapter3: Chapter = {
   id: 3,
-  slug: 'chapter-3-dynamic-lifecycle',
+  slug: 'chapter-classic-3-dynamic-lifecycle',
   courseTrack: 'classic',
   courseChapterCode: 'C3',
   title: 'レガシー第3章：オブジェクトの動的生成と寿命管理（可変エフェクトとメモリ設計）',
@@ -10,8 +10,8 @@ export const chapter3: Chapter = {
   badge: 'レガシーC++ C3：静的プールと手動寿命管理',
   description: '敵の撃破エフェクト（Particle）を題材に、組込み・リアルタイムゲーム開発現場で動的メモリ（malloc/new）が忌避される理由と、ゼロ・アロケーションを実現する「静的オブジェクトプール設計（レガシーの正解）」を徹底解剖。さらに、メモリ制約のない汎用PC環境で使われる std::vector（参考資料）との対比を通じて、真のメモリ設計力を養います。',
   gameVersion: 'v3_dynamic',
-  prevChapterSlug: 'chapter-2-classes-and-files',
-  nextChapterSlug: 'chapter-4-inheritance-and-polymorphism',
+  prevChapterSlug: 'chapter-classic-2-classes-and-files',
+  nextChapterSlug: 'chapter-classic-4-inheritance-polymorphism',
   sections: [
     {
       id: 'sec3-malloc-vs-raii',

@@ -1,6 +1,5 @@
 /**
- * サイトが /cpp/ 配下で動作している場合（統合ドメイン https://shirokuma-tech.jp/cpp/）と
- * 単独ドメイン（https://shirokuma-cpp.jp/）のどちらでも画像が正しく解決されるようにするユーティリティ
+ * サイトが /cpp/ 配下で動作している場合（https://shirokuma-tech.jp/cpp/）でも画像が正しく解決されるようにするユーティリティ
  */
 export const getAssetUrl = (path: string): string => {
   if (!path) return '';

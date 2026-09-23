@@ -2,7 +2,7 @@ import { Chapter } from '../../types/curriculum';
 
 export const chapterL7: Chapter = {
   id: 11,
-  slug: 'chapter-7-pointer-alignment-endian',
+  slug: 'chapter-classic-7-pointer-alignment-endian',
   courseTrack: 'classic',
   courseChapterCode: 'C7',
   title: 'レガシー第7章：ポインタ演算と手動メモリアライメントの深淵',
@@ -647,6 +647,6 @@ int main() {
       explanation: '正解は「コンパイラやOSによってパディングサイズやエンディアンが異なり、他の環境でデータが破損・化けるから」です。コンパイラバージョンや32bit/64bit環境の違い、CPUエンディアンの違いにより、生メモリのダンプデータは互換性が破壊されます。現場では本章で作成した BinaryWriter のように明示的にバイト列へパッキングして保存・送信するのが鉄則です。'
     }
   ],
-  prevChapterSlug: 'chapter-6-operator-overload-vector',
-  nextChapterSlug: 'chapter-8-function-pointers-callbacks'
+  prevChapterSlug: 'chapter-classic-6-operator-overload',
+  nextChapterSlug: 'chapter-classic-8-function-pointers-callbacks'
 };

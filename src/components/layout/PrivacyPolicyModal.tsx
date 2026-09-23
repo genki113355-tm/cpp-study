@@ -49,7 +49,7 @@ export const PrivacyPolicyModal: React.FC<PrivacyPolicyModalProps> = ({ isOpen, 
               <span>1. 広告の配信（Google AdSense 等）について</span>
             </h3>
             <p>
-              当サイト（シロクマC++ラボ：https://shirokuma-cpp.jp）では、第三者配信の広告サービス「Google AdSense（グーグルアドセンス）」を利用しています。
+              当サイト（シロクマC++ラボ：https://shirokuma-tech.jp/cpp）では、第三者配信の広告サービス「Google AdSense（グーグルアドセンス）」を利用しています。
             </p>
             <p>
               Google などの第三者広告配信事業者は、ユーザーの興味に応じた商品やサービスの広告を表示するため、当サイトや他のウェブサイトへのアクセス情報に基づき「Cookie（クッキー）」を使用することがあります。Cookieには氏名、住所、メールアドレス、電話番号などの個人を特定する情報は含まれません。

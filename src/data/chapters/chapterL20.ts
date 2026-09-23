@@ -11,7 +11,7 @@ export const chapterL20: Chapter = {
   gameVersion: 'v2_classes',
   description: '第1章の「main関数500行スパゲティコード」から始まったレガシーC++の長い旅路路路。クラス化、動的メモリ、継承ポリモーフィズム、演算子オーバーロード、手動アライメント、関数ポインタ、菱形継承、CRTP、独自メモリプール、モノリシックエンジン、アセット管理、空間グリッド分割、データ駆動設計、ビットフラグ、マルチスレッドプール、メモリリーク検知器、そしてリアルタイムUDP通信——これら現場のあらゆる泥臭い低レイヤ技術が、ついに1つの商用グレード2D自作ゲームエンジン【ShirokumaEngine】として完全統合されます。クラシックC++（C++03）の極限を体験し、なぜ現代のC++がモダン化を遂げたのかを魂で理解する、レガシーコース堂々のグランドフィナーレです！',
   prevChapterSlug: 'chapter-classic-19-network-sockets',
-  nextChapterSlug: 'chapter-5',
+  nextChapterSlug: 'chapter-modern-1-smart-pointers-raii',
   sections: [
     {
       id: 'sec-l20-engine-architecture',

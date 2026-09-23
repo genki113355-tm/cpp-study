@@ -2,7 +2,7 @@ import { Chapter } from '../../types/curriculum';
 
 export const chapterM2: Chapter = {
   id: 8,
-  slug: 'modern-2-move-and-modern-features',
+  slug: 'chapter-modern-2-move-semantics',
   courseTrack: 'modern',
   courseChapterCode: 'M2',
   title: 'モダン第2章：【C++11/14】右辺値参照とムーブセマンティクス（ゼロコピー革命）',
@@ -235,6 +235,6 @@ auto hitChecker = [hitRadius](int dist) { return dist <= hitRadius; };`,
     }
   ],
   nextChapterSlug: 'chapter-modern-3-lambda',
-  prevChapterSlug: 'chapter-5-smart-pointers-raii'
+  prevChapterSlug: 'chapter-modern-1-smart-pointers-raii'
 };
 

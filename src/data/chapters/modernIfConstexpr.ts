@@ -10,7 +10,7 @@ export const chapterModernIfConstexpr: Chapter = {
   badge: 'モダンC++ M8【C++17】：if constexpr・構造化束縛',
   gameVersion: 'v5_smart_pointers',
   description: 'C++14までのテンプレートメタプログラミングにおいて、型の種類（整数型・ポインタ型・浮動小数点数など）に応じて処理を分岐させるには、SFINAE（Substitution Failure Is Not An Error）の原理を利用した std::enable_if を何重にも書き連ねる必要がありました。そのコードは解読困難で、コンパイルエラーが出れば画面を覆い尽くす暗号のようなエラーログに開発者は絶望していました。C++17で導入された【if constexpr】は、コンパイル時に条件が偽のブランチを完全に捨て去る（コード生成すらしない）ことで、普通の if 文と同じ直感的な書き方で型分岐を実現する歴史的転換点となりました。さらに、構造体やペアを1行で分解代入する【構造化束縛（Structured Bindings）】、可変引数テンプレートの展開を1行で記述する【フォールド式（Fold Expressions）】、そしてスコープ汚染を防ぐ【初期化文付き if】を組み合わせ、C++のメタプログラミングとデータ走査は劇的なエレガンスを手に入れました。',
-  prevChapterSlug: 'chapter-modern-4-modern-type-system',
+  prevChapterSlug: 'chapter-modern-7-modern-type-system',
   nextChapterSlug: 'chapter-modern-9-filesystem',
   sections: [
     {

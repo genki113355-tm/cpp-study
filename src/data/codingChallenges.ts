@@ -31,9 +31,9 @@ export interface PlaygroundTemplate {
 /** 各章連動の実践コーディング課題リスト */
 export const CODING_CHALLENGES: Record<string, CodingChallenge> = {
   // L1: スパゲティから手続き化へ
-  'chapter-1-spaghetti-code': {
+  'chapter-classic-1-spaghetti-code': {
     id: 'challenge-l1',
-    chapterSlug: 'chapter-1-spaghetti-code',
+    chapterSlug: 'chapter-classic-1-spaghetti-code',
     chapterBadge: 'L1',
     title: '演習L1：グローバル変数を関数で安全にカプセル化せよ！',
     missionObjective: 'グローバル変数に直接代入する危険なコードを廃止し、引数で安全に更新を行う movePlayer(delta) 関数と addScore(points) 関数を実装してテストをパスさせてください。',
@@ -107,9 +107,9 @@ int main() {
   },
 
   // L2: クラスとカプセル化
-  'chapter-2-classes-and-files': {
+  'chapter-classic-2-classes-and-files': {
     id: 'challenge-l2',
-    chapterSlug: 'chapter-2-classes-and-files',
+    chapterSlug: 'chapter-classic-2-classes-and-files',
     chapterBadge: 'L2',
     title: '演習L2：Playerクラスを作りメンバをprivateに隠蔽せよ！',
     missionObjective: 'Player クラスを定義し、座標 x_ と HP hp_ を private メンバ変数として隠蔽してください。外部からは public な move(delta), takeDamage(dmg), getX(), getHp() 経由でのみアクセスできるようにします。',
@@ -190,9 +190,9 @@ int main() {
   },
 
   // L3: 動的メモリと std::vector
-  'chapter-3-dynamic-lifecycle': {
+  'chapter-classic-3-dynamic-lifecycle': {
     id: 'challenge-l3',
-    chapterSlug: 'chapter-3-dynamic-lifecycle',
+    chapterSlug: 'chapter-classic-3-dynamic-lifecycle',
     chapterBadge: 'L3',
     title: '演習L3：std::vectorで画面外の弾を自動消去（erase-remove）せよ！',
     missionObjective: 'std::vector<Bullet> を使い、弾の移動処理と「y座標が0未満になった画面外の弾」を安全に消去する cleanUpOffscreen() を実装してください。',
@@ -307,9 +307,9 @@ int main() {
   },
 
   // L4: 継承と多態性
-  'chapter-4-inheritance-and-polymorphism': {
+  'chapter-classic-4-inheritance-polymorphism': {
     id: 'challenge-l4',
-    chapterSlug: 'chapter-4-inheritance-and-polymorphism',
+    chapterSlug: 'chapter-classic-4-inheritance-polymorphism',
     chapterBadge: 'L4',
     title: '演習L4：純粋仮想関数をoverrideしてBossEnemyを作れ！',
     missionObjective: '抽象基底クラス Enemy の純粋仮想関数 virtual void attack() const = 0; を継承し、BossEnemy クラスを作成してください。Enemy* のポインタ配列を通して多態性（ポリモーフィズム）を実証してください。',
@@ -399,9 +399,9 @@ int main() {
   },
 
   // M1: スマートポインタとRAII
-  'chapter-5-smart-pointers-raii': {
+  'chapter-modern-1-smart-pointers-raii': {
     id: 'challenge-m1',
-    chapterSlug: 'chapter-5-smart-pointers-raii',
+    chapterSlug: 'chapter-modern-1-smart-pointers-raii',
     chapterBadge: 'M1',
     title: '演習M1：生ポインタ new/delete を std::unique_ptr に置換せよ！',
     missionObjective: '危険な生ポインタ new/delete を追放し、std::unique_ptr と std::make_unique を使って、例外が発生しても確実にデストラクタが呼ばれる RAII 設計に書き換えてください。',
@@ -463,9 +463,9 @@ int main() {
   },
 
   // L10: CRTP 静的多態性
-  'chapter-10-static-polymorphism-crtp': {
+  'chapter-classic-10-static-polymorphism-crtp': {
     id: 'challenge-l10',
-    chapterSlug: 'chapter-10-static-polymorphism-crtp',
+    chapterSlug: 'chapter-classic-10-static-polymorphism-crtp',
     chapterBadge: 'L10',
     title: '演習L10：CRTPパターンでvtable無しの高速ディスパッチを実現せよ！',
     missionObjective: '仮想関数テーブル（vtable）のポインタ参照オーバーヘッドをゼロにするため、CRTP（Curiously Recurring Template Pattern）を用いて、基底クラスから派生クラスの実装 static_cast<const Derived*>(this)->renderImpl() を静的呼び出ししてください。',
@@ -530,9 +530,9 @@ int main() {
   },
 
   // L11: 独自メモリアロケータと固定長プール
-  'chapter-11-memory-pool-allocator': {
+  'chapter-classic-11-memory-pool-allocator': {
     id: 'challenge-l11',
-    chapterSlug: 'chapter-11-memory-pool-allocator',
+    chapterSlug: 'chapter-classic-11-memory-pool-allocator',
     chapterBadge: 'L11',
     title: '演習L11：placement new で静的バッファ上にオブジェクトを構築せよ！',
     missionObjective: 'OSのヒープmallocに頼らず、alignas(Bullet) でアライメント確保されたスタックバッファメモリ上に placement new (new (ptr) Bullet(...)) で弾丸を生成し、明示的デストラクタ呼び出し (~Bullet()) で破棄してください。',
@@ -610,9 +610,9 @@ int main() {
   },
 
   // L12: レガシーゲームエンジン統合アーキテクチャ
-  'chapter-12-game-engine-architecture': {
+  'chapter-classic-12-game-engine-architecture': {
     id: 'challenge-l12',
-    chapterSlug: 'chapter-12-game-engine-architecture',
+    chapterSlug: 'chapter-classic-12-game-engine-architecture',
     chapterBadge: 'L12',
     title: '演習L12：固定デルタタイムとアキュムレータループを実装せよ！',
     missionObjective: 'フレームごとの経過時間（dt）をアキュムレータに蓄積し、FIXED_DT（1/60秒 ≒ 0.0166秒）刻みで物理更新 advancePhysicsStep() を実行する決定論的ゲームループを実装してください。',
@@ -1770,9 +1770,9 @@ int main() {
   },
 
   // M12: C++20 コルーチン
-  'chapter-modern-5-coroutines': {
+  'chapter-modern-12-coroutines': {
     id: 'challenge-m12',
-    chapterSlug: 'chapter-modern-5-coroutines',
+    chapterSlug: 'chapter-modern-12-coroutines',
     chapterBadge: 'M12',
     title: '演習M12：C++20 コルーチンで時間差ウェーブ攻撃を実装せよ！',
     missionObjective: 'co_await を使って処理を一時中断できるコルーチン関数 bossSequence(stepTracker) を完成させ、メインループから resume() を呼び出して段階的に攻撃を進めるテストをパスさせてください。',
@@ -1897,9 +1897,9 @@ int main() {
   },
 
   // M6: C++20 コンセプト
-  'chapter-modern-6-concepts': {
+  'chapter-modern-11-concepts': {
     id: 'challenge-m6',
-    chapterSlug: 'chapter-modern-6-concepts',
+    chapterSlug: 'chapter-modern-11-concepts',
     chapterBadge: 'M6',
     title: '演習M6：C++20 コンセプトで被ダメージ型を厳密に制約せよ！',
     missionObjective: 'requires 式を用いて Damageable コンセプトを定義し、takeDamage(int) と getHp() -> int を持つ型だけを安全に受け取る hitEntity(Damageable auto&, int) 関数を完成させてください。',
@@ -1979,9 +1979,9 @@ int main() {
   },
 
   // M7: C++20 Ranges & Views
-  'chapter-modern-7-ranges-views': {
+  'chapter-modern-13-ranges-views': {
     id: 'challenge-m7',
-    chapterSlug: 'chapter-modern-7-ranges-views',
+    chapterSlug: 'chapter-modern-13-ranges-views',
     chapterBadge: 'M7',
     title: '演習M7：C++20 Ranges パイプラインで迎撃目標をゼロアロケーション抽出せよ！',
     missionObjective: 'std::views::filter と std::views::take をパイプライン演算子（|）で繋ぎ、生存中（isAlive == true）かつ脅威度（threatLevel >= 3）の敵上位2体の合計HPを計算してください。',
@@ -2073,9 +2073,9 @@ int main() {
   },
 
   // M8: C++20 モジュール
-  'chapter-modern-8-modules': {
+  'chapter-modern-14-modules': {
     id: 'challenge-m8',
-    chapterSlug: 'chapter-modern-8-modules',
+    chapterSlug: 'chapter-modern-14-modules',
     chapterBadge: 'M8',
     title: '演習M8：モジュールアーキテクチャによるクリーンなカプセル化を体得せよ！',
     missionObjective: 'モジュール境界設計の原則に従い、公開インターフェース（Public API）と非公開ヘルパー（Private Core）の責務を分離したゲームエンジン初期化システムを完成させてください。',
@@ -2169,11 +2169,11 @@ int main() {
 };
 
 // 後方互換性・旧スラッグエイリアス登録
-CODING_CHALLENGES['chapter-1-spaghetti-to-oop'] = CODING_CHALLENGES['chapter-1-spaghetti-code'];
-CODING_CHALLENGES['chapter-2-classes-and-encapsulation'] = CODING_CHALLENGES['chapter-2-classes-and-files'];
-CODING_CHALLENGES['chapter-3-dynamic-memory-and-vector'] = CODING_CHALLENGES['chapter-3-dynamic-lifecycle'];
-CODING_CHALLENGES['chapter-l10-static-polymorphism-crtp'] = CODING_CHALLENGES['chapter-10-static-polymorphism-crtp'];
-CODING_CHALLENGES['chapter-l11-custom-allocator-memory-pool'] = CODING_CHALLENGES['chapter-11-memory-pool-allocator'];
+CODING_CHALLENGES['chapter-1-spaghetti-to-oop'] = CODING_CHALLENGES['chapter-classic-1-spaghetti-code'];
+CODING_CHALLENGES['chapter-2-classes-and-encapsulation'] = CODING_CHALLENGES['chapter-classic-2-classes-and-files'];
+CODING_CHALLENGES['chapter-3-dynamic-memory-and-vector'] = CODING_CHALLENGES['chapter-classic-3-dynamic-lifecycle'];
+CODING_CHALLENGES['chapter-l10-static-polymorphism-crtp'] = CODING_CHALLENGES['chapter-classic-10-static-polymorphism-crtp'];
+CODING_CHALLENGES['chapter-l11-custom-allocator-memory-pool'] = CODING_CHALLENGES['chapter-classic-11-memory-pool-allocator'];
 
 /** 自由実験室（Online Playground）用のプリセットテンプレート一覧 */
 export const PLAYGROUND_TEMPLATES: PlaygroundTemplate[] = [

@@ -2,7 +2,7 @@ import { Chapter } from '../../types/curriculum';
 
 export const chapterL6: Chapter = {
   id: 9,
-  slug: 'chapter-6-operator-overload-vector',
+  slug: 'chapter-classic-6-operator-overload',
   courseTrack: 'classic',
   courseChapterCode: 'C6',
   title: 'レガシー第6章：演算子オーバーロードと値オブジェクト',
@@ -348,7 +348,7 @@ void updateBullets(std::vector<Vec2>& positions, const std::vector<Vec2>& veloci
       explanation: '二項演算子をメンバ関数にする場合、左辺の型がそのクラス自身である必要があります。std::cout << v の左辺は std::ostream 型であり、私たちが標準ライブラリの std::ostream クラスにメンバ関数を追加することはできないため、非メンバ関数として定義し、プライベート変数へのアクセスを friend で許可します。'
     }
   ],
-  prevChapterSlug: 'chapter-6-design-patterns',
-  nextChapterSlug: 'chapter-7-pointer-alignment-endian'
+  prevChapterSlug: 'chapter-classic-5-design-patterns',
+  nextChapterSlug: 'chapter-classic-7-pointer-alignment-endian'
 };
 

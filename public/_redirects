@@ -1,1 +1,51 @@
+# 301 Permanent Redirects for Classic and Modern Chapter Slugs
+/chapter-1-spaghetti-code /chapter-classic-1-spaghetti-code 301
+/cpp/chapter-1-spaghetti-code /cpp/chapter-classic-1-spaghetti-code 301
+/chapter-2-classes-and-files /chapter-classic-2-classes-and-files 301
+/cpp/chapter-2-classes-and-files /cpp/chapter-classic-2-classes-and-files 301
+/chapter-3-dynamic-lifecycle /chapter-classic-3-dynamic-lifecycle 301
+/cpp/chapter-3-dynamic-lifecycle /cpp/chapter-classic-3-dynamic-lifecycle 301
+/chapter-4-inheritance-and-polymorphism /chapter-classic-4-inheritance-polymorphism 301
+/cpp/chapter-4-inheritance-and-polymorphism /cpp/chapter-classic-4-inheritance-polymorphism 301
+/chapter-4-inheritance-polymorphism /chapter-classic-4-inheritance-polymorphism 301
+/cpp/chapter-4-inheritance-polymorphism /cpp/chapter-classic-4-inheritance-polymorphism 301
+/chapter-6-design-patterns /chapter-classic-5-design-patterns 301
+/cpp/chapter-6-design-patterns /cpp/chapter-classic-5-design-patterns 301
+/chapter-6-operator-overload-vector /chapter-classic-6-operator-overload 301
+/cpp/chapter-6-operator-overload-vector /cpp/chapter-classic-6-operator-overload 301
+/chapter-7-pointer-alignment-endian /chapter-classic-7-pointer-alignment-endian 301
+/cpp/chapter-7-pointer-alignment-endian /cpp/chapter-classic-7-pointer-alignment-endian 301
+/chapter-8-function-pointers-callbacks /chapter-classic-8-function-pointers-callbacks 301
+/cpp/chapter-8-function-pointers-callbacks /cpp/chapter-classic-8-function-pointers-callbacks 301
+/chapter-9-multiple-inheritance-diamond /chapter-classic-9-multiple-inheritance-diamond 301
+/cpp/chapter-9-multiple-inheritance-diamond /cpp/chapter-classic-9-multiple-inheritance-diamond 301
+/chapter-10-static-polymorphism-crtp /chapter-classic-10-static-polymorphism-crtp 301
+/cpp/chapter-10-static-polymorphism-crtp /cpp/chapter-classic-10-static-polymorphism-crtp 301
+/chapter-11-memory-pool-allocator /chapter-classic-11-memory-pool-allocator 301
+/cpp/chapter-11-memory-pool-allocator /cpp/chapter-classic-11-memory-pool-allocator 301
+/chapter-12-game-engine-architecture /chapter-classic-12-game-engine-architecture 301
+/cpp/chapter-12-game-engine-architecture /cpp/chapter-classic-12-game-engine-architecture 301
+/chapter-5-smart-pointers-raii /chapter-modern-1-smart-pointers-raii 301
+/cpp/chapter-5-smart-pointers-raii /cpp/chapter-modern-1-smart-pointers-raii 301
+/chapter-5 /chapter-modern-1-smart-pointers-raii 301
+/cpp/chapter-5 /cpp/chapter-modern-1-smart-pointers-raii 301
+/modern-2-move-and-modern-features /chapter-modern-2-move-semantics 301
+/cpp/modern-2-move-and-modern-features /cpp/chapter-modern-2-move-semantics 301
+/chapter-modern-4-modern-type-system /chapter-modern-7-modern-type-system 301
+/cpp/chapter-modern-4-modern-type-system /cpp/chapter-modern-7-modern-type-system 301
+/chapter-7-modern-cpp-ecs /chapter-modern-10-ecs 301
+/cpp/chapter-7-modern-cpp-ecs /cpp/chapter-modern-10-ecs 301
+/chapter-modern-6-concepts /chapter-modern-11-concepts 301
+/cpp/chapter-modern-6-concepts /cpp/chapter-modern-11-concepts 301
+/chapter-modern-5-coroutines /chapter-modern-12-coroutines 301
+/cpp/chapter-modern-5-coroutines /cpp/chapter-modern-12-coroutines 301
+/chapter-modern-7-ranges-views /chapter-modern-13-ranges-views 301
+/cpp/chapter-modern-7-ranges-views /cpp/chapter-modern-13-ranges-views 301
+/chapter-modern-8-modules /chapter-modern-14-modules 301
+/cpp/chapter-modern-8-modules /cpp/chapter-modern-14-modules 301
+
+# Subdirectory static assets rewrite
+/cpp/images/* /images/:splat 200
+
+# SPA fallback
 /* /index.html 200

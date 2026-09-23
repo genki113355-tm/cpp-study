@@ -2,7 +2,7 @@ import { Chapter } from '../../types/curriculum';
 
 export const chapter2: Chapter = {
   id: 2,
-  slug: 'chapter-2-classes-and-files',
+  slug: 'chapter-classic-2-classes-and-files',
   courseTrack: 'classic',
   courseChapterCode: 'C2',
   title: 'レガシー第2章：クラス化とファイルの分割（アフター：カプセル化の意図）',
@@ -10,8 +10,8 @@ export const chapter2: Chapter = {
   badge: 'レガシーC++ C2：カプセル化とファイル分割',
   description: 'グローバル変数を全廃！Player（自機）、Invader（敵）、Bullet（弾）をそれぞれヘッダ（.h）と実装（.cpp）に分離。C言語の「構造体ポインタを関数に渡す設計」とC++の「クラス」の決定的な違いと、カプセル化の真の意図を解き明かします。',
   gameVersion: 'v2_classes',
-  prevChapterSlug: 'chapter-1-spaghetti-code',
-  nextChapterSlug: 'chapter-3-dynamic-lifecycle',
+  prevChapterSlug: 'chapter-classic-1-spaghetti-code',
+  nextChapterSlug: 'chapter-classic-3-dynamic-lifecycle',
   umlDiagram: {
     diagramType: 'class',
     title: '第2章プログラムのUMLクラス設計書',

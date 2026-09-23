@@ -10,7 +10,7 @@ export const chapterL13: Chapter = {
   badge: 'レガシーC++ L13：アセット管理',
   gameVersion: 'v2_classes',
   description: '敵キャラクターや弾幕、BGMや効果音が大量に登場する本格ゲームでは、「オブジェクトが生成されるたびにファイルから画像や音声をロードする」という素朴な設計は瞬時にメモリ破綻と激しいロードスパイクを引き起こします。本章では、デザインパターンの要である【Flyweight（フライウェイト）パターン】を導入し、何千体もの敵が同一のテクスチャデータをメモリ上で安全に共有するキャッシュアーキテクチャを構築します。さらに、生ポインタの危険性（誰が解放したかわからずクラッシュするダングリングポインタ）を排除するための【世代番号付きハンドル参照（Handle Idiom）】や、C++03環境でも堅牢に動く【参照カウント式ResourceManager】を設計・実装します。',
-  prevChapterSlug: 'chapter-12-game-engine-architecture',
+  prevChapterSlug: 'chapter-classic-12-game-engine-architecture',
   nextChapterSlug: 'chapter-classic-14-spatial-partitioning',
   sections: [
     {

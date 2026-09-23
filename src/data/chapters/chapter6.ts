@@ -2,7 +2,7 @@ import { Chapter } from '../../types/curriculum';
 
 export const chapter6: Chapter = {
   id: 6,
-  slug: 'chapter-6-design-patterns',
+  slug: 'chapter-classic-5-design-patterns',
   courseTrack: 'classic',
   courseChapterCode: 'C5',
   title: 'レガシー第5章：クラシック・ゲームデザインパターン（State & Observer）',
@@ -379,6 +379,6 @@ game.notify(GameEvent::ENEMY_DEFEATED, 100, "Normal enemy defeated");`,
       explanation: '正解は「PauseState クラスの update() を空実装（何もしない）にするだけで、ゲームループの更新処理が完全に停止し、if (isPaused) による分岐が不要になるから」です。手続き型ではゲーム中のあらゆる移動・タイマー処理に `if (!isPaused)` を書き足す必要がありましたが、State パターンなら更新ロジックそのものが呼ばれなくなるため、極めて堅牢です。'
     }
   ],
-  prevChapterSlug: 'chapter-4-inheritance-polymorphism',
-  nextChapterSlug: 'chapter-6-operator-overload-vector'
+  prevChapterSlug: 'chapter-classic-4-inheritance-polymorphism',
+  nextChapterSlug: 'chapter-classic-6-operator-overload'
 };

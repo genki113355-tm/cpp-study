@@ -2,7 +2,7 @@ import { Chapter } from '../../types/curriculum';
 
 export const chapterL10: Chapter = {
   id: 14,
-  slug: 'chapter-10-static-polymorphism-crtp',
+  slug: 'chapter-classic-10-static-polymorphism-crtp',
   courseTrack: 'classic',
   courseChapterCode: 'C10',
   title: 'レガシー第10章：静的ポリモーフィズム入門（CRTPとクラシックTemplate）',
@@ -689,6 +689,6 @@ int main() {
       explanation: '正解は「画面遷移（Title/Play/GameOver）など疎結合性と動的な差し替えが重要な高位レイヤーには仮想関数を使い、弾幕・パーティクル・物理剛体など毎フレーム大量に処理されるコア層にはCRTPやデータ指向配列を使う」です。アーキテクチャの柔軟性が求められる高位モジュールには仮想関数（ObserverやStateパターン）が最適であり、極限のパフォーマンスが求められる大量オブジェクトの更新にはCRTPやデータ指向設計が威力を発揮します。'
     }
   ],
-  prevChapterSlug: 'chapter-9-multiple-inheritance-diamond',
-  nextChapterSlug: 'chapter-11-memory-pool-allocator'
+  prevChapterSlug: 'chapter-classic-9-multiple-inheritance-diamond',
+  nextChapterSlug: 'chapter-classic-11-memory-pool-allocator'
 };

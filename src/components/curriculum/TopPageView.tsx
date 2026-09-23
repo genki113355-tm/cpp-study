@@ -47,11 +47,11 @@ interface KeywordIndexItem {
 }
 
 const KEYWORD_INDEX: KeywordIndexItem[] = [
-  { name: 'RAII / リソース管理', category: 'モダン設計', slug: 'chapter-5-smart-pointers-raii', badge: 'Ch.5 (M1)', desc: 'コンストラクタで確保しデストラクタで解放' },
-  { name: 'スマートポインタ (unique_ptr)', category: 'モダン設計', slug: 'chapter-5-smart-pointers-raii', badge: 'Ch.5 (M1)', desc: '単独所有権・生deleteの完全撲滅' },
+  { name: 'RAII / リソース管理', category: 'モダン設計', slug: 'chapter-modern-1-smart-pointers-raii', badge: 'Ch.5 (M1)', desc: 'コンストラクタで確保しデストラクタで解放' },
+  { name: 'スマートポインタ (unique_ptr)', category: 'モダン設計', slug: 'chapter-modern-1-smart-pointers-raii', badge: 'Ch.5 (M1)', desc: '単独所有権・生deleteの完全撲滅' },
   { name: '共有ポインタ (shared_ptr)', category: 'モダン設計', slug: 'chapter-6-observer-pattern', badge: 'Ch.6 (M2)', desc: '循環参照なき共同所有と弱参照' },
   { name: '固定長メモリプール / アロケータ', category: '極限性能', slug: 'chapter-11-memory-pool', badge: 'Ch.11 (L11)', desc: '断片化撲滅・O(1)定数時間の高速メモリ切り売り' },
-  { name: '動的多態性 / vtable / 仮想関数', category: 'OOP基礎', slug: 'chapter-4-inheritance-polymorphism', badge: 'Ch.4 (L4)', desc: 'switch分岐の破綻を解消する開閉原則' },
+  { name: '動的多態性 / vtable / 仮想関数', category: 'OOP基礎', slug: 'chapter-classic-4-inheritance-polymorphism', badge: 'Ch.4 (L4)', desc: 'switch分岐の破綻を解消する開閉原則' },
   { name: 'Observer パターン (イベント通知)', category: 'デザインパターン', slug: 'chapter-6-observer-pattern', badge: 'Ch.6 (M2)', desc: '実績解除・効果音とゲーム本体の完全疎結合' },
   { name: 'State パターン (シーン遷移)', category: 'デザインパターン', slug: 'chapter-6-observer-pattern', badge: 'Ch.6 (M2)', desc: '巨大if文を排除したゲームループ状態制御' },
   { name: 'Strategy パターン (アルゴリズム分離)', category: 'デザインパターン', slug: 'chapter-6-observer-pattern', badge: 'Ch.6 (M2)', desc: '敵の弾幕軌道やAIロジックを実行時に差し替え' },
@@ -107,7 +107,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
       setDiagnosisStep(3);
     } else if (exp === 'c_ok') {
       setDiagnosisResult({
-        slug: 'chapter-2-classes-and-files',
+        slug: 'chapter-classic-2-classes-and-files',
         code: 'L2',
         title: 'レガシー第2章：クラス化と責務のカプセル化',
         reason: 'C言語の構造体からC++のclass（privateカプセル化）への進化を、自機Playerクラスを通して直感的に理解できます！',
@@ -122,7 +122,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
   const handleSelectGoal = (goal: 'modern' | 'reading' | 'extreme') => {
     if (goal === 'modern') {
       setDiagnosisResult({
-        slug: 'chapter-5-smart-pointers-raii',
+        slug: 'chapter-modern-1-smart-pointers-raii',
         code: 'M1',
         title: 'モダン第1章：スマートポインタとRAII',
         reason: '生deleteを完全に撲滅する unique_ptr / shared_ptr と決定論的寿命管理（RAII）から、現代C++の世界へ飛び込みましょう！',
@@ -138,7 +138,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
       });
     } else {
       setDiagnosisResult({
-        slug: 'chapter-11-memory-pool-allocator',
+        slug: 'chapter-classic-11-memory-pool-allocator',
         code: 'L11',
         title: 'レガシー第11章：独自メモリアロケータと固定長プール管理',
         reason: 'ヒープ断片化を撲滅し、毎フレームのnew/deleteをO(1)定数時間に変えるゲームエンジン極限アーキテクチャを学びます！',
@@ -277,7 +277,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
               <span className="px-3 py-1 rounded-lg bg-slate-950/80 border border-slate-800 text-slate-300">完全無料・登録不要</span>
               <button
                 type="button"
-                onClick={() => onOpenGameModal ? onOpenGameModal('v2_classes', 'L2', 'クラス化とファイル分割') : onSelectChapter('chapter-2-classes-and-files')}
+                onClick={() => onOpenGameModal ? onOpenGameModal('v2_classes', 'L2', 'クラス化とファイル分割') : onSelectChapter('chapter-classic-2-classes-and-files')}
                 className="px-3 py-1 rounded-lg bg-cyan-950/80 hover:bg-cyan-900/90 border border-cyan-500/50 text-cyan-300 hover:text-cyan-100 transition active:scale-95 cursor-pointer flex items-center gap-1.5 shadow-sm hover:shadow-[0_0_15px_rgba(6,182,212,0.35)]"
                 title="Webエミュレータを今すぐ起動して遊ぶ"
               >
@@ -342,7 +342,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
               <div className="flex flex-wrap gap-2 text-xs font-mono">
                 <button
                   type="button"
-                  onClick={() => onSelectChapter('chapter-1-spaghetti-code')}
+                  onClick={() => onSelectChapter('chapter-classic-1-spaghetti-code')}
                   className="px-2.5 py-1.5 rounded-xl bg-slate-900/90 hover:bg-cyan-950/70 border border-slate-800 hover:border-cyan-500/50 text-slate-300 hover:text-cyan-300 transition flex items-center gap-1.5 cursor-pointer"
                 >
                   <span>🔰 初学者・基礎から</span>
@@ -828,7 +828,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {/* 問い 1 */}
           <div 
-            onClick={() => onSelectChapter('chapter-4-inheritance-polymorphism')}
+            onClick={() => onSelectChapter('chapter-classic-4-inheritance-polymorphism')}
             className="p-5 rounded-2xl bg-gradient-to-br from-slate-900 via-[#0d1524] to-slate-950 border border-slate-800 hover:border-amber-500/50 transition-all cursor-pointer group shadow-lg flex flex-col justify-between"
           >
             <div className="space-y-2.5">
@@ -853,7 +853,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
 
           {/* 問い 2 */}
           <div 
-            onClick={() => onSelectChapter('chapter-5-smart-pointers-raii')}
+            onClick={() => onSelectChapter('chapter-modern-1-smart-pointers-raii')}
             className="p-5 rounded-2xl bg-gradient-to-br from-slate-900 via-[#0d1524] to-slate-950 border border-slate-800 hover:border-cyan-500/50 transition-all cursor-pointer group shadow-lg flex flex-col justify-between"
           >
             <div className="space-y-2.5">
@@ -903,7 +903,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
 
           {/* 問い 4 */}
           <div 
-            onClick={() => onSelectChapter('chapter-11-memory-pool-allocator')}
+            onClick={() => onSelectChapter('chapter-classic-11-memory-pool-allocator')}
             className="p-5 rounded-2xl bg-gradient-to-br from-slate-900 via-[#0d1524] to-slate-950 border border-slate-800 hover:border-emerald-500/50 transition-all cursor-pointer group shadow-lg flex flex-col justify-between"
           >
             <div className="space-y-2.5">
@@ -958,8 +958,8 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
           {/* 初心者 */}
           <a
-            href="/chapter-1-spaghetti-code"
-            onClick={(e) => { e.preventDefault(); onSelectChapter('chapter-1-spaghetti-code'); }}
+            href="/chapter-classic-1-spaghetti-code"
+            onClick={(e) => { e.preventDefault(); onSelectChapter('chapter-classic-1-spaghetti-code'); }}
             className="p-4 rounded-2xl bg-gradient-to-br from-amber-950/40 via-slate-900 to-slate-950 border border-amber-500/30 hover:border-amber-400 hover:shadow-lg hover:shadow-amber-500/10 transition-all group flex flex-col justify-between cursor-pointer no-underline text-inherit"
           >
             <div className="space-y-2">
@@ -978,8 +978,8 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
 
           {/* モダンC++ */}
           <a
-            href="/chapter-5-smart-pointers-raii"
-            onClick={(e) => { e.preventDefault(); onSelectChapter('chapter-5-smart-pointers-raii'); }}
+            href="/chapter-modern-1-smart-pointers-raii"
+            onClick={(e) => { e.preventDefault(); onSelectChapter('chapter-modern-1-smart-pointers-raii'); }}
             className="p-4 rounded-2xl bg-gradient-to-br from-cyan-950/40 via-slate-900 to-slate-950 border border-cyan-500/30 hover:border-cyan-400 hover:shadow-lg hover:shadow-cyan-500/10 transition-all group flex flex-col justify-between cursor-pointer no-underline text-inherit"
           >
             <div className="space-y-2">
@@ -1092,8 +1092,8 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
 
             <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5">
               <a
-                href="/chapter-1-spaghetti-code"
-                onClick={(e) => { e.preventDefault(); onSelectChapter('chapter-1-spaghetti-code'); }}
+                href="/chapter-classic-1-spaghetti-code"
+                onClick={(e) => { e.preventDefault(); onSelectChapter('chapter-classic-1-spaghetti-code'); }}
                 className="flex-1 py-3 px-4 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold font-mono text-xs sm:text-sm text-center transition flex items-center justify-center gap-2 shadow-lg shadow-amber-500/20 cursor-pointer no-underline"
               >
                 <span>第1章（L1）からスタート</span>
@@ -1148,8 +1148,8 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
 
             <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5">
               <a
-                href="/chapter-5-smart-pointers-raii"
-                onClick={(e) => { e.preventDefault(); onSelectChapter('chapter-5-smart-pointers-raii'); }}
+                href="/chapter-modern-1-smart-pointers-raii"
+                onClick={(e) => { e.preventDefault(); onSelectChapter('chapter-modern-1-smart-pointers-raii'); }}
                 className="flex-1 py-3 px-4 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold font-mono text-xs sm:text-sm text-center transition flex items-center justify-center gap-2 shadow-lg shadow-cyan-500/20 cursor-pointer no-underline"
               >
                 <span>モダン第1章（M1）からスタート</span>
@@ -1846,7 +1846,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
         <div className="flex flex-wrap items-center justify-center gap-4">
           <button
             type="button"
-            onClick={() => onSelectChapter('chapter-1-spaghetti-code')}
+            onClick={() => onSelectChapter('chapter-classic-1-spaghetti-code')}
             className="px-6 py-3.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold font-mono text-sm sm:text-base transition shadow-xl shadow-amber-500/20 active:scale-95 inline-flex items-center gap-2 cursor-pointer"
           >
             <span>🏛️ クラシック【L】第1章から開始</span>
@@ -1854,7 +1854,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
           </button>
           <button
             type="button"
-            onClick={() => onSelectChapter('chapter-5-smart-pointers-raii')}
+            onClick={() => onSelectChapter('chapter-modern-1-smart-pointers-raii')}
             className="px-6 py-3.5 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold font-mono text-sm sm:text-base transition shadow-xl shadow-cyan-500/20 active:scale-95 inline-flex items-center gap-2 cursor-pointer"
           >
             <span>🚀 モダン【M】第1章から開始</span>

@@ -2,7 +2,7 @@ import { Chapter } from '../../types/curriculum';
 
 export const chapter5: Chapter = {
   id: 5,
-  slug: 'chapter-5-smart-pointers-raii',
+  slug: 'chapter-modern-1-smart-pointers-raii',
   courseTrack: 'modern',
   courseChapterCode: 'M1',
   title: 'モダン第1章：【C++11】スマートポインタとRAII（所有権設計とメモリ安全性）',
@@ -581,6 +581,6 @@ public:
       explanation: '正解は「循環参照（Cyclic Reference）。片方を std::weak_ptr にして所有権の輪を断ち切る」です。weak_ptr は参照カウンタを増やさない「見守り専用」のポインタであるため、循環参照による死のロックを完全に防ぐことができます。'
     }
   ],
-  nextChapterSlug: 'modern-2-move-and-modern-features'
+  nextChapterSlug: 'chapter-modern-2-move-semantics'
 };
 

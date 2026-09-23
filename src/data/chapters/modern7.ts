@@ -2,7 +2,7 @@ import { Chapter } from '../../types/curriculum';
 
 export const chapterM7: Chapter = {
   id: 19,
-  slug: 'chapter-modern-7-ranges-views',
+  slug: 'chapter-modern-13-ranges-views',
   courseTrack: 'modern',
   courseChapterCode: 'M13',
   title: 'モダン第13章：【C++20】Ranges & Views による関数型パイプライン',
@@ -10,8 +10,8 @@ export const chapterM7: Chapter = {
   badge: 'モダンC++ M13【C++20】：Ranges',
   gameVersion: 'v7_ecs_final',
   description: 'ゲームプログラミングでは、「生きている敵の中から、HPが半分以下で、自機から100ピクセル以内にいる敵の上位3体を抽出し、ロックオンマーカーを付与する」といったコレクション走査・フィルタリング処理が毎フレーム無数に発生します。従来のC++では、これらを記述するためにネストしたfor文とif文の樹海を作るか、中間結果を一時的な `std::vector` にコピーしてメモリを浪費していました。C++20 で導入された【Rangesライブラリ】と【std::views】は、UNIXパイプラインのように演算子（`|`）で処理を連結し、要素が必要になった瞬間にのみ計算を行う【遅延評価（Lazy Evaluation）】を提供します。本章では、一時メモリ割り当てを完全にゼロにし、可読性と実行速度を両立する新世代の関数型データパイプラインをマスターします。',
-  prevChapterSlug: 'chapter-modern-5-coroutines',
-  nextChapterSlug: 'chapter-modern-8-modules',
+  prevChapterSlug: 'chapter-modern-12-coroutines',
+  nextChapterSlug: 'chapter-modern-14-modules',
   sections: [
     {
       id: 'sec-m7-nested-loop-hell',

@@ -2,7 +2,7 @@ import { Chapter } from '../../types/curriculum';
 
 export const chapter1: Chapter = {
   id: 1,
-  slug: 'chapter-1-spaghetti-code',
+  slug: 'chapter-classic-1-spaghetti-code',
   courseTrack: 'classic',
   courseChapterCode: 'C1',
   title: 'レガシー第1章：1ファイルで作るスパゲティコード（ビフォー：意図の不在）',
@@ -11,7 +11,7 @@ export const chapter1: Chapter = {
   description: 'Windowsコンソール上で文字（自機 _A_、敵 V、弾 |）を使って描画する最小限のインベーダーゲーム。C言語で関数設計を書いてきた人が「とりあえず動かす」ために書いてしまいがちな、意図の不在によるスパゲティコードを徹底的に解剖します。',
   gameVersion: 'v1_spaghetti',
   prevChapterSlug: undefined,
-  nextChapterSlug: 'chapter-2-classes-and-files',
+  nextChapterSlug: 'chapter-classic-2-classes-and-files',
   sections: [
     {
       id: 'sec1-paradigm',

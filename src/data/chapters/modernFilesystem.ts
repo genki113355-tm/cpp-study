@@ -11,7 +11,7 @@ export const chapterModernFilesystem: Chapter = {
   gameVersion: 'v5_smart_pointers',
   description: 'ゲーム開発において、セーブデータの保存やアセット（テクスチャ・BGM・ステージ定義）の探索は必須の処理です。しかし、C++03/11の標準ライブラリには「ディレクトリ内のファイル一覧を取得する」機能すら存在せず、Windowsなら Win32 API（FindFirstFile / FindNextFile）、Mac/Linuxなら POSIX（opendir / readdir）と、OSごとの生APIを #ifdef で泥臭く分岐して書くしかありませんでした。パス区切り文字の違い（Windowsの「\\」とUnixの「/」）によるバグも絶えませんでした。C++17で標準化された【std::filesystem】は、この長年の悪夢に完全な終止符を打ちました。本章では、スマートなパス結合演算子（/）、ディレクトリ走査イテレータによるアセット自動検出、そしてゲーム業界の例外禁止環境に必須の非例外版エラーハンドリング（std::error_code）を用いた安全なセーブデータ保護手法を体得します。',
   prevChapterSlug: 'chapter-modern-8-if-constexpr',
-  nextChapterSlug: 'chapter-7-modern-cpp-ecs',
+  nextChapterSlug: 'chapter-modern-10-ecs',
   sections: [
     {
       id: 'sec-m9-os-path-hell',

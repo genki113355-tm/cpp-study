@@ -11,7 +11,7 @@ export const chapterModernStringView: Chapter = {
   gameVersion: 'v5_smart_pointers',
   description: '文字列を関数に渡す際、レガシーC++では const std::string& を使うのが常識とされてきました。しかし、文字列リテラル（"laser.png"）や C言語形式の const char* を渡すたびに、std::string の一時オブジェクトが生成され、裏で暗黙のヒープメモリ確保（malloc/new）が走るという致命的な落とし穴が存在します。何万回ものアセット名照合やテキスト描画でこれが起きると、激しいヒープ断片化とフレーム落ち（GCスパイクに似た停止）の原因になります。C++17で導入された std::string_view は、文字列の「ポインタと長さ」だけを保持するわずか16バイトの超軽量ビューです。文字列のコピーやアロケーションを完全ゼロ（O(1)）にし、部分文字列の切り出し（substr）も一瞬で完了します。本章では、その驚異的なメモリ構造から、現場プロが最も警戒すべき「ダングリング参照」や「null終端文字（\\0）の不在」という落とし穴までを徹底解剖します。',
   prevChapterSlug: 'chapter-modern-5-multithreading',
-  nextChapterSlug: 'chapter-modern-4-modern-type-system',
+  nextChapterSlug: 'chapter-modern-7-modern-type-system',
   sections: [
     {
       id: 'sec-m6-pain-of-string-copy',

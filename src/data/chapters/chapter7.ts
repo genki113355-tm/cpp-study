@@ -2,7 +2,7 @@ import { Chapter } from '../../types/curriculum';
 
 export const chapter7: Chapter = {
   id: 7,
-  slug: 'chapter-7-modern-cpp-ecs',
+  slug: 'chapter-modern-10-ecs',
   courseTrack: 'modern',
   courseChapterCode: 'M10',
   title: 'モダン第10章：【C++17】継承より合成とECS（データ指向設計とキャッシュ効率）',
@@ -279,5 +279,5 @@ player->addComponent<ShooterComponent>(3, true);            // 3WAY弾`,
     }
   ],
   prevChapterSlug: 'chapter-modern-9-filesystem',
-  nextChapterSlug: 'chapter-modern-6-concepts'
+  nextChapterSlug: 'chapter-modern-11-concepts'
 };

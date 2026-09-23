@@ -168,7 +168,7 @@ export const Footer: React.FC = () => {
           </div>
 
           <p className="text-slate-400 flex items-center justify-center gap-1 text-xs pt-1 font-mono">
-            <span>© 2026 シロクマC++ラボ (shirokuma-cpp.jp). All rights reserved.</span>
+            <span>© 2026 シロクマC++ラボ (shirokuma-tech.jp/cpp). All rights reserved.</span>
           </p>
         </div>
       </footer>

@@ -220,7 +220,7 @@ export const PersonaTrackSelector: React.FC<PersonaTrackSelectorProps> = ({ onSe
                 {(() => {
                   const rankName = smellCount >= 3 ? '🚨 重度レガシー警戒級' : smellCount > 0 ? '⚠️ 潜伏負債あり級' : '✨ クリーンアーキテクト級';
                   const tweetText = `シロクマC++ラボの【現場C++コードスメル診断】を受けました！\n危険度スコア: ${smellCount} / 5 項目該当\n判定: 【${rankName}】\nあなたの現場のコードは大丈夫？`;
-                  const shareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(tweetText)}&url=${encodeURIComponent('https://shirokuma-cpp.jp/')}&hashtags=${encodeURIComponent('シロクマcpp,cpp,オブジェクト指向,ゲーム開発')}`;
+                  const shareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(tweetText)}&url=${encodeURIComponent('https://shirokuma-tech.jp/cpp/')}&hashtags=${encodeURIComponent('シロクマcpp,cpp,オブジェクト指向,ゲーム開発')}`;
                   return (
                     <a
                       href={shareUrl}

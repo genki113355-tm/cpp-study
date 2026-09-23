@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ALL_CHAPTERS, getChapterBySlug } from './data/chapters';
+import { ALL_CHAPTERS, getChapterBySlug, SLUG_REDIRECT_MAP } from './data/chapters';
 import { Navbar } from './components/layout/Navbar';
 import { Sidebar } from './components/layout/Sidebar';
 import { Footer } from './components/layout/Footer';
@@ -78,14 +78,33 @@ export const App: React.FC = () => {
     setIsGlobalGameModalOpen(true);
   };
 
-  // 初回ロード時のURL正規化（旧ハッシュURLで訪問された場合にクリーンパスへ補正）
+  // 初回ロード時のURL正規化（旧ハッシュURLや旧スラグで訪問された場合に正規クリーンパスへ補正）
   useEffect(() => {
     const isSub = window.location.pathname.startsWith('/cpp');
     const prefix = isSub ? '/cpp' : '';
     const hash = window.location.hash.replace('#', '');
-    if (hash && getChapterBySlug(hash)) {
-      window.history.replaceState(null, '', `${prefix}/${hash}`);
-    } else if (currentSlug === 'top' && window.location.hash) {
+
+    let path = window.location.pathname.replace(/^\/+/, '').replace(/\/+$/, '');
+    if (path.startsWith('cpp/')) path = path.slice(4);
+
+    // 旧スラグからの自動補正
+    if (path && SLUG_REDIRECT_MAP[path]) {
+      const canonicalSlug = SLUG_REDIRECT_MAP[path];
+      window.history.replaceState(null, '', `${prefix}/${canonicalSlug}`);
+      setCurrentSlug(canonicalSlug);
+      return;
+    }
+
+    if (hash) {
+      const resolvedSlug = SLUG_REDIRECT_MAP[hash] || hash;
+      if (getChapterBySlug(resolvedSlug)) {
+        window.history.replaceState(null, '', `${prefix}/${resolvedSlug}`);
+        setCurrentSlug(resolvedSlug);
+        return;
+      }
+    }
+
+    if (currentSlug === 'top' && window.location.hash) {
       window.history.replaceState(null, '', prefix || '/');
     }
   }, []);

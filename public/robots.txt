@@ -1,4 +1,4 @@
-﻿User-agent: *
+User-agent: *
 Allow: /
 
-Sitemap: https://shirokuma-cpp.jp/sitemap.xml
+Sitemap: https://shirokuma-tech.jp/cpp/sitemap.xml
