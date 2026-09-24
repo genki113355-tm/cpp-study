@@ -141,16 +141,17 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
   const hasPractice = hasLab || hasChallenge;
   const hasQuiz = Boolean(chapter.quiz && chapter.quiz.length > 0);
 
-  // 初期タブ（URLハッシュ尊重、デフォルトは 'learn'）
+  // 初期タブ（URLハッシュ尊重、ゲーム対応章は 'game'（① ゲーム体験）からスタート）
   const [activeTab, setActiveTab] = useState<ChapterTab>(() => {
     if (typeof window !== 'undefined') {
       const hash = window.location.hash.toLowerCase();
-      if (hash === '#game') return 'game';
-      if (hash === '#practice') return 'practice';
-      if (hash === '#quiz') return 'quiz';
+      if (hash === '#game' && hasGame) return 'game';
+      if (hash === '#learn') return 'learn';
+      if (hash === '#practice' && hasPractice) return 'practice';
+      if (hash === '#quiz' && hasQuiz) return 'quiz';
       if (hash === '#all') return 'all';
     }
-    return 'learn';
+    return hasGame ? 'game' : 'learn';
   });
   const [scrollProgress, setScrollProgress] = useState<number>(0);
 
@@ -169,12 +170,16 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
     return () => window.removeEventListener('scroll', handleScroll);
   }, [chapter.slug]);
 
-  // 章切り替え時にタブをデフォルト（'learn'、またはURLハッシュ指定）にリセット
+  // 章切り替え時にタブをデフォルト（ゲームがあれば 'game'、なければ 'learn'、またはURLハッシュ指定）にリセット
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const hash = window.location.hash.toLowerCase();
       if (hash === '#game' && hasGame) {
         setActiveTab('game');
+        return;
+      }
+      if (hash === '#learn') {
+        setActiveTab('learn');
         return;
       }
       if (hash === '#practice' && hasPractice) {
@@ -190,14 +195,15 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
         return;
       }
     }
-    setActiveTab('learn');
+    setActiveTab(hasGame ? 'game' : 'learn');
   }, [chapter.slug, hasGame, hasPractice, hasQuiz]);
 
   // タブ切り替え＆スムーズスクロールヘルパー
   const switchTab = (tab: ChapterTab, targetElementId?: string) => {
     setActiveTab(tab);
     if (typeof window !== 'undefined') {
-      if (tab !== 'learn') {
+      const defaultTab = hasGame ? 'game' : 'learn';
+      if (tab !== defaultTab) {
         window.history.replaceState(null, '', `#${tab}`);
       } else {
         window.history.replaceState(null, '', window.location.pathname + window.location.search);
