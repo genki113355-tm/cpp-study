@@ -183,9 +183,9 @@ export const STEP_BY_STEP_LABS: Record<string, ChapterLabScenario> = {
     ]
   },
 
-  // L2: ポインタ地獄（二重解放・クラッシュ）と所有権
-  'chapter-classic-2-pointer-hell': {
-    chapterSlug: 'chapter-classic-2-pointer-hell',
+  // L2: クラス化とファイル分割（private カプセル化）
+  'chapter-classic-2-classes-and-files': {
+    chapterSlug: 'chapter-classic-2-classes-and-files',
     chapterBadge: 'L2 演習',
     title: '公開メンバの直接書き換え破綻と class による private 隠蔽',
     subtitle: '誰でも触れる public 構造体の数値を、class と private による鉄壁ガードで守り抜く！',
@@ -334,8 +334,8 @@ export const STEP_BY_STEP_LABS: Record<string, ChapterLabScenario> = {
   },
 
   // M1: モダンC++スマートポインタ（unique_ptrによるRAII自動解放）
-  'chapter-modern-1-unique-ptr': {
-    chapterSlug: 'chapter-modern-1-unique-ptr',
+  'chapter-modern-1-smart-pointers-raii': {
+    chapterSlug: 'chapter-modern-1-smart-pointers-raii',
     chapterBadge: 'M1 演習',
     title: '生ポインタ解放漏れ（Memory Leak）と std::unique_ptr による自動RAII',
     subtitle: 'エラーや早期returnでdeleteがスキップされる惨劇を、スマートポインタでゼロにする！',
@@ -472,8 +472,8 @@ export const STEP_BY_STEP_LABS: Record<string, ChapterLabScenario> = {
   },
 
   // M10: モダンC++データ指向ECS設計（極限パフォーマンスと柔軟性）
-  'chapter-modern-10-game-loop': {
-    chapterSlug: 'chapter-modern-10-game-loop',
+  'chapter-modern-10-ecs': {
+    chapterSlug: 'chapter-modern-10-ecs',
     chapterBadge: 'M10 演習',
     title: '巨大継承ツリーのキャッシュミス破綻とデータ指向ECS',
     subtitle: '仮想関数テーブル（vtable）のポインタジャンプによる低速化を、SoA配列化で50倍高速化！',

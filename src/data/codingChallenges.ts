@@ -46,9 +46,9 @@ export const CODING_CHALLENGES: Record<string, CodingChallenge> = {
     id: 'challenge-l1',
     chapterSlug: 'chapter-classic-1-spaghetti-code',
     chapterBadge: 'L1',
-    title: '演習L1：グローバル変数を関数で安全にカプセル化せよ！',
-    missionObjective: 'グローバル変数に直接代入する危険なコードを廃止し、引数で安全に更新を行う movePlayer(delta) 関数と addScore(points) 関数を実装してテストをパスさせてください。',
-    mentorAdvice: '「誰がいつ値を書き換えたか分からない」のがスパゲティの元凶じゃ！まずは関数という関所を設け、不正な座標（0未満など）を防ぐガード条件を入れるのじゃ！',
+    title: '演習L1：グローバル変数直書きを脱却！関数による境界ガード（手続き化）を実装せよ！',
+    missionObjective: 'グローバル変数に直接代入するスパゲティコードを廃止し、引数で安全に更新を行う movePlayer(delta) 関数と addScore(points) 関数を実装してテストをパスさせてください。',
+    mentorAdvice: '「誰がいつ値を書き換えたか分からない」のがスパゲティの元凶じゃ！直接代入をやめて関数という関所を設け、画面外（0未満）への不正移動を防ぐガード条件を入れるのじゃ！',
     initialCode: `#include <iostream>
 
 // グローバル状態
