@@ -166,18 +166,43 @@ export const CodeChallengeRunner: React.FC<CodeChallengeRunnerProps> = ({ challe
           </div>
 
           <div className="mt-3 pt-2.5 border-t border-cyan-900/50 flex items-center justify-between flex-wrap gap-2 text-xs">
-            <span className="text-slate-400">💡 迷ったときは、右下の「ヒント」を見るか、模範解答を直接セットして試せます：</span>
-            <button
-              onClick={() => {
-                setCode(challenge.solutionCode);
-                setResult(null);
-                setIsPassed(false);
-              }}
-              className="text-cyan-400 hover:text-cyan-300 hover:underline flex items-center gap-1 font-bold font-mono text-xs cursor-pointer bg-cyan-950/60 px-2.5 py-1 rounded-lg border border-cyan-500/30"
-            >
-              <span>🔑 模範解答コードをエディタにセットする</span>
-            </button>
+            <span className="text-slate-400">💡 迷ったときは「ヒント」を見るか、模範解答を直接セットして試せます：</span>
+            <div className="flex items-center gap-2 flex-wrap">
+              <button
+                type="button"
+                onClick={() => setShowHint((p) => !p)}
+                className="text-amber-300 hover:text-amber-200 flex items-center gap-1.5 font-bold font-mono text-xs cursor-pointer bg-amber-950/70 hover:bg-amber-900/80 px-3 py-1 rounded-lg border border-amber-500/50 transition active:scale-95 shadow-sm"
+                title="攻略のヒントを開閉"
+              >
+                <Lightbulb className="w-3.5 h-3.5 text-amber-400" />
+                <span>💡 ヒントを見る {showHint ? <ChevronUp className="w-3 h-3 inline" /> : <ChevronDown className="w-3 h-3 inline" />}</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => {
+                  setCode(challenge.solutionCode);
+                  setResult(null);
+                  setIsPassed(false);
+                }}
+                className="text-cyan-400 hover:text-cyan-300 hover:underline flex items-center gap-1 font-bold font-mono text-xs cursor-pointer bg-cyan-950/60 hover:bg-cyan-900/60 px-2.5 py-1 rounded-lg border border-cyan-500/30 transition active:scale-95"
+                title="模範解答をエディタに自動入力"
+              >
+                <span>🔑 模範解答コードをセット</span>
+              </button>
+            </div>
           </div>
+
+          {/* エディタ直上にも折りたたみヒントボックスを展開 */}
+          {showHint && (
+            <div className="mt-3 p-4 rounded-xl bg-amber-950/40 border border-amber-500/40 text-xs sm:text-sm text-amber-200/90 leading-relaxed font-sans animate-fadeIn">
+              <div className="font-bold flex items-center gap-1.5 mb-1.5 text-amber-400">
+                <Lightbulb className="w-4 h-4" />
+                <span>攻略のヒント:</span>
+              </div>
+              <p className="whitespace-pre-line">{challenge.hint}</p>
+            </div>
+          )}
         </div>
       </div>
 
