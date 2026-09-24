@@ -40,6 +40,8 @@ import { CodeChallengeRunner } from '../playground/CodeChallengeRunner';
 import { CODING_CHALLENGES } from '../../data/codingChallenges';
 import { getChapterEvolution } from '../../data/chapterEvolution';
 import { getChapterMeta } from '../../data/chapterMetadata';
+import { StepByStepLab } from './StepByStepLab';
+import { getLabScenario } from '../../data/stepByStepLabs';
 
 type ViewMode = 'all' | 'learn' | 'code' | 'practice';
 
@@ -500,6 +502,19 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
                 </button>
               );
             })}
+            {getLabScenario(chapter.slug) && (
+              <button
+                type="button"
+                onClick={() => {
+                  document.getElementById('chapter-step-lab')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }}
+                className="px-2.5 py-1 rounded-xl bg-indigo-950/70 hover:bg-indigo-900/80 border border-indigo-500/40 hover:border-indigo-400 text-indigo-300 text-xs font-mono transition flex items-center gap-1.5 cursor-pointer shadow-sm active:scale-95"
+                title="ステップバイステップ設計演習へスクロール"
+              >
+                <span>🧪</span>
+                <span className="font-bold">ステップ演習</span>
+              </button>
+            )}
             {chapter.quiz && chapter.quiz.length > 0 && (
               <button
                 type="button"
@@ -1017,6 +1032,11 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
       </React.Fragment>
     );
   })}
+
+      {/* 🧪 ステップバイステップ設計演習（対話型ハンズオン） */}
+      {(viewMode === 'all' || viewMode === 'practice') && (
+        <StepByStepLab chapterSlug={chapter.slug} />
+      )}
 
       {/* 実践ハンズオン演習道場（コーディング課題が定義されている章で自動表示） */}
       {(viewMode === 'all' || viewMode === 'practice') && CODING_CHALLENGES[chapter.slug] && (
