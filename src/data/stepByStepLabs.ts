@@ -8,6 +8,8 @@ export interface LabStep {
   badge: string;
   title: string;
   instruction: string;
+  command: string;
+  matchKeywords: string[];
   code: string;
   codeFilename: string;
   actionButtonText: string;
@@ -46,7 +48,9 @@ export const STEP_BY_STEP_LABS: Record<string, ChapterLabScenario> = {
         totalSteps: 3,
         badge: 'STEP 1: 破綻の再現',
         title: 'グローバル変数が勝手に書き換わってゲームが壊れる瞬間',
-        instruction: '以下のコードを実行して、グローバル変数 g_player_x がどこからでも勝手に変更されて座標がマイナスに吹き飛ぶバグを再現してみましょう。',
+        instruction: '以下のコードを実行して、グローバル変数 g_player_x がどこからでも勝手に変更されて座標がマイナスに吹き飛ぶバグを再現してみましょう。\n➔ `./spaghetti_bad` と入力（または [Tab] キーで補完）',
+        command: './spaghetti_bad',
+        matchKeywords: ['spaghetti_bad', './spaghetti_bad', 'game'],
         codeFilename: 'spaghetti_bad.cpp',
         code: [
           '#include <iostream>',
@@ -64,87 +68,71 @@ export const STEP_BY_STEP_LABS: Record<string, ChapterLabScenario> = {
           '    std::cout << "[GAME START] プレイヤー座標: " << g_player_x << std::endl;',
           '    updateEnemy();',
           '    std::cout << "[UPDATE] 敵の更新後... プレイヤー座標: " << g_player_x << std::endl;',
-          '    ',
           '    if (g_player_x < 0) {',
-          '        std::cout << "💥 [CRASH] 画面外アクセス違反！自機が画面外へ吹き飛びました！" << std::endl;',
-          '        return 1;',
+          '        std::cout << "💥 [CRASH] プレイヤーが画面外へ吹き飛びゲームがフリーズしました！" << std::endl;',
           '    }',
           '    return 0;',
           '}'
         ].join('\n'),
-        actionButtonText: 'コードを実行してクラッシュを再現する ➔',
+        actionButtonText: 'コードを実行して破綻を再現する ➔',
         simulatedOutput: {
           type: 'error',
           lines: [
-            '$ g++ -O2 spaghetti_bad.cpp -o game && ./game',
+            '$ ./spaghetti_bad',
             '[GAME START] プレイヤー座標: 10',
             '[UPDATE] 敵の更新後... プレイヤー座標: -999',
-            '💥 [CRASH] 画面外アクセス違反！自機が画面外へ吹き飛びました！',
-            'Segmentation fault (core dumped) exit code: 1'
+            '💥 [CRASH] プレイヤーが画面外へ吹き飛びゲームがフリーズしました！',
+            'ERROR: g_player_x is -999 (Invalid negative coordinate).'
           ]
         },
         dialogue: {
           speaker: 'penguin',
           emotion: 'shocked',
-          text: 'ヒエッ…！updateEnemy() という全く無関係な関数の中で g_player_x が書き換えられて、画面外に吹き飛んで落ちてしまいました！グローバル変数だと「誰がいつ値を壊したか」が全く追跡できません！'
+          text: 'わわっ！敵の移動関数 updateEnemy() を呼んだだけなのに、関係ないはずの自機の座標（g_player_x）が勝手に -999 に書き換えられてクラッシュしました！'
         },
-        takeaway: 'グローバル変数は「全員が書き換え可能な共有ホワイトボード」。どこか1箇所でもミスするとシステム全体が即死します。'
+        takeaway: 'グローバル変数は「誰でも・どこからでも書き換えられる」ため、プログラムが大きくなると原因不明のバグの温床になります。'
       },
       {
         stepNumber: 2,
         totalSteps: 3,
         badge: 'STEP 2: 設計の外科手術',
-        title: '関数という「関所」を設けて不正な値をガードする',
-        instruction: 'グローバル変数への直接代入を禁止し、移動は必ず movePlayer(delta) 関数を経由する設計にリファクタリングします。改善コードを適用してみましょう。',
+        title: '関数によるカプセル化（不正な代入を跳ね返す関所の設置）',
+        instruction: '変数を直接触らせず、必ず「関所（関数）」を通す設計コードを確認します。\n➔ `cat spaghetti_guard.cpp` と入力（または [Tab] キーで補完）',
+        command: 'cat spaghetti_guard.cpp',
+        matchKeywords: ['cat', 'spaghetti_guard', 'guard'],
         codeFilename: 'spaghetti_guard.cpp',
         code: [
           '#include <iostream>',
           '',
-          '// 内部変数（直接触らせない）',
+          '// 🛡️ 改善：ファイル外から隠蔽（static）',
           'static int s_player_x = 10;',
           '',
-          '// 🛡️ 関所（ガード関数）：0未満への移動を水際でブロック！',
-          'void movePlayer(int delta) {',
-          '    if (s_player_x + delta < 0) {',
+          '// 関所（セッター）：不正な値は門前払いする',
+          'void movePlayer(int delta_x) {',
+          '    int next_x = s_player_x + delta_x;',
+          '    if (next_x < 0 || next_x > 800) {',
           '        std::cout << "⚠️ [GUARD] 警告: 画面外（マイナス座標）への移動をブロックしました！" << std::endl;',
-          '        return; // 不正な移動を却下！',
+          '        return; // 代入を拒絶して自機を守る！',
           '    }',
-          '    s_player_x += delta;',
+          '    s_player_x = next_x;',
           '}',
           '',
-          'int getPlayerX() {',
-          '    return s_player_x;',
-          '}',
-          '',
-          'int main() {',
-          '    std::cout << "[GAME START] プレイヤー座標: " << getPlayerX() << std::endl;',
-          '    ',
-          '    // 正しい移動',
-          '    movePlayer(5);',
-          '    std::cout << "[MOVE +5] プレイヤー座標: " << getPlayerX() << std::endl;',
-          '',
-          '    // 不正な移動（画面外へ飛び出そうとする）',
-          '    movePlayer(-100);',
-          '    std::cout << "[MOVE -100 試行後] プレイヤー座標: " << getPlayerX() << std::endl;',
-          '    return 0;',
-          '}'
+          'int getPlayerX() { return s_player_x; }'
         ].join('\n'),
-        actionButtonText: '改善コードを適用してコンパイルする ➔',
+        actionButtonText: '関所ガードコードを確認・解析する ➔',
         simulatedOutput: {
           type: 'warning',
           lines: [
-            '$ g++ -O2 spaghetti_guard.cpp -o game && ./game',
-            '[GAME START] プレイヤー座標: 10',
-            '[MOVE +5] プレイヤー座標: 15',
-            '⚠️ [GUARD] 警告: 画面外（マイナス座標）への移動をブロックしました！',
-            '[MOVE -100 試行後] プレイヤー座標: 15',
-            '✨ プレイヤー座標は安全な「15」のまま維持されました！'
+            '$ cat spaghetti_guard.cpp',
+            '[Static Encapsulation Applied]',
+            's_player_x is now hidden inside player module.',
+            'Validation guard active: 0 <= next_x <= 800.'
           ]
         },
         dialogue: {
           speaker: 'shirokuma',
           emotion: 'teaching',
-          text: 'ガハハ！見事に不正な代入を跳ね返したな！「変数に直接代入させるな、関数という関所を通せ」――これがオブジェクト指向のカプセル化の第一歩じゃ！'
+          text: 'ガハハ！見よ！「変数に直接代入させるな、関数という関所を通せ」――これがオブジェクト指向のカプセル化の第一歩じゃ！不正な値が来ても、関所の if 文で跳ね返せるのだ！'
         },
         takeaway: '関数を経由させることで、「バリデーション（境界チェック）」と「デバッグログ」を一箇所に集約できます。'
       },
@@ -153,140 +141,130 @@ export const STEP_BY_STEP_LABS: Record<string, ChapterLabScenario> = {
         totalSteps: 3,
         badge: 'STEP 3: 安全性の検証・合格',
         title: 'テストによる自動検証とカプセル化スキルの獲得',
-        instruction: 'ユニットテストを実行し、あらゆる異常な移動コマンドに対してもプレイヤーが安全な範囲に留まることを自動検証しましょう！',
+        instruction: 'テストを実行し、あらゆる異常な移動コマンドに対してもプレイヤー座標が安全な範囲に留まることを検証しましょう！\n➔ `./test_player_guard` と入力（または [Tab] キーで補完）',
+        command: './test_player_guard',
+        matchKeywords: ['test_player_guard', './test_player_guard', 'test'],
         codeFilename: 'test_player_guard.cpp',
         code: [
-          '// 自動テストスイート',
-          'void test_boundary_protection() {',
-          '    assert(getPlayerX() == 15);',
-          '    movePlayer(-9999); // 巨大なマイナス値',
-          '    assert(getPlayerX() == 15); // ガードが働き壊れない！',
-          '    movePlayer(10);',
-          '    assert(getPlayerX() == 25); // 正しい値は通る！',
-          '    std::cout << "✅ 全テストケース通過: カプセル化による安全性立証完了" << std::endl;',
+          '#include <iostream>',
+          '// movePlayer(delta_x) のテスト',
+          'int main() {',
+          '    std::cout << "[TEST 1] 正常移動 (+5)..." << std::endl;',
+          '    movePlayer(5);',
+          '    std::cout << "プレイヤー座標: " << getPlayerX() << std::endl;',
+          '',
+          '    std::cout << "[TEST 2] 画面外飛び出し (-100)..." << std::endl;',
+          '    movePlayer(-100); // 弾かれるはず！',
+          '    std::cout << "プレイヤー座標: " << getPlayerX() << std::endl;',
+          '    std::cout << "🎉 ALL TESTS PASSED: カプセル化による防壁が完成しました！" << std::endl;',
+          '    return 0;',
           '}'
         ].join('\n'),
-        actionButtonText: '全自動テストを実行して合格を証明する ➔',
+        actionButtonText: 'テストを実行して安全性を証明する ➔',
         simulatedOutput: {
           type: 'success',
           lines: [
-            '$ ctest --verbose',
-            'Test #1: test_player_initial_position ......... Passed (0.01 sec)',
-            'Test #2: test_player_valid_movement ........... Passed (0.01 sec)',
-            'Test #3: test_boundary_protection ............. Passed (0.01 sec)',
-            '100% tests passed, 0 tests failed out of 3',
-            '🎉 ALL TESTS PASSED! カプセル化による防衛ライン構築完了！'
+            '$ ./test_player_guard',
+            '[TEST 1] 正常移動 (+5)...',
+            'プレイヤー座標: 15',
+            '[TEST 2] 画面外飛び出し (-100)...',
+            '⚠️ [GUARD] 警告: 画面外（マイナス座標）への移動をブロックしました！',
+            'プレイヤー座標: 15 (安全に保護された！)',
+            '🎉 ALL TESTS PASSED: カプセル化による防壁が完成しました！'
           ]
         },
         dialogue: {
           speaker: 'penguin',
           emotion: 'smug',
-          text: 'テストが全部通りました！「誰でも触れる生変数」を「関所付き関数」に変えるだけで、こんなにも頑丈になるんですね！次章の「クラス化（class）」へ進む心の準備ができました！'
+          text: 'テストが全問パスしました！マイナス100に移動しようとしても、関所で弾かれて座標15が守られています！変数を隠すだけでこんなに安心できるんですね！'
         },
-        takeaway: 'お見事！L1の中核技術「意図しない変更の遮断」を体得しました。'
+        takeaway: 'お見事！L1の核心「データと操作をまとめ、不正な変更を関所で防ぐ」というオブジェクト指向の第一歩を体得しました。'
       }
     ]
   },
 
-  // L2: 構造体生アクセスと class の private 隠蔽
-  'chapter-classic-2-classes-and-files': {
-    chapterSlug: 'chapter-classic-2-classes-and-files',
+  // L2: ポインタ地獄（二重解放・クラッシュ）と所有権
+  'chapter-classic-2-pointer-hell': {
+    chapterSlug: 'chapter-classic-2-pointer-hell',
     chapterBadge: 'L2 演習',
-    title: 'C言語構造体の改ざんリスクと C++ class の private 隠蔽',
-    subtitle: 'struct の全公開フィールドを class と private で塞ぎ、コンパイル時にバグを撲滅する！',
-    mentalModel: 'struct (全メンバ公開・改ざん自由) ➔ class (private隠蔽) ➔ コンパイラが不正アクセスを拒絶',
+    title: '公開メンバの直接書き換え破綻と class による private 隠蔽',
+    subtitle: '誰でも触れる public 構造体の数値を、class と private による鉄壁ガードで守り抜く！',
+    mentalModel: 'public 構造体 (外部からHP不正改ざん) ➔ 即死バグ ➔ class + private (コンパイラによるアクセス遮断)',
     steps: [
       {
         stepNumber: 1,
         totalSteps: 3,
         badge: 'STEP 1: 破綻の再現',
-        title: 'C言語構造体：外部からHPや残機が勝手に書き換えられる',
-        instruction: '以下のコードを実行し、外部関数から構造体の内部データが勝手に書き換えられて「残機がマイナス99」になる不正状態を体験してみましょう。',
-        codeFilename: 'player_struct_bad.cpp',
+        title: '外部からHPを直接マイナスに改ざんされて即死するバグ',
+        instruction: '以下のコードを実行して、外部から p.hp = -999 と直接代入されてゲームオーバーになるバグを再現してみましょう。\n➔ `./bad_game` と入力（または [Tab] キーで補完）',
+        command: './bad_game',
+        matchKeywords: ['bad_game', './bad_game'],
+        codeFilename: 'player_bad_public.cpp',
         code: [
           '#include <iostream>',
           '',
-          '// C言語流の構造体（メンバはすべてpublic）',
-          'struct Player {',
-          '    int x;',
-          '    int y;',
-          '    int hp;',
-          '    int lives;',
+          '// ❌ 危険：すべてのメンバが誰でも書き換え可能な struct',
+          'struct BadPlayer {',
+          '    int hp = 100;',
+          '    int lives = 3;',
           '};',
           '',
-          'void rogueHack(Player* p) {',
-          '    // 外部のコードが直接メンバ変数をいじくり倒す！',
-          '    p->hp = -999;',
-          '    p->lives = -99;',
-          '}',
-          '',
           'int main() {',
-          '    Player p = { 10, 20, 100, 3 };',
-          '    rogueHack(&p);',
-          '    ',
-          '    std::cout << "[STATUS] HP: " << p.hp << ", 残機: " << p.lives << std::endl;',
-          '    if (p.hp < 0 || p.lives < 0) {',
-          '        std::cout << "💥 [INCONSISTENT] 不正なゲームオーバー状態！データ整合性が崩壊しました！" << std::endl;',
+          '    BadPlayer p;',
+          '    std::cout << "初期HP: " << p.hp << std::endl;',
+          '    // バグ：外部の処理が誤ってHPに負の数値を代入！',
+          '    p.hp = -999;',
+          '    std::cout << "改ざん後HP: " << p.hp << std::endl;',
+          '    if (p.hp < 0) {',
+          '        std::cout << "💥 [BUG] HPが不正な負の値になり、残機処理をすっ飛ばして即死しました！" << std::endl;',
           '    }',
           '    return 0;',
           '}'
         ].join('\n'),
-        actionButtonText: 'コードを実行してデータ破壊を確認する ➔',
+        actionButtonText: 'コードを実行してHP改ざんを再現する ➔',
         simulatedOutput: {
           type: 'error',
           lines: [
-            '$ g++ player_struct_bad.cpp -o struct_test && ./struct_test',
-            '[STATUS] HP: -999, 残機: -99',
-            '💥 [INCONSISTENT] 不正なゲームオーバー状態！データ整合性が崩壊しました！',
-            'Error: Game state violated invariants.'
+            '$ ./bad_game',
+            '初期HP: 100',
+            '改ざん後HP: -999',
+            '💥 [BUG] HPが不正な負の値になり、残機処理をすっ飛ばして即死しました！',
+            'ERROR: BadPlayer::hp is negative (-999).'
           ]
         },
         dialogue: {
           speaker: 'penguin',
           emotion: 'shocked',
-          text: '構造体だと、どんな外部コードからでも p->hp = -999; って書き込めちゃいますね……！ルールを守るかどうかを「プログラマの善意」に頼るのは危険すぎます！'
+          text: '構造体の変数が public だから、外から p.hp = -999 って代入できちゃいました！HPチェックも通らず残機も減らずに即ゲームオーバーです…！'
         },
-        takeaway: '構造体の全公開メンバは「無施錠の金庫」。不正な値の混入をコンパイル時に防ぐ手立てがありません。'
+        takeaway: 'C++の構造体（struct）はデフォルトで公開されるため、重要データを不用意に公開すると外部から不正な状態に破壊されます。'
       },
       {
         stepNumber: 2,
         totalSteps: 3,
         badge: 'STEP 2: 設計の外科手術',
-        title: 'class と private で「金庫に鍵をかける」',
-        instruction: 'struct を class に変更し、メンバ変数を private: に配置します。直接代入を試みるとどうなるかコンパイルしてみましょう。',
+        title: 'class と private による鉄壁アクセス制御の構築',
+        instruction: 'class と private でメンバ変数を閉じ込め、コンパイル時に外部からの直接代入を拒絶するコードをコンパイルしてみましょう。\n➔ `g++ player_class_private.cpp` と入力（または [Tab] キーで補完）',
+        command: 'g++ player_class_private.cpp',
+        matchKeywords: ['g++', 'private', 'player_class_private'],
         codeFilename: 'player_class_private.cpp',
         code: [
           '#include <iostream>',
           '',
           'class Player {',
           'private:',
-          '    int m_x;',
-          '    int m_y;',
-          '    int m_hp;',
-          '    int m_lives;',
-          '',
+          '    int m_hp = 100; // 🛡️ 外部からは1ミリも触らせない！',
+          '    int m_lives = 3;',
           'public:',
-          '    Player(int x, int y) : m_x(x), m_y(y), m_hp(100), m_lives(3) {}',
-          '',
-          '    // 適切な窓口（メソッド）だけを公開',
           '    void takeDamage(int amount) {',
-          '        if (amount > 0) {',
-          '            m_hp = std::max(0, m_hp - amount);',
-          '            if (m_hp == 0 && m_lives > 0) {',
-          '                m_lives--;',
-          '                m_hp = 100; // 復活',
-          '            }',
-          '        }',
+          '        if (amount > 0) m_hp = std::max(0, m_hp - amount);',
           '    }',
-          '',
           '    int getHp() const { return m_hp; }',
-          '    int getLives() const { return m_lives; }',
           '};',
           '',
           'int main() {',
-          '    Player p(10, 20);',
-          '    // ❌ 不正な直接代入を試みる！',
-          '    // p.m_hp = -999;',
+          '    Player p;',
+          '    p.m_hp = -999; // ❌ コンパイル拒絶！',
           '    return 0;',
           '}'
         ].join('\n'),
@@ -295,9 +273,9 @@ export const STEP_BY_STEP_LABS: Record<string, ChapterLabScenario> = {
           type: 'warning',
           lines: [
             '$ g++ player_class_private.cpp -o class_test',
-            'player_class_private.cpp: In function \'int main()\':',
-            'player_class_private.cpp:33:7: error: \'int Player::m_hp\' is private within this context',
-            '   33 |     p.m_hp = -999;',
+            "player_class_private.cpp: In function 'int main()':",
+            "player_class_private.cpp:15:7: error: 'int Player::m_hp' is private within this context",
+            '   15 |     p.m_hp = -999;',
             '      |       ^~~~',
             '🛑 コンパイル拒絶！コンパイラが不正アクセスを物理的に遮断しました！'
           ]
@@ -314,134 +292,133 @@ export const STEP_BY_STEP_LABS: Record<string, ChapterLabScenario> = {
         totalSteps: 3,
         badge: 'STEP 3: 安全性の検証・合格',
         title: 'メソッド経由の安全なダメージ処理とライフ管理',
-        instruction: '公開メソッド takeDamage() を経由してダメージを与え、HPがゼロになった瞬間に残機が正しく減算・復活するライフサイクルをテストしましょう！',
+        instruction: '公開メソッド takeDamage() を経由してダメージを与え、HPがゼロになった瞬間に残機が正しく減算・復活するライフサイクルをテストしましょう！\n➔ `./test_player_lifecycle` と入力（または [Tab] キーで補完）',
+        command: './test_player_lifecycle',
+        matchKeywords: ['test_player_lifecycle', './test_player_lifecycle', 'lifecycle'],
         codeFilename: 'test_player_lifecycle.cpp',
         code: [
+          '#include <iostream>',
           'int main() {',
-          '    Player p(10, 20);',
-          '    std::cout << "[INITIAL] HP: " << p.getHp() << ", 残機: " << p.getLives() << std::endl;',
-          '    ',
-          '    p.takeDamage(40);',
-          '    std::cout << "[HIT 40] HP: " << p.getHp() << ", 残機: " << p.getLives() << std::endl;',
+          '    Player p;',
+          '    std::cout << "通常ダメージ 30 を適用..." << std::endl;',
+          '    p.takeDamage(30);',
+          '    std::cout << "残りHP: " << p.getHp() << std::endl;',
           '',
-          '    p.takeDamage(100); // 致命傷！残機が1減ってHPが100にリスポーン',
-          '    std::cout << "[FATAL HIT] HP: " << p.getHp() << ", 残機: " << p.getLives() << std::endl;',
+          '    std::cout << "大ダメージ 100 を適用 (残機減算テスト)..." << std::endl;',
+          '    p.takeDamage(100);',
+          '    std::cout << "残り残機: " << p.getLives() << ", 復活後HP: " << p.getHp() << std::endl;',
+          '    std::cout << "🎉 ALL TESTS PASSED: private カプセル化による安全なライフサイクル確認！" << std::endl;',
           '    return 0;',
           '}'
         ].join('\n'),
-        actionButtonText: 'ライフサイクルテストを実行する ➔',
+        actionButtonText: 'テストを実行して安全性を証明する ➔',
         simulatedOutput: {
           type: 'success',
           lines: [
-            '$ ./lifecycle_test',
-            '[INITIAL] HP: 100, 残機: 3',
-            '[HIT 40] HP: 60, 残機: 3',
-            '[FATAL HIT] HP: 100, 残機: 2 （自動リスポーン成功！）',
-            '✨ データ整合性完全保持！カプセル化クラス完成！'
+            '$ ./test_player_lifecycle',
+            '通常ダメージ 30 を適用...',
+            '残りHP: 70',
+            '大ダメージ 100 を適用 (残機減算テスト)...',
+            '残り残機: 2, 復活後HP: 100',
+            '🎉 ALL TESTS PASSED: private カプセル化による安全なライフサイクル確認！'
           ]
         },
         dialogue: {
           speaker: 'penguin',
-          emotion: 'teaching',
-          text: 'すごい！HPの減少もリスポーン処理も、すべて Player クラスの中で完結しています。呼び出し側はただ p.takeDamage() を呼ぶだけで、内部の複雑なルールを気にする必要がなくなりました！'
+          emotion: 'smug',
+          text: '公開メソッド takeDamage() を通すことで、HPが0になったら自動で残機が減ってHPが100に戻るルールが守られました！外から直接変数をいじらせないから、状態が絶対に狂いません！'
         },
-        takeaway: '「データを隠し、振る舞いを公開する」。これこそがカプセル化の本質です。'
+        takeaway: 'お見事！L2の核心「structからclassへの進化、privateによるデータ隠蔽」をマスターしました。'
       }
     ]
   },
 
-  // M1: 生ポインタの二重解放と std::unique_ptr
-  'chapter-modern-1-smart-pointers-raii': {
-    chapterSlug: 'chapter-modern-1-smart-pointers-raii',
+  // M1: モダンC++スマートポインタ（unique_ptrによるRAII自動解放）
+  'chapter-modern-1-unique-ptr': {
+    chapterSlug: 'chapter-modern-1-unique-ptr',
     chapterBadge: 'M1 演習',
-    title: '生ポインタの二重解放（Double Free）と std::unique_ptr（RAII）',
-    subtitle: '誰がdeleteするかの押し付け合いによるクラッシュを、唯一の所有権（std::unique_ptr）で完全撲滅！',
-    mentalModel: '生deleteの重複 ➔ ダブルフリー即死クラッシュ ➔ std::unique_ptr のスコープ自動解放',
+    title: '生ポインタ解放漏れ（Memory Leak）と std::unique_ptr による自動RAII',
+    subtitle: 'エラーや早期returnでdeleteがスキップされる惨劇を、スマートポインタでゼロにする！',
+    mentalModel: 'new/delete手動管理 (早期returnで解放漏れ) ➔ メモリリーク多発 ➔ std::unique_ptr (RAII自動スコープ破棄)',
     steps: [
       {
         stepNumber: 1,
         totalSteps: 3,
         badge: 'STEP 1: 破綻の再現',
-        title: '生ポインタの二重deleteによる惨劇（Double Free）',
-        instruction: '複数の関数が生ポインタをdeleteしてしまい、OSのメモリアロケータが激怒して即死クラッシュするコードを実行してみましょう。',
-        codeFilename: 'double_free_bad.cpp',
+        title: '早期returnのせいでdeleteに辿り着かないメモリリーク',
+        instruction: '以下のコードを実行し、敵撃破時に早期returnしたことで delete bullet がスキップされ、メモリが漏れ出る様子を再現してみましょう。\n➔ `./leak_game` と入力（または [Tab] キーで補完）',
+        command: './leak_game',
+        matchKeywords: ['leak_game', './leak_game', 'leak'],
+        codeFilename: 'raw_ptr_leak.cpp',
         code: [
           '#include <iostream>',
+          'struct Bullet { int damage = 50; ~Bullet() { std::cout << "Bullet破棄" << std::endl; } };',
           '',
-          'struct Bullet {',
-          '    int damage = 50;',
-          '    ~Bullet() { std::cout << "Bullet 消滅" << std::endl; }',
-          '};',
-          '',
-          'void cleanupA(Bullet* b) {',
-          '    delete b; // 1回目のdelete',
-          '}',
-          '',
-          'void cleanupB(Bullet* b) {',
-          '    delete b; // 2回目のdelete（すでに解放されたメモリを再び解放！）',
+          'void fireBullet(bool hitBoss) {',
+          '    Bullet* b = new Bullet(); // ヒープ確保',
+          '    if (hitBoss) {',
+          '        std::cout << "ボスに直撃！ステージクリア！" << std::endl;',
+          '        return; // 💥 危険：delete b を呼ばずに早期return！',
+          '    }',
+          '    delete b;',
           '}',
           '',
           'int main() {',
-          '    Bullet* pBullet = new Bullet();',
-          '    cleanupA(pBullet);',
-          '    cleanupB(pBullet); // 💥 ここで爆発！',
+          '    fireBullet(true);',
           '    return 0;',
           '}'
         ].join('\n'),
-        actionButtonText: 'コードを実行して二重解放クラッシュを確認する ➔',
+        actionButtonText: 'コードを実行してメモリリークを再現する ➔',
         simulatedOutput: {
           type: 'error',
           lines: [
-            '$ g++ double_free_bad.cpp -o double_free && ./double_free',
-            'Bullet 消滅',
-            'free(): double free detected in tcache 2',
-            'Aborted (core dumped) exit code: 134'
+            '$ ./leak_game',
+            'ボスに直撃！ステージクリア！',
+            '⚠️ [VALGRIND MEMCHECK]:',
+            '==12345== definitely lost: 4 bytes in 1 blocks',
+            '==12345== total heap usage: 1 allocs, 0 frees',
+            '💥 LEAK DETECTED: Bullet破棄デストラクタが呼ばれていません！'
           ]
         },
         dialogue: {
           speaker: 'penguin',
           emotion: 'shocked',
-          text: 'ヒャアッ！double free detected でプログラムが強制終了しました！A関数もB関数も「自分が後片付けしなきゃ」と親切心で delete した結果、2回目の delete でメモリ破壊が起きたんですね…！'
+          text: 'ああっ！ボスに当たって return したせいで、後ろに書いてあった delete b に到達しませんでした！Valgrindに「definitely lost」って警告されてます！'
         },
-        takeaway: '生ポインタの最大の欠陥は「誰が解放の責任（所有権）を持っているか」がコード上で分からないことです。'
+        takeaway: '手動の new/delete は「早期return」「例外」によって簡単にすり抜けられ、サーバーやゲームをメモリ枯渇死させます。'
       },
       {
         stepNumber: 2,
         totalSteps: 3,
         badge: 'STEP 2: 設計の外科手術',
-        title: 'std::unique_ptr で「所有者は世界で1人だけ」にする',
-        instruction: '生ポインタを std::unique_ptr に置換します。所有権のコピーがコンパイル時に禁止され、不要になった生deleteを抹殺します。',
+        title: 'モダンC++の特効薬：std::unique_ptr による自動RAII化',
+        instruction: '生ポインタを std::unique_ptr に置き換え、どこからreturnしても自動的にデストラクタが走るコードを確認します。\n➔ `cat unique_ptr_safe.cpp` と入力（または [Tab] キーで補完）',
+        command: 'cat unique_ptr_safe.cpp',
+        matchKeywords: ['cat', 'unique_ptr_safe', 'unique_ptr'],
         codeFilename: 'unique_ptr_safe.cpp',
         code: [
           '#include <iostream>',
-          '#include <memory>',
+          '#include <memory> // std::unique_ptr',
           '',
-          'struct Bullet {',
-          '    int damage = 50;',
-          '    ~Bullet() { std::cout << "🛡️ [RAII] Bullet がスコープ脱出時に自動消滅！" << std::endl; }',
-          '};',
+          'struct Bullet { int damage = 50; ~Bullet() { std::cout << "🛡️ [RAII] Bullet がスコープ脱出時に自動消滅！" << std::endl; } };',
           '',
-          'int main() {',
-          '    // std::make_unique で安全に生成',
-          '    auto pBullet = std::make_unique<Bullet>();',
-          '    ',
-          '    std::cout << "弾の威力: " << pBullet->damage << std::endl;',
-          '',
-          '    // ❌ コピーを試みるとコンパイルエラー！（所有権の重複を物理遮断）',
-          '    // auto pCopy = pBullet; ',
-          '',
-          '    // ✅ delete は 1行も書かない！',
-          '    return 0; // ここでスコープを抜けると自動解放される！',
+          'void fireBulletModern(bool hitBoss) {',
+          '    // ✨ delete不要！スコープを抜けると自動解放される',
+          '    auto b = std::make_unique<Bullet>();',
+          '    if (hitBoss) {',
+          '        std::cout << "ボスに直撃！ステージクリア！" << std::endl;',
+          '        return; // 🛡️ ここでreturnしても、bの寿命が尽きて自動delete！',
+          '    }',
           '}'
         ].join('\n'),
-        actionButtonText: 'std::unique_ptr を適用して実行する ➔',
+        actionButtonText: 'std::unique_ptr 導入コードを確認・解析する ➔',
         simulatedOutput: {
-          type: 'success',
+          type: 'warning',
           lines: [
-            '$ g++ -std=c++17 unique_ptr_safe.cpp -o unique_test && ./unique_test',
-            '弾の威力: 50',
-            '🛡️ [RAII] Bullet がスコープ脱出時に自動消滅！',
-            '✨ メモリリーク: 0バイト, 二重解放: 0回'
+            '$ cat unique_ptr_safe.cpp',
+            '[Modern C++ RAII Refactoring Applied]',
+            'std::unique_ptr manages heap lifetime.',
+            'Destructor guaranteed to run on any exit path.'
           ]
         },
         dialogue: {
@@ -449,177 +426,159 @@ export const STEP_BY_STEP_LABS: Record<string, ChapterLabScenario> = {
           emotion: 'teaching',
           text: 'これぞモダンC++の至宝【RAII（Resource Acquisition Is Initialization）】じゃ！delete という単語自体をコードから永久追放した。スコープを抜ければコンパイラが100%確実に後始末してくれる！'
         },
-        takeaway: 'std::unique_ptr を使えば、コピー不可（所有者1人のみ）かつ自動解放となり、二重解放は構造的に発生不能になります。'
+        takeaway: 'std::unique_ptr を使えば、コピー不可（所有者1人のみ）かつ自動解放となり、二重解放・リークは構造的に発生不能になります。'
       },
       {
         stepNumber: 3,
         totalSteps: 3,
         badge: 'STEP 3: 安全性の検証・合格',
-        title: 'Valgrind / ASan によるメモリ完全性テスト',
-        instruction: 'AddressSanitizer (ASan) を有効にしてビルド＆テストし、ヒープメモリが完全にノーリークで解放されていることを証明しましょう！',
+        title: 'AddressSanitizer によるメモリ完全性テスト',
+        instruction: 'AddressSanitizer (ASan) を有効にしてビルド＆テストし、1,000発の弾丸が完全にノーリークで解放されていることを証明しましょう！\n➔ `./asan_test` と入力（または [Tab] キーで補完）',
+        command: './asan_test',
+        matchKeywords: ['asan_test', './asan_test', 'asan'],
         codeFilename: 'test_memory_leak.cpp',
         code: [
-          '// ASan 検証用メインルーチン',
+          '#include <iostream>',
+          '#include <memory>',
           'int main() {',
+          '    std::cout << "1000発の弾丸を発射・テスト開始..." << std::endl;',
           '    for (int i = 0; i < 1000; ++i) {',
           '        auto b = std::make_unique<Bullet>();',
           '    }',
-          '    // 1000個生成してすべて自動解放',
-          '    std::cout << "1000発の弾丸の生成＆自動破棄テスト完了" << std::endl;',
+          '    std::cout << "🎉 ALL 1000 BULLETS FREED: メモリリーク0バイト！" << std::endl;',
           '    return 0;',
           '}'
         ].join('\n'),
-        actionButtonText: 'AddressSanitizer でメモリ検証を実行する ➔',
+        actionButtonText: 'ASanでメモリ完全性をテストする ➔',
         simulatedOutput: {
           type: 'success',
           lines: [
-            '$ g++ -fsanitize=address -g test_memory_leak.cpp -o asan_test && ./asan_test',
-            '1000発の弾丸の生成＆自動破棄テスト完了',
+            '$ ./asan_test',
+            '1000発の弾丸を発射・テスト開始...',
             '=================================================================',
             '==12345==AddressSanitizer: 0 errors detected (leak check: OK)',
             '==12345==All heap blocks were freed -- no leaks are possible',
-            '🎉 PERFECT SCORE: 生delete撲滅・ゼロリーク・ゼロクラッシュ達成！'
+            '🎉 ALL 1000 BULLETS FREED: メモリリーク0バイト！'
           ]
         },
         dialogue: {
           speaker: 'penguin',
           emotion: 'smug',
-          text: 'ASan のエラーがゼロ！1000個のオブジェクトが1バイトも漏れずに綺麗サッパリ解放されました！もう delete の書き忘れに怯える夜は来ないんですね！'
+          text: '「0 errors detected」「All heap blocks were freed」！一行も delete を書いていないのに、1000個全部綺麗に片付いてます！これがモダンC++の威力なんですね！'
         },
-        takeaway: 'お見事！M1の中核「スマートポインタによる絶対的所有権管理」をマスターしました。'
+        takeaway: 'お見事！M1の核心「スマートポインタによるメモリ管理の自動化」を体得しました。現代のC++開発では必須の作法です。'
       }
     ]
   },
 
-  // M10: 継承爆発と ECS（コンポーネント指向合成）
-  'chapter-modern-10-ecs': {
-    chapterSlug: 'chapter-modern-10-ecs',
+  // M10: モダンC++データ指向ECS設計（極限パフォーマンスと柔軟性）
+  'chapter-modern-10-game-loop': {
+    chapterSlug: 'chapter-modern-10-game-loop',
     chapterBadge: 'M10 演習',
-    title: '巨大継承ツリーの爆発と ECS（コンポーネント指向合成）',
-    subtitle: '多重継承による「菱形継承の地獄」を、部品のアタッチ（Component）による自由な合成へと脱皮させる！',
-    mentalModel: '継承ツリー (硬直・多重継承爆発) ➔ 部品化 (Component) ➔ 自由なエンティティ合成',
+    title: '巨大継承ツリーのキャッシュミス破綻とデータ指向ECS',
+    subtitle: '仮想関数テーブル（vtable）のポインタジャンプによる低速化を、SoA配列化で50倍高速化！',
+    mentalModel: '重厚OOP継承 (ポインタ散在・キャッシュミス多発) ➔ 処理落ち ➔ データ指向ECS (連続メモリ走査で超高速)',
     steps: [
       {
         stepNumber: 1,
         totalSteps: 3,
         badge: 'STEP 1: 破綻の再現',
-        title: '継承の罠：「空飛ぶ・火を吹く・潜水するボス」で継承が爆発',
-        instruction: '敵のバリエーションを継承だけで増やそうとして、多重継承の衝突とクラスの組み合わせ爆発に直面するコードを確認してみましょう。',
-        codeFilename: 'inheritance_explosion.cpp',
+        title: '継承＆仮想関数テーブルが引き起こすキャッシュミスの悪夢',
+        instruction: '10,000体の敵オブジェクトを従来の重厚OOP（仮想関数ポインタ経由）で一斉更新したときの実行速度を測定してみましょう。\n➔ `./oop_bench` と入力（または [Tab] キーで補完）',
+        command: './oop_bench',
+        matchKeywords: ['oop_bench', './oop_bench', 'bench'],
+        codeFilename: 'heavy_oop.cpp',
         code: [
           '#include <iostream>',
-          '',
-          'class Entity { public: virtual ~Entity() {} };',
-          'class FlyingEntity : public virtual Entity {};',
-          'class SwimmingEntity : public virtual Entity {};',
-          'class FireBreathingEntity : public virtual Entity {};',
-          '',
-          '// 💥 新しいボス「空を飛び、水に潜り、火を吹く敵」を作るために3重継承！',
-          'class FlyingSwimmingFireBoss : ',
-          '    public FlyingEntity, ',
-          '    public SwimmingEntity, ',
-          '    public FireBreathingEntity ',
-          '{',
-          '    // クラスの数が 2^N で爆発！',
-          '    // 仮想基底クラスのオーバーヘッドと菱形継承の複雑怪奇な初期化が必要に...',
+          '#include <vector>',
+          'class GameObject { public: virtual void update() = 0; };',
+          'class Enemy : public GameObject {',
+          '    float x, y, speed;',
+          'public:',
+          '    void update() override { x += speed; }',
           '};',
-          '',
-          'int main() {',
-          '    std::cout << "FlyingSwimmingFireBoss sizeof: " << sizeof(FlyingSwimmingFireBoss) << " bytes" << std::endl;',
-          '    std::cout << "⚠️ vtable ポインタが複数散乱し、キャッシュ効率が最悪です！" << std::endl;',
-          '    return 0;',
-          '}'
+          '// メモリ上に10,000個のポインタが散らばっている',
+          'std::vector<GameObject*> entities;'
         ].join('\n'),
-        actionButtonText: '多重継承のサイズと構造を確認する ➔',
+        actionButtonText: '重厚OOPベンチマークを実行する ➔',
         simulatedOutput: {
           type: 'warning',
           lines: [
-            '$ g++ inheritance_explosion.cpp -o boss_test && ./boss_test',
-            'FlyingSwimmingFireBoss sizeof: 40 bytes',
-            '⚠️ vtable ポインタが複数散乱し、キャッシュ効率が最悪です！',
-            'Warning: Virtual base class offset table overhead detected.'
+            '$ ./oop_bench',
+            'Running benchmark on 10,000 entities...',
+            'L1 Cache Miss Rate: 42.8% (極めて高い！)',
+            'Execution Time: 0.1084 ms',
+            '⚠️ WARNING: ポインタ参照とvtableジャンプでCPUがメモリ待ちになっています。'
           ]
         },
         dialogue: {
           speaker: 'penguin',
-          emotion: 'sweating',
-          text: '敵の能力が増えるたびに Flying...Swimming...Fire... みたいな巨大な派生クラスを無限に作らなきゃいけません！しかも多重継承のせいでメモリ配置が飛び飛びで、ゲームエンジンとして性能が出ません…！'
+          emotion: 'shocked',
+          text: '10,000回も「仮想関数テーブルの参照」と「あちこちに散らばったポインタの先を見に行く作業」が起きて、CPUのキャッシュミスが40%超えてます…！'
         },
-        takeaway: '「is-a（〜は〜である）」の継承関係で振る舞いを増やそうとすると、クラス数が組み合わせ爆発（2のN乗）を起こします。'
+        takeaway: 'OOPのクラス継承ツリーは設計が綺麗な反面、メモリが断片化し、現代の高速CPUのL1/L2キャッシュを活かせません。'
       },
       {
         stepNumber: 2,
         totalSteps: 3,
         badge: 'STEP 2: 設計の外科手術',
-        title: '「継承より合成」：ECSコンポーネント化へ切り替える',
-        instruction: '能力を小さな構造体（Component）に分解し、Entity に「アタッチ」するだけで何でも作れるECS（Entity Component System）設計を適用します。',
-        codeFilename: 'ecs_composition.cpp',
+        title: 'データ指向ECS：コンポーネントを連続メモリに並べる',
+        instruction: 'データをメモリ上に一直線に並べ、CPUが一気にキャッシュへ取り込めるECS設計コードを確認します。\n➔ `cat ecs_entities.hpp` と入力（または [Tab] キーで補完）',
+        command: 'cat ecs_entities.hpp',
+        matchKeywords: ['cat', 'ecs_entities', 'ecs'],
+        codeFilename: 'ecs_entities.hpp',
         code: [
-          '#include <iostream>',
           '#include <vector>',
+          '// データ（Component）だけを連続したメモリ配列にパッキング',
+          'struct PositionComponent { float x, y; };',
+          'struct VelocityComponent { float vx, vy; };',
           '',
-          '// 部品（Component）：純粋なデータ構造体',
-          'struct Flyable { float speed = 10.0f; };',
-          'struct Swimmable { float depth = 50.0f; };',
-          'struct FireBreath { int damage = 999; };',
-          '',
-          '// 実体（Entity）：ただのIDと部品の入れ物',
-          'class Entity {',
-          'public:',
-          '    Flyable* fly = nullptr;',
-          '    Swimmable* swim = nullptr;',
-          '    FireBreath* fire = nullptr;',
-          '',
-          '    void printSkills() {',
-          '        std::cout << "【能力チェック】: ";',
-          '        if (fly) std::cout << "🦅飛行 ";',
-          '        if (swim) std::cout << "🐬潜水 ";',
-          '        if (fire) std::cout << "🔥火炎放射 ";',
-          '        std::cout << std::endl;',
+          'struct MovementSystem {',
+          '    void update(std::vector<PositionComponent>& pos, const std::vector<VelocityComponent>& vel) {',
+          '        // ポインタも仮想関数もゼロ！メモリが連続しているため超高速！',
+          '        for (size_t i = 0; i < pos.size(); ++i) {',
+          '            pos[i].x += vel[i].vx;',
+          '            pos[i].y += vel[i].vy;',
+          '        }',
           '    }',
-          '};',
-          '',
-          'int main() {',
-          '    Flyable flyComp;',
-          '    FireBreath fireComp;',
-          '',
-          '    // クラスを新設せず、部品を付けるだけで「空飛ぶ火炎竜」が完成！',
-          '    Entity dragon;',
-          '    dragon.fly = &flyComp;',
-          '    dragon.fire = &fireComp;',
-          '    dragon.printSkills();',
-          '    return 0;',
-          '}'
+          '};'
         ].join('\n'),
-        actionButtonText: 'ECSコンポーネント合成を実行する ➔',
+        actionButtonText: 'データ指向ECSコードを確認・解析する ➔',
         simulatedOutput: {
-          type: 'success',
+          type: 'warning',
           lines: [
-            '$ g++ -O3 ecs_composition.cpp -o ecs_test && ./ecs_test',
-            '【能力チェック】: 🦅飛行 🔥火炎放射 ',
-            '✨ クラス新設ゼロ！コード追加わずか3行で新キャラ誕生！'
+            '$ cat ecs_entities.hpp',
+            '[Data-Oriented ECS Architecture Applied]',
+            'Continuous array memory layout.',
+            'Zero virtual table lookups, 100% cache friendly.'
           ]
         },
         dialogue: {
           speaker: 'shirokuma',
-          emotion: 'smug',
-          text: 'ガハハ！これぞ「継承より合成（Composition over Inheritance）」じゃ！新種族のクラスをいちいち定義しなくても、部品の付け替えだけで1億通りのモンスターを即座に生み出せるのじゃ！'
+          emotion: 'teaching',
+          text: 'これぞ現代のゲームエンジン（Unreal EngineのMassやUnityのDOTS）の標準思想！オブジェクト指向を捨て「データを直線配列に並べる」ことで、CPUが次のデータを先読み（プリフェッチ）できるんだ。'
         },
-        takeaway: 'ECS（データ指向設計）は、現代のUnity（DOTS）やUnreal Engine（Mass）でも採用される究極のゲームエンジン設計です。'
+        takeaway: 'ECS（Entity Component System）は「データと振る舞いを分離」し、ハードウェアの性能を100%引き出す究極のアーキテクチャです。'
       },
       {
         stepNumber: 3,
         totalSteps: 3,
         badge: 'STEP 3: 安全性の検証・合格',
-        title: 'キャッシュフレンドリーな連続メモリ走査の検証',
-        instruction: '10,000体のエンティティをコンポーネント配列で一括更新し、仮想関数のオーバーヘッドなしで超高速にループが完走することを検証しましょう！',
-        codeFilename: 'test_ecs_benchmark.cpp',
+        title: 'ベンチマーク実行：L1キャッシュミス激減＆50倍高速化',
+        instruction: '修正後のECSコードで10,000体一括走査ベンチマークを実行し、キャッシュヒット率99%以上と圧倒的な高速化を検証します。\n➔ `./ecs_benchmark` と入力（または [Tab] キーで補完）',
+        command: './ecs_benchmark',
+        matchKeywords: ['ecs_benchmark', './ecs_benchmark'],
+        codeFilename: 'ecs_benchmark_main.cpp',
         code: [
-          '// 10,000体のコンポーネント一括更新ベンチマーク',
-          'void updateMovement(std::vector<Flyable>& flyers) {',
-          '    for (auto& f : flyers) {',
-          '        f.speed += 0.1f; // メモリ連続アクセスでL1キャッシュヒット率 99.8%!',
-          '    }',
+          '#include <iostream>',
+          'int main() {',
+          '    constexpr size_t COUNT = 10000;',
+          '    std::vector<PositionComponent> positions(COUNT);',
+          '    std::vector<VelocityComponent> velocities(COUNT);',
+          '    MovementSystem system;',
+          '    system.update(positions, velocities);',
+          '    std::cout << "🎉 BENCHMARK PASSED: データ指向ECSアーキテクチャ制覇！" << std::endl;',
+          '    return 0;',
           '}'
         ].join('\n'),
         actionButtonText: '10,000体一括走査ベンチマークを実行する ➔',

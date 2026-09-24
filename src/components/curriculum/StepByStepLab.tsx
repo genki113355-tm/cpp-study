@@ -1,23 +1,29 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { getLabScenario, LabStep } from '../../data/stepByStepLabs';
 import { DialogueBubble } from './DialogueBubble';
 import { 
-  Terminal, 
-  Play, 
+  Terminal as TerminalIcon, 
   CheckCircle2, 
-  AlertTriangle, 
   ArrowRight, 
   RotateCcw, 
   Sparkles, 
   BookOpen, 
   Cpu, 
   ShieldCheck,
-  Code2
+  Code2,
+  CornerDownLeft,
+  KeyRound
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
 interface StepByStepLabProps {
   chapterSlug: string;
+}
+
+interface TerminalLog {
+  id: number;
+  type: 'input' | 'output' | 'error' | 'warning' | 'system' | 'success';
+  text: string;
 }
 
 export const StepByStepLab: React.FC<StepByStepLabProps> = ({ chapterSlug }) => {
@@ -28,36 +34,126 @@ export const StepByStepLab: React.FC<StepByStepLabProps> = ({ chapterSlug }) => 
 
   const [currentStepIdx, setCurrentStepIdx] = useState<number>(0);
   const [executedSteps, setExecutedSteps] = useState<Record<number, boolean>>({});
-  const [isExecuting, setIsExecuting] = useState<boolean>(false);
+  const [isProcessing, setIsProcessing] = useState<boolean>(false);
   const [isCompleted, setIsCompleted] = useState<boolean>(false);
+  const [inputCommand, setInputCommand] = useState<string>('');
+  const [terminalHistory, setTerminalHistory] = useState<TerminalLog[]>([]);
+
+  const inputRef = useRef<HTMLInputElement>(null);
+  const terminalBottomRef = useRef<HTMLDivElement>(null);
 
   const currentStep: LabStep = scenario.steps[currentStepIdx];
   const isStepExecuted = !!executedSteps[currentStepIdx];
 
-  const handleRunStep = async () => {
-    if (isExecuting) return;
-    setIsExecuting(true);
+  // 自動スクロール
+  useEffect(() => {
+    terminalBottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [terminalHistory, isProcessing]);
 
-    // 臨場感のあるシミュレーションディレイ（450ms）
+  // ステップが切り替わったときの初期化
+  useEffect(() => {
+    setInputCommand('');
+  }, [currentStepIdx]);
+
+  // Tabキー補完ハンドラー
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Tab' || e.keyCode === 9) {
+      e.preventDefault();
+      e.stopPropagation();
+
+      // 目標コマンドで補完
+      if (!inputCommand.trim() || currentStep.command.toLowerCase().startsWith(inputCommand.trim().toLowerCase())) {
+        setInputCommand(currentStep.command);
+      } else {
+        // キーワード一致チェック
+        const match = currentStep.matchKeywords.find(k => k.toLowerCase().startsWith(inputCommand.trim().toLowerCase()));
+        if (match) {
+          setInputCommand(currentStep.command);
+        } else {
+          setInputCommand(currentStep.command);
+        }
+      }
+    } else if (e.key === 'Enter' && !isProcessing) {
+      e.preventDefault();
+      processCommand(inputCommand);
+    }
+  };
+
+  // ワンタップ補完ボタン用
+  const handleAutoComplete = () => {
+    setInputCommand(currentStep.command);
+    inputRef.current?.focus();
+  };
+
+  // コマンド実行処理
+  const processCommand = async (rawCmd: string) => {
+    const cmd = rawCmd.trim();
+    if (!cmd || isProcessing) return;
+
+    // 1. 入力ログを追加
+    const nextLogId = Date.now();
+    const newLogs: TerminalLog[] = [
+      ...terminalHistory,
+      { id: nextLogId, type: 'input', text: cmd }
+    ];
+    setTerminalHistory(newLogs);
+    setInputCommand('');
+    setIsProcessing(true);
+
+    // 臨場感のあるシミュレーションディレイ
     await new Promise((resolve) => setTimeout(resolve, 450));
 
-    const nextExecuted = { ...executedSteps, [currentStepIdx]: true };
-    setExecutedSteps(nextExecuted);
-    setIsExecuting(false);
+    // 2. コマンド照合（完全一致、または目標コマンドが含まれているか、キーワードが含まれているか）
+    const normalizedCmd = cmd.toLowerCase().replace(/^\.\//, '');
+    const targetNormalized = currentStep.command.toLowerCase().replace(/^\.\//, '');
+    const isKeywordMatched = currentStep.matchKeywords.some(kw => 
+      normalizedCmd.includes(kw.toLowerCase().replace(/^\.\//, ''))
+    );
 
-    // 最終ステップ完了時の演出
-    if (currentStepIdx === scenario.steps.length - 1) {
-      setIsCompleted(true);
-      try {
-        confetti({
-          particleCount: 80,
-          spread: 70,
-          origin: { y: 0.7 },
-          colors: ['#38bdf8', '#818cf8', '#34d399', '#f472b6']
-        });
-      } catch {
-        // ignore
+    const isMatch = normalizedCmd === targetNormalized || normalizedCmd.includes(targetNormalized) || isKeywordMatched;
+
+    if (isMatch) {
+      // 成功ログを展開
+      const outputLogs: TerminalLog[] = currentStep.simulatedOutput.lines.map((line, idx) => ({
+        id: nextLogId + 1 + idx,
+        type: line.startsWith('$') ? 'system' : currentStep.simulatedOutput.type,
+        text: line
+      }));
+
+      setTerminalHistory(prev => [...prev, ...outputLogs]);
+      setExecutedSteps(prev => ({ ...prev, [currentStepIdx]: true }));
+      setIsProcessing(false);
+
+      // 最終ステップ完了時の演出
+      if (currentStepIdx === scenario.steps.length - 1) {
+        setIsCompleted(true);
+        try {
+          confetti({
+            particleCount: 90,
+            spread: 75,
+            origin: { y: 0.7 },
+            colors: ['#38bdf8', '#818cf8', '#34d399', '#f472b6']
+          });
+        } catch {
+          // ignore
+        }
       }
+    } else {
+      // コマンド不一致の案内ログ
+      const mismatchLogs: TerminalLog[] = [
+        {
+          id: nextLogId + 1,
+          type: 'warning',
+          text: `⚠️ 目標のコマンドと異なります: "${cmd}"`
+        },
+        {
+          id: nextLogId + 2,
+          type: 'system',
+          text: `👉 指示: 「${currentStep.command}」と入力してください。（[Tab] キーで自動補完できます）`
+        }
+      ];
+      setTerminalHistory(prev => [...prev, ...mismatchLogs]);
+      setIsProcessing(false);
     }
   };
 
@@ -70,6 +166,8 @@ export const StepByStepLab: React.FC<StepByStepLabProps> = ({ chapterSlug }) => 
   const handleReset = () => {
     setCurrentStepIdx(0);
     setExecutedSteps({});
+    setTerminalHistory([]);
+    setInputCommand('');
     setIsCompleted(false);
   };
 
@@ -98,7 +196,7 @@ export const StepByStepLab: React.FC<StepByStepLabProps> = ({ chapterSlug }) => 
           )}
           <span className="inline-flex items-center gap-1 text-xs text-slate-400 font-mono">
             <Cpu size={13} className="text-cyan-400" />
-            ステップバイステップ対話型演習
+            対話型ステップ演習（コマンド入力＆Tab補完）
           </span>
         </div>
 
@@ -200,74 +298,136 @@ export const StepByStepLab: React.FC<StepByStepLabProps> = ({ chapterSlug }) => 
           </pre>
         </div>
 
-        {/* アクション実行ボタン */}
-        {!isStepExecuted ? (
-          <div className="flex justify-center pt-2">
-            <button
-              type="button"
-              onClick={handleRunStep}
-              disabled={isExecuting}
-              className="inline-flex items-center gap-2.5 px-6 sm:px-8 py-3.5 rounded-2xl font-bold text-white bg-gradient-to-r from-indigo-500 via-indigo-600 to-cyan-500 hover:from-indigo-600 hover:to-cyan-600 shadow-xl shadow-indigo-500/25 hover:shadow-indigo-500/40 transform hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 cursor-pointer disabled:opacity-50"
-            >
-              {isExecuting ? (
-                <>
-                  <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                  <span>コンパイル＆シミュレーション実行中...</span>
-                </>
-              ) : (
-                <>
-                  <Play size={17} className="fill-white" />
-                  <span>{currentStep.actionButtonText}</span>
-                </>
-              )}
-            </button>
+        {/* 💻 対話型ターミナルコンソール（入力＆Tab補完エリア） */}
+        <div className="rounded-2xl border-2 border-indigo-500/40 bg-black/95 overflow-hidden shadow-2xl">
+          {/* ターミナルヘッダー */}
+          <div className="flex items-center justify-between px-4 py-2.5 bg-slate-900/90 border-b border-slate-800 text-xs font-mono text-slate-400">
+            <div className="flex items-center gap-2">
+              <TerminalIcon size={14} className="text-cyan-400" />
+              <span>TERMINAL CONSOLE (INTERACTIVE)</span>
+            </div>
+            {isProcessing ? (
+              <span className="text-cyan-400 flex items-center gap-1.5 animate-pulse font-bold">
+                <div className="w-2 h-2 rounded-full bg-cyan-400 animate-ping" />
+                PROCESSING...
+              </span>
+            ) : (
+              <span className="text-slate-500 text-[11px] hidden sm:inline">
+                Tab: 自動補完 / Enter: 実行
+              </span>
+            )}
           </div>
-        ) : (
-          /* 実行後の結果・解説エリア（アニメーションで展開） */
-          <div className="space-y-6 pt-2 animate-fadeIn">
-            {/* ターミナル風シミュレート出力 */}
-            <div className="rounded-2xl border border-slate-700/80 bg-black/95 p-4 sm:p-5 font-mono text-xs sm:text-sm shadow-2xl">
-              <div className="flex items-center gap-2 mb-3 pb-2 border-b border-slate-800 text-slate-400 text-xs">
-                <Terminal size={14} className="text-cyan-400" />
-                <span>TERMINAL OUTPUT</span>
-                {currentStep.simulatedOutput.type === 'error' && (
-                  <span className="ml-auto inline-flex items-center gap-1 text-[11px] font-bold text-rose-400 bg-rose-950/60 px-2 py-0.5 rounded-md border border-rose-800/50">
-                    <AlertTriangle size={12} /> CRASH / ERROR
-                  </span>
-                )}
-                {currentStep.simulatedOutput.type === 'warning' && (
-                  <span className="ml-auto inline-flex items-center gap-1 text-[11px] font-bold text-amber-400 bg-amber-950/60 px-2 py-0.5 rounded-md border border-amber-800/50">
-                    <AlertTriangle size={12} /> WARNING
-                  </span>
-                )}
-                {currentStep.simulatedOutput.type === 'success' && (
-                  <span className="ml-auto inline-flex items-center gap-1 text-[11px] font-bold text-emerald-400 bg-emerald-950/60 px-2 py-0.5 rounded-md border border-emerald-800/50">
-                    <CheckCircle2 size={12} /> PASSED
-                  </span>
-                )}
-              </div>
 
-              <div className="space-y-1.5 leading-relaxed">
-                {currentStep.simulatedOutput.lines.map((line, lIdx) => {
-                  let lineStyle = 'text-slate-300';
-                  if (line.startsWith('$')) {
-                    lineStyle = 'text-cyan-300 font-bold';
-                  } else if (line.includes('ERROR') || line.includes('SIGSEGV') || line.includes('Crash') || line.includes('assert failed')) {
-                    lineStyle = 'text-rose-400 font-bold';
-                  } else if (line.includes('PASSED') || line.includes('SUCCESS') || line.includes('🎉') || line.includes('SAFE')) {
-                    lineStyle = 'text-emerald-400 font-bold';
-                  } else if (line.includes('warning') || line.includes('LEAK')) {
-                    lineStyle = 'text-amber-400';
-                  }
-                  return (
-                    <div key={lIdx} className={lineStyle}>
-                      {line}
-                    </div>
-                  );
-                })}
+          {/* ターミナル出力ログ */}
+          <div className="p-4 sm:p-5 font-mono text-xs sm:text-sm space-y-2 max-h-80 overflow-y-auto">
+            {terminalHistory.length === 0 && (
+              <div className="text-slate-500 italic py-2">
+                コマンドを入力するか、右側の「Tab補完」または候補チップをクリックして実行してください。
               </div>
+            )}
+
+            {terminalHistory.map((log) => {
+              if (log.type === 'input') {
+                return (
+                  <div key={log.id} className="flex items-center gap-2 text-slate-200">
+                    <span className="text-emerald-400 font-bold">shirokuma@cpp-lab</span>
+                    <span className="text-slate-500">:</span>
+                    <span className="text-cyan-400 font-bold">~/mission</span>
+                    <span className="text-slate-400">$</span>
+                    <span className="text-white font-bold">{log.text}</span>
+                  </div>
+                );
+              }
+
+              let lineStyle = 'text-slate-300';
+              if (log.type === 'error' || log.text.includes('ERROR') || log.text.includes('SIGSEGV') || log.text.includes('CRASH') || log.text.includes('LEAK')) {
+                lineStyle = 'text-rose-400 font-bold';
+              } else if (log.type === 'warning' || log.text.includes('WARNING') || log.text.includes('⚠️')) {
+                lineStyle = 'text-amber-400 font-medium';
+              } else if (log.type === 'success' || log.text.includes('PASSED') || log.text.includes('SAFE') || log.text.includes('🎉')) {
+                lineStyle = 'text-emerald-400 font-bold';
+              } else if (log.type === 'system') {
+                lineStyle = 'text-cyan-300';
+              }
+
+              return (
+                <div key={log.id} className={`leading-relaxed whitespace-pre-wrap ${lineStyle}`}>
+                  {log.text}
+                </div>
+              );
+            })}
+            <div ref={terminalBottomRef} />
+          </div>
+
+          {/* 指示＆ヒントツールバー */}
+          <div className="px-4 py-2.5 bg-slate-900/80 border-t border-slate-800 flex flex-wrap items-center justify-between gap-2.5 text-xs">
+            <div className="flex items-center gap-2 flex-wrap text-slate-300">
+              <span className="text-cyan-400 font-bold flex items-center gap-1">
+                <Sparkles size={13} />
+                入力目標:
+              </span>
+              <button
+                type="button"
+                onClick={handleAutoComplete}
+                className="px-2.5 py-1 rounded-lg bg-indigo-950/80 hover:bg-indigo-900 border border-indigo-500/50 hover:border-cyan-400 text-cyan-300 font-mono font-bold transition flex items-center gap-1.5 cursor-pointer shadow-sm active:scale-95"
+                title="クリックで自動入力"
+              >
+                <code>{currentStep.command}</code>
+                <span className="text-[10px] text-indigo-400 font-sans">（クリックで入力）</span>
+              </button>
             </div>
 
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={handleAutoComplete}
+                className="px-2 py-1 rounded-md bg-slate-800 hover:bg-slate-700 text-slate-300 text-[11px] font-mono border border-slate-700 flex items-center gap-1 cursor-pointer transition active:scale-95"
+                title="Tabキーと同じ補完を実行"
+              >
+                <KeyRound size={12} className="text-cyan-400" />
+                <span>[⇥ Tab補完]</span>
+              </button>
+            </div>
+          </div>
+
+          {/* コマンド入力バー */}
+          <div className="p-3 sm:p-4 bg-slate-950 border-t border-slate-800 flex items-center gap-2 sm:gap-3">
+            <div className="flex items-center gap-1.5 text-xs sm:text-sm font-mono shrink-0 select-none hidden sm:flex">
+              <span className="text-emerald-400 font-bold">shirokuma@cpp-lab</span>
+              <span className="text-slate-500">:</span>
+              <span className="text-cyan-400 font-bold">~/mission</span>
+              <span className="text-slate-400">$</span>
+            </div>
+            <span className="text-slate-400 font-mono sm:hidden">$</span>
+
+            <input
+              ref={inputRef}
+              type="text"
+              value={inputCommand}
+              onChange={(e) => setInputCommand(e.target.value)}
+              onKeyDown={handleKeyDown}
+              placeholder={`例: ${currentStep.command} （Tabキーで補完）`}
+              disabled={isProcessing}
+              className="flex-1 bg-transparent text-white font-mono text-xs sm:text-sm outline-none border-none focus:ring-0 p-0 placeholder:text-slate-600"
+              autoComplete="off"
+              spellCheck={false}
+            />
+
+            <button
+              type="button"
+              onClick={() => processCommand(inputCommand)}
+              disabled={isProcessing || !inputCommand.trim()}
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs sm:text-sm font-bold text-white bg-gradient-to-r from-indigo-500 to-cyan-500 hover:from-indigo-600 hover:to-cyan-600 shadow-md shadow-indigo-500/20 disabled:opacity-40 transition-all cursor-pointer shrink-0 active:scale-95"
+            >
+              <span>実行</span>
+              <CornerDownLeft size={14} />
+            </button>
+          </div>
+        </div>
+
+        {/* 実行後の対話解説 ＆ 次のステップへ進むボタン */}
+        {isStepExecuted && (
+          <div className="space-y-6 pt-2 animate-fadeIn">
             {/* シロクマ先生 or ペンギン先輩の対話解説吹き出し */}
             <div className="my-2">
               <DialogueBubble
@@ -313,10 +473,10 @@ export const StepByStepLab: React.FC<StepByStepLabProps> = ({ chapterSlug }) => 
                     </div>
                     <div>
                       <h4 className="text-base font-black text-white">
-                        🎉 全3ステップの設計演習を完全クリア！
+                        🎉 全3ステップの対話型設計演習を完全クリア！
                       </h4>
                       <p className="text-xs text-slate-300 mt-0.5">
-                        破綻の再現から安全な設計へのリファクタリング、その効果の検証まで体得しました。
+                        自分の手でコマンドを叩き、破綻の再現から安全な設計へのリファクタリング、その効果の検証まで体得しました。
                       </p>
                     </div>
                   </div>
