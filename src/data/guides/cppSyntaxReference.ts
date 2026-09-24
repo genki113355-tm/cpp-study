@@ -703,6 +703,44 @@ std::unique_ptr<Weapon> playerWeapon = std::move(weapon);
 > Google C++ Style Guide や Clang-Tidy（\`google-readability-casting\`）では、C言語スタイルの丸カッコキャスト \`(Type)val\` は**エラー対象**として検知されます。C++コードでは必ず上記4つの明示キャストを使いましょう！
       `
     }
+  ],
+  quiz: [
+    {
+      id: 'quiz-syn-1',
+      question: 'C++11以降において、NULLマクロや整数0の代わりにポインタの無効値（ヌルポインタ）として使うべき型安全なキーワードはどれですか？',
+      options: [
+        'nil',
+        'nullptr',
+        'None',
+        'void_ptr'
+      ],
+      correctIndex: 1,
+      explanation: 'NULLや0は整数型であるため、関数のオーバーロード解決（func(int) と func(char*)）で意図せず整数版が呼ばれるバグを引き起こします。C++11の nullptr は専用の std::nullptr_t 型であり、安全にポインタ型にのみ暗黙変換されます。'
+    },
+    {
+      id: 'quiz-syn-2',
+      question: '多態性（仮想関数）を持つ基底クラスのポインタから派生クラスのポインタへ、実行時に安全に型変換（ダウンキャスト）を試みる際に使用するC++キャスト演算子はどれですか？',
+      options: [
+        'static_cast',
+        'dynamic_cast',
+        'reinterpret_cast',
+        'const_cast'
+      ],
+      correctIndex: 1,
+      explanation: 'dynamic_cast は仮想関数テーブル（vtable）のRTTI（実行時型情報）を参照し、安全に派生クラスにキャストできるか検査します。変換不可能な場合は安全に nullptr（参照の場合は std::bad_cast 例外）を返します。'
+    },
+    {
+      id: 'quiz-syn-3',
+      question: 'C++14以降で単一所有のスマートポインタ std::unique_ptr を生成する際、最も推奨されるモダンなベストプラクティスはどれですか？',
+      options: [
+        'std::unique_ptr<T> p(new T()); のように生 new を渡す',
+        'auto p = std::make_unique<T>(...); を使用する',
+        'malloc() でメモリを確保してからキャストする',
+        'new[] で配列を確保して代入する'
+      ],
+      correctIndex: 1,
+      explanation: 'std::make_unique は生の new 記述を完全に撲滅し、例外安全性を高めるとともにコードを簡潔にします。C++14以降の絶対的な標準イディオムです。'
+    }
   ]
 };
 

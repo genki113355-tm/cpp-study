@@ -263,5 +263,43 @@ int main() {
         }
       ]
     }
+  ],
+  quiz: [
+    {
+      id: 'quiz-m9-1',
+      question: 'std::filesystem::path を使ってディレクトリパスとファイル名を結合する最も標準的で推奨される記法はどれですか？',
+      options: [
+        'fs::path p = "assets" + "\\" + "textures" + "\\" + "alien.png";',
+        'fs::path p = fs::path("assets") / "textures" / "alien.png";',
+        'fs::path p = fs::concat("assets", "textures", "alien.png");',
+        'fs::path p = sprintf("assets/%s/%s", "textures", "alien.png");'
+      ],
+      correctIndex: 1,
+      explanation: 'std::filesystem::path はスラッシュ演算子（/）をオーバーロードしており、OSに応じた区切り文字（Windowsでは「\\」、Unixでは「/」）を自動的に適切に補完・正規化してパスを結合します。'
+    },
+    {
+      id: 'quiz-m9-2',
+      question: '指定ディレクトリ直下だけでなく、すべてのサブフォルダを再帰的に巡回してファイルを探すためのイテレータはどれですか？',
+      options: [
+        'std::filesystem::directory_iterator',
+        'std::filesystem::recursive_directory_iterator',
+        'std::filesystem::deep_file_iterator',
+        'std::filesystem::folder_crawler'
+      ],
+      correctIndex: 1,
+      explanation: 'directory_iterator は直下の要素のみを走査しますが、recursive_directory_iterator を使うとサブディレクトリの深層まで自動で再帰走査してくれます。'
+    },
+    {
+      id: 'quiz-m9-3',
+      question: 'ゲーム開発などの例外（exception）を原則禁止したプロジェクトで、std::filesystem の関数が失敗した際に例外を投げさせないための正しい方法はどれですか？',
+      options: [
+        '関数の前に noexcept キーワードを記述する',
+        '関数の第2引数に std::error_code& を渡すオーバーロードを使用し、エラーコードの成否を判定する',
+        '例外が発生したら std::terminate() で即座にプロセスを強制終了する',
+        'ファイル操作関数を呼び出す前にOSの生APIで毎回チェックする'
+      ],
+      correctIndex: 1,
+      explanation: 'std::filesystem のほとんどの関数には、例外を投げる版と、第2引数に std::error_code& を受け取って例外を一切投げない（noexcept保証）版の2種類が用意されており、ゲーム開発では後者が標準的に使われます。'
+    }
   ]
 };

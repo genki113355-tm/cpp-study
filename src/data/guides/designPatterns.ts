@@ -494,4 +494,42 @@ GoFのデザインパターン原著（1994年）は、主に**SmalltalkやJava*
       ],
     },
   ],
+  quiz: [
+    {
+      id: 'quiz-dp-1',
+      question: 'GoFデザインパターンの3大分類（生成・構造・振る舞い）のうち、「振る舞いに関するパターン（Behavioral）」に分類されるものはどれですか？',
+      options: [
+        'Singleton パターン',
+        'Strategy パターン',
+        'Adapter パターン',
+        'Factory Method パターン'
+      ],
+      correctIndex: 1,
+      explanation: 'Strategy や Observer はオブジェクト間のアルゴリズムや責任の委譲、イベント通知などの動的な協調関係を定義する「振る舞い（Behavioral）」パターンです。Singleton や Factory は生成系、Adapter は構造系に分類されます。'
+    },
+    {
+      id: 'quiz-dp-2',
+      question: 'C++11以降で「スレッドセーフな Singleton」を最も安全かつシンプルに実装する手法（Meyers\' Singleton）として正しいものはどれですか？',
+      options: [
+        'グローバル変数としてインスタンスを事前定義しておく',
+        'getInstance() 関数内のローカル静的変数（static MyClass instance;）として定義し、その参照を返す',
+        'std::mutex を使って手動で二重チェックロッキング（DCLP）を組む',
+        'ヒープ上に new してポインタを volatile 修飾する'
+      ],
+      correctIndex: 1,
+      explanation: 'C++11の言語仕様において「関数のローカル静的変数の初期化はスレッドセーフである」と明記されたため、関数内の `static T instance;` を返すだけでミューテックスの明示的ロックなしに完全安全なシングルトンが実現します。'
+    },
+    {
+      id: 'quiz-dp-3',
+      question: 'デザインパターンを適用する際、初心者が陥りがちな「パターン中毒（過剰設計）」を防ぐための適切な指針はどれですか？',
+      options: [
+        'すべてのクラスに必ずGoFのいずれかのパターンを1つ以上適用する',
+        '「いつか使うかもしれない」という将来予測で作らず（YAGNI原則）、まずはシンプルに書き、重複や変更の痛みが発生した段階でリファクタリングとして適用する',
+        'すべての関数呼び出しを仮想関数テーブル経由にする',
+        'デザインパターンの使用をプロジェクト全体で一切禁止する'
+      ],
+      correctIndex: 1,
+      explanation: 'デザインパターンは目的ではなく手段です。最初から過度に抽象化すると可読性と実行速度が低下します。YAGNI（You Aren\'t Gonna Need It）を意識し、3回重複した時（Rule of Three）や仕様変更が生じたタイミングで適用するのがベストプラクティスです。'
+    }
+  ]
 };
