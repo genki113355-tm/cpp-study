@@ -5,6 +5,7 @@ interface InteractiveCodeEditorProps {
   value: string;
   onChange: (val: string) => void;
   onReset?: () => void;
+  onTabComplete?: () => boolean | void;
   readOnly?: boolean;
   minHeight?: string;
   className?: string;
@@ -14,6 +15,7 @@ export const InteractiveCodeEditor: React.FC<InteractiveCodeEditorProps> = ({
   value,
   onChange,
   onReset,
+  onTabComplete,
   readOnly = false,
   minHeight = '320px',
   className = '',
@@ -44,9 +46,16 @@ export const InteractiveCodeEditor: React.FC<InteractiveCodeEditorProps> = ({
 
     const { selectionStart, selectionEnd } = textarea;
 
-    // Tab キー: 2文字のスペース挿入
+    // Tab キー: 1行補完機能がある場合は優先実行、なければ2文字スペース挿入
     if (e.key === 'Tab') {
       e.preventDefault();
+      if (!e.shiftKey && onTabComplete) {
+        const handled = onTabComplete();
+        if (handled !== false) {
+          return;
+        }
+      }
+
       if (e.shiftKey) {
         // Shift+Tab: 行頭の2スペース削除
         const lineStart = value.lastIndexOf('\n', selectionStart - 1) + 1;

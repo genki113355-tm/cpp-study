@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { 
   Play, 
   ExternalLink, 
@@ -9,10 +9,13 @@ import {
   Terminal, 
   ChevronDown, 
   ChevronUp, 
-  Eye 
+  Eye,
+  Sparkles,
+  Compass,
+  RotateCcw
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
-import { CodingChallenge } from '../../data/codingChallenges';
+import { CodingChallenge, CodeStepNav } from '../../data/codingChallenges';
 import { compileCppCode, createGodboltUrl, CompileResult } from '../../services/cppCompilerService';
 import { InteractiveCodeEditor } from './InteractiveCodeEditor';
 import { getAssetUrl } from '../../utils/assetPath';
@@ -28,6 +31,48 @@ export const CodeChallengeRunner: React.FC<CodeChallengeRunnerProps> = ({ challe
   const [isPassed, setIsPassed] = useState<boolean>(false);
   const [showHint, setShowHint] = useState<boolean>(false);
   const [showSolution, setShowSolution] = useState<boolean>(false);
+  const [stepIndex, setStepIndex] = useState<number>(0);
+
+  // 1行ステップナビゲーション用のステップ一覧（未定義の場合は自動フォールバック）
+  const activeSteps: CodeStepNav[] = useMemo(() => {
+    if (challenge.codeSteps && challenge.codeSteps.length > 0) {
+      return challenge.codeSteps;
+    }
+    return [
+      {
+        stepNumber: 1,
+        totalSteps: 1,
+        title: '模範解答コードを適用',
+        targetPlaceholder: challenge.initialCode,
+        instruction: '課題の要件を満たすコードをエディタに反映させましょう。',
+        codeToInsert: challenge.solutionCode,
+        explanation: challenge.hint || '模範解答のコード構造を確認してテストを実行しましょう。'
+      }
+    ];
+  }, [challenge]);
+
+  const currentStep = activeSteps[stepIndex];
+  const isAllStepsCompleted = stepIndex >= activeSteps.length;
+
+  // Tabキー補完ハンドラー（1行ずつコードを挿入）
+  const handleTabComplete = (): boolean => {
+    if (stepIndex >= activeSteps.length) return false;
+    const step = activeSteps[stepIndex];
+    if (!step) return false;
+
+    if (code.includes(step.targetPlaceholder)) {
+      const nextCode = code.replace(step.targetPlaceholder, step.codeToInsert);
+      setCode(nextCode);
+      setResult(null);
+      setIsPassed(false);
+      setStepIndex(prev => Math.min(prev + 1, activeSteps.length));
+      return true;
+    } else {
+      // 既に書き換えられている、または一致しない場合でも次へ
+      setStepIndex(prev => Math.min(prev + 1, activeSteps.length));
+      return true;
+    }
+  };
 
   // コンパイル＆テスト実行
   const handleRun = async () => {
@@ -78,6 +123,7 @@ export const CodeChallengeRunner: React.FC<CodeChallengeRunnerProps> = ({ challe
       setCode(challenge.initialCode);
       setResult(null);
       setIsPassed(false);
+      setStepIndex(0);
     }
   };
 
@@ -206,12 +252,112 @@ export const CodeChallengeRunner: React.FC<CodeChallengeRunnerProps> = ({ challe
         </div>
       </div>
 
+      {/* 🧭 1行ステップナビゲーター（Tab補完＆1行ずつガイド） */}
+      <div className="relative z-10 my-5 p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-indigo-950/80 via-slate-900 to-indigo-950/80 border-2 border-indigo-500/50 shadow-xl">
+        <div className="flex items-center justify-between gap-3 mb-2 flex-wrap">
+          <div className="flex items-center gap-2">
+            <span className="p-1.5 rounded-lg bg-indigo-500/20 text-indigo-300 border border-indigo-500/40">
+              <Compass size={16} />
+            </span>
+            <span className="font-bold text-white text-xs sm:text-sm">
+              🧭 1行ステップナビゲーター（Tab補完モード）
+            </span>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <span className="text-xs font-mono font-bold px-2.5 py-0.5 rounded-full bg-indigo-950 text-indigo-300 border border-indigo-500/40">
+              進捗: {stepIndex} / {activeSteps.length} ステップ完了
+            </span>
+            {stepIndex > 0 && (
+              <button
+                type="button"
+                onClick={() => {
+                  setCode(challenge.initialCode);
+                  setStepIndex(0);
+                  setResult(null);
+                  setIsPassed(false);
+                }}
+                className="text-[11px] font-mono text-slate-400 hover:text-slate-200 flex items-center gap-1 cursor-pointer transition"
+                title="ステップを最初からやり直す"
+              >
+                <RotateCcw size={11} />
+                <span>最初から</span>
+              </button>
+            )}
+          </div>
+        </div>
+
+        {!isAllStepsCompleted && currentStep ? (
+          <div className="space-y-3 pt-1">
+            <div className="p-3.5 rounded-xl bg-slate-950/70 border border-indigo-500/30">
+              <div className="flex items-center gap-2 mb-1">
+                <span className="text-xs font-bold text-cyan-400 font-mono">
+                  【ステップ {currentStep.stepNumber}/{currentStep.totalSteps}】
+                </span>
+                <span className="text-xs sm:text-sm font-bold text-white">
+                  {currentStep.title}
+                </span>
+              </div>
+              <p className="text-xs text-slate-300 leading-relaxed font-sans">
+                {currentStep.instruction}
+              </p>
+              {currentStep.explanation && (
+                <p className="text-[11px] text-indigo-300/90 mt-1 font-sans">
+                  💡 なぜ？: {currentStep.explanation}
+                </p>
+              )}
+            </div>
+
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-1">
+              <div className="text-xs font-mono text-slate-400 flex items-center gap-1.5 flex-wrap">
+                <span className="text-slate-500 font-bold">挿入コード:</span>
+                <code className="text-emerald-300 bg-slate-950 px-2 py-0.5 rounded border border-slate-800 text-[11px]">
+                  {currentStep.codeToInsert.trim().split('\n')[0]}...
+                </code>
+              </div>
+
+              <button
+                type="button"
+                onClick={handleTabComplete}
+                className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl text-xs font-bold font-mono text-white bg-gradient-to-r from-indigo-500 to-cyan-500 hover:from-indigo-600 hover:to-cyan-600 shadow-md shadow-indigo-500/25 transition active:scale-95 cursor-pointer shrink-0 animate-pulse hover:animate-none"
+              >
+                <Sparkles size={14} className="text-cyan-200" />
+                <span>⇥ [Tab] キーでこの1行をコードに自動補完</span>
+              </button>
+            </div>
+          </div>
+        ) : (
+          <div className="p-3.5 rounded-xl bg-emerald-950/40 border border-emerald-500/40 flex items-center justify-between gap-3 flex-wrap animate-fadeIn">
+            <div className="flex items-center gap-2.5">
+              <CheckCircle2 size={18} className="text-emerald-400 shrink-0" />
+              <div>
+                <span className="text-xs sm:text-sm font-bold text-emerald-200 block">
+                  🎉 全てのステップコードの補完が完了しました！
+                </span>
+                <span className="text-[11px] text-slate-300">
+                  下の青い「▶ コードをテスト実行する」ボタンを押して、本物のGCCコンパイラで判定してみましょう！
+                </span>
+              </div>
+            </div>
+            <button
+              type="button"
+              onClick={handleRun}
+              disabled={isRunning}
+              className="px-4 py-1.5 rounded-xl text-xs font-bold text-slate-950 bg-emerald-400 hover:bg-emerald-300 shadow transition active:scale-95 cursor-pointer shrink-0 font-mono"
+            >
+              今すぐテスト実行 ➔
+            </button>
+          </div>
+        )}
+      </div>
+
       {/* コードエディタ本体 */}
-      <div className="relative z-10 my-6">
+      <div className="relative z-10 my-4">
         <InteractiveCodeEditor
           value={code}
           onChange={setCode}
           onReset={handleReset}
+          onTabComplete={!isAllStepsCompleted ? handleTabComplete : undefined}
           minHeight="340px"
         />
       </div>

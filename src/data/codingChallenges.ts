@@ -2,6 +2,16 @@
  * 実践コーディング課題（道場）およびプレイグラウンド用テンプレートデータ
  */
 
+export interface CodeStepNav {
+  stepNumber: number;
+  totalSteps: number;
+  title: string;
+  targetPlaceholder: string;
+  instruction: string;
+  codeToInsert: string;
+  explanation: string;
+}
+
 export interface CodingChallenge {
   id: string;
   chapterSlug: string; // 対象の章スラッグ
@@ -14,6 +24,7 @@ export interface CodingChallenge {
   successMessage: string;
   hint: string;
   solutionCode: string;
+  codeSteps?: CodeStepNav[]; // 1行ステップナビゲーション
 }
 
 export interface PlaygroundTemplate {
@@ -104,6 +115,26 @@ int main() {
     return 0;
 }
 `,
+    codeSteps: [
+      {
+        stepNumber: 1,
+        totalSteps: 2,
+        title: 'movePlayer(delta) 関数の実装',
+        targetPlaceholder: 'void movePlayer(int delta) {\n    // ここに実装\n}',
+        instruction: 'g_player_x に delta を加算します。ただし 0 未満にならないよう std::max(0, ...) でガードしましょう。',
+        codeToInsert: 'void movePlayer(int delta) {\n    g_player_x = std::max(0, g_player_x + delta);\n}',
+        explanation: 'std::max(0, ...) を使うことで、画面外（マイナス座標）への不正移動を1行で安全に防げます。'
+      },
+      {
+        stepNumber: 2,
+        totalSteps: 2,
+        title: 'addScore(points) 関数の実装',
+        targetPlaceholder: 'void addScore(int points) {\n    // ここに実装\n}',
+        instruction: 'スコア g_score に獲得点数 points を加算します。',
+        codeToInsert: 'void addScore(int points) {\n    g_score += points;\n}',
+        explanation: '変数を直接代入させず関数経由にすることで、後から「スコア加算ログ」や「実績解除判定」を安全に追加できるようになります。'
+      }
+    ]
   },
 
   // L2: クラスとカプセル化
