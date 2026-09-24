@@ -295,17 +295,16 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
       });
     }
 
-    if (hasQuiz) {
-      tabs.push({
-        id: 'quiz',
-        stepNum: toCircled(counter++),
-        icon: '🎯',
-        label: '理解度クイズ',
-        shortLabel: 'クイズ',
-        countBadge: chapter.quiz ? `${chapter.quiz.length}問` : undefined,
-        description: '理解度チェック・読了完了・合格証',
-      });
-    }
+    // 4. 理解度クイズ＆章修了（全章共通で必ず配置）
+    tabs.push({
+      id: 'quiz',
+      stepNum: toCircled(counter++),
+      icon: hasQuiz ? '🎯' : '🏁',
+      label: hasQuiz ? '理解度クイズ' : '章の修了・次へ',
+      shortLabel: hasQuiz ? 'クイズ' : '修了',
+      countBadge: hasQuiz && chapter.quiz ? `${chapter.quiz.length}問` : '完読',
+      description: hasQuiz ? '理解度チェック・読了完了・合格証' : '到達目標確認・読了完了・次の章へ',
+    });
 
     tabs.push({
       id: 'all',
@@ -617,7 +616,7 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
                 <span className="font-bold">実践演習</span>
               </button>
             )}
-            {hasQuiz && (
+            {hasQuiz ? (
               <button
                 type="button"
                 onClick={() => {
@@ -633,13 +632,23 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
                 <span>🎯</span>
                 <span className="font-bold">理解度クイズ ({chapter.quiz?.length || 0}問)</span>
               </button>
+            ) : (
+              <button
+                type="button"
+                onClick={() => switchTab('quiz')}
+                className="px-2.5 py-1 rounded-xl bg-emerald-950/60 hover:bg-emerald-900/70 border border-emerald-500/40 hover:border-emerald-400 text-emerald-300 text-xs font-mono transition flex items-center gap-1.5 cursor-pointer shadow-sm active:scale-95 sm:ml-auto"
+                title="章の修了・次へ進むタブを表示"
+              >
+                <span>🏁</span>
+                <span className="font-bold">章の修了・次へ</span>
+              </button>
             )}
           </div>
         </nav>
       )}
 
-      {/* 🧭 学習進捗ステップバー（①ゲーム ➔ ②解説 ➔ ③演習 ➔ ④クイズ ＋ すべて表示） */}
-      <div id="chapter-step-bar" className="sticky top-18 z-30 -my-4 py-3 bg-[#090d16]/95 backdrop-blur-md border-y border-slate-800/80">
+      {/* 🧭 学習進捗ステップバー（①ゲーム ➔ ②解説 ➔ ③演習 ➔ ④クイズ/修了 ＋ すべて表示） */}
+      <div id="chapter-step-bar" className="sticky top-18 z-30 -my-4 py-3 bg-[#090d16]/95 backdrop-blur-md border-y border-slate-800/80 scroll-mt-24">
         <div className="flex items-center justify-between gap-3 flex-wrap">
           {/* ステップ切り替えタブ群（横スクロール対応） */}
           <div className="flex items-center gap-1.5 sm:gap-2 overflow-x-auto no-scrollbar py-1 max-w-full">
@@ -1119,12 +1128,18 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
                   <span>STEP {hasGame ? '2' : '1'} 📖 本文解説のインプット完了！</span>
                 </div>
                 <h4 className="text-lg sm:text-xl font-black text-white font-sans">
-                  {hasPractice ? '学んだ知識を定着させる実践演習に挑戦しよう' : '理解度クイズで知識をチェックしよう'}
+                  {hasPractice 
+                    ? '学んだ知識を定着させる実践演習に挑戦しよう' 
+                    : hasQuiz 
+                    ? '理解度クイズで知識をチェックしよう' 
+                    : '本章の解説学習を修了して次の章へ進もう'}
                 </h4>
                 <p className="text-xs sm:text-sm text-slate-300 font-sans">
                   {hasPractice 
                     ? '対話型ターミナル演習とGCCコンパイラ演習で、実際に手を動かしてコードを完成させます。' 
-                    : 'この章で学んだ設計思想やキーワードを4択クイズで総復習しましょう。'}
+                    : hasQuiz 
+                    ? 'この章で学んだ設計思想やキーワードを4択クイズで総復習しましょう。' 
+                    : '到達目標を振り返り、読了を完了して次のステップへ進みましょう。'}
                 </p>
               </div>
               <div className="flex items-center gap-3 w-full sm:w-auto shrink-0 flex-wrap justify-end">
@@ -1143,7 +1158,13 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
                   onClick={() => switchTab(hasPractice ? 'practice' : 'quiz')}
                   className="w-full sm:w-auto px-6 py-4 rounded-2xl bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-400 hover:to-purple-500 text-white font-black font-mono text-sm sm:text-base transition flex items-center justify-center gap-2.5 shadow-lg shadow-indigo-500/25 active:scale-95 cursor-pointer"
                 >
-                  <span>{hasPractice ? `${hasGame ? '③' : '②'} 実践演習へ進む` : `${hasGame ? '④' : '③'} 理解度クイズへ進む`}</span>
+                  <span>
+                    {hasPractice 
+                      ? `${hasGame ? '③' : '②'} 実践演習へ進む` 
+                      : hasQuiz 
+                      ? `${hasGame ? '④' : '③'} 理解度クイズへ進む` 
+                      : `${hasGame ? '③' : '②'} 章の修了・次へ進む`}
+                  </span>
                   <ArrowRight className="w-5 h-5" />
                 </button>
               </div>
@@ -1160,7 +1181,7 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
 
           {/* 実践ハンズオン演習道場（コーディング課題が定義されている章で自動表示） */}
           {CODING_CHALLENGES[chapter.slug] && (
-            <div id="chapter-code-challenge">
+            <div id="chapter-code-challenge" className="scroll-mt-24">
               <CodeChallengeRunner challenge={CODING_CHALLENGES[chapter.slug]} />
             </div>
           )}
@@ -1174,10 +1195,14 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
                   <span>STEP {hasGame ? '3' : '2'} 🧪 手を動かしてコードを書きました！</span>
                 </div>
                 <h4 className="text-lg sm:text-xl font-black text-white font-sans">
-                  最後の関門！理解度チェッククイズで章を完全攻略
+                  {hasQuiz 
+                    ? '最後の関門！理解度チェッククイズで章を完全攻略' 
+                    : '演習クリア！本章の学習を修了して次の章へ進もう'}
                 </h4>
                 <p className="text-xs sm:text-sm text-slate-300 font-sans">
-                  クイズに正解してシロクマ先生とハイタッチ！章の読了バッジを獲得しましょう。
+                  {hasQuiz 
+                    ? 'クイズに正解してシロクマ先生とハイタッチ！章の読了バッジを獲得しましょう。' 
+                    : '到達目標を振り返り、読了を完了して次のステップへ進みましょう。'}
                 </p>
               </div>
               <div className="flex items-center gap-3 w-full sm:w-auto shrink-0 flex-wrap justify-end">
@@ -1194,7 +1219,11 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
                   onClick={() => switchTab('quiz')}
                   className="w-full sm:w-auto px-6 py-4 rounded-2xl bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-400 hover:to-pink-500 text-white font-black font-mono text-sm sm:text-base transition flex items-center justify-center gap-2.5 shadow-lg shadow-purple-500/25 active:scale-95 cursor-pointer"
                 >
-                  <span>{hasGame ? '④' : '③'} 理解度クイズへ進む</span>
+                  <span>
+                    {hasQuiz 
+                      ? `${hasGame ? '④' : '③'} 理解度クイズへ進む` 
+                      : `${hasGame ? '④' : '③'} 章の修了・次へ進む`}
+                  </span>
                   <ArrowRight className="w-5 h-5" />
                 </button>
               </div>
@@ -1206,12 +1235,16 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
       {/* 🎯 理解度クイズ ＆ ゴール達成（activeTab: 'all' または 'quiz'） */}
       {(activeTab === 'all' || activeTab === 'quiz') && (
         <>
-          {/* クイズタブ選択時の上部戻るナビ */}
+          {/* クイズ・修了タブ選択時の上部戻るナビ */}
           {activeTab === 'quiz' && (
             <div className="flex items-center justify-between p-4 rounded-2xl bg-slate-900/60 border border-slate-800 text-xs font-mono mb-6">
               <div className="flex items-center gap-2 text-slate-400">
-                <span className="text-purple-400 font-bold">🎯</span>
-                <span>STEP {hasGame ? (hasPractice ? '4' : '3') : (hasPractice ? '3' : '2')}: 理解度チェック ＆ 章修了</span>
+                <span className={hasQuiz ? "text-purple-400 font-bold text-sm" : "text-emerald-400 font-bold text-sm"}>
+                  {hasQuiz ? '🎯' : '🏁'}
+                </span>
+                <span>
+                  STEP {hasGame ? (hasPractice ? '4' : '3') : (hasPractice ? '3' : '2')}: {hasQuiz ? '理解度チェック ＆ 章修了' : '到達目標の達成 ＆ 章修了'}
+                </span>
               </div>
               <div className="flex items-center gap-2">
                 {hasPractice && (
@@ -1233,6 +1266,28 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
                   <span>解説に戻る</span>
                 </button>
               </div>
+            </div>
+          )}
+
+          {/* クイズが無い章用の到達目標振り返り・修了カード */}
+          {!hasQuiz && (
+            <div className="p-6 sm:p-8 rounded-3xl bg-gradient-to-br from-slate-900 via-indigo-950/30 to-slate-950 border border-indigo-500/30 shadow-xl space-y-4 my-6">
+              <div className="flex items-center gap-2.5 text-xs font-mono font-bold text-indigo-300">
+                <Trophy className="w-4 h-4 text-amber-400" />
+                <span>本章の学習目標達成 🎓</span>
+              </div>
+              <h3 className="text-xl sm:text-2xl font-black text-white">
+                {chapter.title} の学習を修了しました！
+              </h3>
+              {meta.keyTakeaway && (
+                <div className="p-4 rounded-2xl bg-slate-950/70 border border-slate-800 text-xs sm:text-sm text-slate-200 font-sans leading-relaxed">
+                  <span className="text-amber-400 font-bold font-mono mr-2">🎯 到達目標の復習:</span>
+                  <span>{meta.keyTakeaway}</span>
+                </div>
+              )}
+              <p className="text-xs sm:text-sm text-slate-300">
+                下の読了ボタンを押して学習記録を保存し、次の章へ進みましょう！
+              </p>
             </div>
           )}
 
