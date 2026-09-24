@@ -42,8 +42,7 @@ import { getChapterEvolution } from '../../data/chapterEvolution';
 import { getChapterMeta } from '../../data/chapterMetadata';
 import { StepByStepLab } from './StepByStepLab';
 import { getLabScenario } from '../../data/stepByStepLabs';
-
-type ViewMode = 'all' | 'learn' | 'code' | 'practice';
+export type ChapterTab = 'game' | 'learn' | 'practice' | 'quiz' | 'all';
 
 interface ParsedChapterHeading {
   prefix: string;
@@ -129,7 +128,30 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
   const [codeHighlight, setCodeHighlight] = useState<CodeHighlightTarget | undefined>();
   const [isGameModalOpen, setIsGameModalOpen] = useState<boolean>(false);
   const [showInlineGame, setShowInlineGame] = useState<boolean>(false);
-  const [viewMode, setViewMode] = useState<ViewMode>('all');
+  // コーストラック・章コード
+  const isClassic = chapter.courseTrack === 'classic';
+  const isReading = chapter.courseTrack === 'reading';
+  const isGuide = chapter.courseTrack === 'guide' || chapter.category === 'guide' || chapter.category === 'column';
+  const code = chapter.courseChapterCode || `Ch.${chapter.id}`;
+
+  // 章の各要素の有無
+  const hasGame = Boolean(chapter.gameVersion && chapter.gameVersion !== 'none');
+  const hasLab = Boolean(getLabScenario(chapter.slug));
+  const hasChallenge = Boolean(CODING_CHALLENGES[chapter.slug]);
+  const hasPractice = hasLab || hasChallenge;
+  const hasQuiz = Boolean(chapter.quiz && chapter.quiz.length > 0);
+
+  // 初期タブ（URLハッシュ尊重、デフォルトは 'learn'）
+  const [activeTab, setActiveTab] = useState<ChapterTab>(() => {
+    if (typeof window !== 'undefined') {
+      const hash = window.location.hash.toLowerCase();
+      if (hash === '#game') return 'game';
+      if (hash === '#practice') return 'practice';
+      if (hash === '#quiz') return 'quiz';
+      if (hash === '#all') return 'all';
+    }
+    return 'learn';
+  });
   const [scrollProgress, setScrollProgress] = useState<number>(0);
 
   // 記事読了スクロールプログレスの計算
@@ -147,10 +169,53 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
     return () => window.removeEventListener('scroll', handleScroll);
   }, [chapter.slug]);
 
-  // 章切り替え時に表示モードをデフォルト（すべて表示）にリセット
+  // 章切り替え時にタブをデフォルト（'learn'、またはURLハッシュ指定）にリセット
   useEffect(() => {
-    setViewMode('all');
-  }, [chapter.slug]);
+    if (typeof window !== 'undefined') {
+      const hash = window.location.hash.toLowerCase();
+      if (hash === '#game' && hasGame) {
+        setActiveTab('game');
+        return;
+      }
+      if (hash === '#practice' && hasPractice) {
+        setActiveTab('practice');
+        return;
+      }
+      if (hash === '#quiz' && hasQuiz) {
+        setActiveTab('quiz');
+        return;
+      }
+      if (hash === '#all') {
+        setActiveTab('all');
+        return;
+      }
+    }
+    setActiveTab('learn');
+  }, [chapter.slug, hasGame, hasPractice, hasQuiz]);
+
+  // タブ切り替え＆スムーズスクロールヘルパー
+  const switchTab = (tab: ChapterTab, targetElementId?: string) => {
+    setActiveTab(tab);
+    if (typeof window !== 'undefined') {
+      if (tab !== 'learn') {
+        window.history.replaceState(null, '', `#${tab}`);
+      } else {
+        window.history.replaceState(null, '', window.location.pathname + window.location.search);
+      }
+    }
+    setTimeout(() => {
+      if (targetElementId) {
+        document.getElementById(targetElementId)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      } else {
+        const stepBarEl = document.getElementById('chapter-step-bar');
+        if (stepBarEl) {
+          stepBarEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        } else {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+      }
+    }, 40);
+  };
 
   // この章の学習メタデータ（所要時間・重要度・難易度・到達目標）
   const meta = useMemo(() => getChapterMeta(chapter), [chapter]);
@@ -174,51 +239,78 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
     return files;
   }, [chapter]);
 
-  // 表示形式（ラジオボタン or プルダウンリスト）の設定（localStorageに保持）
-  const [selectorStyle, setSelectorStyle] = useState<'radio' | 'dropdown'>(() => {
-    if (typeof window !== 'undefined') {
-      const saved = localStorage.getItem('chapter_view_selector_style');
-      if (saved === 'radio' || saved === 'dropdown') return saved;
+  // 学習ステップタブの構成定義
+  const stepTabs = useMemo(() => {
+    interface StepTabConfig {
+      id: ChapterTab;
+      stepNum?: string;
+      icon: string;
+      label: string;
+      shortLabel: string;
+      countBadge?: string;
+      description: string;
     }
-    return 'radio';
-  });
 
-  const handleSelectorStyleChange = (style: 'radio' | 'dropdown') => {
-    setSelectorStyle(style);
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('chapter_view_selector_style', style);
+    const tabs: StepTabConfig[] = [];
+    let counter = 1;
+    const toCircled = (n: number) => ['①', '②', '③', '④', '⑤'][n - 1] || `${n}`;
+
+    if (hasGame) {
+      tabs.push({
+        id: 'game',
+        stepNum: toCircled(counter++),
+        icon: '🎮',
+        label: 'ゲーム体験',
+        shortLabel: 'ゲーム',
+        countBadge: code,
+        description: '実機インベーダーゲームを体感プレイ',
+      });
     }
-  };
 
-  const viewModeOptions = useMemo(() => [
-    {
-      id: 'all' as ViewMode,
+    tabs.push({
+      id: 'learn',
+      stepNum: toCircled(counter++),
       icon: '📖',
+      label: '本文解説・設計',
+      shortLabel: '解説',
+      countBadge: `${chapter.sections.length}節`,
+      description: '概念解説・UML設計図・コード解剖',
+    });
+
+    if (hasPractice) {
+      tabs.push({
+        id: 'practice',
+        stepNum: toCircled(counter++),
+        icon: '🧪',
+        label: '実践演習',
+        shortLabel: '演習',
+        countBadge: hasLab && hasChallenge ? '2演習' : '1演習',
+        description: '対話型ターミナル設計ラボ＆GCC道場',
+      });
+    }
+
+    if (hasQuiz) {
+      tabs.push({
+        id: 'quiz',
+        stepNum: toCircled(counter++),
+        icon: '🎯',
+        label: '理解度クイズ',
+        shortLabel: 'クイズ',
+        countBadge: chapter.quiz ? `${chapter.quiz.length}問` : undefined,
+        description: '理解度チェック・読了完了・合格証',
+      });
+    }
+
+    tabs.push({
+      id: 'all',
+      icon: '📜',
       label: 'すべて表示',
-      desc: '全セクションを通読中',
-    },
-    {
-      id: 'learn' as ViewMode,
-      icon: '📝',
-      label: '解説・設計',
-      count: `${chapter.sections.length}節`,
-      desc: '概念解説・UML設計図・メモリ図に集中',
-    },
-    ...(allCodeFiles.length > 0 ? [{
-      id: 'code' as ViewMode,
-      icon: '💻',
-      label: 'コード',
-      count: `${allCodeFiles.length}ファイル`,
-      desc: 'C++実装コードと差分のみ表示',
-    }] : []),
-    {
-      id: 'practice' as ViewMode,
-      icon: '🎮',
-      label: 'ゲーム・演習',
-      count: chapter.quiz && chapter.quiz.length > 0 ? `クイズ${chapter.quiz.length}問` : undefined,
-      desc: '実機ゲーム・理解度クイズ・演習道場',
-    },
-  ], [chapter, allCodeFiles]);
+      shortLabel: 'すべて',
+      description: '全コンテンツを縦スクロールで一括通読',
+    });
+
+    return tabs;
+  }, [hasGame, hasPractice, hasQuiz, code, chapter.sections.length, chapter.quiz, hasLab, hasChallenge]);
 
   const handleSelectOption = (questionId: string, optionIndex: number, correctIndex: number) => {
     setSelectedAnswers((prev) => ({ ...prev, [questionId]: optionIndex }));
@@ -233,11 +325,6 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
       onComplete(chapter.id);
     }
   };
-
-  const isClassic = chapter.courseTrack === 'classic';
-  const isReading = chapter.courseTrack === 'reading';
-  const isGuide = chapter.courseTrack === 'guide' || chapter.category === 'guide' || chapter.category === 'column';
-  const code = chapter.courseChapterCode || `Ch.${chapter.id}`;
 
   const getTrackBadge = () => {
     if (chapter.category === 'column') {
@@ -479,7 +566,7 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
               <span>この章の目次（クイックジャンプ）</span>
             </span>
             <span className="text-[11px] font-mono text-slate-500">
-              全{chapter.sections.length}セクション {chapter.quiz && chapter.quiz.length > 0 ? '+ クイズ' : ''}
+              全{chapter.sections.length}セクション {hasPractice ? '+ 実践演習' : ''} {hasQuiz && chapter.quiz ? `+ クイズ(${chapter.quiz.length}問)` : ''}
             </span>
           </div>
           <div className="flex flex-wrap gap-2">
@@ -492,7 +579,11 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
                   key={sec.id}
                   type="button"
                   onClick={() => {
-                    document.getElementById(sec.id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    if (activeTab !== 'learn' && activeTab !== 'all') {
+                      switchTab('learn', sec.id);
+                    } else {
+                      document.getElementById(sec.id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
                   }}
                   className="px-2.5 py-1 rounded-xl bg-slate-950/80 hover:bg-slate-800 border border-slate-800 hover:border-cyan-500/50 text-slate-300 hover:text-cyan-300 text-xs font-mono transition flex items-center gap-1.5 cursor-pointer shadow-sm active:scale-95"
                   title={`${secNum} ${secTitle} へスクロール`}
@@ -502,177 +593,130 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
                 </button>
               );
             })}
-            {getLabScenario(chapter.slug) && (
+            {hasPractice && (
               <button
                 type="button"
                 onClick={() => {
-                  document.getElementById('chapter-step-lab')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                  if (activeTab !== 'practice' && activeTab !== 'all') {
+                    switchTab('practice', hasLab ? 'chapter-step-lab' : 'chapter-code-challenge');
+                  } else {
+                    const targetId = hasLab ? 'chapter-step-lab' : 'chapter-code-challenge';
+                    document.getElementById(targetId)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                  }
                 }}
                 className="px-2.5 py-1 rounded-xl bg-indigo-950/70 hover:bg-indigo-900/80 border border-indigo-500/40 hover:border-indigo-400 text-indigo-300 text-xs font-mono transition flex items-center gap-1.5 cursor-pointer shadow-sm active:scale-95"
-                title="ステップバイステップ設計演習へスクロール"
+                title="実践演習へスクロール"
               >
                 <span>🧪</span>
-                <span className="font-bold">ステップ演習</span>
+                <span className="font-bold">実践演習</span>
               </button>
             )}
-            {chapter.quiz && chapter.quiz.length > 0 && (
+            {hasQuiz && (
               <button
                 type="button"
                 onClick={() => {
-                  document.getElementById('chapter-quiz')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                  if (activeTab !== 'quiz' && activeTab !== 'all') {
+                    switchTab('quiz', 'chapter-quiz');
+                  } else {
+                    document.getElementById('chapter-quiz')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                  }
                 }}
                 className="px-2.5 py-1 rounded-xl bg-purple-950/60 hover:bg-purple-900/70 border border-purple-500/40 hover:border-purple-400 text-purple-300 text-xs font-mono transition flex items-center gap-1.5 cursor-pointer shadow-sm active:scale-95 sm:ml-auto"
                 title="理解度チェッククイズへスクロール"
               >
                 <span>🎯</span>
-                <span className="font-bold">理解度クイズ ({chapter.quiz.length}問)</span>
+                <span className="font-bold">理解度クイズ ({chapter.quiz?.length || 0}問)</span>
               </button>
             )}
           </div>
         </nav>
       )}
 
-      {/* 🧭 表示モード切替（選択式であることを明確化したラジオボタン ＆ プルダウンリスト） */}
-      <div className="sticky top-18 z-30 -my-4 py-3 bg-[#090d16]/95 backdrop-blur-md border-y border-slate-800/80">
+      {/* 🧭 学習進捗ステップバー（①ゲーム ➔ ②解説 ➔ ③演習 ➔ ④クイズ ＋ すべて表示） */}
+      <div id="chapter-step-bar" className="sticky top-18 z-30 -my-4 py-3 bg-[#090d16]/95 backdrop-blur-md border-y border-slate-800/80">
         <div className="flex items-center justify-between gap-3 flex-wrap">
-          {/* 左側：選択コントロール群 ＆ 形式切替 */}
-          <div className="flex items-center gap-2.5 flex-wrap">
-            {/* 形式切り替え（ラジオ ⇄ プルダウン）ボタン */}
-            <div className="flex items-center gap-1 p-0.5 bg-slate-900/90 rounded-xl border border-slate-800 text-[11px] font-mono shrink-0 shadow-inner">
-              <button
-                type="button"
-                onClick={() => handleSelectorStyleChange('radio')}
-                title="ラジオボタン形式で選択（1クリックで直感切り替え）"
-                className={`px-2 py-1 rounded-lg transition flex items-center gap-1 cursor-pointer select-none ${
-                  selectorStyle === 'radio'
-                    ? 'bg-cyan-500/20 text-cyan-300 font-bold border border-cyan-500/40 shadow-sm shadow-cyan-500/10'
-                    : 'text-slate-400 hover:text-slate-200'
-                }`}
-              >
-                <span>🔘</span>
-                <span className="hidden sm:inline">ラジオ</span>
-              </button>
-              <button
-                type="button"
-                onClick={() => handleSelectorStyleChange('dropdown')}
-                title="プルダウンリスト形式で選択（省スペースなドロップダウン）"
-                className={`px-2 py-1 rounded-lg transition flex items-center gap-1 cursor-pointer select-none ${
-                  selectorStyle === 'dropdown'
-                    ? 'bg-cyan-500/20 text-cyan-300 font-bold border border-cyan-500/40 shadow-sm shadow-cyan-500/10'
-                    : 'text-slate-400 hover:text-slate-200'
-                }`}
-              >
-                <span>▾</span>
-                <span className="hidden sm:inline">プルダウン</span>
-              </button>
-            </div>
+          {/* ステップ切り替えタブ群（横スクロール対応） */}
+          <div className="flex items-center gap-1.5 sm:gap-2 overflow-x-auto no-scrollbar py-1 max-w-full">
+            {stepTabs.map((tab, idx) => {
+              const isSelected = activeTab === tab.id;
+              const isSpecialAll = tab.id === 'all';
 
-            {/* ① ラジオボタン形式 */}
-            {selectorStyle === 'radio' ? (
-              <div
-                role="radiogroup"
-                aria-label="表示モード選択"
-                className="flex items-center gap-1.5 p-1 bg-slate-900/90 rounded-2xl border border-slate-800 text-xs font-mono flex-wrap shadow-inner"
-              >
-                <span className="text-slate-400 text-xs px-2 hidden md:flex items-center gap-1 font-semibold">
-                  <span className="text-cyan-400 font-bold">🔘</span> 表示選択:
-                </span>
-                {viewModeOptions.map((option) => {
-                  const isSelected = viewMode === option.id;
-                  return (
-                    <label
-                      key={option.id}
-                      className={`group flex items-center gap-2 px-3 py-1.5 rounded-xl cursor-pointer transition select-none ${
-                        isSelected
-                          ? 'bg-cyan-500/20 text-cyan-200 border border-cyan-500/50 shadow-md shadow-cyan-500/10 font-bold'
-                          : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/80 border border-transparent font-medium'
-                      }`}
-                    >
-                      <input
-                        type="radio"
-                        name="chapter-view-mode"
-                        value={option.id}
-                        checked={isSelected}
-                        onChange={() => setViewMode(option.id)}
-                        className="sr-only"
-                      />
-                      {/* ラジオボタン円（外枠＋選択時の中央ドット） */}
+              return (
+                <React.Fragment key={tab.id}>
+                  {/* デスクトップ用ステップ矢印（allの手前を除く） */}
+                  {idx > 0 && !isSpecialAll && (
+                    <span className="hidden md:inline-block text-slate-600 text-xs px-0.5 select-none" aria-hidden="true">
+                      ➔
+                    </span>
+                  )}
+                  {/* 'all'の手前にある区切り線 */}
+                  {isSpecialAll && (
+                    <span className="hidden sm:inline-block w-px h-5 bg-slate-800 mx-1" aria-hidden="true" />
+                  )}
+
+                  <button
+                    type="button"
+                    onClick={() => switchTab(tab.id)}
+                    className={`group flex items-center gap-2 px-3 sm:px-3.5 py-1.5 rounded-xl cursor-pointer transition select-none shrink-0 text-xs font-mono ${
+                      isSelected
+                        ? 'bg-gradient-to-r from-cyan-500/25 via-blue-500/20 to-cyan-500/25 text-white border-2 border-cyan-400 shadow-md shadow-cyan-500/20 font-bold ring-2 ring-cyan-500/20'
+                        : 'bg-slate-900/85 text-slate-400 hover:text-slate-200 hover:bg-slate-800/80 border border-slate-800 font-medium'
+                    }`}
+                    title={tab.description}
+                  >
+                    {/* ステップ丸バッジ */}
+                    {tab.stepNum ? (
                       <span
-                        className={`w-3.5 h-3.5 rounded-full border flex items-center justify-center transition shrink-0 ${
+                        className={`w-5 h-5 rounded-full flex items-center justify-center text-[11px] font-bold shrink-0 transition ${
                           isSelected
-                            ? 'border-cyan-400 bg-slate-950 ring-2 ring-cyan-500/40'
-                            : 'border-slate-500 bg-slate-800/80 group-hover:border-slate-400'
+                            ? 'bg-cyan-400 text-slate-950 font-black shadow-sm'
+                            : 'bg-slate-800 text-slate-400 group-hover:text-slate-300'
                         }`}
                       >
-                        {isSelected && (
-                          <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 shadow-sm shadow-cyan-400" />
-                        )}
+                        {tab.stepNum}
                       </span>
-                      <span className="flex items-center gap-1">
-                        <span>{option.icon}</span>
-                        <span>{option.label}</span>
-                        {option.count && (
-                          <span
-                            className={`text-[10px] ${
-                              isSelected ? 'text-cyan-300/80' : 'text-slate-500'
-                            }`}
-                          >
-                            ({option.count})
-                          </span>
-                        )}
-                      </span>
-                    </label>
-                  );
-                })}
-              </div>
-            ) : (
-              /* ② プルダウンリスト形式 */
-              <div className="flex items-center gap-2">
-                <label
-                  htmlFor="chapter-view-mode-select"
-                  className="text-xs font-mono font-bold text-slate-300 shrink-0 flex items-center gap-1"
-                >
-                  <span className="text-cyan-400">▾</span> 表示モード選択:
-                </label>
-                <div className="relative inline-block">
-                  <select
-                    id="chapter-view-mode-select"
-                    value={viewMode}
-                    onChange={(e) => setViewMode(e.target.value as ViewMode)}
-                    className="bg-slate-900 border-2 border-cyan-500/50 hover:border-cyan-400 text-cyan-200 rounded-xl pl-3 pr-8 py-1.5 text-xs font-mono font-bold focus:outline-none focus:ring-2 focus:ring-cyan-400 appearance-none cursor-pointer shadow-md shadow-cyan-500/10 transition"
-                  >
-                    {viewModeOptions.map((opt) => (
-                      <option key={opt.id} value={opt.id} className="bg-slate-900 text-slate-200 py-1">
-                        {opt.icon} {opt.label}{opt.count ? ` (${opt.count})` : ''} - {opt.desc}
-                      </option>
-                    ))}
-                  </select>
-                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2.5 text-cyan-400">
-                    <svg className="w-4 h-4 fill-current" viewBox="0 0 20 20">
-                      <path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" />
-                    </svg>
-                  </div>
-                </div>
-              </div>
-            )}
+                    ) : (
+                      <span className="text-sm shrink-0">{tab.icon}</span>
+                    )}
+
+                    <span className="flex items-center gap-1.5">
+                      <span className="hidden min-[480px]:inline">{tab.label}</span>
+                      <span className="inline min-[480px]:hidden">{tab.shortLabel}</span>
+                      {tab.countBadge && (
+                        <span
+                          className={`text-[10px] px-1.5 py-0.2 rounded-md ${
+                            isSelected
+                              ? 'bg-cyan-950/80 text-cyan-300 border border-cyan-500/30'
+                              : 'bg-slate-800 text-slate-500'
+                          }`}
+                        >
+                          {tab.countBadge}
+                        </span>
+                      )}
+                    </span>
+                  </button>
+                </React.Fragment>
+              );
+            })}
           </div>
 
-          {/* 右側：現在の表示ステータス ＆ クイックゲーム起動 */}
+          {/* 右側：ゲーム即時起動ボタン & 現在のモード説明 */}
           <div className="text-xs font-mono text-slate-400 hidden sm:flex items-center gap-2.5">
-            {chapter.gameVersion && chapter.gameVersion !== 'none' && (
+            {hasGame && (
               <button
+                type="button"
                 onClick={() => setIsGameModalOpen(true)}
                 className="px-2.5 py-1 rounded-lg bg-emerald-950/80 hover:bg-emerald-900 border border-emerald-500/50 text-emerald-300 hover:text-emerald-200 font-bold transition flex items-center gap-1.5 active:scale-95 cursor-pointer shadow-sm"
-                title="この章のゲームを起動する"
+                title="この章のゲームを大画面で起動する"
               >
                 <Gamepad2 className="w-3.5 h-3.5 text-emerald-400" />
-                <span>ゲーム起動</span>
+                <span>ゲーム即時起動</span>
               </button>
             )}
-            <div className="hidden lg:flex items-center gap-1.5">
-              <span>表示:</span>
+            <div className="hidden xl:flex items-center gap-1.5">
+              <span className="text-slate-500">モード:</span>
               <span className="text-cyan-400 font-bold">
-                {viewModeOptions.find((opt) => opt.id === viewMode)?.desc}
+                {stepTabs.find((t) => t.id === activeTab)?.description}
               </span>
             </div>
           </div>
@@ -680,8 +724,8 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
       </div>
 
       {/* 🚀 実機ゲームステーション（大画面ポップアップ起動 ＆ インライン切替） */}
-      {(viewMode === 'all' || viewMode === 'practice') && chapter.gameVersion && chapter.gameVersion !== 'none' && (() => {
-        const evolution = getChapterEvolution(code, chapter.gameVersion);
+      {(activeTab === 'all' || activeTab === 'game') && hasGame && (() => {
+        const evolution = getChapterEvolution(code, chapter.gameVersion!);
         const isFirstChapter = Boolean(
           evolution.isFirstChapter ||
           code === 'L1' ||
@@ -691,7 +735,7 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
         );
 
         return (
-          <section className="space-y-3">
+          <section className="space-y-4">
             <div className="rounded-2xl border-2 border-cyan-500/40 bg-gradient-to-br from-slate-900 via-[#070e1b] to-slate-950 p-4 sm:p-6 shadow-2xl relative overflow-hidden">
               {/* 背景の淡いグリッド ＆ ネオングロー */}
               <div className="absolute inset-0 bg-[radial-gradient(#06b6d4_1px,transparent_1px)] [background-size:24px_24px] opacity-15 pointer-events-none" />
@@ -797,7 +841,7 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
                 }>
                   <GameEmulator
                     key={`${chapter.slug}-inline`}
-                    version={chapter.gameVersion}
+                    version={chapter.gameVersion as any}
                     chapterCode={code}
                     chapterTitle={chapter.title}
                     isModal={false}
@@ -818,7 +862,7 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
               }>
                 <GameEmulator
                   key={`${chapter.slug}-modal`}
-                  version={chapter.gameVersion}
+                  version={chapter.gameVersion as any}
                   chapterCode={code}
                   chapterTitle={chapter.title}
                   isModal={true}
@@ -826,228 +870,369 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
                 />
               </React.Suspense>
             )}
+
+            {/* 🎮 ゲーム体験タブ（STEP 1）完了時の次ステップ導線 */}
+            {activeTab === 'game' && (
+              <div className="mt-8 p-6 sm:p-8 rounded-3xl bg-gradient-to-r from-slate-900 via-cyan-950/40 to-slate-900 border-2 border-cyan-500/40 shadow-xl flex flex-col sm:flex-row items-center justify-between gap-5 animate-fadeIn">
+                <div className="space-y-1.5 text-center sm:text-left">
+                  <div className="flex items-center justify-center sm:justify-start gap-2 text-xs font-mono text-cyan-400 font-bold">
+                    <span className="w-2 h-2 rounded-full bg-cyan-400 animate-ping inline-block" />
+                    <span>STEP 1 🎮 ゲームの挙動を体感しました！</span>
+                  </div>
+                  <h4 className="text-lg sm:text-xl font-black text-white font-sans">
+                    次はコードの構造とオブジェクト指向の仕組みを解剖しよう
+                  </h4>
+                  <p className="text-xs sm:text-sm text-slate-300 font-sans">
+                    ゲームが裏でどのように動いているのか、UML図やメモリ可視化と共に詳しく学びます。
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => switchTab('learn')}
+                  className="w-full sm:w-auto px-6 py-4 rounded-2xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-black font-mono text-sm sm:text-base transition flex items-center justify-center gap-2.5 shadow-lg shadow-cyan-500/25 active:scale-95 cursor-pointer shrink-0"
+                >
+                  <span>② 本文解説へ進む</span>
+                  <ArrowRight className="w-5 h-5" />
+                </button>
+              </div>
+            )}
           </section>
         );
       })()}
 
-      {/* 📐 この章のプログラムに対応する公式UML設計書 */}
-      {(viewMode === 'all' || viewMode === 'learn') && chapter.umlDiagram && (
-        <section>
-          <UmlDiagramViewer
-            data={chapter.umlDiagram}
-            codeFiles={allCodeFiles}
-            onJumpToEditor={(target) => setCodeHighlight(target)}
-          />
-        </section>
-      )}
-
-      {/* 各セクションの展開（practiceモード時は演習に特化するため非表示） */}
-      {viewMode !== 'practice' && chapter.sections.map((section) => {
-        // "1.1 タイトル" 形式の分解
-        const titleMatch = section.title.match(/^(\d+\.\d+)\s*(.*)/);
-        const sectionNum = titleMatch ? titleMatch[1] : null;
-        const sectionTitle = titleMatch ? titleMatch[2] : section.title;
-
-        return (
-          <React.Fragment key={section.id}>
-            <section id={section.id} className="space-y-6 pt-12 pb-8 border-t border-slate-800/80 scroll-mt-24">
-            <div>
-              <div className="flex items-center gap-3.5 flex-wrap">
-                {sectionNum && (
-                  <span className="px-3.5 py-1.5 rounded-xl bg-cyan-950 text-cyan-400 border border-cyan-500/30 font-mono font-bold text-sm sm:text-base shadow-sm">
-                    {sectionNum}
-                  </span>
-                )}
-                <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-white tracking-tight [text-wrap:balance]">
-                  {sectionTitle}
-                </h2>
-              </div>
-              {/* セクションリード文（解説モードまたはすべて表示時） */}
-              {(viewMode === 'all' || viewMode === 'learn') && section.leadText && (
-                <p className="text-lg sm:text-xl text-slate-300 mt-4 leading-relaxed font-sans [text-wrap:pretty]">
-                  {section.leadText}
-                </p>
-              )}
-            </div>
-
-          {/* セクション前の会話 */}
-          {(viewMode === 'all' || viewMode === 'learn') && section.dialogueBefore && section.dialogueBefore.length > 0 && (
-            <div className="space-y-3.5 bg-slate-950/40 p-5 rounded-2xl border border-slate-900">
-              {section.dialogueBefore.map((dialogue) => (
-                <DialogueBubble key={dialogue.id} dialogue={dialogue} />
-              ))}
-            </div>
+      {/* 📖 本文解説・公式設計書・ソースコード（activeTab: 'all' または 'learn'） */}
+      {(activeTab === 'all' || activeTab === 'learn') && (
+        <>
+          {/* 📐 この章のプログラムに対応する公式UML設計書 */}
+          {chapter.umlDiagram && (
+            <section>
+              <UmlDiagramViewer
+                data={chapter.umlDiagram}
+                codeFiles={allCodeFiles}
+                onJumpToEditor={(target) => setCodeHighlight(target)}
+              />
+            </section>
           )}
 
-          {/* 概念解説テキスト（リッチマークダウンレンダラー） */}
-          {(viewMode === 'all' || viewMode === 'learn') && section.explanationText && (
-            <RichExplanation content={section.explanationText} />
-          )}
+          {/* 各セクションの展開 */}
+          {chapter.sections.map((section) => {
+            // "1.1 タイトル" 形式の分解
+            const titleMatch = section.title.match(/^(\d+\.\d+)\s*(.*)/);
+            const sectionNum = titleMatch ? titleMatch[1] : null;
+            const sectionTitle = titleMatch ? titleMatch[2] : section.title;
 
-          {/* C言語 vs C++ パラダイム対比 */}
-          {(viewMode === 'all' || viewMode === 'learn') && section.paradigmComparison && (
-            <ParadigmComparisonView data={section.paradigmComparison} />
-          )}
-
-          {/* スタック・ヒープ メモリ可視化 */}
-          {(viewMode === 'all' || viewMode === 'learn') && section.memoryMap && (
-            <MemoryVisualizer memoryMap={section.memoryMap} />
-          )}
-
-          {/* 変数・クラスメンバ一覧インスペクター（カード / 最適化テーブル） */}
-          {(viewMode === 'all' || viewMode === 'learn') && section.variables && section.variables.length > 0 && (
-            <VariableInspector variables={section.variables} />
-          )}
-
-          {/* 処理フロー（ステップバイステップ実況解説＆設計意図） */}
-          {(viewMode === 'all' || viewMode === 'learn') && section.processSteps && section.processSteps.length > 0 && (
-            <div className="space-y-4 my-6">
-              <div className="flex items-center gap-2 text-sm font-mono font-bold text-emerald-400 px-1">
-                <GitCommit className="w-5 h-5" />
-                <span>1フレーム内の実行順序と設計の意図</span>
-              </div>
-              <div className="grid grid-cols-1 gap-3.5">
-                {section.processSteps.map((step) => (
-                  <div
-                    key={step.stepNumber}
-                    className="p-5 rounded-2xl bg-slate-900/70 border border-slate-800 hover:border-cyan-500/40 transition-all shadow-md"
-                  >
-                    <div className="flex items-start justify-between gap-3 mb-2.5 flex-wrap">
-                      <div className="flex items-center gap-3">
-                        <span className="w-7 h-7 rounded-full bg-cyan-500/20 text-cyan-400 border border-cyan-500/40 flex items-center justify-center font-mono font-bold text-sm">
-                          {step.stepNumber}
+            return (
+              <React.Fragment key={section.id}>
+                <section id={section.id} className="space-y-6 pt-12 pb-8 border-t border-slate-800/80 scroll-mt-24">
+                  <div>
+                    <div className="flex items-center gap-3.5 flex-wrap">
+                      {sectionNum && (
+                        <span className="px-3.5 py-1.5 rounded-xl bg-cyan-950 text-cyan-400 border border-cyan-500/30 font-mono font-bold text-sm sm:text-base shadow-sm">
+                          {sectionNum}
                         </span>
-                        <h4 className="font-bold text-base sm:text-lg text-slate-100 font-sans [text-wrap:balance]">
-                          {step.title}
-                        </h4>
-                      </div>
-                      {step.codeSnippet && (
-                        <code className="text-xs sm:text-sm font-mono px-2.5 py-1 rounded bg-slate-950 text-cyan-300 border border-slate-800">
-                          {step.codeSnippet}
-                        </code>
                       )}
+                      <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-white tracking-tight [text-wrap:balance]">
+                        {sectionTitle}
+                      </h2>
                     </div>
-                    <p className="text-sm sm:text-base text-slate-300 leading-relaxed pl-10 font-sans [text-wrap:pretty]">
-                      {step.description}
-                    </p>
-                    
-                    <div className="mt-3 pl-10 flex flex-col sm:flex-row gap-2.5 text-xs sm:text-sm font-mono">
-                      <div className="flex items-center gap-2 text-emerald-400 bg-emerald-950/30 py-2 px-3 rounded-xl border border-emerald-500/20 flex-1">
-                        <span className="text-slate-400 font-sans font-bold">動作効果:</span>
-                        <span>{step.impact}</span>
-                      </div>
-                      {step.designIntent && (
-                        <div className="flex items-center gap-2 text-cyan-300 bg-cyan-950/30 py-2 px-3 rounded-xl border border-cyan-500/20 flex-1">
-                          <span className="text-slate-400 font-sans font-bold">設計意図:</span>
-                          <span>{step.designIntent}</span>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* 概念図解 */}
-          {(viewMode === 'all' || viewMode === 'learn') && section.diagramType && (
-            <ConceptDiagram type={section.diagramType} />
-          )}
-
-          {/* セクション固有のUML設計書 */}
-          {(viewMode === 'all' || viewMode === 'learn') && section.umlDiagram && (
-            <UmlDiagramViewer
-              data={section.umlDiagram}
-              codeFiles={section.codeFiles && section.codeFiles.length > 0 ? section.codeFiles : allCodeFiles}
-              onJumpToEditor={(target) => setCodeHighlight(target)}
-            />
-          )}
-
-          {/* C++コードビューア（コードモードまたはすべて表示時） */}
-          {(viewMode === 'all' || viewMode === 'code') && section.codeFiles && section.codeFiles.length > 0 && (
-            <div className="my-6">
-              <div className="text-sm font-mono text-slate-400 mb-2.5 flex items-center gap-2">
-                <span className="text-cyan-400 font-bold">SOURCE CODE</span>
-                <span>（タブをクリックしてファイルを切り替え・コピーできます。クラス図メンバと双方向連動）</span>
-              </div>
-              <CodeViewer files={section.codeFiles} targetHighlight={codeHighlight} />
-            </div>
-          )}
-
-          {/* セクション後の会話 */}
-          {(viewMode === 'all' || viewMode === 'learn') && section.dialogueAfter && section.dialogueAfter.length > 0 && (
-            <div className="space-y-3.5 bg-slate-950/40 p-5 rounded-2xl border border-slate-900">
-              {section.dialogueAfter.map((dialogue) => (
-                <DialogueBubble key={dialogue.id} dialogue={dialogue} />
-              ))}
-            </div>
-          )}
-
-          {/* キーポイント・シロクマ先生の指導吹き出し */}
-          {(viewMode === 'all' || viewMode === 'learn') && section.takeaways && section.takeaways.length > 0 && (
-            <div className="my-7 flex items-start gap-3 sm:gap-4.5">
-              {/* シロクマ先生アバター ＆ ネームタグ */}
-              <div className="flex flex-col items-center shrink-0">
-                <Avatar character="shirokuma" emotion="teaching" size="md" />
-                <span className="text-[11px] font-bold font-mono mt-1.5 px-2.5 py-0.5 rounded-full bg-cyan-950/80 text-cyan-300 border border-cyan-500/40 whitespace-nowrap shadow-sm">
-                  シロクマ先生
-                </span>
-              </div>
-
-              {/* 吹き出し本体（全幅でゆったり自然に読めるレイアウト） */}
-              <div className="flex-1 min-w-0 rounded-3xl rounded-tl-sm bg-gradient-to-br from-[#0c1424] via-[#090f1d] to-[#050811] border-2 border-cyan-500/40 p-5 sm:p-6 shadow-xl shadow-cyan-950/30 space-y-3">
-                {/* 吹き出し内バッジ */}
-                <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md bg-cyan-950/90 border border-cyan-500/30 text-cyan-300 text-xs font-mono font-bold">
-                  <Lightbulb className="w-3.5 h-3.5 text-cyan-400 shrink-0" />
-                  <span>指導官の重要ポイントまとめ</span>
-                </div>
-
-                {/* テイクアウェイ一覧 */}
-                <div className="space-y-3.5 pt-1">
-                  {section.takeaways.map((takeaway, idx, arr) => (
-                    <div
-                      key={idx}
-                      className={idx > 0 ? "pt-3.5 border-t border-cyan-900/40 space-y-1.5" : "space-y-1.5"}
-                    >
-                      <div className="flex items-center gap-2">
-                        {arr.length > 1 && (
-                          <span className="flex items-center justify-center w-5 h-5 rounded-full bg-cyan-950 text-cyan-300 border border-cyan-500/40 text-xs font-mono font-bold shrink-0">
-                            {idx + 1}
-                          </span>
-                        )}
-                        <h4 className="text-base sm:text-lg font-bold text-white tracking-tight [text-wrap:balance]">
-                          {takeaway.title}
-                        </h4>
-                      </div>
-                      <p className={`text-sm sm:text-base text-slate-200 leading-relaxed font-sans [text-wrap:pretty] ${arr.length > 1 ? 'pl-0 sm:pl-7' : ''}`}>
-                        {takeaway.description}
+                    {/* セクションリード文 */}
+                    {section.leadText && (
+                      <p className="text-lg sm:text-xl text-slate-300 mt-4 leading-relaxed font-sans [text-wrap:pretty]">
+                        {section.leadText}
                       </p>
+                    )}
+                  </div>
+
+                  {/* セクション前の会話 */}
+                  {section.dialogueBefore && section.dialogueBefore.length > 0 && (
+                    <div className="space-y-3.5 bg-slate-950/40 p-5 rounded-2xl border border-slate-900">
+                      {section.dialogueBefore.map((dialogue) => (
+                        <DialogueBubble key={dialogue.id} dialogue={dialogue} />
+                      ))}
                     </div>
-                  ))}
+                  )}
+
+                  {/* 概念解説テキスト（リッチマークダウンレンダラー） */}
+                  {section.explanationText && (
+                    <RichExplanation content={section.explanationText} />
+                  )}
+
+                  {/* C言語 vs C++ パラダイム対比 */}
+                  {section.paradigmComparison && (
+                    <ParadigmComparisonView data={section.paradigmComparison} />
+                  )}
+
+                  {/* スタック・ヒープ メモリ可視化 */}
+                  {section.memoryMap && (
+                    <MemoryVisualizer memoryMap={section.memoryMap} />
+                  )}
+
+                  {/* 変数・クラスメンバ一覧インスペクター（カード / 最適化テーブル） */}
+                  {section.variables && section.variables.length > 0 && (
+                    <VariableInspector variables={section.variables} />
+                  )}
+
+                  {/* 処理フロー（ステップバイステップ実況解説＆設計意図） */}
+                  {section.processSteps && section.processSteps.length > 0 && (
+                    <div className="space-y-4 my-6">
+                      <div className="flex items-center gap-2 text-sm font-mono font-bold text-emerald-400 px-1">
+                        <GitCommit className="w-5 h-5" />
+                        <span>1フレーム内の実行順序と設計の意図</span>
+                      </div>
+                      <div className="grid grid-cols-1 gap-3.5">
+                        {section.processSteps.map((step) => (
+                          <div
+                            key={step.stepNumber}
+                            className="p-5 rounded-2xl bg-slate-900/70 border border-slate-800 hover:border-cyan-500/40 transition-all shadow-md"
+                          >
+                            <div className="flex items-start justify-between gap-3 mb-2.5 flex-wrap">
+                              <div className="flex items-center gap-3">
+                                <span className="w-7 h-7 rounded-full bg-cyan-500/20 text-cyan-400 border border-cyan-500/40 flex items-center justify-center font-mono font-bold text-sm">
+                                  {step.stepNumber}
+                                </span>
+                                <h4 className="font-bold text-base sm:text-lg text-slate-100 font-sans [text-wrap:balance]">
+                                  {step.title}
+                                </h4>
+                              </div>
+                              {step.codeSnippet && (
+                                <code className="text-xs sm:text-sm font-mono px-2.5 py-1 rounded bg-slate-950 text-cyan-300 border border-slate-800">
+                                  {step.codeSnippet}
+                                </code>
+                              )}
+                            </div>
+                            <p className="text-sm sm:text-base text-slate-300 leading-relaxed pl-10 font-sans [text-wrap:pretty]">
+                              {step.description}
+                            </p>
+                            
+                            <div className="mt-3 pl-10 flex flex-col sm:flex-row gap-2.5 text-xs sm:text-sm font-mono">
+                              <div className="flex items-center gap-2 text-emerald-400 bg-emerald-950/30 py-2 px-3 rounded-xl border border-emerald-500/20 flex-1">
+                                <span className="text-slate-400 font-sans font-bold">動作効果:</span>
+                                <span>{step.impact}</span>
+                              </div>
+                              {step.designIntent && (
+                                <div className="flex items-center gap-2 text-cyan-300 bg-cyan-950/30 py-2 px-3 rounded-xl border border-cyan-500/20 flex-1">
+                                  <span className="text-slate-400 font-sans font-bold">設計意図:</span>
+                                  <span>{step.designIntent}</span>
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* 概念図解 */}
+                  {section.diagramType && (
+                    <ConceptDiagram type={section.diagramType} />
+                  )}
+
+                  {/* セクション固有のUML設計書 */}
+                  {section.umlDiagram && (
+                    <UmlDiagramViewer
+                      data={section.umlDiagram}
+                      codeFiles={section.codeFiles && section.codeFiles.length > 0 ? section.codeFiles : allCodeFiles}
+                      onJumpToEditor={(target) => setCodeHighlight(target)}
+                    />
+                  )}
+
+                  {/* C++コードビューア */}
+                  {section.codeFiles && section.codeFiles.length > 0 && (
+                    <div className="my-6">
+                      <div className="text-sm font-mono text-slate-400 mb-2.5 flex items-center gap-2">
+                        <span className="text-cyan-400 font-bold">SOURCE CODE</span>
+                        <span>（タブをクリックしてファイルを切り替え・コピーできます。クラス図メンバと双方向連動）</span>
+                      </div>
+                      <CodeViewer files={section.codeFiles} targetHighlight={codeHighlight} />
+                    </div>
+                  )}
+
+                  {/* セクション後の会話 */}
+                  {section.dialogueAfter && section.dialogueAfter.length > 0 && (
+                    <div className="space-y-3.5 bg-slate-950/40 p-5 rounded-2xl border border-slate-900">
+                      {section.dialogueAfter.map((dialogue) => (
+                        <DialogueBubble key={dialogue.id} dialogue={dialogue} />
+                      ))}
+                    </div>
+                  )}
+
+                  {/* キーポイント・シロクマ先生の指導吹き出し */}
+                  {section.takeaways && section.takeaways.length > 0 && (
+                    <div className="my-7 flex items-start gap-3 sm:gap-4.5">
+                      {/* シロクマ先生アバター ＆ ネームタグ */}
+                      <div className="flex flex-col items-center shrink-0">
+                        <Avatar character="shirokuma" emotion="teaching" size="md" />
+                        <span className="text-[11px] font-bold font-mono mt-1.5 px-2.5 py-0.5 rounded-full bg-cyan-950/80 text-cyan-300 border border-cyan-500/40 whitespace-nowrap shadow-sm">
+                          シロクマ先生
+                        </span>
+                      </div>
+
+                      {/* 吹き出し本体 */}
+                      <div className="flex-1 min-w-0 rounded-3xl rounded-tl-sm bg-gradient-to-br from-[#0c1424] via-[#090f1d] to-[#050811] border-2 border-cyan-500/40 p-5 sm:p-6 shadow-xl shadow-cyan-950/30 space-y-3">
+                        <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md bg-cyan-950/90 border border-cyan-500/30 text-cyan-300 text-xs font-mono font-bold">
+                          <Lightbulb className="w-3.5 h-3.5 text-cyan-400 shrink-0" />
+                          <span>指導官の重要ポイントまとめ</span>
+                        </div>
+
+                        <div className="space-y-3.5 pt-1">
+                          {section.takeaways.map((takeaway, idx, arr) => (
+                            <div
+                              key={idx}
+                              className={idx > 0 ? "pt-3.5 border-t border-cyan-900/40 space-y-1.5" : "space-y-1.5"}
+                            >
+                              <div className="flex items-center gap-2">
+                                {arr.length > 1 && (
+                                  <span className="flex items-center justify-center w-5 h-5 rounded-full bg-cyan-950 text-cyan-300 border border-cyan-500/40 text-xs font-mono font-bold shrink-0">
+                                    {idx + 1}
+                                  </span>
+                                )}
+                                <h4 className="text-base sm:text-lg font-bold text-white tracking-tight [text-wrap:balance]">
+                                  {takeaway.title}
+                                </h4>
+                              </div>
+                              <p className={`text-sm sm:text-base text-slate-200 leading-relaxed font-sans [text-wrap:pretty] ${arr.length > 1 ? 'pl-0 sm:pl-7' : ''}`}>
+                                {takeaway.description}
+                              </p>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </section>
+              </React.Fragment>
+            );
+          })}
+
+          {/* 📖 本文解説タブ（STEP 2）完了時の次ステップ導線 */}
+          {activeTab === 'learn' && (
+            <div className="mt-10 p-6 sm:p-8 rounded-3xl bg-gradient-to-r from-slate-900 via-indigo-950/40 to-slate-900 border-2 border-indigo-500/40 shadow-xl flex flex-col sm:flex-row items-center justify-between gap-5 animate-fadeIn">
+              <div className="space-y-1.5 text-center sm:text-left">
+                <div className="flex items-center justify-center sm:justify-start gap-2 text-xs font-mono text-indigo-400 font-bold">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                  <span>STEP {hasGame ? '2' : '1'} 📖 本文解説のインプット完了！</span>
                 </div>
+                <h4 className="text-lg sm:text-xl font-black text-white font-sans">
+                  {hasPractice ? '学んだ知識を定着させる実践演習に挑戦しよう' : '理解度クイズで知識をチェックしよう'}
+                </h4>
+                <p className="text-xs sm:text-sm text-slate-300 font-sans">
+                  {hasPractice 
+                    ? '対話型ターミナル演習とGCCコンパイラ演習で、実際に手を動かしてコードを完成させます。' 
+                    : 'この章で学んだ設計思想やキーワードを4択クイズで総復習しましょう。'}
+                </p>
+              </div>
+              <div className="flex items-center gap-3 w-full sm:w-auto shrink-0 flex-wrap justify-end">
+                {hasGame && (
+                  <button
+                    type="button"
+                    onClick={() => switchTab('game')}
+                    className="w-full sm:w-auto px-4 py-3.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold font-mono text-xs sm:text-sm transition flex items-center justify-center gap-2 cursor-pointer"
+                  >
+                    <ArrowLeft className="w-4 h-4" />
+                    <span>① ゲームに戻る</span>
+                  </button>
+                )}
+                <button
+                  type="button"
+                  onClick={() => switchTab(hasPractice ? 'practice' : 'quiz')}
+                  className="w-full sm:w-auto px-6 py-4 rounded-2xl bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-400 hover:to-purple-500 text-white font-black font-mono text-sm sm:text-base transition flex items-center justify-center gap-2.5 shadow-lg shadow-indigo-500/25 active:scale-95 cursor-pointer"
+                >
+                  <span>{hasPractice ? `${hasGame ? '③' : '②'} 実践演習へ進む` : `${hasGame ? '④' : '③'} 理解度クイズへ進む`}</span>
+                  <ArrowRight className="w-5 h-5" />
+                </button>
+              </div>
+            </div>
+          )}
+        </>
+      )}
+
+      {/* 🧪 実践演習（対話型設計ラボ ＆ GCC演習道場） */}
+      {(activeTab === 'all' || activeTab === 'practice') && (
+        <section className="space-y-12">
+          {/* ステップバイステップ設計演習（対話型ハンズオン） */}
+          <StepByStepLab chapterSlug={chapter.slug} />
+
+          {/* 実践ハンズオン演習道場（コーディング課題が定義されている章で自動表示） */}
+          {CODING_CHALLENGES[chapter.slug] && (
+            <div id="chapter-code-challenge">
+              <CodeChallengeRunner challenge={CODING_CHALLENGES[chapter.slug]} />
+            </div>
+          )}
+
+          {/* 演習タブ（STEP 3）完了時の次ステップ導線 */}
+          {activeTab === 'practice' && (
+            <div className="mt-10 p-6 sm:p-8 rounded-3xl bg-gradient-to-r from-slate-900 via-purple-950/40 to-slate-900 border-2 border-purple-500/40 shadow-xl flex flex-col sm:flex-row items-center justify-between gap-5 animate-fadeIn">
+              <div className="space-y-1.5 text-center sm:text-left">
+                <div className="flex items-center justify-center sm:justify-start gap-2 text-xs font-mono text-purple-400 font-bold">
+                  <Trophy className="w-4 h-4 text-amber-400" />
+                  <span>STEP {hasGame ? '3' : '2'} 🧪 手を動かしてコードを書きました！</span>
+                </div>
+                <h4 className="text-lg sm:text-xl font-black text-white font-sans">
+                  最後の関門！理解度チェッククイズで章を完全攻略
+                </h4>
+                <p className="text-xs sm:text-sm text-slate-300 font-sans">
+                  クイズに正解してシロクマ先生とハイタッチ！章の読了バッジを獲得しましょう。
+                </p>
+              </div>
+              <div className="flex items-center gap-3 w-full sm:w-auto shrink-0 flex-wrap justify-end">
+                <button
+                  type="button"
+                  onClick={() => switchTab('learn')}
+                  className="w-full sm:w-auto px-4 py-3.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold font-mono text-xs sm:text-sm transition flex items-center justify-center gap-2 cursor-pointer"
+                >
+                  <ArrowLeft className="w-4 h-4" />
+                  <span>{hasGame ? '②' : '①'} 解説を見直す</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => switchTab('quiz')}
+                  className="w-full sm:w-auto px-6 py-4 rounded-2xl bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-400 hover:to-pink-500 text-white font-black font-mono text-sm sm:text-base transition flex items-center justify-center gap-2.5 shadow-lg shadow-purple-500/25 active:scale-95 cursor-pointer"
+                >
+                  <span>{hasGame ? '④' : '③'} 理解度クイズへ進む</span>
+                  <ArrowRight className="w-5 h-5" />
+                </button>
               </div>
             </div>
           )}
         </section>
-      </React.Fragment>
-    );
-  })}
-
-      {/* 🧪 ステップバイステップ設計演習（対話型ハンズオン） */}
-      {(viewMode === 'all' || viewMode === 'practice') && (
-        <StepByStepLab chapterSlug={chapter.slug} />
       )}
 
-      {/* 実践ハンズオン演習道場（コーディング課題が定義されている章で自動表示） */}
-      {(viewMode === 'all' || viewMode === 'practice') && CODING_CHALLENGES[chapter.slug] && (
-        <section>
-          <CodeChallengeRunner challenge={CODING_CHALLENGES[chapter.slug]} />
-        </section>
-      )}
+      {/* 🎯 理解度クイズ ＆ ゴール達成（activeTab: 'all' または 'quiz'） */}
+      {(activeTab === 'all' || activeTab === 'quiz') && (
+        <>
+          {/* クイズタブ選択時の上部戻るナビ */}
+          {activeTab === 'quiz' && (
+            <div className="flex items-center justify-between p-4 rounded-2xl bg-slate-900/60 border border-slate-800 text-xs font-mono mb-6">
+              <div className="flex items-center gap-2 text-slate-400">
+                <span className="text-purple-400 font-bold">🎯</span>
+                <span>STEP {hasGame ? (hasPractice ? '4' : '3') : (hasPractice ? '3' : '2')}: 理解度チェック ＆ 章修了</span>
+              </div>
+              <div className="flex items-center gap-2">
+                {hasPractice && (
+                  <button
+                    type="button"
+                    onClick={() => switchTab('practice')}
+                    className="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition flex items-center gap-1 cursor-pointer"
+                  >
+                    <ArrowLeft className="w-3.5 h-3.5" />
+                    <span>演習に戻る</span>
+                  </button>
+                )}
+                <button
+                  type="button"
+                  onClick={() => switchTab('learn')}
+                  className="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition flex items-center gap-1 cursor-pointer"
+                >
+                  <ArrowLeft className="w-3.5 h-3.5" />
+                  <span>解説に戻る</span>
+                </button>
+              </div>
+            </div>
+          )}
 
-      {/* 理解度確認クイズ */}
-      {(viewMode === 'all' || viewMode === 'practice') && chapter.quiz && chapter.quiz.length > 0 && (
-        <section id="chapter-quiz" className="rounded-3xl bg-gradient-to-b from-slate-900 to-slate-950 border border-cyan-500/30 p-6 sm:p-10 space-y-8 shadow-2xl my-8 scroll-mt-24">
+          {/* 理解度確認クイズ */}
+          {chapter.quiz && chapter.quiz.length > 0 && (
+            <section id="chapter-quiz" className="rounded-3xl bg-gradient-to-b from-slate-900 to-slate-950 border border-cyan-500/30 p-6 sm:p-10 space-y-8 shadow-2xl my-8 scroll-mt-24">
           <div className="flex items-center gap-3 text-cyan-400 font-mono font-bold text-xl sm:text-2xl border-b border-slate-800 pb-4">
             <HelpCircle className="w-7 h-7" />
             <span>理解度チェッククイズ</span>
@@ -1379,6 +1564,40 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
           </div>
         )}
       </div>
+        </>
+      )}
+
+      {/* 途中のタブ（ゲーム・解説・演習）でも即座に前後の章やクイズへ行けるミニナビゲーション */}
+      {activeTab !== 'all' && activeTab !== 'quiz' && (
+        <div className="pt-6 border-t border-slate-800/80 flex items-center justify-between text-xs font-mono text-slate-500">
+          {chapter.prevChapterSlug ? (
+            <button
+              type="button"
+              onClick={() => onNavigate(chapter.prevChapterSlug!)}
+              className="hover:text-slate-300 transition flex items-center gap-1 cursor-pointer"
+            >
+              <ArrowLeft className="w-3.5 h-3.5" />
+              <span>前の章へ</span>
+            </button>
+          ) : (
+            <button
+              type="button"
+              onClick={() => onNavigate('top')}
+              className="hover:text-slate-300 transition flex items-center gap-1 cursor-pointer"
+            >
+              <ArrowLeft className="w-3.5 h-3.5" />
+              <span>TOPへ戻る</span>
+            </button>
+          )}
+          <button
+            type="button"
+            onClick={() => switchTab('quiz')}
+            className="text-purple-400 hover:text-purple-300 transition flex items-center gap-1 cursor-pointer font-bold"
+          >
+            <span>クイズ・章の完了へスキップ ➔</span>
+          </button>
+        </div>
+      )}
     </div>
     </>
   );
