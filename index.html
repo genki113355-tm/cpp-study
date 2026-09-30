@@ -22,20 +22,20 @@
     <meta name="description" content="インベーダーゲーム風の固定画面シューティング開発の実践を通じて、レガシーC++（C++03・生ポインタ）からモダンC++（C++17・スマートポインタ・ECS設計・TDD・UML設計書）までを体系的に学べるオブジェクト指向プログラミング実践学習メディア。" />
     
     <!-- Canonical URL -->
-    <link rel="canonical" href="https://shirokuma-tech.jp/cpp/" />
-    <link rel="alternate" type="application/rss+xml" title="シロクマC++ラボ 最新カリキュラム RSS Feed" href="https://shirokuma-tech.jp/cpp/feed.xml" />
+    <link rel="canonical" href="https://shirokuma-cpp.jp/" />
+    <link rel="alternate" type="application/rss+xml" title="シロクマC++ラボ 最新カリキュラム RSS Feed" href="https://shirokuma-cpp.jp/feed.xml" />
     <meta name="keywords" content="C++, オブジェクト指向, ゲーム開発, インベーダーゲーム風, RETRO SPACE SHOOTER, レトロシューティング, C++入門, C++実践, レガシーC++, モダンC++, C++11, C++14, C++17, C++20, スマートポインタ, RAII, 多態性, ポリモーフィズム, 菱形継承, CRTP, 静的ポリモーフィズム, ECS, データ指向設計, デザインパターン, GoogleTest, TDD, UML設計, C++文法チートシート, ポインタ演算, 関数ポインタ, メモリプール, プレースメントnew" />
     <meta name="author" content="シロクマC++ラボ運営チーム" />
     <meta name="robots" content="index, follow" />
     
     <!-- OGP / Social Meta Tags -->
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://shirokuma-tech.jp/cpp/" />
+    <meta property="og:url" content="https://shirokuma-cpp.jp/" />
     <meta property="og:site_name" content="シロクマC++ラボ" />
     <meta property="og:locale" content="ja_JP" />
     <meta property="og:title" content="シロクマC++ラボ 〜ゲーム開発で学ぶオブジェクト指向開発 レガシー設計からモダン設計まで〜" />
     <meta property="og:description" content="1本のインベーダーゲーム風シューティング（RETRO SPACE SHOOTER）を多段階でリファクタリングしながら学ぶ！レガシー生ポインタからモダンC++17、ECS設計、TDD、UML設計書、C++基本文法総覧まで完全網羅したオブジェクト指向実践学習メディア。" />
-    <meta property="og:image" content="https://shirokuma-tech.jp/cpp/images/characters_mission.jpg" />
+    <meta property="og:image" content="https://shirokuma-cpp.jp/images/characters_mission.jpg" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="675" />
     <meta property="og:image:alt" content="シロクマC++ラボ キャラクターキービジュアル（シロクマ君とペンギン先輩）" />
@@ -44,7 +44,7 @@
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="シロクマC++ラボ 〜ゲーム開発で学ぶオブジェクト指向開発〜" />
     <meta name="twitter:description" content="1本のゲームを10段階で進化させる！レガシー生ポインタからモダンC++、ECS、TDD、基本文法チートシートまで網羅したC++実践学習メディア。" />
-    <meta name="twitter:image" content="https://shirokuma-tech.jp/cpp/images/characters_mission.jpg" />
+    <meta name="twitter:image" content="https://shirokuma-cpp.jp/images/characters_mission.jpg" />
     <meta name="twitter:image:alt" content="シロクマC++ラボ キービジュアル" />
 
     <!-- Schema.org JSON-LD 構造化データ -->
@@ -54,8 +54,8 @@
       "@graph": [
         {
           "@type": "WebSite",
-          "@id": "https://shirokuma-tech.jp/cpp/#website",
-          "url": "https://shirokuma-tech.jp/cpp/",
+          "@id": "https://shirokuma-cpp.jp/#website",
+          "url": "https://shirokuma-cpp.jp/",
           "name": "シロクマC++ラボ",
           "description": "ゲーム開発の実践を通じて学ぶC++オブジェクト指向設計学習メディア",
           "inLanguage": "ja",
@@ -67,13 +67,13 @@
         },
         {
           "@type": "Course",
-          "@id": "https://shirokuma-tech.jp/cpp/#course",
+          "@id": "https://shirokuma-cpp.jp/#course",
           "name": "ゲーム開発で学ぶC++オブジェクト指向設計マスター講座",
           "description": "インベーダーゲーム開発を通じて、レガシーC++（生ポインタ・手動メモリ管理・菱形継承・CRTP）からモダンC++（スマートポインタ・RAII・ECS・TDD・UML）まで体系的にマスターする実践講座。",
           "provider": {
             "@type": "Organization",
             "name": "シロクマC++ラボ",
-            "url": "https://shirokuma-tech.jp/cpp/"
+            "url": "https://shirokuma-cpp.jp/"
           },
           "educationalLevel": "Beginner to Advanced",
           "programmingLanguage": "C++",
@@ -102,8 +102,18 @@
           <p>生ポインタ・手動メモリ管理によるレガシー設計の限界から、スマートポインタ・RAII・ポリモーフィズム・ECS（Entity Component System）・TDD（GoogleTest）によるモダン設計へのリファクタリングを10段階で実践習得します。</p>
         </section>
 
-        <!-- 姉妹メディア相互リンク（静的クローラー・SEO認識用） -->
+        <!-- サイト主要ナビゲーション ＆ 姉妹メディア相互リンク（静的クローラー・SEO認識用） -->
         <footer style="margin-top: 40px; padding: 20px; border-top: 1px solid #1e293b;">
+          <nav aria-label="主要ナビゲーション" style="margin-bottom: 24px;">
+            <ul style="list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 16px; justify-content: center; font-size: 14px;">
+              <li><a href="/" style="color: #38bdf8; text-decoration: underline;">ホーム (TOP)</a></li>
+              <li><a href="/about" style="color: #38bdf8; text-decoration: underline;">当サイトについて・運営者情報 (About)</a></li>
+              <li><a href="/privacy" style="color: #38bdf8; text-decoration: underline;">プライバシーポリシー ＆ 免責事項 (Privacy Policy)</a></li>
+              <li><a href="/contact" style="color: #38bdf8; text-decoration: underline;">お問い合わせ窓口 (Contact)</a></li>
+              <li><a href="/sitemap" style="color: #38bdf8; text-decoration: underline;">HTMLサイトマップ (Sitemap)</a></li>
+            </ul>
+          </nav>
+
           <nav aria-label="姉妹メディア・公式相互リンク">
             <h3 style="font-size: 18px; color: #38bdf8; margin-bottom: 12px;">🔗 公式姉妹メディア（相互リンク）</h3>
             <ul style="list-style: none; padding: 0; display: flex; flex-direction: column; gap: 10px;">

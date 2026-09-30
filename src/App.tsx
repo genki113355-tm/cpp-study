@@ -28,6 +28,18 @@ const MilestoneModal = React.lazy(() =>
 const GameEmulator = React.lazy(() => 
   import('./components/emulator/GameEmulator').then((m) => ({ default: m.GameEmulator }))
 );
+const PrivacyPolicyPage = React.lazy(() => 
+  import('./components/pages/PrivacyPolicyPage').then((m) => ({ default: m.PrivacyPolicyPage }))
+);
+const AboutPage = React.lazy(() => 
+  import('./components/pages/AboutPage').then((m) => ({ default: m.AboutPage }))
+);
+const ContactPage = React.lazy(() => 
+  import('./components/pages/ContactPage').then((m) => ({ default: m.ContactPage }))
+);
+const SiteMapPage = React.lazy(() => 
+  import('./components/pages/SiteMapPage').then((m) => ({ default: m.SiteMapPage }))
+);
 
 type GlobalGameVersion = 'v1_spaghetti' | 'v2_classes' | 'v3_dynamic' | 'v4_polymorphism' | 'v5_smart_pointers' | 'v6_patterns' | 'v7_ecs_final';
 
@@ -38,14 +50,18 @@ const PageLoadingFallback: React.FC = () => (
   </div>
 );
 
+const STATIC_PAGE_SLUGS = ['privacy', 'about', 'contact', 'sitemap'] as const;
+
 const getSlugFromUrl = (): string => {
   let path = window.location.pathname.replace(/^\/+/, '').replace(/\/+$/, '');
   if (path === 'cpp') return 'top';
   if (path.startsWith('cpp/')) path = path.slice(4);
 
+  if (STATIC_PAGE_SLUGS.includes(path as any)) return path;
   if (path && getChapterBySlug(path)) return path;
 
   const hash = window.location.hash.replace('#', '');
+  if (STATIC_PAGE_SLUGS.includes(hash as any)) return hash;
   if (hash && getChapterBySlug(hash)) return hash;
 
   return 'top';
@@ -87,6 +103,12 @@ export const App: React.FC = () => {
     let path = window.location.pathname.replace(/^\/+/, '').replace(/\/+$/, '');
     if (path.startsWith('cpp/')) path = path.slice(4);
 
+    // 静的固定ページのハンドリング
+    if (path && STATIC_PAGE_SLUGS.includes(path as any)) {
+      setCurrentSlug(path);
+      return;
+    }
+
     // 旧スラグからの自動補正
     if (path && SLUG_REDIRECT_MAP[path]) {
       const canonicalSlug = SLUG_REDIRECT_MAP[path];
@@ -96,6 +118,11 @@ export const App: React.FC = () => {
     }
 
     if (hash) {
+      if (STATIC_PAGE_SLUGS.includes(hash as any)) {
+        window.history.replaceState(null, '', `${prefix}/${hash}`);
+        setCurrentSlug(hash);
+        return;
+      }
       const resolvedSlug = SLUG_REDIRECT_MAP[hash] || hash;
       if (getChapterBySlug(resolvedSlug)) {
         window.history.replaceState(null, '', `${prefix}/${resolvedSlug}`);
@@ -207,6 +234,14 @@ export const App: React.FC = () => {
                 onOpenMilestoneModal={() => setIsMilestoneModalOpen(true)}
                 onOpenGameModal={handleOpenGameModal}
               />
+            ) : currentSlug === 'privacy' ? (
+              <PrivacyPolicyPage onNavigate={handleSelectChapter} />
+            ) : currentSlug === 'about' ? (
+              <AboutPage onNavigate={handleSelectChapter} />
+            ) : currentSlug === 'contact' ? (
+              <ContactPage onNavigate={handleSelectChapter} />
+            ) : currentSlug === 'sitemap' ? (
+              <SiteMapPage onNavigate={handleSelectChapter} />
             ) : (
               <ChapterView
                 chapter={activeChapter}
@@ -222,7 +257,7 @@ export const App: React.FC = () => {
       </div>
 
       {/* フッター */}
-      <Footer />
+      <Footer onNavigate={handleSelectChapter} />
 
       {/* ソースコードガイドモーダル（開かれた時のみ遅延ロード） */}
       {isSourceModalOpen && (

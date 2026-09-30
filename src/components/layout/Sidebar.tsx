@@ -661,30 +661,11 @@ export const Sidebar: React.FC<SidebarProps> = ({
           </div>
 
           <div className="space-y-1.5">
-            {/* 0. 総合トップ */}
-            <a
-              href="/"
-              className="group flex items-center justify-between p-2 rounded-xl bg-cyan-950/40 hover:bg-cyan-900/50 border border-cyan-500/30 hover:border-cyan-400/60 transition shadow-sm"
-            >
-              <div className="min-w-0 pr-2">
-                <div className="flex items-center gap-1.5">
-                  <span className="text-xs">🏛️</span>
-                  <div className="text-xs font-bold text-cyan-300 group-hover:text-white font-sans truncate">
-                    総合ポータル
-                  </div>
-                </div>
-                <div className="text-[10px] text-slate-400 mt-0.5 truncate font-sans">
-                  全4ラボの学習記録・修了証を集約
-                </div>
-              </div>
-              <span className="text-xs text-cyan-400 group-hover:text-white font-mono flex-shrink-0">
-                ➔
-              </span>
-            </a>
-
             {/* 1. シロクマC++自動化ラボ */}
             <a
-              href="/auto/"
+              href="https://shirokuma-auto-cpp.jp/"
+              target="_blank"
+              rel="noopener noreferrer"
               className="group flex items-center justify-between p-2 rounded-xl bg-slate-900/80 hover:bg-slate-850 border border-slate-800 hover:border-amber-500/40 transition shadow-sm"
             >
               <div className="min-w-0 pr-2">
@@ -705,7 +686,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
             {/* 2. シロクマQt×C++ラボ */}
             <a
-              href="/qt/"
+              href="https://shirokuma-qt-cpp.jp/"
+              target="_blank"
+              rel="noopener noreferrer"
               className="group flex items-center justify-between p-2 rounded-xl bg-slate-900/80 hover:bg-slate-850 border border-slate-800 hover:border-cyan-500/40 transition shadow-sm"
             >
               <div className="min-w-0 pr-2">
@@ -726,7 +709,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
             {/* 3. 水中音響・ソナー技術入門 */}
             <a
-              href="/sonar/"
+              href="https://sonar-guide.jp/"
+              target="_blank"
+              rel="noopener noreferrer"
               className="group flex items-center justify-between p-2 rounded-xl bg-slate-900/80 hover:bg-slate-850 border border-slate-800 hover:border-blue-500/40 transition shadow-sm"
             >
               <div className="min-w-0 pr-2">

@@ -231,7 +231,7 @@ export const MilestoneModal: React.FC<MilestoneModalProps> = ({
     const text = encodeURIComponent(
       `🏆 【シロクマC++ラボ】「${m.title}」の公式修了証を獲得しました！\nゲーム開発を通してレガシー設計からモダンC++（RAII・スマートポインタ・現場鑑識）まで走破！\n\n#cpp #シロクマCPPラボ #プログラミング学習`
     );
-    const url = encodeURIComponent('https://shirokuma-tech.jp/cpp');
+    const url = encodeURIComponent('https://shirokuma-cpp.jp');
     window.open(`https://twitter.com/intent/tweet?text=${text}&url=${url}`, '_blank', 'noopener,noreferrer');
   };
 

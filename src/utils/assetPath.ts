@@ -1,5 +1,5 @@
 /**
- * サイトが /cpp/ 配下で動作している場合（https://shirokuma-tech.jp/cpp/）でも画像が正しく解決されるようにするユーティリティ
+ * 静的画像アセットのパス解決ユーティリティ (https://shirokuma-cpp.jp/)
  */
 export const getAssetUrl = (path: string): string => {
   if (!path) return '';

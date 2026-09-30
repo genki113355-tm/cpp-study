@@ -1,320 +1,344 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://shirokuma-tech.jp/cpp/</loc>
-    <lastmod>2026-09-17</lastmod>
+    <loc>https://shirokuma-cpp.jp/</loc>
+    <lastmod>2026-09-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://shirokuma-tech.jp/cpp/chapter-classic-1-spaghetti-code</loc>
-    <lastmod>2026-09-17</lastmod>
+    <loc>https://shirokuma-cpp.jp/about</loc>
+    <lastmod>2026-09-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://shirokuma-tech.jp/cpp/chapter-classic-2-classes-and-files</loc>
-    <lastmod>2026-09-17</lastmod>
+    <loc>https://shirokuma-cpp.jp/privacy</loc>
+    <lastmod>2026-09-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://shirokuma-tech.jp/cpp/chapter-classic-3-dynamic-lifecycle</loc>
-    <lastmod>2026-09-17</lastmod>
+    <loc>https://shirokuma-cpp.jp/contact</loc>
+    <lastmod>2026-09-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://shirokuma-tech.jp/cpp/chapter-classic-4-inheritance-polymorphism</loc>
-    <lastmod>2026-09-17</lastmod>
+    <loc>https://shirokuma-cpp.jp/sitemap</loc>
+    <lastmod>2026-09-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://shirokuma-tech.jp/cpp/chapter-classic-5-design-patterns</loc>
-    <lastmod>2026-09-17</lastmod>
+    <loc>https://shirokuma-cpp.jp/chapter-classic-1-spaghetti-code</loc>
+    <lastmod>2026-09-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://shirokuma-tech.jp/cpp/chapter-classic-6-operator-overload</loc>
-    <lastmod>2026-09-17</lastmod>
+    <loc>https://shirokuma-cpp.jp/chapter-classic-2-classes-and-files</loc>
+    <lastmod>2026-09-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://shirokuma-tech.jp/cpp/chapter-classic-7-pointer-alignment-endian</loc>
-    <lastmod>2026-09-17</lastmod>
+    <loc>https://shirokuma-cpp.jp/chapter-classic-3-dynamic-lifecycle</loc>
+    <lastmod>2026-09-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://shirokuma-tech.jp/cpp/chapter-classic-8-function-pointers-callbacks</loc>
-    <lastmod>2026-09-17</lastmod>
+    <loc>https://shirokuma-cpp.jp/chapter-classic-4-inheritance-polymorphism</loc>
+    <lastmod>2026-09-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://shirokuma-tech.jp/cpp/chapter-classic-9-multiple-inheritance-diamond</loc>
-    <lastmod>2026-09-17</lastmod>
+    <loc>https://shirokuma-cpp.jp/chapter-classic-5-design-patterns</loc>
+    <lastmod>2026-09-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://shirokuma-tech.jp/cpp/chapter-classic-10-static-polymorphism-crtp</loc>
-    <lastmod>2026-09-17</lastmod>
+    <loc>https://shirokuma-cpp.jp/chapter-classic-6-operator-overload</loc>
+    <lastmod>2026-09-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://shirokuma-tech.jp/cpp/chapter-classic-11-memory-pool-allocator</loc>
-    <lastmod>2026-09-17</lastmod>
+    <loc>https://shirokuma-cpp.jp/chapter-classic-7-pointer-alignment-endian</loc>
+    <lastmod>2026-09-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://shirokuma-tech.jp/cpp/chapter-classic-12-game-engine-architecture</loc>
-    <lastmod>2026-09-17</lastmod>
+    <loc>https://shirokuma-cpp.jp/chapter-classic-8-function-pointers-callbacks</loc>
+    <lastmod>2026-09-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://shirokuma-tech.jp/cpp/chapter-classic-13-asset-manager</loc>
-    <lastmod>2026-09-17</lastmod>
+    <loc>https://shirokuma-cpp.jp/chapter-classic-9-multiple-inheritance-diamond</loc>
+    <lastmod>2026-09-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://shirokuma-tech.jp/cpp/chapter-classic-14-spatial-partitioning</loc>
-    <lastmod>2026-09-17</lastmod>
+    <loc>https://shirokuma-cpp.jp/chapter-classic-10-static-polymorphism-crtp</loc>
+    <lastmod>2026-09-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://shirokuma-tech.jp/cpp/chapter-classic-15-data-driven</loc>
-    <lastmod>2026-09-17</lastmod>
+    <loc>https://shirokuma-cpp.jp/chapter-classic-11-memory-pool-allocator</loc>
+    <lastmod>2026-09-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://shirokuma-tech.jp/cpp/chapter-classic-16-bit-flags</loc>
-    <lastmod>2026-09-17</lastmod>
+    <loc>https://shirokuma-cpp.jp/chapter-classic-12-game-engine-architecture</loc>
+    <lastmod>2026-09-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://shirokuma-tech.jp/cpp/chapter-classic-17-multithreading</loc>
-    <lastmod>2026-09-17</lastmod>
+    <loc>https://shirokuma-cpp.jp/chapter-classic-13-asset-manager</loc>
+    <lastmod>2026-09-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://shirokuma-tech.jp/cpp/chapter-classic-18-memory-leak-tracker</loc>
-    <lastmod>2026-09-17</lastmod>
+    <loc>https://shirokuma-cpp.jp/chapter-classic-14-spatial-partitioning</loc>
+    <lastmod>2026-09-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://shirokuma-tech.jp/cpp/chapter-classic-19-network-sockets</loc>
-    <lastmod>2026-09-17</lastmod>
+    <loc>https://shirokuma-cpp.jp/chapter-classic-15-data-driven</loc>
+    <lastmod>2026-09-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://shirokuma-tech.jp/cpp/chapter-classic-20-legacy-engine-culmination</loc>
-    <lastmod>2026-09-17</lastmod>
+    <loc>https://shirokuma-cpp.jp/chapter-classic-16-bit-flags</loc>
+    <lastmod>2026-09-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://shirokuma-tech.jp/cpp/chapter-modern-1-smart-pointers-raii</loc>
-    <lastmod>2026-09-17</lastmod>
+    <loc>https://shirokuma-cpp.jp/chapter-classic-17-multithreading</loc>
+    <lastmod>2026-09-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://shirokuma-tech.jp/cpp/chapter-modern-2-move-semantics</loc>
-    <lastmod>2026-09-17</lastmod>
+    <loc>https://shirokuma-cpp.jp/chapter-classic-18-memory-leak-tracker</loc>
+    <lastmod>2026-09-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://shirokuma-tech.jp/cpp/chapter-modern-3-lambda</loc>
-    <lastmod>2026-09-17</lastmod>
+    <loc>https://shirokuma-cpp.jp/chapter-classic-19-network-sockets</loc>
+    <lastmod>2026-09-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://shirokuma-tech.jp/cpp/chapter-modern-4-variadic-templates</loc>
-    <lastmod>2026-09-17</lastmod>
+    <loc>https://shirokuma-cpp.jp/chapter-classic-20-legacy-engine-culmination</loc>
+    <lastmod>2026-09-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://shirokuma-tech.jp/cpp/chapter-modern-5-multithreading</loc>
-    <lastmod>2026-09-17</lastmod>
+    <loc>https://shirokuma-cpp.jp/chapter-modern-1-smart-pointers-raii</loc>
+    <lastmod>2026-09-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://shirokuma-tech.jp/cpp/chapter-modern-6-string-view</loc>
-    <lastmod>2026-09-17</lastmod>
+    <loc>https://shirokuma-cpp.jp/chapter-modern-2-move-semantics</loc>
+    <lastmod>2026-09-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://shirokuma-tech.jp/cpp/chapter-modern-7-modern-type-system</loc>
-    <lastmod>2026-09-17</lastmod>
+    <loc>https://shirokuma-cpp.jp/chapter-modern-3-lambda</loc>
+    <lastmod>2026-09-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://shirokuma-tech.jp/cpp/chapter-modern-8-if-constexpr</loc>
-    <lastmod>2026-09-17</lastmod>
+    <loc>https://shirokuma-cpp.jp/chapter-modern-4-variadic-templates</loc>
+    <lastmod>2026-09-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://shirokuma-tech.jp/cpp/chapter-modern-9-filesystem</loc>
-    <lastmod>2026-09-17</lastmod>
+    <loc>https://shirokuma-cpp.jp/chapter-modern-5-multithreading</loc>
+    <lastmod>2026-09-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://shirokuma-tech.jp/cpp/chapter-modern-10-ecs</loc>
-    <lastmod>2026-09-17</lastmod>
+    <loc>https://shirokuma-cpp.jp/chapter-modern-6-string-view</loc>
+    <lastmod>2026-09-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://shirokuma-tech.jp/cpp/chapter-modern-11-concepts</loc>
-    <lastmod>2026-09-17</lastmod>
+    <loc>https://shirokuma-cpp.jp/chapter-modern-7-modern-type-system</loc>
+    <lastmod>2026-09-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://shirokuma-tech.jp/cpp/chapter-modern-12-coroutines</loc>
-    <lastmod>2026-09-17</lastmod>
+    <loc>https://shirokuma-cpp.jp/chapter-modern-8-if-constexpr</loc>
+    <lastmod>2026-09-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://shirokuma-tech.jp/cpp/chapter-modern-13-ranges-views</loc>
-    <lastmod>2026-09-17</lastmod>
+    <loc>https://shirokuma-cpp.jp/chapter-modern-9-filesystem</loc>
+    <lastmod>2026-09-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://shirokuma-tech.jp/cpp/chapter-modern-14-modules</loc>
-    <lastmod>2026-09-17</lastmod>
+    <loc>https://shirokuma-cpp.jp/chapter-modern-10-ecs</loc>
+    <lastmod>2026-09-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://shirokuma-tech.jp/cpp/reading-step-1</loc>
-    <lastmod>2026-09-17</lastmod>
+    <loc>https://shirokuma-cpp.jp/chapter-modern-11-concepts</loc>
+    <lastmod>2026-09-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://shirokuma-tech.jp/cpp/reading-step-2</loc>
-    <lastmod>2026-09-17</lastmod>
+    <loc>https://shirokuma-cpp.jp/chapter-modern-12-coroutines</loc>
+    <lastmod>2026-09-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://shirokuma-tech.jp/cpp/reading-step-3</loc>
-    <lastmod>2026-09-17</lastmod>
+    <loc>https://shirokuma-cpp.jp/chapter-modern-13-ranges-views</loc>
+    <lastmod>2026-09-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://shirokuma-tech.jp/cpp/reading-step-4</loc>
-    <lastmod>2026-09-17</lastmod>
+    <loc>https://shirokuma-cpp.jp/chapter-modern-14-modules</loc>
+    <lastmod>2026-09-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://shirokuma-tech.jp/cpp/reading-step-5</loc>
-    <lastmod>2026-09-17</lastmod>
+    <loc>https://shirokuma-cpp.jp/reading-step-1</loc>
+    <lastmod>2026-09-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://shirokuma-tech.jp/cpp/reading-step-6</loc>
-    <lastmod>2026-09-17</lastmod>
+    <loc>https://shirokuma-cpp.jp/reading-step-2</loc>
+    <lastmod>2026-09-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://shirokuma-tech.jp/cpp/reading-step-7</loc>
-    <lastmod>2026-09-17</lastmod>
+    <loc>https://shirokuma-cpp.jp/reading-step-3</loc>
+    <lastmod>2026-09-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://shirokuma-tech.jp/cpp/reading-step-8</loc>
-    <lastmod>2026-09-17</lastmod>
+    <loc>https://shirokuma-cpp.jp/reading-step-4</loc>
+    <lastmod>2026-09-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://shirokuma-tech.jp/cpp/reading-step-9</loc>
-    <lastmod>2026-09-17</lastmod>
+    <loc>https://shirokuma-cpp.jp/reading-step-5</loc>
+    <lastmod>2026-09-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://shirokuma-tech.jp/cpp/reading-step-10</loc>
-    <lastmod>2026-09-17</lastmod>
+    <loc>https://shirokuma-cpp.jp/reading-step-6</loc>
+    <lastmod>2026-09-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://shirokuma-tech.jp/cpp/guide-environment-setup</loc>
-    <lastmod>2026-09-17</lastmod>
+    <loc>https://shirokuma-cpp.jp/reading-step-7</loc>
+    <lastmod>2026-09-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://shirokuma-cpp.jp/reading-step-8</loc>
+    <lastmod>2026-09-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://shirokuma-cpp.jp/reading-step-9</loc>
+    <lastmod>2026-09-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://shirokuma-cpp.jp/reading-step-10</loc>
+    <lastmod>2026-09-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://shirokuma-cpp.jp/guide-environment-setup</loc>
+    <lastmod>2026-09-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://shirokuma-tech.jp/cpp/guide-cpp-syntax-reference</loc>
-    <lastmod>2026-09-17</lastmod>
+    <loc>https://shirokuma-cpp.jp/guide-cpp-syntax-reference</loc>
+    <lastmod>2026-09-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://shirokuma-tech.jp/cpp/guide-code-reading</loc>
-    <lastmod>2026-09-17</lastmod>
+    <loc>https://shirokuma-cpp.jp/guide-code-reading</loc>
+    <lastmod>2026-09-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://shirokuma-tech.jp/cpp/guide-uml-design</loc>
-    <lastmod>2026-09-17</lastmod>
+    <loc>https://shirokuma-cpp.jp/guide-uml-design</loc>
+    <lastmod>2026-09-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://shirokuma-tech.jp/cpp/guide-googletest-tdd</loc>
-    <lastmod>2026-09-17</lastmod>
+    <loc>https://shirokuma-cpp.jp/guide-googletest-tdd</loc>
+    <lastmod>2026-09-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://shirokuma-tech.jp/cpp/column-design-patterns</loc>
-    <lastmod>2026-09-17</lastmod>
+    <loc>https://shirokuma-cpp.jp/column-design-patterns</loc>
+    <lastmod>2026-09-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://shirokuma-tech.jp/cpp/column-why-cpp-is-hard</loc>
-    <lastmod>2026-09-17</lastmod>
+    <loc>https://shirokuma-cpp.jp/column-why-cpp-is-hard</loc>
+    <lastmod>2026-09-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://shirokuma-tech.jp/cpp/column-why-cpp-is-great</loc>
-    <lastmod>2026-09-17</lastmod>
+    <loc>https://shirokuma-cpp.jp/column-why-cpp-is-great</loc>
+    <lastmod>2026-09-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>

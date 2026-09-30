@@ -1,9 +1,13 @@
 import React, { useState } from 'react';
 import { PrivacyPolicyModal } from './PrivacyPolicyModal';
-import { Shield } from 'lucide-react';
+import { Shield, Sparkles, Mail, Network } from 'lucide-react';
 import { getAssetUrl } from '../../utils/assetPath';
 
-export const Footer: React.FC = () => {
+interface FooterProps {
+  onNavigate?: (slug: string) => void;
+}
+
+export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
   const [isPrivacyModalOpen, setIsPrivacyModalOpen] = useState<boolean>(false);
 
   return (
@@ -143,16 +147,71 @@ export const Footer: React.FC = () => {
             </div>
           </div>
 
-          {/* プライバシーポリシー ＆ 免責事項 リンク */}
-          <div className="pt-1 flex items-center justify-center gap-4 text-xs font-sans">
-            <button
-              onClick={() => setIsPrivacyModalOpen(true)}
-              className="text-slate-400 hover:text-cyan-300 underline underline-offset-4 flex items-center gap-1.5 transition cursor-pointer"
-            >
-              <Shield className="w-3.5 h-3.5 text-cyan-400" />
-              <span>プライバシーポリシー ＆ 技術監修方針・免責事項</span>
-            </button>
-          </div>
+          {/* サイト主要ナビゲーションリンク（クローラー＆ユーザー向け静的アンカー） */}
+          <nav aria-label="フッター主要ナビゲーション" className="pt-2 pb-1 border-t border-slate-800/80">
+            <ul className="flex items-center justify-center gap-x-6 gap-y-2 text-xs font-sans flex-wrap list-none p-0 m-0">
+              <li>
+                <a
+                  href="/about"
+                  onClick={(e) => {
+                    if (onNavigate) {
+                      e.preventDefault();
+                      onNavigate('about');
+                    }
+                  }}
+                  className="text-slate-400 hover:text-cyan-300 underline underline-offset-4 flex items-center gap-1.5 transition"
+                >
+                  <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
+                  <span>当サイトについて（About）</span>
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/privacy"
+                  onClick={(e) => {
+                    if (onNavigate) {
+                      e.preventDefault();
+                      onNavigate('privacy');
+                    }
+                  }}
+                  className="text-slate-400 hover:text-cyan-300 underline underline-offset-4 flex items-center gap-1.5 transition"
+                >
+                  <Shield className="w-3.5 h-3.5 text-cyan-400" />
+                  <span>プライバシーポリシー ＆ 免責事項</span>
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/contact"
+                  onClick={(e) => {
+                    if (onNavigate) {
+                      e.preventDefault();
+                      onNavigate('contact');
+                    }
+                  }}
+                  className="text-slate-400 hover:text-cyan-300 underline underline-offset-4 flex items-center gap-1.5 transition"
+                >
+                  <Mail className="w-3.5 h-3.5 text-cyan-400" />
+                  <span>お問い合わせ窓口</span>
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/sitemap"
+                  onClick={(e) => {
+                    if (onNavigate) {
+                      e.preventDefault();
+                      onNavigate('sitemap');
+                    }
+                  }}
+                  className="text-slate-400 hover:text-cyan-300 underline underline-offset-4 flex items-center gap-1.5 transition"
+                >
+                  <Network className="w-3.5 h-3.5 text-cyan-400" />
+                  <span>サイトマップ</span>
+                </a>
+              </li>
+            </ul>
+          </nav>
 
           {/* 商標および免責事項 */}
           <div className="p-3 rounded-xl bg-slate-950/80 border border-slate-800/80 max-w-2xl mx-auto text-left space-y-1">
@@ -168,7 +227,7 @@ export const Footer: React.FC = () => {
           </div>
 
           <p className="text-slate-400 flex items-center justify-center gap-1 text-xs pt-1 font-mono">
-            <span>© 2026 シロクマC++ラボ (shirokuma-tech.jp/cpp). All rights reserved.</span>
+            <span>© 2026 シロクマC++ラボ (shirokuma-cpp.jp). All rights reserved.</span>
           </p>
         </div>
       </footer>

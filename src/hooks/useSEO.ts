@@ -6,22 +6,45 @@ interface UseSEOProps {
   chapter?: Chapter;
 }
 
+const STATIC_PAGE_META: Record<string, { title: string; desc: string }> = {
+  privacy: {
+    title: 'プライバシーポリシー ＆ 免責事項 | シロクマC++ラボ',
+    desc: 'シロクマC++ラボのプライバシーポリシー、Google AdSenseによる広告配信、Cookieの取扱い、免責事項、著作権指針について明記しています。',
+  },
+  about: {
+    title: '当サイトについて（運営体制・E-E-A-T・検証環境） | シロクマC++ラボ',
+    desc: 'シロクマC++ラボの運営理念、現役エンジニアによる技術監修体制（E-E-A-T）、検証環境（GCC/Clang/MSVC）、教材の品質方針をご紹介します。',
+  },
+  contact: {
+    title: 'お問い合わせ窓口 | シロクマC++ラボ',
+    desc: 'シロクマC++ラボへのご質問、教材の誤植・改善要望、取材・技術提携等のお問い合わせはこちらから。',
+  },
+  sitemap: {
+    title: 'サイトマップ（全カリキュラム目録） | シロクマC++ラボ',
+    desc: 'シロクマC++ラボで公開中の全52記事（クラシックC++編、モダンC++編、読解演習、技術解説コラム）を一覧できるHTMLサイトマップです。',
+  },
+};
+
 export const useSEO = ({ currentSlug, chapter }: UseSEOProps) => {
   useEffect(() => {
     const siteBaseTitle = 'シロクマC++ラボ 〜ゲーム開発で学ぶオブジェクト指向開発 レガシー設計からモダン設計まで〜';
     const siteBaseDesc = 'インベーダーゲーム風の固定画面シューティング開発の実践を通じて、レガシーC++（C++03・生ポインタ）からモダンC++（C++17・スマートポインタ・ECS設計・TDD・UML設計書）までを体系的に学べるオブジェクト指向プログラミング実践学習メディア。';
-    const baseUrl = 'https://shirokuma-tech.jp/cpp';
+    const baseUrl = 'https://shirokuma-cpp.jp';
 
     // 1. タイトルと概要の決定
-    const pageTitle = currentSlug === 'top' || !chapter
-      ? siteBaseTitle
-      : `${chapter.title} | シロクマC++ラボ`;
-    const pageDesc = currentSlug === 'top' || !chapter
-      ? siteBaseDesc
-      : `${chapter.subtitle}。${chapter.description.slice(0, 120)}...`;
-    const pageUrl = currentSlug === 'top' || !chapter
-      ? `${baseUrl}/`
-      : `${baseUrl}/${chapter.slug}`;
+    let pageTitle = siteBaseTitle;
+    let pageDesc = siteBaseDesc;
+    let pageUrl = `${baseUrl}/`;
+
+    if (STATIC_PAGE_META[currentSlug]) {
+      pageTitle = STATIC_PAGE_META[currentSlug].title;
+      pageDesc = STATIC_PAGE_META[currentSlug].desc;
+      pageUrl = `${baseUrl}/${currentSlug}`;
+    } else if (currentSlug !== 'top' && chapter) {
+      pageTitle = `${chapter.title} | シロクマC++ラボ`;
+      pageDesc = `${chapter.subtitle}。${chapter.description.slice(0, 120)}...`;
+      pageUrl = `${baseUrl}/${chapter.slug}`;
+    }
 
     document.title = pageTitle;
 
@@ -72,7 +95,39 @@ export const useSEO = ({ currentSlug, chapter }: UseSEOProps) => {
       document.head.appendChild(scriptEl);
     }
 
-    if (currentSlug !== 'top' && chapter) {
+    if (STATIC_PAGE_META[currentSlug]) {
+      const jsonLdGraph = [
+        {
+          '@type': 'WebPage',
+          '@id': `${pageUrl}#webpage`,
+          'name': pageTitle,
+          'description': pageDesc,
+          'url': pageUrl,
+          'inLanguage': 'ja',
+          'breadcrumb': {
+            '@type': 'BreadcrumbList',
+            'itemListElement': [
+              {
+                '@type': 'ListItem',
+                'position': 1,
+                'name': 'TOP',
+                'item': `${baseUrl}/`,
+              },
+              {
+                '@type': 'ListItem',
+                'position': 2,
+                'name': STATIC_PAGE_META[currentSlug].title.split('|')[0].trim(),
+                'item': pageUrl,
+              },
+            ],
+          },
+        },
+      ];
+      scriptEl.textContent = JSON.stringify({
+        '@context': 'https://schema.org',
+        '@graph': jsonLdGraph,
+      });
+    } else if (currentSlug !== 'top' && chapter) {
       const jsonLdGraph: any[] = [
         {
           '@type': 'TechArticle',
@@ -84,21 +139,21 @@ export const useSEO = ({ currentSlug, chapter }: UseSEOProps) => {
           'author': {
             '@type': 'Organization',
             'name': 'シロクマC++ラボ',
-            'url': baseUrl
+            'url': baseUrl,
           },
           'publisher': {
             '@type': 'Organization',
             'name': 'シロクマC++ラボ',
             'logo': {
               '@type': 'ImageObject',
-              'url': `${baseUrl}/images/characters_mission.jpg`
-            }
+              'url': `${baseUrl}/images/characters_mission.jpg`,
+            },
           },
           'image': `${baseUrl}/images/characters_mission.jpg`,
           'about': {
             '@type': 'ComputerLanguage',
-            'name': 'C++'
-          }
+            'name': 'C++',
+          },
         },
         {
           '@type': 'BreadcrumbList',
@@ -108,16 +163,16 @@ export const useSEO = ({ currentSlug, chapter }: UseSEOProps) => {
               '@type': 'ListItem',
               'position': 1,
               'name': 'TOP',
-              'item': `${baseUrl}/`
+              'item': `${baseUrl}/`,
             },
             {
               '@type': 'ListItem',
               'position': 2,
               'name': chapter.badge,
-              'item': pageUrl
-            }
-          ]
-        }
+              'item': pageUrl,
+            },
+          ],
+        },
       ];
 
       // クイズが存在する場合は FAQPage 構造化データを自動追加（検索結果のリッチリザルト展開用）
@@ -130,15 +185,15 @@ export const useSEO = ({ currentSlug, chapter }: UseSEOProps) => {
             'name': q.question,
             'acceptedAnswer': {
               '@type': 'Answer',
-              'text': `正解：${q.options[q.correctIndex]}。\n解説：${q.explanation}`
-            }
-          }))
+              'text': `正解：${q.options[q.correctIndex]}。\n解説：${q.explanation}`,
+            },
+          })),
         });
       }
 
       scriptEl.textContent = JSON.stringify({
         '@context': 'https://schema.org',
-        '@graph': jsonLdGraph
+        '@graph': jsonLdGraph,
       });
     } else {
       scriptEl.textContent = '';

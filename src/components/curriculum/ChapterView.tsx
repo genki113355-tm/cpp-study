@@ -1500,7 +1500,9 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
             </p>
           </div>
           <a
-            href="/auto/"
+            href="https://shirokuma-auto-cpp.jp/"
+            target="_blank"
+            rel="noopener noreferrer"
             className="px-6 py-3.5 rounded-xl bg-gradient-to-r from-amber-500 to-yellow-400 hover:from-amber-400 hover:to-yellow-300 text-slate-950 font-black text-sm whitespace-nowrap shadow-xl hover:shadow-amber-500/25 transition transform hover:scale-105 active:scale-95 flex items-center gap-2 flex-shrink-0 relative z-10"
           >
             <span>開発自動化ラボへ進む</span>
