@@ -292,7 +292,7 @@ export const UmlCodeInspector: React.FC<UmlCodeInspectorProps> = ({
       <div
         onMouseDown={handleMouseDown}
         onTouchStart={handleTouchStart}
-        className={`fixed z-[100] rounded-xl bg-slate-900/95 border border-cyan-500/70 shadow-2xl px-3 py-1.5 flex items-center gap-2 font-mono text-xs text-white select-none backdrop-blur-md ${
+        className={`fixed z-[100] rounded-xl bg-white/95 dark:bg-slate-900/95 border border-cyan-500/70 shadow-2xl px-3 py-1.5 flex items-center gap-2 font-mono text-xs text-white select-none backdrop-blur-md ${
           isDragging ? "cursor-grabbing shadow-cyan-500/40" : "cursor-grab"
         }`}
         style={{
@@ -319,7 +319,7 @@ export const UmlCodeInspector: React.FC<UmlCodeInspectorProps> = ({
               e.stopPropagation();
               onClose();
             }}
-            className="text-slate-400 hover:text-white p-0.5 ml-0.5"
+            className="text-slate-600 dark:text-slate-400 hover:text-white p-0.5 ml-0.5"
             title="閉じる"
           >
             <X className="w-3.5 h-3.5" />
@@ -349,7 +349,7 @@ export const UmlCodeInspector: React.FC<UmlCodeInspectorProps> = ({
       <div
         onMouseDown={handleMouseDown}
         onTouchStart={handleTouchStart}
-        className={`p-3 bg-gradient-to-r from-slate-900 via-slate-900/95 to-slate-950 border-b border-slate-800 flex items-center justify-between gap-2 shrink-0 select-none ${
+        className={`p-3 bg-gradient-to-r from-slate-900 via-slate-900/95 to-slate-950 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between gap-2 shrink-0 select-none ${
           isDragging ? "cursor-grabbing" : "cursor-grab"
         }`}
         title="ヘッダーを掴んで画面内の好きな位置へドラッグできます"
@@ -385,7 +385,7 @@ export const UmlCodeInspector: React.FC<UmlCodeInspectorProps> = ({
               setIsDockedRight(!isDockedRight);
               setDragOffset({ x: 0, y: 0 });
             }}
-            className="p-1 rounded text-slate-400 hover:text-cyan-300 hover:bg-slate-800 transition-colors"
+            className="p-1 rounded text-slate-600 dark:text-slate-400 hover:text-cyan-300 hover:bg-slate-800 transition-colors"
             title={isDockedRight ? "画面左端へ移動" : "画面右端へ移動"}
           >
             <ArrowLeftRight className="w-3.5 h-3.5" />
@@ -396,7 +396,7 @@ export const UmlCodeInspector: React.FC<UmlCodeInspectorProps> = ({
               e.stopPropagation();
               setIsMinimized(true);
             }}
-            className="p-1 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+            className="p-1 rounded text-slate-600 dark:text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
             title="最小化"
           >
             <Minus className="w-3.5 h-3.5" />
@@ -408,7 +408,7 @@ export const UmlCodeInspector: React.FC<UmlCodeInspectorProps> = ({
                 e.stopPropagation();
                 onClose();
               }}
-              className="p-1 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+              className="p-1 rounded text-slate-600 dark:text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
               title="閉じる"
             >
               <X className="w-3.5 h-3.5" />
@@ -419,7 +419,7 @@ export const UmlCodeInspector: React.FC<UmlCodeInspectorProps> = ({
 
       {/* ファイルタブバー */}
       {relevantFiles.length > 0 && (
-        <div className="flex items-center justify-between bg-slate-950/90 border-b border-slate-800/90 px-3 py-1 flex-wrap gap-1.5 shrink-0">
+        <div className="flex items-center justify-between bg-white/95 dark:bg-slate-950/90 border-b border-slate-200 dark:border-slate-800/90 px-3 py-1 flex-wrap gap-1.5 shrink-0">
           <div className="flex items-center gap-1 overflow-x-auto max-w-full">
             {relevantFiles.map((file, idx) => {
               const isActive = idx === activeFileIndex;
@@ -433,7 +433,7 @@ export const UmlCodeInspector: React.FC<UmlCodeInspectorProps> = ({
                   className={`flex items-center gap-1 px-2.5 py-1 rounded text-[11px] font-mono transition-all ${
                     isActive
                       ? "bg-cyan-950 text-cyan-300 border border-cyan-500/60 font-bold shadow-sm"
-                      : "text-slate-400 hover:text-slate-200 hover:bg-slate-900"
+                      : "text-slate-600 dark:text-slate-400 hover:text-slate-800 dark:text-slate-200 hover:bg-slate-900"
                   }`}
                 >
                   {isHeader ? (
@@ -475,7 +475,7 @@ export const UmlCodeInspector: React.FC<UmlCodeInspectorProps> = ({
                   className={`flex items-start px-1.5 py-0.5 rounded transition-all ${
                     line.isTarget
                       ? "bg-cyan-950/80 border-l-4 border-cyan-400 text-white font-bold shadow-md shadow-cyan-950/40"
-                      : "hover:bg-slate-900/60 text-slate-300"
+                      : "hover:bg-white/80 dark:bg-slate-900/60 text-slate-700 dark:text-slate-300"
                   }`}
                 >
                   {/* 行番号 */}
@@ -497,9 +497,9 @@ export const UmlCodeInspector: React.FC<UmlCodeInspectorProps> = ({
             </code>
           </pre>
         ) : (
-          <div className="py-6 text-center text-slate-400 font-mono text-xs space-y-1">
+          <div className="py-6 text-center text-slate-600 dark:text-slate-400 font-mono text-xs space-y-1">
             <p>このメンバのソースコードファイルは現在準備中です。</p>
-            <div className="p-2 rounded bg-slate-900 border border-slate-800 inline-block text-left text-xs text-emerald-300 mt-1">
+            <div className="p-2 rounded bg-slate-900 border border-slate-200 dark:border-slate-800 inline-block text-left text-xs text-emerald-300 mt-1">
               <code>
                 {member.visibility === "+" ? "public" : "private"}:
                 <br />
@@ -511,12 +511,12 @@ export const UmlCodeInspector: React.FC<UmlCodeInspectorProps> = ({
       </div>
 
       {/* ポップアップフッター */}
-      <div className="p-2 bg-slate-950/90 border-t border-slate-800 flex items-center justify-between flex-wrap gap-1.5 text-[11px] font-mono shrink-0">
+      <div className="p-2 bg-white/95 dark:bg-slate-950/90 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between flex-wrap gap-1.5 text-[11px] font-mono shrink-0">
         <div className="flex items-center gap-1.5">
           <button
             onClick={handleCopy}
             disabled={!currentFile}
-            className="flex items-center gap-1 px-2 py-1 rounded bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-300 hover:text-white transition-all disabled:opacity-50"
+            className="flex items-center gap-1 px-2 py-1 rounded bg-slate-900 hover:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:text-white transition-all disabled:opacity-50"
           >
             {copied ? (
               <>
@@ -525,7 +525,7 @@ export const UmlCodeInspector: React.FC<UmlCodeInspectorProps> = ({
               </>
             ) : (
               <>
-                <Copy className="w-3 h-3 text-slate-400" />
+                <Copy className="w-3 h-3 text-slate-600 dark:text-slate-400" />
                 <span>コピー</span>
               </>
             )}
@@ -543,7 +543,7 @@ export const UmlCodeInspector: React.FC<UmlCodeInspectorProps> = ({
           )}
         </div>
 
-        <span className="text-[10px] text-slate-400 hidden sm:inline">
+        <span className="text-[10px] text-slate-600 dark:text-slate-400 hidden sm:inline">
           ドラッグ移動可 / ⇄ で左右切替
         </span>
       </div>

@@ -149,7 +149,7 @@ export const AffiliatePromoBanner: React.FC<AffiliatePromoBannerProps> = ({
             title="このセクションを閉じる"
             aria-label="広告セクションを閉じる"
           >
-            <X className="w-3.5 h-3.5 text-slate-400 group-hover:text-rose-500 transition-colors" />
+            <X className="w-3.5 h-3.5 text-slate-600 dark:text-slate-400 group-hover:text-rose-500 transition-colors" />
             <span className="text-[11px] group-hover:text-rose-600 dark:group-hover:text-rose-200 transition-colors">
               広告を閉じる
             </span>
@@ -286,7 +286,7 @@ export const AffiliatePromoBanner: React.FC<AffiliatePromoBannerProps> = ({
                   {banner.description}
                 </p>
                 <div className="flex items-center justify-between text-[11px] font-mono pt-1 border-t border-slate-100 dark:border-slate-800/80">
-                  <span className="text-slate-400 dark:text-slate-500">外部公式サイト</span>
+                  <span className="text-slate-600 dark:text-slate-400 dark:text-slate-500">外部公式サイト</span>
                   <a
                     href={banner.linkUrl}
                     target="_blank"
@@ -326,7 +326,7 @@ export const AffiliatePromoBanner: React.FC<AffiliatePromoBannerProps> = ({
         )}
 
         {/* 最下部：広告を閉じるリンク */}
-        <div className="mt-5 pt-3 border-t border-slate-200 dark:border-slate-800/60 flex items-center justify-between text-xs font-mono text-slate-400 dark:text-slate-500">
+        <div className="mt-5 pt-3 border-t border-slate-200 dark:border-slate-800/60 flex items-center justify-between text-xs font-mono text-slate-600 dark:text-slate-400 dark:text-slate-500">
           <span>掲載広告は A8.net 提携プログラムです</span>
           <button
             type="button"

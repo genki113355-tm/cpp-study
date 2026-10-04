@@ -504,10 +504,10 @@ export const UmlClassSvgDiagram: React.FC<UmlClassSvgDiagramProps> = ({
           return (
             <div
               key={cls.name}
-              className={`absolute rounded-2xl border bg-slate-900/95 shadow-2xl transition-all duration-200 hover:scale-[1.01] hover:z-30 z-20 flex flex-col overflow-hidden ${
+              className={`absolute rounded-2xl border bg-white/95 dark:bg-slate-900/95 shadow-2xl transition-all duration-200 hover:scale-[1.01] hover:z-30 z-20 flex flex-col overflow-hidden ${
                 cls.isAbstract
                   ? "border-amber-500/60 shadow-amber-950/30"
-                  : "border-slate-700/80 hover:border-cyan-500/70"
+                  : "border-slate-300 dark:border-slate-700/80 hover:border-cyan-500/70"
               }`}
               style={{
                 left: layout.x,
@@ -521,7 +521,7 @@ export const UmlClassSvgDiagram: React.FC<UmlClassSvgDiagramProps> = ({
                 className={`p-2.5 text-center border-b font-mono shrink-0 ${
                   cls.isAbstract
                     ? "bg-amber-950/40 border-amber-500/40"
-                    : "bg-slate-800/90 border-slate-700"
+                    : "bg-slate-800/90 border-slate-300 dark:border-slate-700"
                 }`}
               >
                 {cls.stereotype && (
@@ -539,7 +539,7 @@ export const UmlClassSvgDiagram: React.FC<UmlClassSvgDiagramProps> = ({
               </div>
 
               {/* 2段目：属性 (Attributes) */}
-              <div className="p-2.5 border-b border-slate-800/80 bg-slate-950/60 space-y-1 shrink-0">
+              <div className="p-2.5 border-b border-slate-200 dark:border-slate-800/80 bg-white/80 dark:bg-slate-950/60 space-y-1 shrink-0">
                 <span className="text-[9px] font-mono text-slate-500 uppercase tracking-wider block font-bold">
                   Attributes
                 </span>
@@ -580,7 +580,7 @@ export const UmlClassSvgDiagram: React.FC<UmlClassSvgDiagramProps> = ({
                             className={`font-medium transition-colors shrink-0 ${
                               isSelected
                                 ? "text-cyan-200 font-bold"
-                                : "text-slate-200 group-hover:text-cyan-200"
+                                : "text-slate-800 dark:text-slate-200 group-hover:text-cyan-200"
                             }`}
                           >
                             {attr.name}
@@ -614,7 +614,7 @@ export const UmlClassSvgDiagram: React.FC<UmlClassSvgDiagramProps> = ({
               </div>
 
               {/* 3段目：操作 (Operations) */}
-              <div className="p-2.5 bg-slate-950/30 space-y-1 flex-1">
+              <div className="p-2.5 bg-slate-50/50 dark:bg-slate-950/30 space-y-1 flex-1">
                 <span className="text-[9px] font-mono text-slate-500 uppercase tracking-wider block font-bold">
                   Operations
                 </span>
@@ -655,7 +655,7 @@ export const UmlClassSvgDiagram: React.FC<UmlClassSvgDiagramProps> = ({
                             className={`font-medium transition-colors shrink-0 ${
                               isSelected
                                 ? "text-cyan-200 font-bold"
-                                : "text-slate-200 group-hover:text-cyan-200"
+                                : "text-slate-800 dark:text-slate-200 group-hover:text-cyan-200"
                             } ${op.isVirtual ? "italic text-amber-200" : ""}`}
                           >
                             {op.name}

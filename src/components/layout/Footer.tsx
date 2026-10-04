@@ -54,7 +54,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                   </p>
                 </div>
               </div>
-              <span className="text-slate-400 dark:text-slate-500 group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition font-mono text-sm pr-1 flex-shrink-0">
+              <span className="text-slate-600 dark:text-slate-400 dark:text-slate-500 group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition font-mono text-sm pr-1 flex-shrink-0">
                 ↗
               </span>
             </a>
@@ -84,7 +84,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                   </p>
                 </div>
               </div>
-              <span className="text-slate-400 dark:text-slate-500 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition font-mono text-sm pr-1 flex-shrink-0">
+              <span className="text-slate-600 dark:text-slate-400 dark:text-slate-500 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition font-mono text-sm pr-1 flex-shrink-0">
                 ↗
               </span>
             </a>
@@ -114,7 +114,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                   </p>
                 </div>
               </div>
-              <span className="text-slate-400 dark:text-slate-500 group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition font-mono text-sm pr-1 flex-shrink-0">
+              <span className="text-slate-600 dark:text-slate-400 dark:text-slate-500 group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition font-mono text-sm pr-1 flex-shrink-0">
                 ↗
               </span>
             </a>

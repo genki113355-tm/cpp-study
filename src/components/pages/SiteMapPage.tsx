@@ -50,7 +50,7 @@ export const SiteMapPage: React.FC<SiteMapPageProps> = ({ onNavigate }) => {
               <div className="font-bold text-cyan-700 dark:text-cyan-300 group-hover:text-slate-900 dark:group-hover:text-white">TOPページ</div>
               <div className="text-slate-500 dark:text-slate-400 text-xs mt-0.5">総合カリキュラム案内</div>
             </div>
-            <ChevronRight className="w-4 h-4 text-slate-400 group-hover:text-cyan-600 dark:group-hover:text-cyan-400" />
+            <ChevronRight className="w-4 h-4 text-slate-600 dark:text-slate-400 group-hover:text-cyan-600 dark:group-hover:text-cyan-400" />
           </button>
           <button
             onClick={() => onNavigate('about')}
@@ -60,7 +60,7 @@ export const SiteMapPage: React.FC<SiteMapPageProps> = ({ onNavigate }) => {
               <div className="font-bold text-cyan-700 dark:text-cyan-300 group-hover:text-slate-900 dark:group-hover:text-white">当サイトについて</div>
               <div className="text-slate-500 dark:text-slate-400 text-xs mt-0.5">理念・E-E-A-T・検証体制</div>
             </div>
-            <ChevronRight className="w-4 h-4 text-slate-400 group-hover:text-cyan-600 dark:group-hover:text-cyan-400" />
+            <ChevronRight className="w-4 h-4 text-slate-600 dark:text-slate-400 group-hover:text-cyan-600 dark:group-hover:text-cyan-400" />
           </button>
           <button
             onClick={() => onNavigate('privacy')}
@@ -70,7 +70,7 @@ export const SiteMapPage: React.FC<SiteMapPageProps> = ({ onNavigate }) => {
               <div className="font-bold text-cyan-700 dark:text-cyan-300 group-hover:text-slate-900 dark:group-hover:text-white">プライバシーポリシー</div>
               <div className="text-slate-500 dark:text-slate-400 text-xs mt-0.5">広告・免責事項・規約</div>
             </div>
-            <ChevronRight className="w-4 h-4 text-slate-400 group-hover:text-cyan-600 dark:group-hover:text-cyan-400" />
+            <ChevronRight className="w-4 h-4 text-slate-600 dark:text-slate-400 group-hover:text-cyan-600 dark:group-hover:text-cyan-400" />
           </button>
           <button
             onClick={() => onNavigate('contact')}
@@ -80,7 +80,7 @@ export const SiteMapPage: React.FC<SiteMapPageProps> = ({ onNavigate }) => {
               <div className="font-bold text-cyan-700 dark:text-cyan-300 group-hover:text-slate-900 dark:group-hover:text-white">お問い合わせ窓口</div>
               <div className="text-slate-500 dark:text-slate-400 text-xs mt-0.5">誤植報告・技術相談</div>
             </div>
-            <ChevronRight className="w-4 h-4 text-slate-400 group-hover:text-cyan-600 dark:group-hover:text-cyan-400" />
+            <ChevronRight className="w-4 h-4 text-slate-600 dark:text-slate-400 group-hover:text-cyan-600 dark:group-hover:text-cyan-400" />
           </button>
         </div>
       </section>

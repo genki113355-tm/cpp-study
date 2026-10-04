@@ -304,7 +304,7 @@ ECS World ＋ RAII ＋ Stateマシン ＋ ゼロコスト抽象化 ＋ 単体テ
   return (
     <section id="game-evolution" className="space-y-8">
       {/* セクションタイトル */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between gap-4 border-b border-slate-800 pb-5">
+      <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between gap-4 border-b border-slate-200 dark:border-slate-800 pb-5">
         <div className="space-y-2">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-950/80 border border-cyan-500/40 text-cyan-300 font-mono text-xs font-semibold shadow-inner">
             <Workflow className="w-4 h-4 text-cyan-400" />
@@ -313,11 +313,11 @@ ECS World ＋ RAII ＋ Stateマシン ＋ ゼロコスト抽象化 ＋ 単体テ
           <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white font-sans tracking-tight">
             1つのゲームが育つ「C++設計進化の全10段階物語」
           </h2>
-          <p className="text-sm sm:text-base text-slate-300 font-sans max-w-3xl leading-relaxed">
+          <p className="text-sm sm:text-base text-slate-700 dark:text-slate-300 font-sans max-w-3xl leading-relaxed">
             「最初は動けばいいと全部 <code className="text-amber-300 font-mono">GameManager</code> に書いた」。そこから直面する数々の破綻と苦痛を、C++のオブジェクト指向と設計パターンで1つずつ解決していく<strong className="text-cyan-300">成長ストーリー</strong>です。
           </p>
         </div>
-        <div className="flex items-center gap-2 font-mono text-xs text-slate-400 bg-slate-900 px-3 py-1.5 rounded-xl border border-slate-800">
+        <div className="flex items-center gap-2 font-mono text-xs text-slate-600 dark:text-slate-400 bg-slate-900 px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-800">
           <span>クリックで各段階を探索 ↓</span>
         </div>
       </div>
@@ -333,7 +333,7 @@ ECS World ＋ RAII ＋ Stateマシン ＋ ゼロコスト抽象化 ＋ 単体テ
               className={`flex-shrink-0 px-3.5 py-2 rounded-xl font-mono text-xs font-bold transition-all duration-150 flex items-center gap-1.5 ${
                 isSelected
                   ? 'bg-gradient-to-r from-cyan-500 to-blue-600 text-slate-950 shadow-lg shadow-cyan-500/30 scale-105 border-transparent'
-                  : 'bg-slate-900/90 hover:bg-slate-800 text-slate-400 hover:text-slate-200 border border-slate-800'
+                  : 'bg-white/90 dark:bg-slate-900/90 hover:bg-slate-800 text-slate-600 dark:text-slate-400 hover:text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-800'
               }`}
             >
               <span>Stage {s.stage}</span>
@@ -345,7 +345,7 @@ ECS World ＋ RAII ＋ Stateマシン ＋ ゼロコスト抽象化 ＋ 単体テ
       {/* 選択されたステージの詳細カード */}
       <div className="p-6 sm:p-8 lg:p-10 rounded-3xl bg-gradient-to-b from-slate-900/95 via-[#080e18] to-slate-950 border border-cyan-500/40 shadow-2xl space-y-8">
         {/* ヘッダー情報 */}
-        <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 border-b border-slate-800/80 pb-6">
+        <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 border-b border-slate-200 dark:border-slate-800/80 pb-6">
           <div className="space-y-2">
             <div className="flex items-center gap-3">
               <span className="w-10 h-10 rounded-xl bg-cyan-950 text-cyan-300 border border-cyan-500/40 flex items-center justify-center font-mono font-black text-base shadow-inner">
@@ -358,7 +358,7 @@ ECS World ＋ RAII ＋ Stateマシン ＋ ゼロコスト抽象化 ＋ 単体テ
             <h3 className="text-xl sm:text-2xl lg:text-3xl font-black text-white font-sans">
               {currentStage.title}
             </h3>
-            <p className="text-xs sm:text-sm text-slate-400 font-sans">
+            <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 font-sans">
               {currentStage.subtitle}
             </p>
           </div>
@@ -378,7 +378,7 @@ ECS World ＋ RAII ＋ Stateマシン ＋ ゼロコスト抽象化 ＋ 単体テ
 
             <button
               onClick={() => onSelectChapter(currentStage.chapterSlug)}
-              className="px-4 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-bold font-mono text-xs sm:text-sm flex items-center gap-2 transition border border-slate-700 hover:border-slate-600 active:scale-95 shrink-0 cursor-pointer shadow"
+              className="px-4 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-bold font-mono text-xs sm:text-sm flex items-center gap-2 transition border border-slate-300 dark:border-slate-700 hover:border-slate-600 active:scale-95 shrink-0 cursor-pointer shadow"
             >
               <span>{currentStage.chapterLabel}</span>
               <ArrowRight className="w-4 h-4" />
@@ -394,7 +394,7 @@ ECS World ＋ RAII ＋ Stateマシン ＋ ゼロコスト抽象化 ＋ 単体テ
               <AlertTriangle className="w-4 h-4" />
               <span>直面する苦痛・動くけどヤバいコード</span>
             </div>
-            <p className="text-xs sm:text-sm text-slate-300 leading-relaxed font-sans">
+            <p className="text-xs sm:text-sm text-slate-700 dark:text-slate-300 leading-relaxed font-sans">
               {currentStage.beforePain}
             </p>
           </div>
@@ -405,14 +405,14 @@ ECS World ＋ RAII ＋ Stateマシン ＋ ゼロコスト抽象化 ＋ 単体テ
               <Sparkles className="w-4 h-4" />
               <span>解決する設計思想・必然性（なぜ？）</span>
             </div>
-            <p className="text-xs sm:text-sm text-slate-300 leading-relaxed font-sans">
+            <p className="text-xs sm:text-sm text-slate-700 dark:text-slate-300 leading-relaxed font-sans">
               {currentStage.afterSkill}
             </p>
           </div>
         </div>
 
         {/* シロクマ＆ペンギンのひとこと設計問答 */}
-        <div className="p-4 rounded-2xl bg-slate-950/80 border border-slate-800 flex items-start gap-4">
+        <div className="p-4 rounded-2xl bg-white/90 dark:bg-slate-950/80 border border-slate-200 dark:border-slate-800 flex items-start gap-4">
           {currentStage.storyQuote.character === 'shirokuma' ? (
             <img
               src={getAssetUrl('/images/characters/shirokuma_sensei.png')}
@@ -430,7 +430,7 @@ ECS World ＋ RAII ＋ Stateマシン ＋ ゼロコスト抽象化 ＋ 単体テ
             <div className="text-xs font-mono font-bold text-cyan-400">
               {currentStage.storyQuote.character === 'shirokuma' ? 'シロクマ君の素朴な疑問' : '先輩ペンギンの設計指南'}
             </div>
-            <p className="text-xs sm:text-sm text-slate-300 font-sans italic">
+            <p className="text-xs sm:text-sm text-slate-700 dark:text-slate-300 font-sans italic">
               {currentStage.storyQuote.text}
             </p>
           </div>
@@ -438,7 +438,7 @@ ECS World ＋ RAII ＋ Stateマシン ＋ ゼロコスト抽象化 ＋ 単体テ
 
         {/* コード対比スニペット */}
         <div className="space-y-3">
-          <div className="text-xs font-mono font-bold text-slate-400 uppercase tracking-wider flex items-center justify-between">
+          <div className="text-xs font-mono font-bold text-slate-600 dark:text-slate-400 uppercase tracking-wider flex items-center justify-between">
             <span>コードの進化スニペット</span>
             <span className="text-[10px] text-cyan-400">Before ➔ After</span>
           </div>
@@ -447,7 +447,7 @@ ECS World ＋ RAII ＋ Stateマシン ＋ ゼロコスト抽象化 ＋ 単体テ
               <div className="px-3.5 py-1.5 bg-rose-950/50 border-b border-rose-500/20 text-[10px] font-mono font-bold text-rose-300">
                 ❌ 問題のコード（または考え方）
               </div>
-              <pre className="p-4 text-xs font-mono text-slate-300 overflow-x-auto leading-relaxed">
+              <pre className="p-4 text-xs font-mono text-slate-700 dark:text-slate-300 overflow-x-auto leading-relaxed">
                 <code>{currentStage.codeSnippetBefore}</code>
               </pre>
             </div>
@@ -463,14 +463,14 @@ ECS World ＋ RAII ＋ Stateマシン ＋ ゼロコスト抽象化 ＋ 単体テ
         </div>
 
         {/* ナビゲーションボタン */}
-        <div className="flex items-center justify-between pt-4 border-t border-slate-800">
+        <div className="flex items-center justify-between pt-4 border-t border-slate-200 dark:border-slate-800">
           <button
             onClick={() => setSelectedStageIndex((prev) => Math.max(0, prev - 1))}
             disabled={selectedStageIndex === 0}
             className={`px-4 py-2 rounded-xl text-xs font-mono font-bold transition ${
               selectedStageIndex === 0
                 ? 'opacity-40 cursor-not-allowed text-slate-500'
-                : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
+                : 'bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-700'
             }`}
           >
             ← 前のStage

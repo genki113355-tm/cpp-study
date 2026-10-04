@@ -26,21 +26,21 @@ export const ParadigmComparisonView: React.FC<ParadigmComparisonViewProps> = ({ 
   };
 
   return (
-    <div className="rounded-2xl border border-slate-800 bg-[#0a0f1d] shadow-2xl p-5 my-6">
+    <div className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-[#0a0f1d] shadow-2xl p-5 my-6">
       {/* タイトルバー */}
-      <div className="flex items-center justify-between border-b border-slate-800 pb-3 mb-5 flex-wrap gap-2">
+      <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3 mb-5 flex-wrap gap-2">
         <h3 className="text-base sm:text-lg font-mono font-bold text-white flex items-center gap-2.5">
           <span className="w-3 h-3 rounded-full bg-cyan-400" />
           <span>{data.title}</span>
         </h3>
-        <span className="text-xs sm:text-sm font-mono px-3 py-1 rounded-lg bg-slate-800 text-slate-300 border border-slate-700 font-semibold">
+        <span className="text-xs sm:text-sm font-mono px-3 py-1 rounded-lg bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-300 dark:border-slate-700 font-semibold">
           C言語 vs C++ 設計パラダイム対比
         </span>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* 左側：C言語のアプローチ（アンチパターン） */}
-        <div className="p-6 rounded-2xl bg-slate-950/85 border-2 border-rose-500/40 flex flex-col justify-between shadow-xl shadow-rose-950/20 relative overflow-hidden">
+        <div className="p-6 rounded-2xl bg-white/95 dark:bg-slate-950/85 border-2 border-rose-500/40 flex flex-col justify-between shadow-xl shadow-rose-950/20 relative overflow-hidden">
           <div className="absolute top-0 right-0 w-32 h-32 bg-rose-500/5 rounded-full blur-2xl pointer-events-none" />
           <div className="relative z-10">
             <div className="flex items-center justify-between mb-3 flex-wrap gap-2">
@@ -79,7 +79,7 @@ export const ParadigmComparisonView: React.FC<ParadigmComparisonViewProps> = ({ 
 
             {/* コードブロック */}
             <div className="relative group my-3">
-              <pre className="p-4 rounded-xl bg-slate-900/90 text-sm sm:text-base font-mono text-rose-100 overflow-x-auto border border-rose-900/50 leading-relaxed">
+              <pre className="p-4 rounded-xl bg-white/90 dark:bg-slate-900/90 text-sm sm:text-base font-mono text-rose-100 overflow-x-auto border border-rose-900/50 leading-relaxed">
                 <code>{data.cApproach.code}</code>
               </pre>
             </div>
@@ -88,7 +88,7 @@ export const ParadigmComparisonView: React.FC<ParadigmComparisonViewProps> = ({ 
             <div className="space-y-2.5 mt-5">
               <span className="text-sm sm:text-base font-mono font-bold text-rose-300 block">⚠️ 現場で起きる破綻：</span>
               {data.cApproach.drawbacks.map((item, idx) => (
-                <div key={idx} className="flex items-start gap-3 text-sm sm:text-base text-slate-300 leading-relaxed font-sans">
+                <div key={idx} className="flex items-start gap-3 text-sm sm:text-base text-slate-700 dark:text-slate-300 leading-relaxed font-sans">
                   <XCircle className="w-5 h-5 text-rose-500 flex-shrink-0 mt-0.5" />
                   <span>{item}</span>
                 </div>
@@ -98,7 +98,7 @@ export const ParadigmComparisonView: React.FC<ParadigmComparisonViewProps> = ({ 
         </div>
 
         {/* 右側：C++のアプローチ（推奨設計） */}
-        <div className="p-6 rounded-2xl bg-slate-950/85 border-2 border-cyan-500/50 flex flex-col justify-between shadow-xl shadow-cyan-950/30 relative overflow-hidden">
+        <div className="p-6 rounded-2xl bg-white/95 dark:bg-slate-950/85 border-2 border-cyan-500/50 flex flex-col justify-between shadow-xl shadow-cyan-950/30 relative overflow-hidden">
           <div className="absolute top-0 right-0 w-32 h-32 bg-cyan-500/5 rounded-full blur-2xl pointer-events-none" />
           <div className="relative z-10">
             <div className="flex items-center justify-between mb-3 flex-wrap gap-2">
@@ -137,7 +137,7 @@ export const ParadigmComparisonView: React.FC<ParadigmComparisonViewProps> = ({ 
 
             {/* コードブロック */}
             <div className="relative group my-3">
-              <pre className="p-4 rounded-xl bg-slate-900/90 text-sm sm:text-base font-mono text-cyan-200 overflow-x-auto border border-cyan-500/35 leading-relaxed">
+              <pre className="p-4 rounded-xl bg-white/90 dark:bg-slate-900/90 text-sm sm:text-base font-mono text-cyan-200 overflow-x-auto border border-cyan-500/35 leading-relaxed">
                 <code>{data.cppApproach.code}</code>
               </pre>
             </div>
@@ -146,7 +146,7 @@ export const ParadigmComparisonView: React.FC<ParadigmComparisonViewProps> = ({ 
             <div className="space-y-2.5 mt-5">
               <span className="text-sm sm:text-base font-mono font-bold text-cyan-300 block">✨ オブジェクト指向の恩恵：</span>
               {data.cppApproach.benefits.map((item, idx) => (
-                <div key={idx} className="flex items-start gap-3 text-sm sm:text-base text-slate-200 leading-relaxed font-sans">
+                <div key={idx} className="flex items-start gap-3 text-sm sm:text-base text-slate-800 dark:text-slate-200 leading-relaxed font-sans">
                   <CheckCircle2 className="w-5 h-5 text-cyan-400 flex-shrink-0 mt-0.5" />
                   <span>{item}</span>
                 </div>
@@ -157,7 +157,7 @@ export const ParadigmComparisonView: React.FC<ParadigmComparisonViewProps> = ({ 
       </div>
 
       {/* パラダイムシフトの真意（設計意図） */}
-      <div className="mt-6 p-6 rounded-2xl bg-gradient-to-r from-cyan-950/40 via-slate-900/60 to-slate-950 border border-cyan-500/30 text-sm sm:text-base text-slate-200 leading-relaxed flex items-start gap-4">
+      <div className="mt-6 p-6 rounded-2xl bg-gradient-to-r from-cyan-950/40 via-slate-900/60 to-slate-950 border border-cyan-500/30 text-sm sm:text-base text-slate-800 dark:text-slate-200 leading-relaxed flex items-start gap-4">
         <Lightbulb className="w-6 h-6 text-cyan-400 flex-shrink-0 mt-0.5" />
         <div>
           <strong className="text-cyan-300 font-mono text-base sm:text-lg block mb-1.5">

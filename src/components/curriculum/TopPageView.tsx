@@ -230,7 +230,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
             </div>
 
             <h1 className="text-3xl sm:text-5xl lg:text-5xl xl:text-6xl font-black tracking-tight text-white font-sans leading-tight flex items-center gap-3.5 sm:gap-4 flex-wrap">
-              <span className="w-12 h-12 sm:w-16 sm:h-16 rounded-full border-2 border-cyan-400/80 bg-slate-900 shadow-[0_0_25px_rgba(6,182,212,0.4)] shrink-0 inline-flex items-center justify-center overflow-hidden">
+              <span className="w-12 h-12 sm:w-16 sm:h-16 rounded-full border-2 border-cyan-500 bg-white dark:bg-slate-900 shadow-[0_0_25px_rgba(6,182,212,0.4)] shrink-0 inline-flex items-center justify-center overflow-hidden">
                 <img
                   src={getAssetUrl('/images/characters/shirokuma_sensei.png')}
                   alt="シロクマ先生"
@@ -244,7 +244,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
               動くだけのコードから、現場で生き抜く「一生モノの設計力」へ。
             </p>
 
-            <p className="text-sm sm:text-base text-slate-300 leading-relaxed font-sans">
+            <p className="text-sm sm:text-base text-slate-700 dark:text-slate-300 leading-relaxed font-sans">
               ブラウザで遊べるインベーダー風ゲームを段階的にリファクタリング！main関数500行のスパゲティコード（C言語）から、クラス化、動的メモリ、vtable、RAII、ECS、そして最新C++20まで、実戦に即した「なぜその設計が必要なのか」を体感しながらマスターできます。
             </p>
 
@@ -272,9 +272,9 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
             </div>
 
             {/* 実績バッジ群 */}
-            <div className="flex flex-wrap gap-2 pt-1 text-xs font-mono text-slate-300">
-              <span className="px-3 py-1 rounded-lg bg-slate-950/80 border border-slate-800 text-slate-300">全{ALL_CHAPTERS.length}記事 公開中</span>
-              <span className="px-3 py-1 rounded-lg bg-slate-950/80 border border-slate-800 text-slate-300">完全無料・登録不要</span>
+            <div className="flex flex-wrap gap-2 pt-1 text-xs font-mono text-slate-700 dark:text-slate-300">
+              <span className="px-3 py-1 rounded-lg bg-white/80 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 shadow-sm text-slate-700 dark:text-slate-300">全{ALL_CHAPTERS.length}記事 公開中</span>
+              <span className="px-3 py-1 rounded-lg bg-white/80 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 shadow-sm text-slate-700 dark:text-slate-300">完全無料・登録不要</span>
               <button
                 type="button"
                 onClick={() => onOpenGameModal ? onOpenGameModal('v2_classes', 'L2', 'クラス化とファイル分割') : onSelectChapter('chapter-classic-2-classes-and-files')}
@@ -284,7 +284,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
                 <Gamepad2 className="w-3.5 h-3.5 text-cyan-400 animate-pulse" />
                 <span>🎮 Webエミュレータ起動</span>
               </button>
-              <span className="px-3 py-1 rounded-lg bg-slate-950/80 border border-emerald-500/30 text-emerald-300">💻 実行演習完備</span>
+              <span className="px-3 py-1 rounded-lg bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-300 dark:border-emerald-500/30 text-emerald-800 dark:text-emerald-300">💻 実行演習完備</span>
             </div>
 
             {/* 学習開始・再開 CTA ボタン（最初から学ぶ / 続きから学ぶ） */}
@@ -297,7 +297,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
               >
                 <Play className="w-4 h-4 fill-slate-950 group-hover:scale-110 transition-transform" />
                 <span>最初から学ぶ</span>
-                <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-slate-950/20 text-slate-950">（第1章へ）</span>
+                <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-sky-100 text-sky-900 dark:bg-slate-800 dark:text-slate-100">（第1章へ）</span>
               </button>
 
               {/* 2. 続きから学ぶ */}
@@ -326,7 +326,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
                 <button
                   type="button"
                   disabled
-                  className="py-3.5 px-5 rounded-2xl bg-slate-900/50 text-slate-500 border border-slate-800/70 font-mono text-xs sm:text-sm flex items-center justify-center gap-2 cursor-not-allowed opacity-60"
+                  className="py-3.5 px-5 rounded-2xl bg-white/80 dark:bg-slate-900/50 text-slate-700 dark:text-slate-400 border border-slate-200 dark:border-slate-800/70 shadow-sm font-mono text-xs sm:text-sm flex items-center justify-center gap-2 cursor-not-allowed opacity-60"
                 >
                   <span>続きから学ぶ（未開始）</span>
                 </button>
@@ -335,7 +335,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
 
             {/* 🧭 ペルソナ別クイックスタート（あなたの現在地から選ぶ） */}
             <div className="pt-2 border-t border-slate-800/80">
-              <div className="text-[11px] font-mono text-slate-400 mb-2 flex items-center gap-1.5">
+              <div className="text-[11px] font-mono text-slate-600 dark:text-slate-400 mb-2 flex items-center gap-1.5">
                 <Sparkles className="w-3 h-3 text-cyan-400" />
                 <span>あなたのレベルに合わせてスタート：</span>
               </div>
@@ -343,7 +343,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
                 <button
                   type="button"
                   onClick={() => onSelectChapter('chapter-classic-1-spaghetti-code')}
-                  className="px-2.5 py-1.5 rounded-xl bg-slate-900/90 hover:bg-cyan-950/70 border border-slate-800 hover:border-cyan-500/50 text-slate-300 hover:text-cyan-300 transition flex items-center gap-1.5 cursor-pointer"
+                  className="px-2.5 py-1.5 rounded-xl bg-white hover:bg-cyan-50 dark:bg-slate-900 dark:hover:bg-cyan-950/70 border border-slate-200 hover:border-cyan-400 dark:border-slate-800 text-slate-700 dark:text-slate-200 shadow-sm text-slate-700 dark:text-slate-300 hover:text-cyan-300 transition flex items-center gap-1.5 cursor-pointer"
                 >
                   <span>🔰 初学者・基礎から</span>
                   <span className="text-[10px] text-cyan-400">（L1〜）</span>
@@ -351,7 +351,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
                 <button
                   type="button"
                   onClick={() => onSelectChapter('chapter-3-dynamic-memory')}
-                  className="px-2.5 py-1.5 rounded-xl bg-slate-900/90 hover:bg-amber-950/70 border border-slate-800 hover:border-amber-500/50 text-slate-300 hover:text-amber-300 transition flex items-center gap-1.5 cursor-pointer"
+                  className="px-2.5 py-1.5 rounded-xl bg-white hover:bg-amber-50 dark:bg-slate-900 dark:hover:bg-amber-950/70 border border-slate-200 hover:border-amber-400 dark:border-slate-800 text-slate-700 dark:text-slate-200 shadow-sm text-slate-700 dark:text-slate-300 hover:text-amber-300 transition flex items-center gap-1.5 cursor-pointer"
                 >
                   <span>💼 他言語経験者・メモリ管理</span>
                   <span className="text-[10px] text-amber-400">（L3〜）</span>
@@ -359,7 +359,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
                 <button
                   type="button"
                   onClick={() => onSelectChapter('chapter-17-modern-cpp-migration')}
-                  className="px-2.5 py-1.5 rounded-xl bg-slate-900/90 hover:bg-emerald-950/70 border border-slate-800 hover:border-emerald-500/50 text-slate-300 hover:text-emerald-300 transition flex items-center gap-1.5 cursor-pointer"
+                  className="px-2.5 py-1.5 rounded-xl bg-white hover:bg-emerald-50 dark:bg-slate-900 dark:hover:bg-emerald-950/70 border border-slate-200 hover:border-emerald-400 dark:border-slate-800 text-slate-700 dark:text-slate-200 shadow-sm text-slate-700 dark:text-slate-300 hover:text-emerald-300 transition flex items-center gap-1.5 cursor-pointer"
                 >
                   <span>🚀 最新C++20・ECS</span>
                   <span className="text-[10px] text-emerald-400">（M1〜）</span>
@@ -370,8 +370,8 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
             {/* 学習進捗 & 修了証への導線（落ち着いたアンバー系のアウトライン） */}
             {onOpenMilestoneModal && (
               <div className="pt-1 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
-                <div className="p-2.5 px-3 rounded-2xl bg-slate-950/80 border border-slate-800 flex-1 flex items-center justify-between gap-3 text-xs font-mono">
-                  <div className="flex items-center gap-2 text-slate-300">
+                <div className="p-2.5 px-3 rounded-2xl bg-white/80 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 shadow-sm flex-1 flex items-center justify-between gap-3 text-xs font-mono">
+                  <div className="flex items-center gap-2 text-slate-700 dark:text-slate-300">
                     <span className="w-2 h-2 rounded-full bg-cyan-400" />
                     <span>学習進捗：</span>
                     <span className="text-cyan-300 font-bold">{completedChapters.length} / {ALL_CHAPTERS.length} 章完了</span>
@@ -384,7 +384,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
                 <button
                   type="button"
                   onClick={onOpenMilestoneModal}
-                  className="py-2.5 px-4 rounded-2xl bg-slate-950/80 hover:bg-amber-950/40 border border-amber-500/40 hover:border-amber-400/80 text-amber-300 font-bold font-mono text-xs transition flex items-center justify-center gap-2 shadow-sm active:scale-95 cursor-pointer flex-shrink-0"
+                  className="py-2.5 px-4 rounded-2xl bg-amber-50/90 hover:bg-amber-100/90 dark:bg-slate-900 dark:hover:bg-amber-950/40 border border-amber-300 dark:border-amber-500/40 text-amber-900 dark:text-amber-200 shadow-sm/80 text-amber-300 font-bold font-mono text-xs transition flex items-center justify-center gap-2 shadow-sm active:scale-95 cursor-pointer flex-shrink-0"
                 >
                   <Trophy className="w-3.5 h-3.5 text-amber-400" />
                   <span>🏆 公式修了証・進捗引継ぎ</span>
@@ -420,7 +420,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
                   <div className="font-mono text-cyan-400 font-black text-sm tracking-wider uppercase mb-1">
                     INVASION RETRO LAB
                   </div>
-                  <div className="text-xs text-slate-400 font-sans">
+                  <div className="text-xs text-slate-600 dark:text-slate-400 font-sans">
                     ブラウザで直接動くC++エミュレータ
                   </div>
                 </div>
@@ -432,9 +432,9 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
                   </span>
                 </div>
               </div>
-              <div className="p-3.5 sm:p-4 bg-gradient-to-t from-slate-950 via-slate-950/95 to-slate-900/90 border-t border-cyan-500/20 relative z-10">
+              <div className="p-3.5 sm:p-4 bg-gradient-to-t from-white via-white/95 to-sky-50/90 dark:from-slate-950 dark:via-slate-950/95 dark:to-slate-900/90 border-t border-sky-200 dark:border-cyan-500/20 shadow-md relative z-10">
                 <div className="flex items-center justify-between gap-2">
-                  <span className="text-xs font-mono font-bold text-cyan-300 flex items-center gap-1.5">
+                  <span className="text-xs font-mono font-bold text-cyan-800 dark:text-cyan-300 flex items-center gap-1.5">
                     <Sparkles className="w-3.5 h-3.5 text-cyan-400 shrink-0" />
                     シロクマ先生＆ペンギンの開発ラボ
                   </span>
@@ -443,7 +443,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
                     <span>PLAY GAME</span>
                   </span>
                 </div>
-                <p className="text-[11px] text-slate-300 font-sans mt-1 leading-relaxed">
+                <p className="text-[11px] text-slate-700 dark:text-slate-300 font-sans mt-1 leading-relaxed">
                   「インベーダーゲームを動かしながら、壊れないC++設計を一緒にマスターしよう！」
                 </p>
               </div>
@@ -471,7 +471,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
                 〜シリコンの鼓動とゼロオーバーヘッドの美学〜
               </span>
             </h2>
-            <p className="text-xs sm:text-sm text-slate-300 font-sans leading-relaxed [text-wrap:pretty]">
+            <p className="text-xs sm:text-sm text-slate-700 dark:text-slate-300 font-sans leading-relaxed [text-wrap:pretty]">
               「難しい、だが代わりがいない」——火星探査機からUnreal Engine 5、AI基盤まで、人類がハードウェアの極限に挑むとき選ばれるのは常にC++です。なぜ40年間トップに君臨し続けるのか、その圧倒的な理由を解き明かします。
             </p>
           </div>
@@ -499,7 +499,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
                 <span className="text-lg">🎮</span>
                 <span>Unreal Engine 5</span>
               </div>
-              <p className="text-xs text-slate-300 leading-relaxed font-sans">
+              <p className="text-xs text-slate-700 dark:text-slate-300 leading-relaxed font-sans">
                 世界最高峰の3Dゲームエンジン。ナナイト（仮想化ポリゴン）やルーメン（大域照明）を毎秒60フレームで計算し尽くすのはC++の独壇場です。
               </p>
             </div>
@@ -510,7 +510,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
                 <span className="text-lg">🚀</span>
                 <span>NASA探査機 ＆ SpaceX</span>
               </div>
-              <p className="text-xs text-slate-300 leading-relaxed font-sans">
+              <p className="text-xs text-slate-700 dark:text-slate-300 leading-relaxed font-sans">
                 火星探査機（Perseverance）の自律走行や、Falcon 9の垂直着陸制御。通信遅延や極限環境下で1ミリ秒の狂いも許されない制御を担います。
               </p>
             </div>
@@ -521,7 +521,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
                 <span className="text-lg">🧠</span>
                 <span>PyTorch / AIコア</span>
               </div>
-              <p className="text-xs text-slate-300 leading-relaxed font-sans">
+              <p className="text-xs text-slate-700 dark:text-slate-300 leading-relaxed font-sans">
                 Pythonから呼び出される最先端AI。GPUを限界まで酷使して巨大テンソル演算を爆速実行するバックエンドは全てC++とCUDAで書かれています。
               </p>
             </div>
@@ -532,7 +532,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
                 <span className="text-lg">⚡</span>
                 <span>Google Chrome ＆ OS基盤</span>
               </div>
-              <p className="text-xs text-slate-300 leading-relaxed font-sans">
+              <p className="text-xs text-slate-700 dark:text-slate-300 leading-relaxed font-sans">
                 世界一使われているブラウザのV8エンジンや各種OSカーネル周辺。ハードウェアの物理性能を100%引き出す基盤を支えています。
               </p>
             </div>
@@ -555,7 +555,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
             <div className="text-xs sm:text-sm text-slate-200 font-bold">
               「使わない機能のために、1バイト・1クロックの代償も払わない」
             </div>
-            <p className="text-xs text-slate-300 leading-relaxed font-sans">
+            <p className="text-xs text-slate-700 dark:text-slate-300 leading-relaxed font-sans">
               一般的なGC言語（Java/C#/Python）では、ゲームの最中に突発的なメモリ掃除（Stop the World）が起き、画面がカクつく（Stutter）リスクがあります。
               一方C++の<strong>RAII（決定論的寿命）</strong>なら、スコープを抜けた瞬間に100%確定でメモリが解放され、<strong>16.6ms（60fps）のフレームタイムを寸分違わず完全死守</strong>できます。
             </p>
@@ -575,7 +575,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
             <div className="text-xs sm:text-sm text-slate-200 font-bold">
               泥臭いハードウェア制御から、現代数学の高階抽象化まで
             </div>
-            <p className="text-xs text-slate-300 leading-relaxed font-sans">
+            <p className="text-xs text-slate-700 dark:text-slate-300 leading-relaxed font-sans">
               ポインタ演算やSIMDベクトル命令、1ビット単位のメモリアライメント制御といった「シリコンの地肌」に触れながら、
               同時に constexpr（コンパイル時計算）、CRTP、ECS（データ指向設計）といった<strong>ゼロコスト抽象化</strong>を縦横無尽に操れる唯一の言語です。
             </p>
@@ -632,7 +632,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
                   setDiagnosisStep(1);
                   setDiagnosisResult(null);
                 }}
-                className="self-start sm:self-auto text-xs font-mono text-slate-400 hover:text-cyan-300 flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800/80 border border-slate-700 hover:border-cyan-500/50 transition cursor-pointer"
+                className="self-start sm:self-auto text-xs font-mono text-slate-600 dark:text-slate-400 hover:text-cyan-300 flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800/80 border border-slate-700 hover:border-cyan-500/50 transition cursor-pointer"
               >
                 <RotateCcw className="w-3.5 h-3.5" />
                 <span>最初からやり直す</span>
@@ -656,7 +656,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
                     <div className="text-sm font-bold text-white group-hover:text-cyan-300 transition-colors">
                       完全初学者・C言語も不安
                     </div>
-                    <p className="text-xs text-slate-400 leading-relaxed font-sans">
+                    <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed font-sans">
                       ポインタやメモリがよく分からない。まずは土台から着実に学びたい。
                     </p>
                   </div>
@@ -676,7 +676,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
                     <div className="text-sm font-bold text-white group-hover:text-cyan-300 transition-colors">
                       C言語は基本わかる
                     </div>
-                    <p className="text-xs text-slate-400 leading-relaxed font-sans">
+                    <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed font-sans">
                       構造体やポインタは知っているが、C++のクラスやOOPの必要性を体感したい。
                     </p>
                   </div>
@@ -696,7 +696,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
                     <div className="text-sm font-bold text-white group-hover:text-cyan-300 transition-colors">
                       他言語経験者 / C++既習
                     </div>
-                    <p className="text-xs text-slate-400 leading-relaxed font-sans">
+                    <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed font-sans">
                       文法の基本は把握している。モダン機能や実務コード読解、極限設計へ進みたい。
                     </p>
                   </div>
@@ -725,7 +725,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
                     <div className="text-sm font-bold text-white group-hover:text-blue-300 transition-colors">
                       現代的モダンC++を極める
                     </div>
-                    <p className="text-xs text-slate-400 leading-relaxed font-sans">
+                    <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed font-sans">
                       生deleteを撲滅するスマートポインタ（RAII）やC++20 Ranges・Conceptsを学びたい。
                     </p>
                   </div>
@@ -745,7 +745,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
                     <div className="text-sm font-bold text-white group-hover:text-emerald-300 transition-colors">
                       実務コード読解・鑑識眼をつける
                     </div>
-                    <p className="text-xs text-slate-400 leading-relaxed font-sans">
+                    <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed font-sans">
                       仕様書のない巨大リポジトリや他人の難解コードをスラスラ読み解く力を鍛えたい。
                     </p>
                   </div>
@@ -765,7 +765,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
                     <div className="text-sm font-bold text-white group-hover:text-purple-300 transition-colors">
                       極限低レイヤ・ゲームエンジン設計
                     </div>
-                    <p className="text-xs text-slate-400 leading-relaxed font-sans">
+                    <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed font-sans">
                       メモリプール、キャッシュ効率化、マルチスレッドなど究極の性能設計に挑みたい。
                     </p>
                   </div>
@@ -793,7 +793,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
                 <h3 className="text-base sm:text-xl font-black text-white">
                   {diagnosisResult.title}
                 </h3>
-                <p className="text-xs sm:text-sm text-slate-300 font-sans leading-relaxed max-w-2xl">
+                <p className="text-xs sm:text-sm text-slate-700 dark:text-slate-300 font-sans leading-relaxed max-w-2xl">
                   {diagnosisResult.reason}
                 </p>
               </div>
@@ -820,7 +820,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
           <h2 className="text-xl sm:text-3xl font-black text-white font-sans tracking-tight">
             最初に、この「4つの現場の壁」に答えられますか？
           </h2>
-          <p className="text-xs sm:text-sm text-slate-400 font-sans">
+          <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 font-sans">
             文法を知っているだけでは防げない。C++開発で誰もが一度は地獄を見るリアルな破綻と、それを解決するアーキテクチャの進化。
           </p>
         </div>
@@ -841,8 +841,8 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
               <h3 className="text-base font-bold text-white group-hover:text-amber-300 transition-colors">
                 「敵の種類を10種類に増やしたら、何が壊れる？」
               </h3>
-              <p className="text-xs text-slate-400 leading-relaxed font-sans">
-                更新・描画・当たり判定のいたる所に巨大な <code className="text-amber-300 font-mono bg-slate-950 px-1 py-0.5 rounded">switch(enemy.type)</code> が出現。敵を1体足すたびに既存コードを10箇所修正し、無関係な敵にバグが伝播する地獄。
+              <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed font-sans">
+                更新・描画・当たり判定のいたる所に巨大な <code className="text-amber-800 dark:text-amber-300 font-mono bg-amber-50 dark:bg-slate-950 border border-amber-200 dark:border-slate-800 px-1 py-0.5 rounded">switch(enemy.type)</code> が出現。敵を1体足すたびに既存コードを10箇所修正し、無関係な敵にバグが伝播する地獄。
               </p>
             </div>
             <div className="pt-4 flex items-center justify-between text-xs font-mono font-bold text-amber-400 border-t border-slate-800/80 mt-3">
@@ -866,8 +866,8 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
               <h3 className="text-base font-bold text-white group-hover:text-cyan-300 transition-colors">
                 「ステージ遷移時にボスが消えない。誰が解放の責任を持つ？」
               </h3>
-              <p className="text-xs text-slate-400 leading-relaxed font-sans">
-                生ポインタ <code className="text-cyan-300 font-mono bg-slate-950 px-1 py-0.5 rounded">Boss*</code> をGameManagerもSceneも保持。誰が <code className="text-cyan-300 font-mono bg-slate-950 px-1 py-0.5 rounded">delete</code> すべきか曖昧になり、二重解放（Double Free）即死クラッシュかメモリリークかの二者択一に。
+              <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed font-sans">
+                生ポインタ <code className="text-cyan-800 dark:text-cyan-300 font-mono bg-cyan-50 dark:bg-slate-950 border border-cyan-200 dark:border-slate-800 px-1 py-0.5 rounded">Boss*</code> をGameManagerもSceneも保持。誰が <code className="text-cyan-800 dark:text-cyan-300 font-mono bg-cyan-50 dark:bg-slate-950 border border-cyan-200 dark:border-slate-800 px-1 py-0.5 rounded">delete</code> すべきか曖昧になり、二重解放（Double Free）即死クラッシュかメモリリークかの二者択一に。
               </p>
             </div>
             <div className="pt-4 flex items-center justify-between text-xs font-mono font-bold text-cyan-400 border-t border-slate-800/80 mt-3">
@@ -891,7 +891,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
               <h3 className="text-base font-bold text-white group-hover:text-purple-300 transition-colors">
                 「敵が死んだ瞬間、UIスコア加算と爆発音をどこに書く？」
               </h3>
-              <p className="text-xs text-slate-400 leading-relaxed font-sans">
+              <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed font-sans">
                 EnemyクラスがSoundEngineやUIManagerに直接依存。音効や描画のない単体テストコードがリンクエラーで動かせなくなる泥沼密結合。
               </p>
             </div>
@@ -916,8 +916,8 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
               <h3 className="text-base font-bold text-white group-hover:text-emerald-300 transition-colors">
                 「弾を毎秒1000発撃ったら、なぜ突然ゲームがカクつく？」
               </h3>
-              <p className="text-xs text-slate-400 leading-relaxed font-sans">
-                毎フレームの <code className="text-emerald-300 font-mono bg-slate-950 px-1 py-0.5 rounded">new / delete</code> によるヒープ断片化とOSカーネル呼び出しコスト。ガベージコレクションがないC++だからこそ、アロケーション戦略がフレームレートを左右する。
+              <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed font-sans">
+                毎フレームの <code className="text-emerald-800 dark:text-emerald-300 font-mono bg-emerald-50 dark:bg-slate-950 border border-emerald-200 dark:border-slate-800 px-1 py-0.5 rounded">new / delete</code> によるヒープ断片化とOSカーネル呼び出しコスト。ガベージコレクションがないC++だからこそ、アロケーション戦略がフレームレートを左右する。
               </p>
             </div>
             <div className="pt-4 flex items-center justify-between text-xs font-mono font-bold text-emerald-400 border-t border-slate-800/80 mt-3">
@@ -938,7 +938,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
           <h2 className="text-xl sm:text-3xl font-black text-white font-sans tracking-tight">
             1本のゲームを10段階で進化させる「設計進化マップ」
           </h2>
-          <p className="text-xs sm:text-sm text-slate-400 font-sans">
+          <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 font-sans">
             動くだけのベタ書きコードから、現代の商用ゲームエンジン同等のECSアーキテクチャまで。各ステージの「Beforeの痛点」と「Afterのスキル」をクリックして対比できます。
           </p>
         </div>
@@ -968,7 +968,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
                 <span className="text-[11px] font-mono px-2 py-0.5 rounded bg-amber-950 text-amber-300 border border-amber-500/40 font-bold">初級・原点</span>
               </div>
               <h3 className="text-sm font-bold text-white group-hover:text-amber-300 transition-colors">C++をゼロから学ぶ</h3>
-              <p className="text-xs text-slate-400 leading-relaxed">まずはここから！500行のスパゲティコードを動かして設計の限界を体感。</p>
+              <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">まずはここから！500行のスパゲティコードを動かして設計の限界を体感。</p>
             </div>
             <div className="pt-3 flex items-center justify-between text-xs font-mono font-bold text-amber-400">
               <span>第1章（L1）へ進む</span>
@@ -988,7 +988,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
                 <span className="text-[11px] font-mono px-2 py-0.5 rounded bg-cyan-950 text-cyan-300 border border-cyan-500/40 font-bold">C++11〜20</span>
               </div>
               <h3 className="text-sm font-bold text-white group-hover:text-cyan-300 transition-colors">モダンC++を極める</h3>
-              <p className="text-xs text-slate-400 leading-relaxed">スマポ、ムーブ、ラムダ、可変引数、ECSなど現代の実戦規格を一気習得。</p>
+              <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">スマポ、ムーブ、ラムダ、可変引数、ECSなど現代の実戦規格を一気習得。</p>
             </div>
             <div className="pt-3 flex items-center justify-between text-xs font-mono font-bold text-cyan-400">
               <span>モダン第1章（M1）へ</span>
@@ -1008,7 +1008,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
                 <span className="text-[11px] font-mono px-2 py-0.5 rounded bg-purple-950 text-purple-300 border border-purple-500/40 font-bold">鑑識・実戦</span>
               </div>
               <h3 className="text-sm font-bold text-white group-hover:text-purple-300 transition-colors">他人のコードを読む</h3>
-              <p className="text-xs text-slate-400 leading-relaxed">書く前に読む！巨大リポジトリ攻略、スレッド競合、メモリ破壊の鑑識法。</p>
+              <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">書く前に読む！巨大リポジトリ攻略、スレッド競合、メモリ破壊の鑑識法。</p>
             </div>
             <div className="pt-3 flex items-center justify-between text-xs font-mono font-bold text-purple-400">
               <span>読解Step 1（R1）へ</span>
@@ -1028,7 +1028,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
                 <span className="text-[11px] font-mono px-2 py-0.5 rounded bg-emerald-950 text-emerald-300 border border-emerald-500/40 font-bold">逆引きリファレンス</span>
               </div>
               <h3 className="text-sm font-bold text-white group-hover:text-emerald-300 transition-colors">文法急所チートシート</h3>
-              <p className="text-xs text-slate-400 leading-relaxed">「ポインタと参照の違いは？」「cast4種は？」実務で迷うポイントを網羅。</p>
+              <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">「ポインタと参照の違いは？」「cast4種は？」実務で迷うポイントを網羅。</p>
             </div>
             <div className="pt-3 flex items-center justify-between text-xs font-mono font-bold text-emerald-400">
               <span>チートシートを開く</span>
@@ -1041,14 +1041,14 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
       {/* 3. 4大メインコンテンツ（サイトの柱） */}
       <section className="space-y-6">
         <div>
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-800 border border-slate-700 text-slate-300 font-mono text-xs font-semibold mb-2">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-800 border border-slate-700 text-slate-700 dark:text-slate-300 font-mono text-xs font-semibold mb-2">
             <Layers className="w-3.5 h-3.5 text-cyan-400" />
             <span>FOUR MAIN PILLARS</span>
           </div>
           <h2 className="text-2xl sm:text-3xl font-extrabold text-white font-sans">
             シロクマC++ラボを構成する <span className="text-cyan-400">4大コンテンツ</span>
           </h2>
-          <p className="text-sm text-slate-400 font-sans mt-1">
+          <p className="text-sm text-slate-600 dark:text-slate-400 font-sans mt-1">
             学びたい目的に合わせて、最適な柱から学習を開始できます。
           </p>
         </div>
@@ -1061,7 +1061,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
                 <span className="text-xs font-mono font-bold px-3 py-1 rounded-full bg-amber-950 text-amber-300 border border-amber-500/40">
                   全{CLASSIC_CHAPTERS.length}章（L1〜L{CLASSIC_CHAPTERS.length}）
                 </span>
-                <span className="text-xs font-mono text-slate-400">進捗: {classicCompleted} / {CLASSIC_CHAPTERS.length} 完了</span>
+                <span className="text-xs font-mono text-slate-600 dark:text-slate-400">進捗: {classicCompleted} / {CLASSIC_CHAPTERS.length} 完了</span>
               </div>
 
               <div>
@@ -1071,12 +1071,12 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
                 <p className="text-xs font-mono text-amber-400 mt-0.5">C言語・C++03 / 組込み・制約環境における【レガシーの正解】</p>
               </div>
 
-              <p className="text-xs sm:text-sm text-slate-300 leading-relaxed font-sans">
+              <p className="text-xs sm:text-sm text-slate-700 dark:text-slate-300 leading-relaxed font-sans">
                 動的メモリ禁止・MISRA準拠・決定論的リアルタイム応答など、今なお現場でレガシーが推奨される理由と、その制約下で破綻させない「静的オブジェクトプール」「不透明ポインタ」「クラシックOOP」の真の正解を習得します。
               </p>
 
-              <div className="p-3 rounded-xl bg-slate-950/70 border border-slate-800 text-xs font-mono space-y-1">
-                <div className="text-slate-400">主なテーマ:</div>
+              <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-950/70 border border-slate-200 dark:border-slate-800 text-xs font-mono space-y-1 text-slate-800 dark:text-slate-200">
+                <div className="text-slate-600 dark:text-slate-400">主なテーマ:</div>
                 <div className="text-amber-300 flex flex-wrap gap-x-3 gap-y-1">
                   <span>#L1 構造化設計の正解</span>
                   <span>#L2 Opaqueポインタとクラス</span>
@@ -1105,7 +1105,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
                   setActiveTab('classic');
                   document.getElementById('curriculum-directory')?.scrollIntoView({ behavior: 'smooth' });
                 }}
-                className="py-3 px-4 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-300 font-mono text-xs text-center transition cursor-pointer"
+                className="py-3 px-4 rounded-xl bg-white hover:bg-sky-50 dark:bg-slate-900 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-200 shadow-sm font-mono text-xs text-center transition cursor-pointer"
               >
                 全{CLASSIC_CHAPTERS.length}章の目次を見る ↓
               </button>
@@ -1119,7 +1119,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
                 <span className="text-xs font-mono font-bold px-3 py-1 rounded-full bg-cyan-950 text-cyan-300 border border-cyan-500/40">
                   全14章（M1〜M14）
                 </span>
-                <span className="text-xs font-mono text-slate-400">進捗: {modernCompleted} / 14 完了</span>
+                <span className="text-xs font-mono text-slate-600 dark:text-slate-400">進捗: {modernCompleted} / 14 完了</span>
               </div>
 
               <div>
@@ -1129,12 +1129,12 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
                 <p className="text-xs font-mono text-cyan-400 mt-0.5">C++11 / 14 / 17 / 20 規格体系化・ゼロオーバーヘッド設計</p>
               </div>
 
-              <p className="text-xs sm:text-sm text-slate-300 leading-relaxed font-sans">
+              <p className="text-xs sm:text-sm text-slate-700 dark:text-slate-300 leading-relaxed font-sans">
                 生ポインタの解放漏れや無駄なコピーを完全撲滅！RAIIスマートポインタ、ムーブセマンティクス、ラムダ、可変引数、string_view、そして新世代ECSアーキテクチャまで、現代のゲーム開発に必須の規格を体系的に網羅。
               </p>
 
-              <div className="p-3 rounded-xl bg-slate-950/70 border border-slate-800 text-xs font-mono space-y-1">
-                <div className="text-slate-400">主なテーマ:</div>
+              <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-950/70 border border-slate-200 dark:border-slate-800 text-xs font-mono space-y-1 text-slate-800 dark:text-slate-200">
+                <div className="text-slate-600 dark:text-slate-400">主なテーマ:</div>
                 <div className="text-cyan-300 flex flex-wrap gap-x-3 gap-y-1">
                   <span>#M1 スマポ/RAII</span>
                   <span>#M2 ムーブ</span>
@@ -1161,7 +1161,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
                   setActiveTab('modern');
                   document.getElementById('curriculum-directory')?.scrollIntoView({ behavior: 'smooth' });
                 }}
-                className="py-3 px-4 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-300 font-mono text-xs text-center transition cursor-pointer"
+                className="py-3 px-4 rounded-xl bg-white hover:bg-sky-50 dark:bg-slate-900 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-200 shadow-sm font-mono text-xs text-center transition cursor-pointer"
               >
                 全14章の目次を見る ↓
               </button>
@@ -1175,7 +1175,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
                 <span className="text-xs font-mono font-bold px-3 py-1 rounded-full bg-purple-950 text-purple-300 border border-purple-500/40">
                   全{READING_CHAPTERS.length}ステップ（R1〜R{READING_CHAPTERS.length}）
                 </span>
-                <span className="text-xs font-mono text-slate-400">進捗: {readingCompleted} / {READING_CHAPTERS.length} 完了</span>
+                <span className="text-xs font-mono text-slate-600 dark:text-slate-400">進捗: {readingCompleted} / {READING_CHAPTERS.length} 完了</span>
               </div>
 
               <div>
@@ -1185,12 +1185,12 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
                 <p className="text-xs font-mono text-purple-400 mt-0.5">現場即戦力・OSS解読・競合＆メモリ破壊捜査</p>
               </div>
 
-              <p className="text-xs sm:text-sm text-slate-300 leading-relaxed font-sans">
+              <p className="text-xs sm:text-sm text-slate-700 dark:text-slate-300 leading-relaxed font-sans">
                 「動かないコード」「他人が書いた謎コード」に立ち向かうプロの眼を養成。Box2D物理エンジンの実地解読から、たまにしか起きないマルチスレッド競合（Data Race）、Use-After-FreeとAddressSanitizer解析まで徹底演習。
               </p>
 
-              <div className="p-3 rounded-xl bg-slate-950/70 border border-slate-800 text-xs font-mono space-y-1">
-                <div className="text-slate-400">主なテーマ:</div>
+              <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-950/70 border border-slate-200 dark:border-slate-800 text-xs font-mono space-y-1 text-slate-800 dark:text-slate-200">
+                <div className="text-slate-600 dark:text-slate-400">主なテーマ:</div>
                 <div className="text-purple-300 flex flex-wrap gap-x-3 gap-y-1">
                   <span>#R1 データフロー</span>
                   <span>#R2 ヘッダ依存</span>
@@ -1221,7 +1221,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
                   setActiveTab('reading');
                   document.getElementById('curriculum-directory')?.scrollIntoView({ behavior: 'smooth' });
                 }}
-                className="py-3 px-4 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-300 font-mono text-xs text-center transition cursor-pointer"
+                className="py-3 px-4 rounded-xl bg-white hover:bg-sky-50 dark:bg-slate-900 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-200 shadow-sm font-mono text-xs text-center transition cursor-pointer"
               >
                 全{READING_CHAPTERS.length}章の目次を見る ↓
               </button>
@@ -1235,7 +1235,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
                 <span className="text-xs font-mono font-bold px-3 py-1 rounded-full bg-emerald-950 text-emerald-300 border border-emerald-500/40">
                   全8ガイド・特別コラム
                 </span>
-                <span className="text-xs font-mono text-slate-400">現場リファレンス</span>
+                <span className="text-xs font-mono text-slate-600 dark:text-slate-400">現場リファレンス</span>
               </div>
 
               <div>
@@ -1245,12 +1245,12 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
                 <p className="text-xs font-mono text-emerald-400 mt-0.5">品質保証・設計ツール・言語思想・逆引き知識</p>
               </div>
 
-              <p className="text-xs sm:text-sm text-slate-300 leading-relaxed font-sans">
+              <p className="text-xs sm:text-sm text-slate-700 dark:text-slate-300 leading-relaxed font-sans">
                 カリキュラムの理解を加速させる実務の武器庫。迷ったときにすぐ引ける「C++基本文法チートシート」、テスト駆動開発を体感する「GoogleTest TDD入門」、GoFデザインパターン、UML設計書、言語思想コラムを完備。
               </p>
 
-              <div className="p-3 rounded-xl bg-slate-950/70 border border-slate-800 text-xs font-mono space-y-1">
-                <div className="text-slate-400">主なテーマ:</div>
+              <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-950/70 border border-slate-200 dark:border-slate-800 text-xs font-mono space-y-1 text-slate-800 dark:text-slate-200">
+                <div className="text-slate-600 dark:text-slate-400">主なテーマ:</div>
                 <div className="text-emerald-300 flex flex-wrap gap-x-3 gap-y-1">
                   <span>#C++文法チートシート</span>
                   <span>#GoogleTest TDD</span>
@@ -1276,7 +1276,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
                   setActiveTab('guides');
                   document.getElementById('curriculum-directory')?.scrollIntoView({ behavior: 'smooth' });
                 }}
-                className="py-3 px-4 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-300 font-mono text-xs text-center transition cursor-pointer"
+                className="py-3 px-4 rounded-xl bg-white hover:bg-sky-50 dark:bg-slate-900 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-200 shadow-sm font-mono text-xs text-center transition cursor-pointer"
               >
                 全8ガイドの目次を見る ↓
               </button>
@@ -1296,26 +1296,26 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
             <h2 className="text-xl sm:text-2xl font-bold text-white font-sans">
               重要設計キーワード・逆引きインデックス
             </h2>
-            <p className="text-xs sm:text-sm text-slate-400 font-sans">
+            <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 font-sans">
               全44記事の中から、現場で直面する技術課題や設計用語からダイレクトに解説章へアクセスできます。
             </p>
           </div>
 
           {/* クイック検索フォーム */}
           <div className="relative w-full md:w-72 shrink-0">
-            <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+            <Search className="w-4 h-4 text-slate-600 dark:text-slate-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="技術用語を検索 (例: RAII, ECS, メモリ)..."
-              className="w-full pl-9 pr-8 py-2 rounded-xl bg-slate-950 border border-slate-700 text-xs font-mono text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition"
+              className="w-full pl-9 pr-8 py-2 rounded-xl bg-white dark:bg-slate-950 border border-slate-300 dark:border-slate-700 text-xs font-mono text-slate-900 dark:text-white placeholder-slate-400 shadow-sm focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition"
             />
             {searchQuery && (
               <button
                 type="button"
                 onClick={() => setSearchQuery('')}
-                className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white transition cursor-pointer"
+                className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-600 dark:text-slate-400 hover:text-white transition cursor-pointer"
                 title="クリア"
               >
                 <X className="w-3.5 h-3.5" />
@@ -1327,7 +1327,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
         {/* 検索中なら検索結果を表示 */}
         {searchQuery ? (
           <div className="space-y-2 py-2">
-            <div className="flex items-center justify-between text-xs font-mono text-slate-400">
+            <div className="flex items-center justify-between text-xs font-mono text-slate-600 dark:text-slate-400">
               <span>「{searchQuery}」の検索結果: {searchResults.length}件</span>
               <button
                 onClick={() => setSearchQuery('')}
@@ -1337,7 +1337,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
               </button>
             </div>
             {searchResults.length === 0 ? (
-              <div className="p-6 text-center text-xs font-mono text-slate-500 bg-slate-950/50 rounded-2xl border border-slate-800">
+              <div className="p-6 text-center text-xs font-mono text-slate-500 bg-white/80 dark:bg-slate-950/50 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm">
                 一致する章が見つかりませんでした。別の用語をお試しください。
               </div>
             ) : (
@@ -1346,7 +1346,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
                   <div
                     key={ch.id}
                     onClick={() => onSelectChapter(ch.slug)}
-                    className="p-3 rounded-xl bg-slate-950/80 hover:bg-slate-900 border border-slate-800 hover:border-cyan-500/50 transition cursor-pointer flex flex-col justify-between gap-1.5 shadow-sm group"
+                    className="p-3 rounded-xl bg-white/90 hover:bg-sky-50 dark:bg-slate-950/80 dark:hover:bg-slate-900 border border-slate-200 hover:border-cyan-400 dark:border-slate-800 shadow-sm transition cursor-pointer flex flex-col justify-between gap-1.5 shadow-sm group"
                   >
                     <div className="flex items-center justify-between gap-1">
                       <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-cyan-950 text-cyan-300 border border-cyan-500/30 font-bold">
@@ -1359,7 +1359,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
                     <div className="text-xs font-bold text-white group-hover:text-cyan-300 font-sans line-clamp-1">
                       {ch.title}
                     </div>
-                    <p className="text-[11px] text-slate-400 font-sans line-clamp-2 leading-relaxed">
+                    <p className="text-[11px] text-slate-600 dark:text-slate-400 font-sans line-clamp-2 leading-relaxed">
                       {ch.subtitle}
                     </p>
                   </div>
@@ -1374,11 +1374,11 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
               <div
                 key={idx}
                 onClick={() => onSelectChapter(kw.slug)}
-                className="p-3 rounded-2xl bg-slate-950/70 hover:bg-slate-900/90 border border-slate-800 hover:border-cyan-500/50 transition-all cursor-pointer group flex flex-col justify-between gap-2 shadow-sm"
+                className="p-3 rounded-2xl bg-white/90 hover:bg-sky-50 dark:bg-slate-950/70 dark:hover:bg-slate-900/90 border border-slate-200 hover:border-cyan-400 dark:border-slate-800 shadow-sm transition-all cursor-pointer group flex flex-col justify-between gap-2 shadow-sm"
               >
                 <div>
                   <div className="flex items-center justify-between gap-1">
-                    <span className="text-[9.5px] font-mono px-1.5 py-0.5 rounded bg-slate-900 text-slate-400 border border-slate-800 font-semibold">
+                    <span className="text-[9.5px] font-mono px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800 font-semibold">
                       {kw.category}
                     </span>
                     <span className="text-[10px] font-mono font-bold text-cyan-400">
@@ -1389,7 +1389,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
                     {kw.name}
                   </h3>
                 </div>
-                <p className="text-[10.5px] text-slate-400 font-sans leading-tight line-clamp-2">
+                <p className="text-[10.5px] text-slate-600 dark:text-slate-400 font-sans leading-tight line-clamp-2">
                   {kw.desc}
                 </p>
               </div>
@@ -1409,13 +1409,13 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
           <h2 className="text-2xl sm:text-3xl font-extrabold text-white font-sans">
             カリキュラム全目次（全{ALL_CHAPTERS.length}章）
           </h2>
-          <p className="text-xs sm:text-sm text-slate-400 font-sans">
+          <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 font-sans">
             各章をクリックすると、詳細な解説・対比コード・ブラウザ演習ページが開きます。
           </p>
         </div>
 
         {/* コース選択コントロール（ラジオボタン ＆ ドロップダウンセレクター） */}
-        <div className="p-4 sm:p-5 rounded-2xl bg-slate-900/90 border border-slate-800 space-y-4 shadow-xl">
+        <div className="p-4 sm:p-5 rounded-2xl bg-white/95 dark:bg-slate-900/90 border border-sky-200 dark:border-slate-800 space-y-4 shadow-md">
           {/* ヘッダー部：説明ラベル ＆ ドロップダウンリスト（プルダウン） */}
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-800/80">
             <div className="flex items-center gap-2">
@@ -1427,7 +1427,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
 
             {/* ドロップダウン選択リスト（プルダウン） */}
             <div className="flex items-center gap-2">
-              <label htmlFor="course-select-dropdown" className="text-xs font-mono text-slate-400 whitespace-nowrap">
+              <label htmlFor="course-select-dropdown" className="text-xs font-mono text-slate-600 dark:text-slate-400 whitespace-nowrap">
                 プルダウン:
               </label>
               <select
@@ -1435,7 +1435,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
                 value={activeTab}
                 onChange={(e) => setActiveTab(e.target.value as any)}
                 aria-label="コース選択ドロップダウン"
-                className="w-full sm:w-auto py-2 px-3 rounded-xl bg-slate-950 border border-slate-700 text-white font-mono text-xs cursor-pointer focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition shadow-inner font-bold"
+                className="w-full sm:w-auto py-2 px-3 rounded-xl bg-white dark:bg-slate-950 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white font-mono text-xs cursor-pointer shadow-sm focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition shadow-inner font-bold"
               >
                 <option value="classic">🏛️ クラシック基礎編 (全{CLASSIC_CHAPTERS.length}章 / L1〜L{CLASSIC_CHAPTERS.length})</option>
                 <option value="modern">🚀 モダン実践編 (全14章 / M1〜M14)</option>
@@ -1460,29 +1460,29 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
               className={`p-3.5 rounded-xl border text-left transition-all cursor-pointer flex flex-col justify-between gap-2.5 ${
                 activeTab === 'classic'
                   ? 'bg-amber-950/40 border-amber-400 shadow-lg shadow-amber-500/10 ring-1 ring-amber-400/50'
-                  : 'bg-slate-950/60 border-slate-800/90 hover:border-slate-700 hover:bg-slate-900/60'
+                  : 'bg-white/80 dark:bg-slate-950/60 border-slate-200 dark:border-slate-800 hover:border-cyan-400 dark:hover:border-slate-700 hover:bg-sky-50 dark:hover:bg-slate-900/60 text-slate-700 dark:text-slate-300 shadow-sm'
               }`}
             >
               <div className="flex items-center justify-between gap-2">
                 <div className="flex items-center gap-2.5 min-w-0">
                   <span className={`w-4 h-4 rounded-full border-2 flex items-center justify-center shrink-0 ${
-                    activeTab === 'classic' ? 'border-amber-400 bg-amber-950' : 'border-slate-600 bg-slate-900'
+                    activeTab === 'classic' ? 'border-amber-500 bg-amber-100 dark:bg-amber-950 text-amber-900 dark:text-amber-200' : 'border-slate-300 dark:border-slate-600 bg-slate-100 dark:bg-slate-900 text-slate-600 dark:text-slate-400'
                   }`}>
                     {activeTab === 'classic' && <span className="w-2 h-2 rounded-full bg-amber-400" />}
                   </span>
-                  <span className={`text-sm font-bold font-sans truncate ${activeTab === 'classic' ? 'text-amber-300' : 'text-slate-300'}`}>
+                  <span className={`text-sm font-bold font-sans truncate ${activeTab === 'classic' ? 'text-amber-300' : 'text-slate-700 dark:text-slate-300'}`}>
                     🏛️ クラシック基礎
                   </span>
                 </div>
                 <span className={`text-[11px] font-mono font-bold px-2 py-0.5 rounded-full border shrink-0 ${
                   activeTab === 'classic'
                     ? 'bg-amber-950 text-amber-300 border-amber-500/50'
-                    : 'bg-slate-900 text-slate-400 border-slate-800'
+                    : 'bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-400 border-slate-200 dark:border-slate-800 shadow-sm'
                 }`}>
                   {CLASSIC_CHAPTERS.length}章
                 </span>
               </div>
-              <p className="text-[11px] text-slate-400 pl-6.5 font-sans truncate">
+              <p className="text-[11px] text-slate-600 dark:text-slate-400 pl-6.5 font-sans truncate">
                 L1〜L{CLASSIC_CHAPTERS.length} / C言語・OOPの原点
               </p>
             </button>
@@ -1496,29 +1496,29 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
               className={`p-3.5 rounded-xl border text-left transition-all cursor-pointer flex flex-col justify-between gap-2.5 ${
                 activeTab === 'modern'
                   ? 'bg-cyan-950/40 border-cyan-400 shadow-lg shadow-cyan-500/10 ring-1 ring-cyan-400/50'
-                  : 'bg-slate-950/60 border-slate-800/90 hover:border-slate-700 hover:bg-slate-900/60'
+                  : 'bg-white/80 dark:bg-slate-950/60 border-slate-200 dark:border-slate-800 hover:border-cyan-400 dark:hover:border-slate-700 hover:bg-sky-50 dark:hover:bg-slate-900/60 text-slate-700 dark:text-slate-300 shadow-sm'
               }`}
             >
               <div className="flex items-center justify-between gap-2">
                 <div className="flex items-center gap-2.5 min-w-0">
                   <span className={`w-4 h-4 rounded-full border-2 flex items-center justify-center shrink-0 ${
-                    activeTab === 'modern' ? 'border-cyan-400 bg-cyan-950' : 'border-slate-600 bg-slate-900'
+                    activeTab === 'modern' ? 'border-cyan-500 bg-cyan-100 dark:bg-cyan-950 text-cyan-900 dark:text-cyan-200' : 'border-slate-300 dark:border-slate-600 bg-slate-100 dark:bg-slate-900 text-slate-600 dark:text-slate-400'
                   }`}>
                     {activeTab === 'modern' && <span className="w-2 h-2 rounded-full bg-cyan-400" />}
                   </span>
-                  <span className={`text-sm font-bold font-sans truncate ${activeTab === 'modern' ? 'text-cyan-300' : 'text-slate-300'}`}>
+                  <span className={`text-sm font-bold font-sans truncate ${activeTab === 'modern' ? 'text-cyan-300' : 'text-slate-700 dark:text-slate-300'}`}>
                     🚀 モダン実践
                   </span>
                 </div>
                 <span className={`text-[11px] font-mono font-bold px-2 py-0.5 rounded-full border shrink-0 ${
                   activeTab === 'modern'
                     ? 'bg-cyan-950 text-cyan-300 border-cyan-500/50'
-                    : 'bg-slate-900 text-slate-400 border-slate-800'
+                    : 'bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-400 border-slate-200 dark:border-slate-800 shadow-sm'
                 }`}>
                   14章
                 </span>
               </div>
-              <p className="text-[11px] text-slate-400 pl-6.5 font-sans truncate">
+              <p className="text-[11px] text-slate-600 dark:text-slate-400 pl-6.5 font-sans truncate">
                 M1〜M14 / C++11〜20実戦規格
               </p>
             </button>
@@ -1532,29 +1532,29 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
               className={`p-3.5 rounded-xl border text-left transition-all cursor-pointer flex flex-col justify-between gap-2.5 ${
                 activeTab === 'reading'
                   ? 'bg-purple-950/40 border-purple-400 shadow-lg shadow-purple-500/10 ring-1 ring-purple-400/50'
-                  : 'bg-slate-950/60 border-slate-800/90 hover:border-slate-700 hover:bg-slate-900/60'
+                  : 'bg-white/80 dark:bg-slate-950/60 border-slate-200 dark:border-slate-800 hover:border-cyan-400 dark:hover:border-slate-700 hover:bg-sky-50 dark:hover:bg-slate-900/60 text-slate-700 dark:text-slate-300 shadow-sm'
               }`}
             >
               <div className="flex items-center justify-between gap-2">
                 <div className="flex items-center gap-2.5 min-w-0">
                   <span className={`w-4 h-4 rounded-full border-2 flex items-center justify-center shrink-0 ${
-                    activeTab === 'reading' ? 'border-purple-400 bg-purple-950' : 'border-slate-600 bg-slate-900'
+                    activeTab === 'reading' ? 'border-purple-500 bg-purple-100 dark:bg-purple-950 text-purple-900 dark:text-purple-200' : 'border-slate-300 dark:border-slate-600 bg-slate-100 dark:bg-slate-900 text-slate-600 dark:text-slate-400'
                   }`}>
                     {activeTab === 'reading' && <span className="w-2 h-2 rounded-full bg-purple-400" />}
                   </span>
-                  <span className={`text-sm font-bold font-sans truncate ${activeTab === 'reading' ? 'text-purple-300' : 'text-slate-300'}`}>
+                  <span className={`text-sm font-bold font-sans truncate ${activeTab === 'reading' ? 'text-purple-300' : 'text-slate-700 dark:text-slate-300'}`}>
                     🧭 コード読解
                   </span>
                 </div>
                 <span className={`text-[11px] font-mono font-bold px-2 py-0.5 rounded-full border shrink-0 ${
                   activeTab === 'reading'
                     ? 'bg-purple-950 text-purple-300 border-purple-500/50'
-                    : 'bg-slate-900 text-slate-400 border-slate-800'
+                    : 'bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-400 border-slate-200 dark:border-slate-800 shadow-sm'
                 }`}>
                   {READING_CHAPTERS.length}章
                 </span>
               </div>
-              <p className="text-[11px] text-slate-400 pl-6.5 font-sans truncate">
+              <p className="text-[11px] text-slate-600 dark:text-slate-400 pl-6.5 font-sans truncate">
                 R1〜R{READING_CHAPTERS.length} / 現場鑑識・OSS解読
               </p>
             </button>
@@ -1568,36 +1568,36 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
               className={`p-3.5 rounded-xl border text-left transition-all cursor-pointer flex flex-col justify-between gap-2.5 ${
                 activeTab === 'guides'
                   ? 'bg-emerald-950/40 border-emerald-400 shadow-lg shadow-emerald-500/10 ring-1 ring-emerald-400/50'
-                  : 'bg-slate-950/60 border-slate-800/90 hover:border-slate-700 hover:bg-slate-900/60'
+                  : 'bg-white/80 dark:bg-slate-950/60 border-slate-200 dark:border-slate-800 hover:border-cyan-400 dark:hover:border-slate-700 hover:bg-sky-50 dark:hover:bg-slate-900/60 text-slate-700 dark:text-slate-300 shadow-sm'
               }`}
             >
               <div className="flex items-center justify-between gap-2">
                 <div className="flex items-center gap-2.5 min-w-0">
                   <span className={`w-4 h-4 rounded-full border-2 flex items-center justify-center shrink-0 ${
-                    activeTab === 'guides' ? 'border-emerald-400 bg-emerald-950' : 'border-slate-600 bg-slate-900'
+                    activeTab === 'guides' ? 'border-emerald-500 bg-emerald-100 dark:bg-emerald-950 text-emerald-900 dark:text-emerald-200' : 'border-slate-300 dark:border-slate-600 bg-slate-100 dark:bg-slate-900 text-slate-600 dark:text-slate-400'
                   }`}>
                     {activeTab === 'guides' && <span className="w-2 h-2 rounded-full bg-emerald-400" />}
                   </span>
-                  <span className={`text-sm font-bold font-sans truncate ${activeTab === 'guides' ? 'text-emerald-300' : 'text-slate-300'}`}>
+                  <span className={`text-sm font-bold font-sans truncate ${activeTab === 'guides' ? 'text-emerald-300' : 'text-slate-700 dark:text-slate-300'}`}>
                     📚 現場特集
                   </span>
                 </div>
                 <span className={`text-[11px] font-mono font-bold px-2 py-0.5 rounded-full border shrink-0 ${
                   activeTab === 'guides'
                     ? 'bg-emerald-950 text-emerald-300 border-emerald-500/50'
-                    : 'bg-slate-900 text-slate-400 border-slate-800'
+                    : 'bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-400 border-slate-200 dark:border-slate-800 shadow-sm'
                 }`}>
                   8本
                 </span>
               </div>
-              <p className="text-[11px] text-slate-400 pl-6.5 font-sans truncate">
+              <p className="text-[11px] text-slate-600 dark:text-slate-400 pl-6.5 font-sans truncate">
                 G1〜G5, コラム / 現場特集
               </p>
             </button>
           </div>
 
           {/* 選択中コースの詳細説明バナー */}
-          <div className="p-3 sm:p-3.5 rounded-xl bg-slate-950/80 border border-slate-800/90 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs font-mono">
+          <div className="p-3 sm:p-3.5 rounded-xl bg-white/80 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 shadow-sm/90 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs font-mono">
             <div className="flex items-center gap-2.5 min-w-0">
               <span className={`w-2.5 h-2.5 rounded-full shrink-0 ${
                 activeTab === 'classic' ? 'bg-amber-400 shadow-sm shadow-amber-400/50' :
@@ -1605,14 +1605,14 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
                 activeTab === 'reading' ? 'bg-purple-400 shadow-sm shadow-purple-400/50' :
                 'bg-emerald-400 shadow-sm shadow-emerald-400/50'
               }`} />
-              <span className="text-slate-300 truncate">
+              <span className="text-slate-700 dark:text-slate-300 truncate">
                 {activeTab === 'classic' && `🏛️ クラシック基礎編（全${CLASSIC_CHAPTERS.length}章・L1〜L${CLASSIC_CHAPTERS.length}）：500行スパゲティコードからクラス化、動的メモリ、vtable多態性、マルチスレッド、自作エンジンまで徹底リファクタ`}
                 {activeTab === 'modern' && '🚀 モダン実践編（全14章・M1〜M14）：スマートポインタ、ムーブ、ラムダ、ECS、C++20コルーチンまで現代実戦規格'}
                 {activeTab === 'reading' && `🧭 コード読解演習（全${READING_CHAPTERS.length}ステップ・R1〜R${READING_CHAPTERS.length}）：OSS実地解読、マルチスレッド競合、メモリ破壊（ASan）、型パズル解読のプロ鑑識法`}
                 {activeTab === 'guides' && '📚 現場特集・実践チートシート（全8本）：実践ガイド（G1〜G5：環境構築・文法・読解・UML・GoogleTest）＋ 特別コラム3編'}
               </span>
             </div>
-            <span className="text-slate-400 font-bold shrink-0 self-end sm:self-auto">
+            <span className="text-slate-600 dark:text-slate-400 font-bold shrink-0 self-end sm:self-auto">
               全 {currentList.length} 件を表示中
             </span>
           </div>
@@ -1666,7 +1666,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
                   e.preventDefault();
                   onSelectChapter(ch.slug);
                 }}
-                className={`group flex items-center justify-between gap-4 p-3.5 sm:p-4 rounded-2xl bg-slate-900/60 border border-slate-800/80 ${hoverBorder} hover:bg-slate-900 transition-all cursor-pointer no-underline text-inherit`}
+                className={`group flex items-center justify-between gap-4 p-3.5 sm:p-4 rounded-2xl bg-white/90 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 shadow-sm/80 ${hoverBorder} hover:bg-slate-900 transition-all cursor-pointer no-underline text-inherit`}
               >
                 <div className="flex items-start sm:items-center gap-3 sm:gap-4 min-w-0 flex-1">
                   <span className={`w-10 h-10 sm:w-11 sm:h-11 rounded-xl flex items-center justify-center font-mono text-xs sm:text-sm font-black border shrink-0 mt-0.5 sm:mt-0 ${badgeStyle}`}>
@@ -1684,15 +1684,15 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
                         </span>
                       )}
                     </div>
-                    <p className="text-xs text-slate-400 truncate mt-0.5 font-sans">
+                    <p className="text-xs text-slate-600 dark:text-slate-400 truncate mt-0.5 font-sans">
                       {ch.subtitle || ch.description}
                     </p>
 
                     {/* メタデータバッジ（目安時間・重要度・難易度） */}
                     <div className="flex items-center gap-1.5 mt-2 flex-wrap text-[10px] sm:text-[11px] font-mono">
                       {/* 目安時間 */}
-                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-slate-950/80 border border-slate-700/80 text-slate-300">
-                        <Clock className="w-3 h-3 text-slate-400" />
+                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-slate-100 dark:bg-slate-950/80 border border-slate-200 dark:border-slate-700/80 text-slate-700 dark:text-slate-300">
+                        <Clock className="w-3 h-3 text-slate-600 dark:text-slate-400" />
                         <span>{meta.readingTimeText}</span>
                       </span>
 
@@ -1711,7 +1711,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
                 </div>
 
                 <div className="flex items-center gap-2 shrink-0 self-center">
-                  <span className="hidden sm:inline-block text-xs font-mono text-slate-500 group-hover:text-slate-300 transition-colors">
+                  <span className="hidden sm:inline-block text-xs font-mono text-slate-500 group-hover:text-slate-700 dark:text-slate-300 transition-colors">
                     開く
                   </span>
                   <ChevronRight className="w-4 h-4 text-slate-500 group-hover:text-white group-hover:translate-x-1 transition-all" />
@@ -1725,63 +1725,63 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
       {/* 5. サイトの4大特長（なぜゲーム開発で学ぶのか？） */}
       <section className="space-y-6 pt-4 border-t border-slate-800/60">
         <div>
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-800 border border-slate-700 text-slate-300 font-mono text-xs font-semibold mb-2">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-800 border border-slate-700 text-slate-700 dark:text-slate-300 font-mono text-xs font-semibold mb-2">
             <ShieldCheck className="w-3.5 h-3.5 text-cyan-400" />
             <span>LEARNING FEATURES</span>
           </div>
           <h2 className="text-2xl sm:text-3xl font-extrabold text-white font-sans">
             シロクマC++ラボの <span className="text-cyan-400">4大特長</span>
           </h2>
-          <p className="text-xs sm:text-sm text-slate-400 font-sans mt-1">
+          <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 font-sans mt-1">
             文法暗記ではなく、現場の課題解決と設計思想が体に染み込む学習体験を提供します。
           </p>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <div className="p-5 rounded-2xl bg-slate-900/60 border border-slate-800 space-y-3">
+          <div className="p-5 rounded-2xl bg-white/90 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 space-y-3 shadow-sm">
             <span className="w-10 h-10 rounded-xl bg-amber-950 text-amber-300 border border-amber-500/40 flex items-center justify-center text-xl">
               🎮
             </span>
             <h3 className="text-base font-bold text-white font-sans">
               体感型ゲームリファクタ
             </h3>
-            <p className="text-xs text-slate-400 leading-relaxed font-sans">
+            <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed font-sans">
               理論だけでなく、画面内で実際に動くインベーダー風ゲームを進化させながら、オブジェクト指向やRAIIの威力を体感できます。
             </p>
           </div>
 
-          <div className="p-5 rounded-2xl bg-slate-900/60 border border-slate-800 space-y-3">
+          <div className="p-5 rounded-2xl bg-white/90 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 space-y-3 shadow-sm">
             <span className="w-10 h-10 rounded-xl bg-rose-950 text-rose-300 border border-rose-500/40 flex items-center justify-center text-xl">
               ⚖️
             </span>
             <h3 className="text-base font-bold text-white font-sans">
               ビフォー・アフター徹底対比
             </h3>
-            <p className="text-xs text-slate-400 leading-relaxed font-sans">
+            <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed font-sans">
               現場の苦痛（メモリリーク、重複コード、スパゲティ）と、設計適用後の洗練されたコードを横並びで比較して学べます。
             </p>
           </div>
 
-          <div className="p-5 rounded-2xl bg-slate-900/60 border border-slate-800 space-y-3">
+          <div className="p-5 rounded-2xl bg-white/90 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 space-y-3 shadow-sm">
             <span className="w-10 h-10 rounded-xl bg-cyan-950 text-cyan-300 border border-cyan-500/40 flex items-center justify-center text-xl">
               🔬
             </span>
             <h3 className="text-base font-bold text-white font-sans">
               ブラウザ完結プレイグラウンド
             </h3>
-            <p className="text-xs text-slate-400 leading-relaxed font-sans">
+            <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed font-sans">
               環境構築は一切不要。ブラウザ内のWebAssemblyエミュレータと実行環境で、クリック1つですぐに動作確認が可能です。
             </p>
           </div>
 
-          <div className="p-5 rounded-2xl bg-slate-900/60 border border-slate-800 space-y-3">
+          <div className="p-5 rounded-2xl bg-white/90 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 space-y-3 shadow-sm">
             <span className="w-10 h-10 rounded-xl bg-purple-950 text-purple-300 border border-purple-500/40 flex items-center justify-center text-xl">
               🛡️
             </span>
             <h3 className="text-base font-bold text-white font-sans">
               現場鑑識とモダン規格
             </h3>
-            <p className="text-xs text-slate-400 leading-relaxed font-sans">
+            <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed font-sans">
               書く技術だけでなく、他人の巨大OSSコードを読み解く鑑識法や、スレッド競合・メモリ破壊の調査手順まで網羅。
             </p>
           </div>
@@ -1794,7 +1794,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
           <h2 className="text-2xl sm:text-3xl font-bold text-cyan-400 tracking-wider font-mono">
             CHARACTER
           </h2>
-          <p className="text-slate-400 text-sm mt-1">2つの登場人物</p>
+          <p className="text-slate-600 dark:text-slate-400 text-sm mt-1">2つの登場人物</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
@@ -1808,7 +1808,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
             />
             <h3 className="text-xl font-bold text-cyan-400 mb-2">シロクマ先生 (Sensei)</h3>
             <p className="text-sm text-cyan-100 italic mb-4">「自動化への投資は、君自身の時間をハックすることなんだよ」</p>
-            <p className="text-slate-400 text-sm leading-relaxed">
+            <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
               2頭身の愛らしいシロクマ。見た目とは裏腹に、低レイヤ技術、数理アルゴリズム、Linuxインフラ、C++の堅牢な設計に深い造詣を持つ超専門家。
             </p>
           </div>
@@ -1819,11 +1819,11 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
             <img
               src={getAssetUrl('/images/penguin-guide-simple.jpg')}
               alt="ペンギンくん"
-              className="w-32 h-32 rounded-full border-4 border-slate-500 bg-slate-900 mb-6 object-cover shadow-lg transition-transform group-hover:scale-105"
+              className="w-32 h-32 rounded-full border-4 border-amber-400 bg-amber-50 dark:bg-slate-900 mb-6 object-cover shadow-md transition-transform group-hover:scale-105"
             />
             <h3 className="text-xl font-bold text-slate-100 mb-2">ペンギンくん (Penguin)</h3>
             <p className="text-sm text-slate-200 italic mb-4">「今日も手作業で定時が過ぎたっス！もっと楽してぇ〜！」</p>
-            <p className="text-slate-400 text-sm leading-relaxed">
+            <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
               実務でC++コードの手動ビルドや目視評価に日々追われている若手エンジニア。過酷な現場で苦しむ読者の代弁者。
             </p>
           </div>
@@ -1839,7 +1839,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
           <h3 className="text-2xl sm:text-3xl font-black text-white font-sans">
             さあ、どちらのコースから始めますか？
           </h3>
-          <p className="text-sm sm:text-base text-slate-300 font-sans leading-relaxed">
+          <p className="text-sm sm:text-base text-slate-700 dark:text-slate-300 font-sans leading-relaxed">
             現場の既存資産保守や基盤理解を深めるなら「クラシック基礎編」、モダンC++の新機能をマスターするなら「モダン実践編」。いつでも自由に行き来できます。
           </p>
         </div>
@@ -1877,12 +1877,12 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
               <span className="text-[10px] sm:text-xs font-mono font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-cyan-950 text-cyan-400 border border-cyan-500/30">
                 4サイト連携エコシステム
               </span>
-              <span className="text-xs text-slate-400 font-mono">Shirokuma Engineering Ecosystem</span>
+              <span className="text-xs text-slate-600 dark:text-slate-400 font-mono">Shirokuma Engineering Ecosystem</span>
             </div>
             <h2 className="text-xl sm:text-2xl font-bold text-white font-sans mt-0.5">
               シロクマ技術学習エコシステム ＆ 姉妹サイト
             </h2>
-            <p className="text-xs sm:text-sm text-slate-400 font-sans">
+            <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 font-sans">
               4つの専門メディアが有機的に連携。C++設計の土台から実務HMI・CI/CD自動化・先端信号処理まで、実務エンジニアへのステップアップを完全支援します。
             </p>
           </div>
@@ -1894,12 +1894,12 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
             <span className="text-xs font-mono font-bold text-cyan-400 flex items-center gap-1.5">
               <Workflow className="w-4 h-4" /> 4サイトを巡る実践エンジニア成長ロードマップ
             </span>
-            <span className="text-[11px] text-slate-400 font-mono hidden sm:inline">基礎設計 ➔ 実務UI ➔ 品質自動化 ➔ 専門応用</span>
+            <span className="text-[11px] text-slate-600 dark:text-slate-400 font-mono hidden sm:inline">基礎設計 ➔ 実務UI ➔ 品質自動化 ➔ 専門応用</span>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
             {/* STEP 1: 当サイト */}
-            <div className="p-4 rounded-2xl bg-slate-950/90 border-2 border-cyan-500/70 shadow-lg shadow-cyan-500/10 relative overflow-hidden flex flex-col justify-between">
+            <div className="p-4 rounded-2xl bg-white/95 dark:bg-slate-950/90 border-2 border-cyan-500 shadow-md shadow-lg shadow-cyan-500/10 relative overflow-hidden flex flex-col justify-between">
               <div className="space-y-1.5">
                 <div className="flex items-center justify-between">
                   <span className="text-[11px] font-mono text-cyan-400 font-bold">STEP 1【当サイト】</span>
@@ -1909,7 +1909,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
                 </div>
                 <div className="text-sm font-bold text-white">シロクマC++ラボ</div>
                 <div className="text-[11px] text-cyan-300/80 font-mono">C++設計 / OOP / RAII / ECS</div>
-                <p className="text-[11px] text-slate-300 leading-relaxed pt-1">
+                <p className="text-[11px] text-slate-700 dark:text-slate-300 leading-relaxed pt-1">
                   1本のゲームを題材に、生ポインタやswitch分岐を撲滅。「壊れない設計とモダンC++」の基礎体力を確立します。
                 </p>
               </div>
@@ -1919,12 +1919,12 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
             </div>
 
             {/* STEP 2: Qt×C++ */}
-            <div className="p-4 rounded-2xl bg-slate-950/60 border border-emerald-500/30 hover:border-emerald-500/60 transition flex flex-col justify-between">
+            <div className="p-4 rounded-2xl bg-white/95 dark:bg-slate-950/60 border border-emerald-300 dark:border-emerald-500/30 shadow-md hover:border-emerald-500/60 transition flex flex-col justify-between">
               <div className="space-y-1.5">
                 <div className="text-[11px] font-mono text-emerald-400 font-bold">STEP 2【UI / HMI】</div>
                 <div className="text-sm font-bold text-white">シロクマQt×C++ラボ</div>
                 <div className="text-[11px] text-emerald-300/80 font-mono">Qt / QML / Linux HMI</div>
-                <p className="text-[11px] text-slate-300 leading-relaxed pt-1">
+                <p className="text-[11px] text-slate-700 dark:text-slate-300 leading-relaxed pt-1">
                   設計したコアロジックを産業用計器やリアルタイムダッシュボードへ接続。GUIとワーカースレッドの分離を習得。
                 </p>
               </div>
@@ -1934,12 +1934,12 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
             </div>
 
             {/* STEP 3: 自動化ラボ */}
-            <div className="p-4 rounded-2xl bg-slate-950/60 border border-blue-500/30 hover:border-blue-500/60 transition flex flex-col justify-between">
+            <div className="p-4 rounded-2xl bg-white/95 dark:bg-slate-950/60 border border-blue-300 dark:border-blue-500/30 shadow-md hover:border-blue-500/60 transition flex flex-col justify-between">
               <div className="space-y-1.5">
                 <div className="text-[11px] font-mono text-blue-400 font-bold">STEP 3【品質 / CI/CD】</div>
                 <div className="text-sm font-bold text-white">シロクマC++自動化ラボ</div>
                 <div className="text-[11px] text-blue-300/80 font-mono">Python / Docker / CI・テスト</div>
-                <p className="text-[11px] text-slate-300 leading-relaxed pt-1">
+                <p className="text-[11px] text-slate-700 dark:text-slate-300 leading-relaxed pt-1">
                   手動ビルド・目視テストを根絶。CMake・Docker・GitHub Actions・ASanで自動化パイプラインを構築。
                 </p>
               </div>
@@ -1949,12 +1949,12 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
             </div>
 
             {/* STEP 4: ソナー入門 */}
-            <div className="p-4 rounded-2xl bg-slate-950/60 border border-indigo-500/30 hover:border-indigo-500/60 transition flex flex-col justify-between">
+            <div className="p-4 rounded-2xl bg-white/95 dark:bg-slate-950/60 border border-indigo-300 dark:border-indigo-500/30 shadow-md hover:border-indigo-500/60 transition flex flex-col justify-between">
               <div className="space-y-1.5">
                 <div className="text-[11px] font-mono text-indigo-400 font-bold">STEP 4【先端応用】</div>
                 <div className="text-sm font-bold text-white">水中音響・ソナー技術入門</div>
                 <div className="text-[11px] text-indigo-300/80 font-mono">音響・FFT・LOFAR・TMA</div>
-                <p className="text-[11px] text-slate-300 leading-relaxed pt-1">
+                <p className="text-[11px] text-slate-700 dark:text-slate-300 leading-relaxed pt-1">
                   C++・GUI・自動化の技術を、最高難度の実世界リアルタイム信号処理・数理物理シミュレーションへ応用。
                 </p>
               </div>
@@ -1979,7 +1979,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
                   <span className="text-xs font-mono font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-emerald-950 text-emerald-300 border border-emerald-500/40">
                     Linux × Qt GUI開発
                   </span>
-                  <span className="text-xs font-mono text-slate-400">shirokuma-qt-cpp.jp</span>
+                  <span className="text-xs font-mono text-slate-600 dark:text-slate-400">shirokuma-qt-cpp.jp</span>
                 </div>
               </div>
 
@@ -1992,7 +1992,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
                 </p>
               </div>
 
-              <p className="text-xs sm:text-sm text-slate-300 font-sans leading-relaxed">
+              <p className="text-xs sm:text-sm text-slate-700 dark:text-slate-300 font-sans leading-relaxed">
                 Linux環境で動くHMIや産業用計器ソフトウェアをQtで構築！シグナル＆スロット、マルチスレッド下での安全なデータ転送、リアルタイム描画ダッシュボードを体系的に学びます。
               </p>
             </div>
@@ -2022,7 +2022,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
                   <span className="text-xs font-mono font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-cyan-950 text-cyan-300 border border-cyan-500/40">
                     C++自動化・実務効率化
                   </span>
-                  <span className="text-xs font-mono text-slate-400">shirokuma-auto-cpp.jp</span>
+                  <span className="text-xs font-mono text-slate-600 dark:text-slate-400">shirokuma-auto-cpp.jp</span>
                 </div>
               </div>
 
@@ -2035,7 +2035,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
                 </p>
               </div>
 
-              <p className="text-xs sm:text-sm text-slate-300 font-sans leading-relaxed">
+              <p className="text-xs sm:text-sm text-slate-700 dark:text-slate-300 font-sans leading-relaxed">
                 Python、Docker、CMake、CI/CDを活用して現場のC++開発を自動化！手動ビルドや目視テストを撲滅し、数理アルゴリズムの自動評価パイプラインを構築します。
               </p>
             </div>
@@ -2065,7 +2065,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
                   <span className="text-xs font-mono font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-indigo-950 text-indigo-300 border border-indigo-500/40">
                     水中音響・信号処理
                   </span>
-                  <span className="text-xs font-mono text-slate-400">sonar-guide.jp</span>
+                  <span className="text-xs font-mono text-slate-600 dark:text-slate-400">sonar-guide.jp</span>
                 </div>
               </div>
 
@@ -2078,7 +2078,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
                 </p>
               </div>
 
-              <p className="text-xs sm:text-sm text-slate-300 font-sans leading-relaxed">
+              <p className="text-xs sm:text-sm text-slate-700 dark:text-slate-300 font-sans leading-relaxed">
                 シロクマ先生がナビゲート！波の物理からFFT・LOFAR・TMA信号処理まで、音・動的グラフ・物理シミュレーターで直感的に学べる本格技術教育サイトです。
               </p>
             </div>
@@ -2099,7 +2099,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
       </section>
 
       {/* 10. 品質保証・技術監修体制（E-E-A-T）と商標に関する表示 */}
-      <section className="rounded-3xl border border-slate-800 bg-slate-900/60 p-6 sm:p-8 space-y-4">
+      <section className="rounded-3xl border border-sky-200 dark:border-slate-800 bg-white/90 dark:bg-slate-900/60 p-6 sm:p-8 space-y-4 shadow-sm">
         <div className="flex items-center gap-2">
           <Shield className="w-5 h-5 text-cyan-400" />
           <h3 className="text-base sm:text-lg font-bold text-white font-sans">
@@ -2107,27 +2107,27 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
           </h3>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs text-slate-300 font-sans leading-relaxed">
-          <div className="p-4 rounded-2xl bg-slate-950/80 border border-slate-800 space-y-2">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs text-slate-700 dark:text-slate-300 font-sans leading-relaxed">
+          <div className="p-4 rounded-2xl bg-white/80 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 shadow-sm space-y-2">
             <div className="font-bold text-cyan-300 font-mono flex items-center gap-1.5 text-xs">
               <span>🛠️ 現役組込みエンジニア監修 ＆ 動作検証環境</span>
             </div>
             <p>
               シロクマC++ラボの全教材・解説コードは、現役の組込みソフトウェア・制御システム開発に従事するC++エンジニアが企画・執筆・技術監修を行っています。
             </p>
-            <p className="text-slate-400 text-[11px]">
+            <p className="text-slate-600 dark:text-slate-400 text-[11px]">
               組込み現場で厳格に求められる「メモリ安全性・生ポインタの撲滅・RAIIリソース管理」の本質を、直感的に動くゲーム教材を題材に体系化。主要3大コンパイラ（GCC 13+ / Clang 17+ / MSVC 2022, C++11〜C++20準拠）にて動作検証済みです。
             </p>
           </div>
 
-          <div className="p-4 rounded-2xl bg-slate-950/80 border border-slate-800 space-y-2">
+          <div className="p-4 rounded-2xl bg-white/80 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 shadow-sm space-y-2">
             <div className="font-bold text-amber-300 font-mono flex items-center gap-1.5 text-xs">
               <span>⚖️ 商標に関する権利表示 ＆ 免責事項</span>
             </div>
             <p>
               「スペースインベーダー（SPACE INVADERS）」は株式会社タイトーの登録商標です。当サイトで提供する「RETRO SPACE SHOOTER」および各章の演習プログラムは、古典的シューティングゲームの基本原理とオブジェクト指向設計を習得するための完全独自開発による教育用コードです。株式会社タイトーとは一切関係ありません。
             </p>
-            <p className="text-slate-400 text-[11px]">
+            <p className="text-slate-600 dark:text-slate-400 text-[11px]">
               ※クラシック基礎編の初期章に含まれるスパゲティ・C言語的コードは設計比較のための学習用アンチパターンです。実務プロダクション環境へのコピペ転用はお控えください。
             </p>
           </div>

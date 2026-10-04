@@ -334,7 +334,7 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
   const getTrackBadge = () => {
     if (chapter.category === 'column') {
       return (
-        <span className="text-xs sm:text-sm font-mono font-bold uppercase tracking-widest px-3.5 py-1.5 rounded-full border flex items-center gap-2 shadow-sm bg-purple-950/80 text-purple-300 border-purple-500/40">
+        <span className="text-xs sm:text-sm font-mono font-bold uppercase tracking-widest px-3.5 py-1.5 rounded-full border flex items-center gap-2 shadow-sm bg-purple-100 dark:bg-purple-950/80 text-purple-800 dark:text-purple-300 border-purple-300 dark:border-purple-500/40">
           <span className="w-2.5 h-2.5 rounded-full animate-ping inline-block bg-purple-400" />
           🧠 C++深掘り思想コラム
         </span>
@@ -350,7 +350,7 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
     }
     if (isReading) {
       return (
-        <span className="text-xs sm:text-sm font-mono font-bold uppercase tracking-widest px-3.5 py-1.5 rounded-full border flex items-center gap-2 shadow-sm bg-purple-950/80 text-purple-300 border-purple-500/40">
+        <span className="text-xs sm:text-sm font-mono font-bold uppercase tracking-widest px-3.5 py-1.5 rounded-full border flex items-center gap-2 shadow-sm bg-purple-100 dark:bg-purple-950/80 text-purple-800 dark:text-purple-300 border-purple-300 dark:border-purple-500/40">
           <span className="w-2.5 h-2.5 rounded-full animate-ping inline-block bg-purple-400" />
           🧭 コード読解演習トラック 【R】Step {code.replace(/^[CMR]/, '')}
         </span>
@@ -358,14 +358,14 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
     }
     if (isClassic) {
       return (
-        <span className="text-xs sm:text-sm font-mono font-bold uppercase tracking-widest px-3.5 py-1.5 rounded-full border flex items-center gap-2 shadow-sm bg-amber-950/80 text-amber-300 border-amber-500/40">
+        <span className="text-xs sm:text-sm font-mono font-bold uppercase tracking-widest px-3.5 py-1.5 rounded-full border flex items-center gap-2 shadow-sm bg-amber-100 dark:bg-amber-950/80 text-amber-800 dark:text-amber-300 border-amber-300 dark:border-amber-500/40">
           <span className="w-2.5 h-2.5 rounded-full animate-ping inline-block bg-amber-400" />
           🏛️ レガシーC++コース 【L】第{code.replace(/^[CML]/, '')}章
         </span>
       );
     }
     return (
-      <span className="text-xs sm:text-sm font-mono font-bold uppercase tracking-widest px-3.5 py-1.5 rounded-full border flex items-center gap-2 shadow-sm bg-cyan-950/80 text-cyan-300 border-cyan-500/40">
+      <span className="text-xs sm:text-sm font-mono font-bold uppercase tracking-widest px-3.5 py-1.5 rounded-full border flex items-center gap-2 shadow-sm bg-cyan-100 dark:bg-cyan-950/80 text-cyan-800 dark:text-cyan-300 border-cyan-300 dark:border-cyan-500/40">
         <span className="w-2.5 h-2.5 rounded-full animate-ping inline-block bg-cyan-400" />
         🚀 モダンコース 【M】第{code.replace(/^[CML]/, '')}章
       </span>
@@ -410,7 +410,7 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
                 <span>🏠</span>
                 <span>TOP</span>
               </button>
-              <span className="text-slate-400 dark:text-slate-600">/</span>
+              <span className="text-slate-600 dark:text-slate-400 dark:text-slate-600">/</span>
               {getTrackBadge()}
               <span className="text-xs sm:text-sm font-mono text-slate-700 dark:text-slate-300 font-semibold px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-800/80 border border-slate-300 dark:border-slate-700 truncate max-w-[140px] sm:max-w-none" title={chapter.badge}>
                 {chapter.badge}
@@ -425,7 +425,7 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
                 }`}
                 title={isCompleted ? '読了済み（クリックで未読了に戻す）' : '未読了（クリックで読了完了にする）'}
               >
-                <CheckCircle2 className={`w-3.5 h-3.5 ${isCompleted ? 'text-emerald-600 dark:text-emerald-400' : 'text-slate-400 dark:text-slate-500'}`} />
+                <CheckCircle2 className={`w-3.5 h-3.5 ${isCompleted ? 'text-emerald-600 dark:text-emerald-400' : 'text-slate-600 dark:text-slate-400 dark:text-slate-500'}`} />
                 <span>{isCompleted ? '読了完了' : '未読了（完了にする）'}</span>
               </button>
             </nav>
@@ -653,7 +653,7 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
                 <React.Fragment key={tab.id}>
                   {/* デスクトップ用ステップ矢印（allの手前を除く） */}
                   {idx > 0 && !isSpecialAll && (
-                    <span className="hidden md:inline-block text-slate-400 dark:text-slate-600 text-xs px-0.5 select-none" aria-hidden="true">
+                    <span className="hidden md:inline-block text-slate-600 dark:text-slate-400 dark:text-slate-600 text-xs px-0.5 select-none" aria-hidden="true">
                       ➔
                     </span>
                   )}
@@ -678,7 +678,7 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
                         className={`w-5 h-5 rounded-full flex items-center justify-center text-[11px] font-bold shrink-0 transition ${
                           isSelected
                             ? 'bg-cyan-500 dark:bg-cyan-400 text-white dark:text-slate-950 font-black shadow-sm'
-                            : 'bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-400 group-hover:text-slate-900 dark:group-hover:text-slate-300'
+                            : 'bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-400 group-hover:text-slate-900 dark:group-hover:text-slate-700 dark:text-slate-300'
                         }`}
                       >
                         {tab.stepNum}
@@ -722,7 +722,7 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
               </button>
             )}
             <div className="hidden xl:flex items-center gap-1.5">
-              <span className="text-slate-400 dark:text-slate-500">モード:</span>
+              <span className="text-slate-600 dark:text-slate-400 dark:text-slate-500">モード:</span>
               <span className="text-cyan-700 dark:text-cyan-400 font-bold">
                 {stepTabs.find((t) => t.id === activeTab)?.description}
               </span>
@@ -757,7 +757,7 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
                       <Terminal className="w-3.5 h-3.5 text-cyan-400" />
                       <span>{code} 収録：インベーダーゲーム風シューティング</span>
                     </span>
-                    <span className="text-xs text-slate-400 font-mono">
+                    <span className="text-xs text-slate-600 dark:text-slate-400 font-mono">
                       C++プログラム実行環境
                     </span>
                   </div>
@@ -782,17 +782,17 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
 
                   {/* L1以外の章のみ「前章からの進化点」を表示 */}
                   {!isFirstChapter ? (
-                    <div className="inline-flex items-center gap-2 text-xs sm:text-sm font-mono bg-slate-900/90 px-3.5 py-2 rounded-xl border border-amber-500/30 text-slate-300 max-w-xl text-left">
-                      <span className="px-2 py-0.5 rounded bg-amber-950 text-amber-300 font-bold border border-amber-500/40 flex-shrink-0 text-xs">
+                    <div className="inline-flex items-center gap-2 text-xs sm:text-sm font-mono bg-white dark:bg-slate-900/90 px-3.5 py-2 rounded-xl border border-amber-300 dark:border-amber-500/30 text-slate-800 dark:text-slate-300 shadow-sm max-w-xl text-left">
+                      <span className="px-2 py-0.5 rounded bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-300 font-bold border border-amber-300 dark:border-amber-500/40 flex-shrink-0 text-xs">
                         🔄 前章からの進化
                       </span>
-                      <span className="leading-snug text-amber-100 font-medium">
+                      <span className="leading-snug text-amber-900 dark:text-amber-100 font-medium">
                         {evolution.headline}
                       </span>
                     </div>
                   ) : (
-                    <div className="text-xs sm:text-sm text-slate-300 font-mono bg-slate-900/80 px-3.5 py-2 rounded-xl border border-cyan-500/30 max-w-xl">
-                      🚀 <span className="text-cyan-300 font-bold">原点の固定画面シューティング：</span>1ファイル・グローバル変数・単発射撃から始まるC++オブジェクト指向への旅！
+                    <div className="text-xs sm:text-sm text-slate-700 dark:text-slate-300 font-mono bg-white dark:bg-slate-900/80 px-3.5 py-2 rounded-xl border border-cyan-300 dark:border-cyan-500/30 max-w-xl shadow-sm text-slate-800 dark:text-slate-200">
+                      🚀 <span className="text-cyan-800 dark:text-cyan-300 font-bold">原点の固定画面シューティング：</span>1ファイル・グローバル変数・単発射撃から始まるC++オブジェクト指向への旅！
                     </div>
                   )}
                 </div>
@@ -813,7 +813,7 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
                     </div>
                   </button>
 
-                  <div className="flex items-center gap-3 text-xs text-slate-400 font-mono pt-1 flex-wrap justify-center">
+                  <div className="flex items-center gap-3 text-xs text-slate-600 dark:text-slate-400 font-mono pt-1 flex-wrap justify-center">
                     <span className="flex items-center gap-1 text-emerald-400">
                       <span>🎨 2Dグラフィック</span>
                     </span>
@@ -822,7 +822,7 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
                       <span>📟 CUI文字切替</span>
                     </span>
                     <span>•</span>
-                    <span className="text-slate-300">キーボード/タッチ対応</span>
+                    <span className="text-slate-700 dark:text-slate-300">キーボード/タッチ対応</span>
                   </div>
                 </div>
 
@@ -830,7 +830,7 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
                 <div className="pt-2 border-t border-slate-800/80 w-full flex justify-center">
                   <button
                     onClick={() => setShowInlineGame((prev) => !prev)}
-                    className="text-xs text-slate-400 hover:text-cyan-300 font-mono transition flex items-center gap-1.5 py-1 px-3 rounded hover:bg-slate-800/60 cursor-pointer"
+                    className="text-xs text-slate-600 dark:text-slate-400 hover:text-cyan-300 font-mono transition flex items-center gap-1.5 py-1 px-3 rounded hover:bg-slate-800/60 cursor-pointer"
                   >
                     <span>{showInlineGame ? '▲ ページ内表示を閉じる' : '▼ ページ内にインライン表示する'}</span>
                   </button>
@@ -890,7 +890,7 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
                   <h4 className="text-lg sm:text-xl font-black text-white font-sans">
                     次はコードの構造とオブジェクト指向の仕組みを解剖しよう
                   </h4>
-                  <p className="text-xs sm:text-sm text-slate-300 font-sans">
+                  <p className="text-xs sm:text-sm text-slate-700 dark:text-slate-300 font-sans">
                     ゲームが裏でどのように動いているのか、UML図やメモリ可視化と共に詳しく学びます。
                   </p>
                 </div>
@@ -1314,7 +1314,7 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
                       } else if (isOptionSelected) {
                         btnStyle = 'bg-rose-50 dark:bg-rose-950/80 border-rose-400 dark:border-rose-500 text-rose-900 dark:text-rose-300';
                       } else {
-                        btnStyle = 'bg-slate-100/50 dark:bg-slate-900/40 border-slate-200 dark:border-slate-800 text-slate-400 dark:text-slate-500 opacity-60';
+                        btnStyle = 'bg-slate-100/50 dark:bg-slate-900/40 border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 dark:text-slate-500 opacity-60';
                       }
                     }
 
@@ -1468,7 +1468,7 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
               </span>
               <button
                 onClick={() => onToggleComplete ? onToggleComplete(chapter.id) : onComplete(chapter.id)}
-                className="text-xs font-mono text-slate-400 hover:text-slate-200 underline cursor-pointer"
+                className="text-xs font-mono text-slate-600 dark:text-slate-400 hover:text-slate-200 underline cursor-pointer"
                 title="未読了に戻す"
               >
                 未読了に戻す
@@ -1488,7 +1488,7 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
             <h4 className="text-lg sm:text-xl font-black text-white">
               C++設計を極めたら、次は【開発自動化ラボ】で手作業を全自動化！
             </h4>
-            <p className="text-xs sm:text-sm text-slate-300 max-w-2xl leading-relaxed">
+            <p className="text-xs sm:text-sm text-slate-700 dark:text-slate-300 max-w-2xl leading-relaxed">
               手動ビルドや泥臭いテストを根絶！CMakeビルド自動化、Dockerコンテナ化、Python(pytest)、AddressSanitizer、GitHub ActionsによるCI/CD完全構築ガイド。
             </p>
           </div>
@@ -1630,7 +1630,7 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
             <button
               type="button"
               onClick={() => onNavigate(chapter.prevChapterSlug!)}
-              className="hover:text-slate-800 dark:hover:text-slate-300 transition flex items-center gap-1 cursor-pointer"
+              className="hover:text-slate-800 dark:hover:text-slate-700 dark:text-slate-300 transition flex items-center gap-1 cursor-pointer"
             >
               <ArrowLeft className="w-3.5 h-3.5" />
               <span>前の章へ</span>
@@ -1639,7 +1639,7 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
             <button
               type="button"
               onClick={() => onNavigate('top')}
-              className="hover:text-slate-800 dark:hover:text-slate-300 transition flex items-center gap-1 cursor-pointer"
+              className="hover:text-slate-800 dark:hover:text-slate-700 dark:text-slate-300 transition flex items-center gap-1 cursor-pointer"
             >
               <ArrowLeft className="w-3.5 h-3.5" />
               <span>TOPへ戻る</span>

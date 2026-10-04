@@ -64,7 +64,7 @@ export const ShareButtons: React.FC<ShareButtonsProps> = ({
           target="_blank"
           rel="noopener noreferrer"
           title="X (Twitter) でポストする"
-          className="p-1.5 rounded-md bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition-colors border border-slate-700/60 flex items-center justify-center"
+          className="p-1.5 rounded-md bg-slate-800 hover:bg-slate-700 text-slate-700 dark:text-slate-300 hover:text-white transition-colors border border-slate-700/60 flex items-center justify-center"
         >
           <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
             <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
@@ -74,7 +74,7 @@ export const ShareButtons: React.FC<ShareButtonsProps> = ({
           type="button"
           onClick={handleCopy}
           title="リンクをコピー"
-          className="p-1.5 rounded-md bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-cyan-400 transition-colors border border-slate-700/60 flex items-center justify-center relative"
+          className="p-1.5 rounded-md bg-slate-800 hover:bg-slate-700 text-slate-700 dark:text-slate-300 hover:text-cyan-400 transition-colors border border-slate-700/60 flex items-center justify-center relative"
         >
           {copied ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
         </button>
@@ -92,7 +92,7 @@ export const ShareButtons: React.FC<ShareButtonsProps> = ({
             </div>
             <div>
               <p className="text-sm font-semibold text-slate-200">この記事が役に立ったらシェアしよう！</p>
-              <p className="text-xs text-slate-400">学習の振り返りや知見の共有、ブックマークにぜひ活用してください</p>
+              <p className="text-xs text-slate-600 dark:text-slate-400">学習の振り返りや知見の共有、ブックマークにぜひ活用してください</p>
             </div>
           </div>
           <div className="flex items-center gap-2 w-full sm:w-auto justify-end">
@@ -122,7 +122,7 @@ export const ShareButtons: React.FC<ShareButtonsProps> = ({
               className={`inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium border transition ${
                 copied
                   ? 'bg-emerald-950/60 border-emerald-500 text-emerald-300'
-                  : 'bg-slate-800 hover:bg-slate-700 border-slate-700 text-slate-300 hover:text-white'
+                  : 'bg-slate-800 hover:bg-slate-700 border-slate-700 text-slate-700 dark:text-slate-300 hover:text-white'
               }`}
             >
               {copied ? (
@@ -132,7 +132,7 @@ export const ShareButtons: React.FC<ShareButtonsProps> = ({
                 </>
               ) : (
                 <>
-                  <Copy className="w-3.5 h-3.5 text-slate-400" />
+                  <Copy className="w-3.5 h-3.5 text-slate-600 dark:text-slate-400" />
                   <span>URLコピー</span>
                 </>
               )}
@@ -146,8 +146,8 @@ export const ShareButtons: React.FC<ShareButtonsProps> = ({
   // デフォルト: inline
   return (
     <div className={`flex flex-wrap items-center gap-2 ${className}`}>
-      <span className="text-xs text-slate-400 font-medium flex items-center gap-1">
-        <Share2 className="w-3.5 h-3.5 text-slate-400" />
+      <span className="text-xs text-slate-600 dark:text-slate-400 font-medium flex items-center gap-1">
+        <Share2 className="w-3.5 h-3.5 text-slate-600 dark:text-slate-400" />
         シェア:
       </span>
       <a
@@ -176,7 +176,7 @@ export const ShareButtons: React.FC<ShareButtonsProps> = ({
         className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-xs transition border ${
           copied
             ? 'bg-emerald-950/60 border-emerald-500 text-emerald-300'
-            : 'bg-slate-800/80 hover:bg-slate-700 border-slate-700 text-slate-300 hover:text-white'
+            : 'bg-slate-800/80 hover:bg-slate-700 border-slate-700 text-slate-700 dark:text-slate-300 hover:text-white'
         }`}
       >
         {copied ? (
@@ -186,7 +186,7 @@ export const ShareButtons: React.FC<ShareButtonsProps> = ({
           </>
         ) : (
           <>
-            <Copy className="w-3 h-3 text-slate-400" />
+            <Copy className="w-3 h-3 text-slate-600 dark:text-slate-400" />
             <span>URLコピー</span>
           </>
         )}

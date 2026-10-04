@@ -135,7 +135,7 @@ export const CodeChallengeRunner: React.FC<CodeChallengeRunnerProps> = ({ challe
       <div className="absolute top-0 right-0 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none" />
 
       {/* ヘッダーエリア */}
-      <div className="relative z-10 space-y-4 pb-6 border-b border-slate-800">
+      <div className="relative z-10 space-y-4 pb-6 border-b border-slate-200 dark:border-slate-800">
         <div className="flex items-center justify-between gap-3 flex-wrap">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono font-bold border bg-cyan-950/80 text-cyan-300 border-cyan-500/40 shadow-sm">
             <Code2 className="w-4 h-4 text-cyan-400" />
@@ -151,13 +151,13 @@ export const CodeChallengeRunner: React.FC<CodeChallengeRunnerProps> = ({ challe
           <h3 className="text-xl sm:text-2xl font-extrabold text-white tracking-tight font-sans">
             {challenge.title}
           </h3>
-          <p className="text-sm sm:text-base text-slate-300 mt-2 leading-relaxed font-sans">
+          <p className="text-sm sm:text-base text-slate-700 dark:text-slate-300 mt-2 leading-relaxed font-sans">
             {challenge.missionObjective}
           </p>
         </div>
 
         {/* シロクマ先生の助言吹き出し */}
-        <div className="flex items-start gap-3.5 p-4 rounded-2xl bg-slate-900/80 border border-slate-800 text-xs sm:text-sm text-slate-200">
+        <div className="flex items-start gap-3.5 p-4 rounded-2xl bg-white/90 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 text-xs sm:text-sm text-slate-800 dark:text-slate-200">
           <div className="w-10 h-10 rounded-xl overflow-hidden border border-cyan-500/40 flex-shrink-0 shadow-md">
             <img
               src={getAssetUrl('/images/characters_mission.jpg')}
@@ -167,7 +167,7 @@ export const CodeChallengeRunner: React.FC<CodeChallengeRunnerProps> = ({ challe
           </div>
           <div className="flex-1 min-w-0">
             <span className="font-mono font-bold text-cyan-300 mr-2">シロクマ指導官の助言 :</span>
-            <span className="font-sans leading-relaxed text-slate-300">{challenge.mentorAdvice}</span>
+            <span className="font-sans leading-relaxed text-slate-700 dark:text-slate-300">{challenge.mentorAdvice}</span>
           </div>
         </div>
 
@@ -177,42 +177,42 @@ export const CodeChallengeRunner: React.FC<CodeChallengeRunnerProps> = ({ challe
             <span className="px-2.5 py-0.5 rounded-full bg-cyan-900/90 text-cyan-200 border border-cyan-400/40 text-[11px] font-mono font-bold">
               🔰 はじめての方へ：演習の進め方
             </span>
-            <span className="text-xs text-slate-400 font-normal">（迷わず3ステップでクリアできます！）</span>
+            <span className="text-xs text-slate-600 dark:text-slate-400 font-normal">（迷わず3ステップでクリアできます！）</span>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-3">
-            <div className="p-3 rounded-xl bg-slate-900/90 border border-slate-800 flex items-start gap-2.5">
+            <div className="p-3 rounded-xl bg-white/90 dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 flex items-start gap-2.5">
               <span className="w-5 h-5 rounded-full bg-cyan-500/20 text-cyan-400 font-bold font-mono text-xs flex items-center justify-center flex-shrink-0 mt-0.5">1</span>
               <div>
                 <span className="font-bold text-white block text-xs sm:text-sm">ミッションを確認</span>
-                <span className="text-[11px] text-slate-400 leading-relaxed block mt-1">上の「課題」と「指導官の助言」を読んで達成目標を掴みます。</span>
+                <span className="text-[11px] text-slate-600 dark:text-slate-400 leading-relaxed block mt-1">上の「課題」と「指導官の助言」を読んで達成目標を掴みます。</span>
               </div>
             </div>
 
-            <div className="p-3 rounded-xl bg-slate-900/90 border-2 border-cyan-500/50 flex items-start gap-2.5 shadow-[0_0_15px_rgba(6,182,212,0.15)]">
+            <div className="p-3 rounded-xl bg-white/90 dark:bg-slate-900/90 border-2 border-cyan-500/50 flex items-start gap-2.5 shadow-[0_0_15px_rgba(6,182,212,0.15)]">
               <span className="w-5 h-5 rounded-full bg-cyan-500 text-slate-950 font-black font-mono text-xs flex items-center justify-center flex-shrink-0 mt-0.5">2</span>
               <div>
                 <span className="font-bold text-cyan-300 block text-xs sm:text-sm flex items-center gap-1.5">
                   <span>コードを直接編集</span>
                   <span className="text-[10px] px-1.5 py-0.2 rounded bg-emerald-950 text-emerald-300 border border-emerald-500/30 font-bold">文字入力OK</span>
                 </span>
-                <span className="text-[11px] text-slate-300 leading-relaxed block mt-1">
+                <span className="text-[11px] text-slate-700 dark:text-slate-300 leading-relaxed block mt-1">
                   下のエディタ内をクリックすると直接キーボード入力できます。<code className="text-amber-300 bg-slate-950 px-1.5 py-0.5 rounded font-mono">// TODO:</code> の箇所を修正しましょう！
                 </span>
               </div>
             </div>
 
-            <div className="p-3 rounded-xl bg-slate-900/90 border border-slate-800 flex items-start gap-2.5">
+            <div className="p-3 rounded-xl bg-white/90 dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 flex items-start gap-2.5">
               <span className="w-5 h-5 rounded-full bg-cyan-500/20 text-cyan-400 font-bold font-mono text-xs flex items-center justify-center flex-shrink-0 mt-0.5">3</span>
               <div>
                 <span className="font-bold text-white block text-xs sm:text-sm">テストを実行！</span>
-                <span className="text-[11px] text-slate-400 leading-relaxed block mt-1">下の「▶ コードをテスト実行する」を押すと本物のGCCコンパイラが自動判定します。</span>
+                <span className="text-[11px] text-slate-600 dark:text-slate-400 leading-relaxed block mt-1">下の「▶ コードをテスト実行する」を押すと本物のGCCコンパイラが自動判定します。</span>
               </div>
             </div>
           </div>
 
           <div className="mt-3 pt-2.5 border-t border-cyan-900/50 flex items-center justify-between flex-wrap gap-2 text-xs">
-            <span className="text-slate-400">💡 迷ったときは「ヒント」を見るか、模範解答を直接セットして試せます：</span>
+            <span className="text-slate-600 dark:text-slate-400">💡 迷ったときは「ヒント」を見るか、模範解答を直接セットして試せます：</span>
             <div className="flex items-center gap-2 flex-wrap">
               <button
                 type="button"
@@ -277,7 +277,7 @@ export const CodeChallengeRunner: React.FC<CodeChallengeRunnerProps> = ({ challe
                   setResult(null);
                   setIsPassed(false);
                 }}
-                className="text-[11px] font-mono text-slate-400 hover:text-slate-200 flex items-center gap-1 cursor-pointer transition"
+                className="text-[11px] font-mono text-slate-600 dark:text-slate-400 hover:text-slate-800 dark:text-slate-200 flex items-center gap-1 cursor-pointer transition"
                 title="ステップを最初からやり直す"
               >
                 <RotateCcw size={11} />
@@ -289,7 +289,7 @@ export const CodeChallengeRunner: React.FC<CodeChallengeRunnerProps> = ({ challe
 
         {!isAllStepsCompleted && currentStep ? (
           <div className="space-y-3 pt-1">
-            <div className="p-3.5 rounded-xl bg-slate-950/70 border border-indigo-500/30">
+            <div className="p-3.5 rounded-xl bg-white/90 dark:bg-slate-950/70 border border-indigo-500/30">
               <div className="flex items-center gap-2 mb-1">
                 <span className="text-xs font-bold text-cyan-400 font-mono">
                   【ステップ {currentStep.stepNumber}/{currentStep.totalSteps}】
@@ -298,7 +298,7 @@ export const CodeChallengeRunner: React.FC<CodeChallengeRunnerProps> = ({ challe
                   {currentStep.title}
                 </span>
               </div>
-              <p className="text-xs text-slate-300 leading-relaxed font-sans">
+              <p className="text-xs text-slate-700 dark:text-slate-300 leading-relaxed font-sans">
                 {currentStep.instruction}
               </p>
               {currentStep.explanation && (
@@ -309,9 +309,9 @@ export const CodeChallengeRunner: React.FC<CodeChallengeRunnerProps> = ({ challe
             </div>
 
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-1">
-              <div className="text-xs font-mono text-slate-400 flex items-center gap-1.5 flex-wrap">
+              <div className="text-xs font-mono text-slate-600 dark:text-slate-400 flex items-center gap-1.5 flex-wrap">
                 <span className="text-slate-500 font-bold">挿入コード:</span>
-                <code className="text-emerald-300 bg-slate-950 px-2 py-0.5 rounded border border-slate-800 text-[11px]">
+                <code className="text-emerald-300 bg-slate-950 px-2 py-0.5 rounded border border-slate-200 dark:border-slate-800 text-[11px]">
                   {currentStep.codeToInsert.trim().split('\n')[0]}...
                 </code>
               </div>
@@ -334,7 +334,7 @@ export const CodeChallengeRunner: React.FC<CodeChallengeRunnerProps> = ({ challe
                 <span className="text-xs sm:text-sm font-bold text-emerald-200 block">
                   🎉 全てのステップコードの補完が完了しました！
                 </span>
-                <span className="text-[11px] text-slate-300">
+                <span className="text-[11px] text-slate-700 dark:text-slate-300">
                   下の青い「▶ コードをテスト実行する」ボタンを押して、本物のGCCコンパイラで判定してみましょう！
                 </span>
               </div>
@@ -371,7 +371,7 @@ export const CodeChallengeRunner: React.FC<CodeChallengeRunnerProps> = ({ challe
             disabled={isRunning}
             className={`flex items-center gap-2 px-6 py-3 rounded-xl font-bold font-mono text-sm transition shadow-xl active:scale-95 cursor-pointer ${
               isRunning
-                ? 'bg-slate-800 text-slate-400 cursor-not-allowed border border-slate-700'
+                ? 'bg-slate-800 text-slate-600 dark:text-slate-400 cursor-not-allowed border border-slate-300 dark:border-slate-700'
                 : 'bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 shadow-cyan-500/30'
             }`}
           >
@@ -393,11 +393,11 @@ export const CodeChallengeRunner: React.FC<CodeChallengeRunnerProps> = ({ challe
             href={godboltUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-1.5 px-4 py-3 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-slate-200 text-xs sm:text-sm font-mono transition border border-slate-700"
+            className="flex items-center gap-1.5 px-4 py-3 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-slate-800 dark:text-slate-200 text-xs sm:text-sm font-mono transition border border-slate-300 dark:border-slate-700"
             title="Compiler Explorer (Godbolt) でアセンブリを確認"
           >
             <span>⚡ Godboltで開く</span>
-            <ExternalLink className="w-3.5 h-3.5 text-slate-400" />
+            <ExternalLink className="w-3.5 h-3.5 text-slate-600 dark:text-slate-400" />
           </a>
         </div>
 
@@ -413,7 +413,7 @@ export const CodeChallengeRunner: React.FC<CodeChallengeRunnerProps> = ({ challe
 
           <button
             onClick={() => setShowSolution((p) => !p)}
-            className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-slate-800/80 hover:bg-slate-700 border border-slate-700 text-slate-300 text-xs font-mono transition"
+            className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-slate-800/80 hover:bg-slate-700 border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-300 text-xs font-mono transition"
           >
             <Eye className="w-3.5 h-3.5" />
             <span>模範解答 {showSolution ? <ChevronUp className="w-3 h-3 inline" /> : <ChevronDown className="w-3 h-3 inline" />}</span>
@@ -434,8 +434,8 @@ export const CodeChallengeRunner: React.FC<CodeChallengeRunnerProps> = ({ challe
 
       {/* 折りたたみ模範解答 */}
       {showSolution && (
-        <div className="relative z-10 mt-4 p-4 rounded-2xl bg-slate-900 border border-slate-800 text-xs font-mono space-y-2">
-          <div className="flex items-center justify-between text-slate-300 font-bold border-b border-slate-800 pb-2">
+        <div className="relative z-10 mt-4 p-4 rounded-2xl bg-slate-900 border border-slate-200 dark:border-slate-800 text-xs font-mono space-y-2">
+          <div className="flex items-center justify-between text-slate-700 dark:text-slate-300 font-bold border-b border-slate-200 dark:border-slate-800 pb-2">
             <span>🔑 模範解答コード:</span>
             <button
               onClick={() => {
@@ -456,8 +456,8 @@ export const CodeChallengeRunner: React.FC<CodeChallengeRunnerProps> = ({ challe
       {/* 実行結果コンソール */}
       {result && (
         <div className="relative z-10 mt-6 space-y-3">
-          <div className="flex items-center justify-between text-xs font-mono text-slate-400 px-1">
-            <span className="flex items-center gap-1.5 text-slate-300 font-bold">
+          <div className="flex items-center justify-between text-xs font-mono text-slate-600 dark:text-slate-400 px-1">
+            <span className="flex items-center gap-1.5 text-slate-700 dark:text-slate-300 font-bold">
               <Terminal className="w-4 h-4 text-cyan-400" />
               <span>実行結果コンソール</span>
             </span>
@@ -468,7 +468,7 @@ export const CodeChallengeRunner: React.FC<CodeChallengeRunnerProps> = ({ challe
           </div>
 
           {/* 出力ターミナル */}
-          <div className="rounded-2xl border border-slate-800 bg-[#040711] p-4 font-mono text-xs sm:text-sm overflow-x-auto shadow-inner">
+          <div className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-[#040711] p-4 font-mono text-xs sm:text-sm overflow-x-auto shadow-inner">
             {/* コンパイルエラー */}
             {result.compiler_error && (
               <div className="text-rose-400 whitespace-pre-wrap leading-relaxed pb-2">
@@ -501,7 +501,7 @@ export const CodeChallengeRunner: React.FC<CodeChallengeRunnerProps> = ({ challe
 
             {/* 実行時エラー */}
             {result.program_error && (
-              <div className="text-rose-400 whitespace-pre-wrap leading-relaxed pt-2 border-t border-slate-800">
+              <div className="text-rose-400 whitespace-pre-wrap leading-relaxed pt-2 border-t border-slate-200 dark:border-slate-800">
                 <span className="px-2 py-0.5 rounded bg-rose-950/80 border border-rose-500/40 text-[10px] font-bold text-rose-300 mr-2">
                   RUNTIME ERROR
                 </span>

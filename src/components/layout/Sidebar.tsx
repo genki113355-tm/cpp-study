@@ -236,7 +236,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 <span className="text-xs sm:text-sm font-bold font-sans block">
                   はじめに・全体ロードマップ
                 </span>
-                <span className="text-[11px] text-slate-400 font-mono block">
+                <span className="text-[11px] text-slate-600 dark:text-slate-400 font-mono block">
                   ラボ概要 ＆ コース対比ガイド
                 </span>
               </div>
@@ -246,8 +246,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
           {/* 一括開閉ツールバー（全一覧タブ時のみ表示） */}
           {activeTab === 'all' && (
-            <div className="flex items-center justify-between px-1.5 pt-2 pb-0.5 text-[10.5px] font-mono text-slate-400 select-none">
-              <span className="font-semibold text-slate-400">カテゴリ一覧</span>
+            <div className="flex items-center justify-between px-1.5 pt-2 pb-0.5 text-[10.5px] font-mono text-slate-600 dark:text-slate-400 select-none">
+              <span className="font-semibold text-slate-600 dark:text-slate-400">カテゴリ一覧</span>
               <button
                 type="button"
                 onClick={toggleAllCategories}
@@ -316,7 +316,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                               e.stopPropagation();
                               onToggleComplete(ch.id);
                             }}
-                            className="text-slate-400 hover:text-amber-600 dark:hover:text-amber-400 transition flex-shrink-0 cursor-pointer"
+                            className="text-slate-600 dark:text-slate-400 hover:text-amber-600 dark:hover:text-amber-400 transition flex-shrink-0 cursor-pointer"
                             title={isCompleted ? '未完了に戻す' : '完了にする'}
                           >
                             {isCompleted ? (
@@ -332,7 +332,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                           >
                             【L】第{chNum}章
                           </span>
-                          <span className="ml-auto text-xs font-mono text-slate-500 dark:text-slate-500 group-hover:text-slate-700 dark:group-hover:text-slate-400 shrink-0">
+                          <span className="ml-auto text-xs font-mono text-slate-500 dark:text-slate-500 group-hover:text-slate-700 dark:group-hover:text-slate-600 dark:text-slate-400 shrink-0">
                             {meta.readingTimeMinutes}分
                           </span>
                         </div>
@@ -407,7 +407,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                               e.stopPropagation();
                               onToggleComplete(ch.id);
                             }}
-                            className="text-slate-400 hover:text-cyan-600 dark:hover:text-cyan-400 transition flex-shrink-0 cursor-pointer"
+                            className="text-slate-600 dark:text-slate-400 hover:text-cyan-600 dark:hover:text-cyan-400 transition flex-shrink-0 cursor-pointer"
                             title={isCompleted ? '未完了に戻す' : '完了にする'}
                           >
                             {isCompleted ? (
@@ -423,7 +423,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                           >
                             【M】第{chNum}章
                           </span>
-                          <span className="ml-auto text-xs font-mono text-slate-500 dark:text-slate-500 group-hover:text-slate-700 dark:group-hover:text-slate-400 shrink-0">
+                          <span className="ml-auto text-xs font-mono text-slate-500 dark:text-slate-500 group-hover:text-slate-700 dark:group-hover:text-slate-600 dark:text-slate-400 shrink-0">
                             {meta.readingTimeMinutes}分
                           </span>
                         </div>
@@ -498,7 +498,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                               e.stopPropagation();
                               onToggleComplete(ch.id);
                             }}
-                            className="text-slate-400 hover:text-purple-600 dark:hover:text-purple-400 transition flex-shrink-0 cursor-pointer"
+                            className="text-slate-600 dark:text-slate-400 hover:text-purple-600 dark:hover:text-purple-400 transition flex-shrink-0 cursor-pointer"
                             title={isCompleted ? '未完了に戻す' : '完了にする'}
                           >
                             {isCompleted ? (
@@ -514,7 +514,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                           >
                             【R】Step {chNum}
                           </span>
-                          <span className="ml-auto text-xs font-mono text-slate-500 dark:text-slate-500 group-hover:text-slate-700 dark:group-hover:text-slate-400 shrink-0">
+                          <span className="ml-auto text-xs font-mono text-slate-500 dark:text-slate-500 group-hover:text-slate-700 dark:group-hover:text-slate-600 dark:text-slate-400 shrink-0">
                             {meta.readingTimeMinutes}分
                           </span>
                         </div>
@@ -604,7 +604,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                               e.stopPropagation();
                               onToggleComplete(guide.id);
                             }}
-                            className="text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition flex-shrink-0 cursor-pointer"
+                            className="text-slate-600 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition flex-shrink-0 cursor-pointer"
                             title={isCompleted ? '未読了に戻す' : '読了にする'}
                           >
                             {isCompleted ? (
@@ -623,7 +623,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                           >
                             {guide.badge}
                           </span>
-                          <span className="ml-auto text-xs font-mono text-slate-500 dark:text-slate-500 group-hover:text-slate-700 dark:group-hover:text-slate-400 shrink-0">
+                          <span className="ml-auto text-xs font-mono text-slate-500 dark:text-slate-500 group-hover:text-slate-700 dark:group-hover:text-slate-600 dark:text-slate-400 shrink-0">
                             {meta.readingTimeMinutes}分
                           </span>
                         </div>
@@ -679,7 +679,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                   Docker / pybind11 / 自動評価
                 </div>
               </div>
-              <span className="text-xs text-slate-400 group-hover:text-amber-600 dark:group-hover:text-amber-400 font-mono flex-shrink-0">
+              <span className="text-xs text-slate-600 dark:text-slate-400 group-hover:text-amber-600 dark:group-hover:text-amber-400 font-mono flex-shrink-0">
                 ↗
               </span>
             </a>
@@ -702,7 +702,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                   QML / 60fps波形描画 / 実務GUI
                 </div>
               </div>
-              <span className="text-xs text-slate-400 group-hover:text-cyan-600 dark:group-hover:text-cyan-400 font-mono flex-shrink-0">
+              <span className="text-xs text-slate-600 dark:text-slate-400 group-hover:text-cyan-600 dark:group-hover:text-cyan-400 font-mono flex-shrink-0">
                 ↗
               </span>
             </a>
@@ -725,7 +725,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                   波の物理 / FFT / 音響解析
                 </div>
               </div>
-              <span className="text-xs text-slate-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 font-mono flex-shrink-0">
+              <span className="text-xs text-slate-600 dark:text-slate-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 font-mono flex-shrink-0">
                 ↗
               </span>
             </a>

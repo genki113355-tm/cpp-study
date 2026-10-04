@@ -67,15 +67,15 @@ export const UmlDiagramViewer: React.FC<UmlDiagramViewerProps> = ({
         return {
           symbol: "───>",
           label: "関連 (単なる参照・利用)",
-          color: "bg-slate-900 text-slate-300 border-slate-700",
+          color: "bg-slate-900 text-slate-700 dark:text-slate-300 border-slate-300 dark:border-slate-700",
         };
     }
   };
 
   return (
-    <div className="my-8 rounded-3xl bg-slate-950/90 border border-cyan-500/40 shadow-2xl overflow-hidden backdrop-blur-md">
+    <div className="my-8 rounded-3xl bg-white/95 dark:bg-slate-950/90 border border-cyan-500/40 shadow-2xl overflow-hidden backdrop-blur-md">
       {/* 設計書ヘッダー */}
-      <div className="p-5 sm:p-6 bg-gradient-to-r from-slate-900 via-slate-900/90 to-slate-950 border-b border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="p-5 sm:p-6 bg-gradient-to-r from-slate-900 via-slate-900/90 to-slate-950 border-b border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-950 text-cyan-300 border border-cyan-500/30 text-xs font-mono font-bold mb-2">
             <Layers className="w-3.5 h-3.5 text-cyan-400" />
@@ -100,7 +100,7 @@ export const UmlDiagramViewer: React.FC<UmlDiagramViewerProps> = ({
       </div>
 
       {/* 設計書の概要リード */}
-      <div className="px-6 py-4 bg-slate-900/40 border-b border-slate-800/80 text-xs sm:text-sm text-slate-300 leading-relaxed font-sans">
+      <div className="px-6 py-4 bg-slate-50/80 dark:bg-slate-900/40 border-b border-slate-200 dark:border-slate-800/80 text-xs sm:text-sm text-slate-700 dark:text-slate-300 leading-relaxed font-sans">
         {data.description}
       </div>
 
@@ -139,8 +139,8 @@ export const UmlDiagramViewer: React.FC<UmlDiagramViewerProps> = ({
 
             {/* クラス間の関係性リスト (Relations & C++ Mapping) */}
             {data.relations && data.relations.length > 0 && (
-              <div className="p-5 rounded-2xl bg-slate-900/60 border border-slate-800 space-y-3">
-                <div className="flex items-center gap-2 text-xs font-mono font-bold text-slate-300 uppercase tracking-wider">
+              <div className="p-5 rounded-2xl bg-white/80 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 space-y-3">
+                <div className="flex items-center gap-2 text-xs font-mono font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
                   <Share2 className="w-4 h-4 text-cyan-400" />
                   <span>各リレーションのUML記号 ＆ C++実装仕様対応表</span>
                 </div>
@@ -150,7 +150,7 @@ export const UmlDiagramViewer: React.FC<UmlDiagramViewerProps> = ({
                     return (
                       <div
                         key={rIdx}
-                        className="p-3.5 rounded-xl bg-slate-950 border border-slate-800 flex flex-col justify-between gap-2"
+                        className="p-3.5 rounded-xl bg-slate-950 border border-slate-200 dark:border-slate-800 flex flex-col justify-between gap-2"
                       >
                         <div className="flex items-center justify-between gap-2 font-mono text-xs">
                           <span className="font-bold text-white bg-slate-800 px-2 py-0.5 rounded">
@@ -163,12 +163,12 @@ export const UmlDiagramViewer: React.FC<UmlDiagramViewerProps> = ({
                             {rel.to}
                           </span>
                         </div>
-                        <div className="text-[11px] text-slate-300 font-sans flex items-baseline justify-between gap-2">
+                        <div className="text-[11px] text-slate-700 dark:text-slate-300 font-sans flex items-baseline justify-between gap-2">
                           <span className="font-semibold text-cyan-300">{badge.label}</span>
-                          {rel.label && <span className="text-slate-400">({rel.label})</span>}
+                          {rel.label && <span className="text-slate-600 dark:text-slate-400">({rel.label})</span>}
                         </div>
                         {rel.cppMapping && (
-                          <div className="mt-1 p-2 rounded bg-slate-900 border border-slate-800 text-[11px] font-mono text-emerald-400">
+                          <div className="mt-1 p-2 rounded bg-slate-900 border border-slate-200 dark:border-slate-800 text-[11px] font-mono text-emerald-400">
                             <code>{rel.cppMapping}</code>
                           </div>
                         )}
@@ -207,7 +207,7 @@ export const UmlDiagramViewer: React.FC<UmlDiagramViewerProps> = ({
               <Sparkles className="w-4 h-4 text-cyan-400" />
               <span>プロの視点：この設計書をC++コードに落とし込む際の着眼点</span>
             </div>
-            <ul className="space-y-2 text-xs sm:text-sm text-slate-300 font-sans">
+            <ul className="space-y-2 text-xs sm:text-sm text-slate-700 dark:text-slate-300 font-sans">
               {data.codeMappingNotes.map((note, nIdx) => (
                 <li key={nIdx} className="flex items-start gap-2.5 leading-relaxed">
                   <CheckCircle className="w-4 h-4 text-cyan-400 flex-shrink-0 mt-0.5" />

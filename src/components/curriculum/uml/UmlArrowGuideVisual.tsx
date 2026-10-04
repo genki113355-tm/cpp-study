@@ -83,8 +83,8 @@ const ARROW_SPECS: ArrowSpec[] = [
 
 export const UmlArrowGuideVisual: React.FC = () => {
   return (
-    <div className="my-8 rounded-3xl bg-slate-950/90 border border-cyan-500/40 shadow-2xl p-6 sm:p-8 backdrop-blur-md space-y-6">
-      <div className="flex items-center justify-between border-b border-slate-800 pb-4">
+    <div className="my-8 rounded-3xl bg-white/95 dark:bg-slate-950/90 border border-cyan-500/40 shadow-2xl p-6 sm:p-8 backdrop-blur-md space-y-6">
+      <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-4">
         <div>
           <span className="text-xs font-mono font-bold text-cyan-400 uppercase tracking-wider block mb-1">
             UML 2.5 Specification Master Visual
@@ -93,7 +93,7 @@ export const UmlArrowGuideVisual: React.FC = () => {
             UML 5大関連矢印 ＆ C++メモリモデル完全リファレンス
           </h3>
         </div>
-        <span className="text-xs font-mono text-slate-400 bg-slate-900 px-3 py-1.5 rounded-xl border border-slate-800 hidden sm:inline">
+        <span className="text-xs font-mono text-slate-600 dark:text-slate-400 bg-slate-900 px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-800 hidden sm:inline">
           SVG幾何ベクトル描画
         </span>
       </div>
@@ -102,7 +102,7 @@ export const UmlArrowGuideVisual: React.FC = () => {
         {ARROW_SPECS.map((spec) => (
           <div
             key={spec.id}
-            className="p-5 rounded-2xl bg-slate-900/80 border border-slate-800 hover:border-cyan-500/50 transition-all flex flex-col justify-between gap-4 shadow-lg"
+            className="p-5 rounded-2xl bg-white/90 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 hover:border-cyan-500/50 transition-all flex flex-col justify-between gap-4 shadow-lg"
           >
             {/* 上部：タイトル & 意味 */}
             <div>
@@ -114,17 +114,17 @@ export const UmlArrowGuideVisual: React.FC = () => {
                   />
                   <span>{spec.name}</span>
                 </h4>
-                <span className="text-[11px] font-mono text-slate-400 bg-slate-950 px-2 py-0.5 rounded border border-slate-800">
+                <span className="text-[11px] font-mono text-slate-600 dark:text-slate-400 bg-slate-950 px-2 py-0.5 rounded border border-slate-200 dark:border-slate-800">
                   {spec.umlName}
                 </span>
               </div>
-              <p className="text-xs text-slate-300 font-sans leading-relaxed">
+              <p className="text-xs text-slate-700 dark:text-slate-300 font-sans leading-relaxed">
                 {spec.meaning}
               </p>
             </div>
 
             {/* 中央：厳密な座標計算によるSVG図形描画 */}
-            <div className="bg-slate-950 rounded-xl p-3 border border-slate-800 flex items-center justify-center">
+            <div className="bg-slate-950 rounded-xl p-3 border border-slate-200 dark:border-slate-800 flex items-center justify-center">
               <svg width="100%" height="46" viewBox="0 0 340 46" className="overflow-visible">
                 <defs>
                   {/* 白抜き三角マーカー (汎化・継承) */}
@@ -303,10 +303,10 @@ export const UmlArrowGuideVisual: React.FC = () => {
 
             {/* 下部：C++対応コード ＆ メモリノート */}
             <div className="space-y-2">
-              <div className="p-2.5 rounded-lg bg-slate-950 border border-slate-800 font-mono text-xs text-emerald-400">
+              <div className="p-2.5 rounded-lg bg-slate-950 border border-slate-200 dark:border-slate-800 font-mono text-xs text-emerald-400">
                 <code>{spec.cppCode}</code>
               </div>
-              <div className="text-[11px] font-sans text-slate-400 bg-slate-900/50 px-2.5 py-1.5 rounded-lg border border-slate-800/60 flex items-start gap-1.5">
+              <div className="text-[11px] font-sans text-slate-600 dark:text-slate-400 bg-white/80 dark:bg-slate-900/50 px-2.5 py-1.5 rounded-lg border border-slate-200 dark:border-slate-800/60 flex items-start gap-1.5">
                 <span className="text-cyan-400 font-bold shrink-0">?? メモリ:</span>
                 <span>{spec.memoryNote}</span>
               </div>

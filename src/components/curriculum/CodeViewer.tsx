@@ -79,7 +79,7 @@ export const CodeViewer: React.FC<CodeViewerProps> = ({ files, targetHighlight }
     if (filename.endsWith('.h')) return 'bg-purple-950/70 text-purple-300 border-purple-500/40';
     if (filename === 'main.cpp') return 'bg-cyan-950/70 text-cyan-300 border-cyan-500/40';
     if (filename.endsWith('.cpp')) return 'bg-blue-950/70 text-blue-300 border-blue-500/40';
-    return 'bg-slate-800 text-slate-300 border-slate-700';
+    return 'bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-700';
   };
 
   const getFileBadgeLabel = (filename: string) => {
@@ -372,7 +372,7 @@ export const CodeViewer: React.FC<CodeViewerProps> = ({ files, targetHighlight }
                     {/* トークン分解 */}
                     {explanation.tokens && explanation.tokens.length > 0 && (
                       <div className="space-y-1.5 pt-1">
-                        <div className="text-xs font-mono font-bold text-slate-300">
+                        <div className="text-xs font-mono font-bold text-slate-700 dark:text-slate-300">
                           単語・記号の役割：
                         </div>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">

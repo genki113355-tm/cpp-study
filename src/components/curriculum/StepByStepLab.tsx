@@ -194,7 +194,7 @@ export const StepByStepLab: React.FC<StepByStepLabProps> = ({ chapterSlug }) => 
               演習クリア達成 🏆
             </span>
           )}
-          <span className="inline-flex items-center gap-1 text-xs text-slate-400 font-mono">
+          <span className="inline-flex items-center gap-1 text-xs text-slate-600 dark:text-slate-400 font-mono">
             <Cpu size={13} className="text-cyan-400" />
             対話型ステップ演習（コマンド入力＆Tab補完）
           </span>
@@ -203,7 +203,7 @@ export const StepByStepLab: React.FC<StepByStepLabProps> = ({ chapterSlug }) => 
         <h2 className="text-2xl sm:text-3xl font-black text-white tracking-tight leading-snug">
           {scenario.title}
         </h2>
-        <p className="mt-2 text-sm sm:text-base text-slate-300 leading-relaxed max-w-4xl">
+        <p className="mt-2 text-sm sm:text-base text-slate-700 dark:text-slate-300 leading-relaxed max-w-4xl">
           {scenario.subtitle}
         </p>
 
@@ -213,7 +213,7 @@ export const StepByStepLab: React.FC<StepByStepLabProps> = ({ chapterSlug }) => 
             <BookOpen size={15} className="text-cyan-400" />
             【全体設計フロー】
           </div>
-          <div className="text-xs sm:text-sm font-mono text-slate-200 bg-slate-950/60 px-3 py-1.5 rounded-xl border border-indigo-500/20 flex-1 leading-relaxed">
+          <div className="text-xs sm:text-sm font-mono text-slate-800 dark:text-slate-200 bg-white/80 dark:bg-slate-950/60 px-3 py-1.5 rounded-xl border border-indigo-500/20 flex-1 leading-relaxed">
             {scenario.mentalModel}
           </div>
         </div>
@@ -233,8 +233,8 @@ export const StepByStepLab: React.FC<StepByStepLabProps> = ({ chapterSlug }) => 
                 isActive
                   ? 'bg-indigo-600/25 border-indigo-400 text-white shadow-lg shadow-indigo-950/40'
                   : isDone
-                  ? 'bg-slate-800/60 border-slate-700/60 text-slate-300 hover:bg-slate-800'
-                  : 'bg-slate-900/40 border-slate-800 text-slate-500 hover:text-slate-400'
+                  ? 'bg-slate-800/60 border-slate-300 dark:border-slate-700/60 text-slate-700 dark:text-slate-300 hover:bg-slate-800'
+                  : 'bg-slate-50/80 dark:bg-slate-900/40 border-slate-200 dark:border-slate-800 text-slate-500 hover:text-slate-600 dark:text-slate-400'
               }`}
             >
               <div className="flex items-center justify-between mb-1">
@@ -260,7 +260,7 @@ export const StepByStepLab: React.FC<StepByStepLabProps> = ({ chapterSlug }) => 
       {/* ステップ本体コンテンツ */}
       <div className="relative z-10 space-y-6">
         {/* ステップ概要カード */}
-        <div className="p-4 sm:p-5 rounded-2xl bg-slate-800/50 border border-slate-700/60">
+        <div className="p-4 sm:p-5 rounded-2xl bg-slate-800/50 border border-slate-300 dark:border-slate-700/60">
           <div className="flex items-start gap-3">
             <div className="w-8 h-8 rounded-xl bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 flex items-center justify-center font-bold text-sm shrink-0 mt-0.5">
               {currentStep.stepNumber}
@@ -269,7 +269,7 @@ export const StepByStepLab: React.FC<StepByStepLabProps> = ({ chapterSlug }) => 
               <h3 className="text-base sm:text-lg font-bold text-white flex items-center gap-2">
                 {currentStep.title}
               </h3>
-              <p className="text-xs sm:text-sm text-slate-300 leading-relaxed whitespace-pre-line">
+              <p className="text-xs sm:text-sm text-slate-700 dark:text-slate-300 leading-relaxed whitespace-pre-line">
                 {currentStep.instruction}
               </p>
             </div>
@@ -277,14 +277,14 @@ export const StepByStepLab: React.FC<StepByStepLabProps> = ({ chapterSlug }) => 
         </div>
 
         {/* C++コードエディタ風プレビュー */}
-        <div className="rounded-2xl border border-slate-700/80 bg-slate-950 overflow-hidden shadow-xl">
+        <div className="rounded-2xl border border-slate-300 dark:border-slate-700/80 bg-slate-950 overflow-hidden shadow-xl">
           {/* ウィンドウヘッダー */}
-          <div className="flex items-center justify-between px-4 py-2.5 bg-slate-900 border-b border-slate-800">
+          <div className="flex items-center justify-between px-4 py-2.5 bg-slate-900 border-b border-slate-200 dark:border-slate-800">
             <div className="flex items-center gap-2">
               <div className="w-3 h-3 rounded-full bg-rose-500/80" />
               <div className="w-3 h-3 rounded-full bg-amber-500/80" />
               <div className="w-3 h-3 rounded-full bg-emerald-500/80" />
-              <span className="text-xs font-mono text-slate-400 ml-2 flex items-center gap-1.5">
+              <span className="text-xs font-mono text-slate-600 dark:text-slate-400 ml-2 flex items-center gap-1.5">
                 <Code2 size={13} className="text-indigo-400" />
                 {currentStep.codeFilename}
               </span>
@@ -293,7 +293,7 @@ export const StepByStepLab: React.FC<StepByStepLabProps> = ({ chapterSlug }) => 
           </div>
 
           {/* コード本文 */}
-          <pre className="p-4 sm:p-5 font-mono text-xs sm:text-[13px] leading-relaxed text-slate-200 overflow-x-auto selection:bg-indigo-500/30">
+          <pre className="p-4 sm:p-5 font-mono text-xs sm:text-[13px] leading-relaxed text-slate-800 dark:text-slate-200 overflow-x-auto selection:bg-indigo-500/30">
             <code>{currentStep.code}</code>
           </pre>
         </div>
@@ -301,7 +301,7 @@ export const StepByStepLab: React.FC<StepByStepLabProps> = ({ chapterSlug }) => 
         {/* 💻 対話型ターミナルコンソール（入力＆Tab補完エリア） */}
         <div className="rounded-2xl border-2 border-indigo-500/40 bg-black/95 overflow-hidden shadow-2xl">
           {/* ターミナルヘッダー */}
-          <div className="flex items-center justify-between px-4 py-2.5 bg-slate-900/90 border-b border-slate-800 text-xs font-mono text-slate-400">
+          <div className="flex items-center justify-between px-4 py-2.5 bg-white/90 dark:bg-slate-900/90 border-b border-slate-200 dark:border-slate-800 text-xs font-mono text-slate-600 dark:text-slate-400">
             <div className="flex items-center gap-2">
               <TerminalIcon size={14} className="text-cyan-400" />
               <span>TERMINAL CONSOLE (INTERACTIVE)</span>
@@ -329,17 +329,17 @@ export const StepByStepLab: React.FC<StepByStepLabProps> = ({ chapterSlug }) => 
             {terminalHistory.map((log) => {
               if (log.type === 'input') {
                 return (
-                  <div key={log.id} className="flex items-center gap-2 text-slate-200">
+                  <div key={log.id} className="flex items-center gap-2 text-slate-800 dark:text-slate-200">
                     <span className="text-emerald-400 font-bold">shirokuma@cpp-lab</span>
                     <span className="text-slate-500">:</span>
                     <span className="text-cyan-400 font-bold">~/mission</span>
-                    <span className="text-slate-400">$</span>
+                    <span className="text-slate-600 dark:text-slate-400">$</span>
                     <span className="text-white font-bold">{log.text}</span>
                   </div>
                 );
               }
 
-              let lineStyle = 'text-slate-300';
+              let lineStyle = 'text-slate-700 dark:text-slate-300';
               if (log.type === 'error' || log.text.includes('ERROR') || log.text.includes('SIGSEGV') || log.text.includes('CRASH') || log.text.includes('LEAK')) {
                 lineStyle = 'text-rose-400 font-bold';
               } else if (log.type === 'warning' || log.text.includes('WARNING') || log.text.includes('⚠️')) {
@@ -360,8 +360,8 @@ export const StepByStepLab: React.FC<StepByStepLabProps> = ({ chapterSlug }) => 
           </div>
 
           {/* 指示＆ヒントツールバー */}
-          <div className="px-4 py-2.5 bg-slate-900/80 border-t border-slate-800 flex flex-wrap items-center justify-between gap-2.5 text-xs">
-            <div className="flex items-center gap-2 flex-wrap text-slate-300">
+          <div className="px-4 py-2.5 bg-white/90 dark:bg-slate-900/80 border-t border-slate-200 dark:border-slate-800 flex flex-wrap items-center justify-between gap-2.5 text-xs">
+            <div className="flex items-center gap-2 flex-wrap text-slate-700 dark:text-slate-300">
               <span className="text-cyan-400 font-bold flex items-center gap-1">
                 <Sparkles size={13} />
                 入力目標:
@@ -381,7 +381,7 @@ export const StepByStepLab: React.FC<StepByStepLabProps> = ({ chapterSlug }) => 
               <button
                 type="button"
                 onClick={handleAutoComplete}
-                className="px-2 py-1 rounded-md bg-slate-800 hover:bg-slate-700 text-slate-300 text-[11px] font-mono border border-slate-700 flex items-center gap-1 cursor-pointer transition active:scale-95"
+                className="px-2 py-1 rounded-md bg-slate-800 hover:bg-slate-700 text-slate-700 dark:text-slate-300 text-[11px] font-mono border border-slate-300 dark:border-slate-700 flex items-center gap-1 cursor-pointer transition active:scale-95"
                 title="Tabキーと同じ補完を実行"
               >
                 <KeyRound size={12} className="text-cyan-400" />
@@ -391,14 +391,14 @@ export const StepByStepLab: React.FC<StepByStepLabProps> = ({ chapterSlug }) => 
           </div>
 
           {/* コマンド入力バー */}
-          <div className="p-3 sm:p-4 bg-slate-950 border-t border-slate-800 flex items-center gap-2 sm:gap-3">
+          <div className="p-3 sm:p-4 bg-slate-950 border-t border-slate-200 dark:border-slate-800 flex items-center gap-2 sm:gap-3">
             <div className="flex items-center gap-1.5 text-xs sm:text-sm font-mono shrink-0 select-none hidden sm:flex">
               <span className="text-emerald-400 font-bold">shirokuma@cpp-lab</span>
               <span className="text-slate-500">:</span>
               <span className="text-cyan-400 font-bold">~/mission</span>
-              <span className="text-slate-400">$</span>
+              <span className="text-slate-600 dark:text-slate-400">$</span>
             </div>
-            <span className="text-slate-400 font-mono sm:hidden">$</span>
+            <span className="text-slate-600 dark:text-slate-400 font-mono sm:hidden">$</span>
 
             <input
               ref={inputRef}
@@ -448,7 +448,7 @@ export const StepByStepLab: React.FC<StepByStepLabProps> = ({ chapterSlug }) => 
                 <span className="text-xs font-bold text-indigo-300 tracking-wider uppercase block">
                   KEY TAKEAWAY（設計の核心）
                 </span>
-                <p className="text-xs sm:text-sm text-slate-200 leading-relaxed font-sans">
+                <p className="text-xs sm:text-sm text-slate-800 dark:text-slate-200 leading-relaxed font-sans">
                   {currentStep.takeaway}
                 </p>
               </div>
@@ -475,7 +475,7 @@ export const StepByStepLab: React.FC<StepByStepLabProps> = ({ chapterSlug }) => 
                       <h4 className="text-base font-black text-white">
                         🎉 全3ステップの対話型設計演習を完全クリア！
                       </h4>
-                      <p className="text-xs text-slate-300 mt-0.5">
+                      <p className="text-xs text-slate-700 dark:text-slate-300 mt-0.5">
                         自分の手でコマンドを叩き、破綻の再現から安全な設計へのリファクタリング、その効果の検証まで体得しました。
                       </p>
                     </div>
@@ -483,7 +483,7 @@ export const StepByStepLab: React.FC<StepByStepLabProps> = ({ chapterSlug }) => 
                   <button
                     type="button"
                     onClick={handleReset}
-                    className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold text-slate-300 hover:text-white bg-slate-800/80 hover:bg-slate-700 border border-slate-700 transition-colors shrink-0 cursor-pointer"
+                    className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold text-slate-700 dark:text-slate-300 hover:text-white bg-slate-800/80 hover:bg-slate-700 border border-slate-300 dark:border-slate-700 transition-colors shrink-0 cursor-pointer"
                   >
                     <RotateCcw size={14} />
                     もう一度最初から体験する

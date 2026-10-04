@@ -63,9 +63,9 @@ export const UmlStateSvgDiagram: React.FC<UmlStateSvgDiagramProps> = ({
   };
 
   return (
-    <div className="w-full max-w-full my-6 rounded-3xl bg-slate-950/90 border border-cyan-500/40 shadow-2xl p-4 sm:p-6 overflow-x-auto backdrop-blur-md">
+    <div className="w-full max-w-full my-6 rounded-3xl bg-white/95 dark:bg-slate-950/90 border border-cyan-500/40 shadow-2xl p-4 sm:p-6 overflow-x-auto backdrop-blur-md">
       {(title || subtitle) && (
-        <div className="border-b border-slate-800 pb-4 mb-4">
+        <div className="border-b border-slate-200 dark:border-slate-800 pb-4 mb-4">
           {title && <h4 className="text-lg sm:text-xl font-bold text-white font-mono">{title}</h4>}
           {subtitle && <p className="text-xs sm:text-sm text-cyan-300 font-mono mt-0.5">{subtitle}</p>}
         </div>
@@ -281,19 +281,19 @@ export const UmlStateSvgDiagram: React.FC<UmlStateSvgDiagramProps> = ({
 
       {/* 状態遷移表（トランジションリスト）の付記 */}
       {transitions.length > 0 && (
-        <div className="mt-4 pt-4 border-t border-slate-800/80">
-          <span className="text-[11px] font-mono font-bold text-slate-400 block mb-2 uppercase tracking-wider">
+        <div className="mt-4 pt-4 border-t border-slate-200 dark:border-slate-800/80">
+          <span className="text-[11px] font-mono font-bold text-slate-600 dark:text-slate-400 block mb-2 uppercase tracking-wider">
             状態遷移仕様一覧 (Events &amp; Guards)
           </span>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 text-xs font-mono">
             {transitions.map((t, idx) => (
-              <div key={idx} className="p-2.5 rounded-xl bg-slate-900 border border-slate-800 space-y-1">
+              <div key={idx} className="p-2.5 rounded-xl bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-1">
                 <div className="flex items-center justify-between text-white font-bold">
                   <span className="text-cyan-400">{t.from}</span>
                   <span className="text-slate-500">──&gt;</span>
                   <span className="text-emerald-400">{t.to}</span>
                 </div>
-                <div className="text-[11px] text-slate-300">
+                <div className="text-[11px] text-slate-700 dark:text-slate-300">
                   <span className="text-slate-500">Evt: </span>{t.event}
                 </div>
                 {t.guard && (

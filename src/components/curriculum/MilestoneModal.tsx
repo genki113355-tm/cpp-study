@@ -242,7 +242,7 @@ export const MilestoneModal: React.FC<MilestoneModalProps> = ({
         onClick={(e) => e.stopPropagation()}
       >
         {/* ヘッダー */}
-        <div className="flex items-center justify-between px-5 sm:px-6 py-4 bg-slate-900/90 border-b border-slate-800 flex-shrink-0">
+        <div className="flex items-center justify-between px-5 sm:px-6 py-4 bg-white/90 dark:bg-slate-900/90 border-b border-slate-200 dark:border-slate-800 flex-shrink-0">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-500 to-yellow-400 flex items-center justify-center text-slate-950 font-bold shadow-lg shadow-amber-500/30 text-xl">
               🏆
@@ -251,7 +251,7 @@ export const MilestoneModal: React.FC<MilestoneModalProps> = ({
               <h2 className="text-base sm:text-xl font-bold text-white font-sans leading-tight flex items-center gap-2">
                 <span>学習マイルストーン ＆ 公式修了証</span>
               </h2>
-              <p className="text-xs text-slate-400 font-mono mt-0.5">
+              <p className="text-xs text-slate-600 dark:text-slate-400 font-mono mt-0.5">
                 章を完了して技術バッジを集め、公式修了証（Certificate）を発行しよう
               </p>
             </div>
@@ -259,7 +259,7 @@ export const MilestoneModal: React.FC<MilestoneModalProps> = ({
 
           <button
             onClick={onClose}
-            className="p-1.5 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition cursor-pointer"
+            className="p-1.5 rounded-xl text-slate-600 dark:text-slate-400 hover:text-white hover:bg-slate-800 transition cursor-pointer"
             title="閉じる"
           >
             <X className="w-5 h-5" />
@@ -269,9 +269,9 @@ export const MilestoneModal: React.FC<MilestoneModalProps> = ({
         {/* コンテンツエリア */}
         <div className="p-5 sm:p-7 overflow-y-auto space-y-6">
           {/* 総合進捗バー */}
-          <div className="p-4 sm:p-5 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-3">
+          <div className="p-4 sm:p-5 rounded-2xl bg-white/90 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 space-y-3">
             <div className="flex items-center justify-between flex-wrap gap-2 text-xs sm:text-sm font-mono">
-              <span className="text-slate-300 font-bold flex items-center gap-2">
+              <span className="text-slate-700 dark:text-slate-300 font-bold flex items-center gap-2">
                 <Sparkles className="w-4 h-4 text-cyan-400" />
                 <span>全カリキュラム総合進捗：</span>
                 <span className="text-cyan-300">{totalCount} / {ALL_CHAPTERS.length} 章完了</span>
@@ -280,7 +280,7 @@ export const MilestoneModal: React.FC<MilestoneModalProps> = ({
                 {Math.round((totalCount / ALL_CHAPTERS.length) * 100)}% 達成
               </span>
             </div>
-            <div className="w-full h-3 rounded-full bg-slate-950 border border-slate-800 overflow-hidden">
+            <div className="w-full h-3 rounded-full bg-slate-950 border border-slate-200 dark:border-slate-800 overflow-hidden">
               <div
                 className="h-full bg-gradient-to-r from-cyan-500 via-blue-500 to-emerald-400 transition-all duration-500 rounded-full"
                 style={{ width: `${(totalCount / ALL_CHAPTERS.length) * 100}%` }}
@@ -298,7 +298,7 @@ export const MilestoneModal: React.FC<MilestoneModalProps> = ({
                 >
                   <span>← バッジ一覧に戻る</span>
                 </button>
-                <span className="text-xs font-mono text-slate-400">
+                <span className="text-xs font-mono text-slate-600 dark:text-slate-400">
                   {activeMilestone.isUnlocked ? '✨ 修了証授与条件を達成しました' : '🔒 まだ未達成です'}
                 </span>
               </div>
@@ -321,27 +321,27 @@ export const MilestoneModal: React.FC<MilestoneModalProps> = ({
 
                 {/* 氏名エリア */}
                 <div className="py-2 space-y-1">
-                  <p className="text-xs text-slate-400 font-sans">受講者氏名 / ハンドルネーム：</p>
+                  <p className="text-xs text-slate-600 dark:text-slate-400 font-sans">受講者氏名 / ハンドルネーム：</p>
                   <input
                     type="text"
                     value={userName}
                     onChange={(e) => setUserName(e.target.value)}
-                    className="text-xl sm:text-2xl font-bold text-cyan-300 text-center bg-slate-900/60 border-b-2 border-cyan-500/60 px-4 py-1 rounded focus:outline-none focus:border-cyan-400 transition"
+                    className="text-xl sm:text-2xl font-bold text-cyan-300 text-center bg-white/80 dark:bg-slate-900/60 border-b-2 border-cyan-500/60 px-4 py-1 rounded focus:outline-none focus:border-cyan-400 transition"
                     title="氏名を自由に変更できます"
                   />
-                  <span className="text-slate-300 text-sm block">殿</span>
+                  <span className="text-slate-700 dark:text-slate-300 text-sm block">殿</span>
                 </div>
 
                 {/* 授与文 */}
-                <div className="max-w-xl mx-auto space-y-3 text-xs sm:text-sm text-slate-300 font-sans leading-relaxed">
+                <div className="max-w-xl mx-auto space-y-3 text-xs sm:text-sm text-slate-700 dark:text-slate-300 font-sans leading-relaxed">
                   <p>
                     あなたは、シロクマC++ラボが提供する本格的C++設計カリキュラムにおいて、以下の課程を修了し、極めて優秀な技術基準に達したことをここに証します。
                   </p>
-                  <div className="p-4 rounded-2xl bg-slate-950/80 border border-amber-500/40 space-y-2">
+                  <div className="p-4 rounded-2xl bg-white/90 dark:bg-slate-950/80 border border-amber-500/40 space-y-2">
                     <div className="text-base sm:text-lg font-bold text-amber-300 font-sans">
                       {activeMilestone.title}
                     </div>
-                    <div className="text-xs text-slate-400">
+                    <div className="text-xs text-slate-600 dark:text-slate-400">
                       対象カリキュラム：{activeMilestone.trackName}（全{activeMilestone.total}章）
                     </div>
                   </div>
@@ -352,9 +352,9 @@ export const MilestoneModal: React.FC<MilestoneModalProps> = ({
                   <div className="text-xs font-mono font-bold text-cyan-400 text-center">
                     【習得が証明された中核技術】
                   </div>
-                  <div className="grid grid-cols-1 gap-1.5 text-xs text-slate-300 font-mono">
+                  <div className="grid grid-cols-1 gap-1.5 text-xs text-slate-700 dark:text-slate-300 font-mono">
                     {activeMilestone.skills.map((skill, idx) => (
-                      <div key={idx} className="flex items-center gap-2 p-1.5 rounded bg-slate-900/70 border border-slate-800">
+                      <div key={idx} className="flex items-center gap-2 p-1.5 rounded bg-white/85 dark:bg-slate-900/70 border border-slate-200 dark:border-slate-800">
                         <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 flex-shrink-0" />
                         <span className="truncate">{skill}</span>
                       </div>
@@ -363,7 +363,7 @@ export const MilestoneModal: React.FC<MilestoneModalProps> = ({
                 </div>
 
                 {/* 公式認証印 ＆ 日付 */}
-                <div className="pt-4 flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-slate-800 text-xs font-mono text-slate-400">
+                <div className="pt-4 flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-slate-200 dark:border-slate-800 text-xs font-mono text-slate-600 dark:text-slate-400">
                   <div>
                     発行日：{new Date().toLocaleDateString('ja-JP', { year: 'numeric', month: 'long', day: 'numeric' })}<br />
                     検証：主要3大コンパイラ (GCC / Clang / MSVC)
@@ -405,7 +405,7 @@ export const MilestoneModal: React.FC<MilestoneModalProps> = ({
                     className={`p-5 rounded-3xl border transition-all flex flex-col justify-between gap-4 ${
                       m.isUnlocked
                         ? 'bg-gradient-to-br from-slate-900/90 to-slate-950 border-cyan-500/50 shadow-xl shadow-cyan-500/10'
-                        : 'bg-slate-950/70 border-slate-800 hover:border-slate-700'
+                        : 'bg-white/90 dark:bg-slate-950/70 border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:border-slate-700'
                     }`}
                   >
                     <div className="space-y-3">
@@ -417,7 +417,7 @@ export const MilestoneModal: React.FC<MilestoneModalProps> = ({
                             <span>修了証 獲得済</span>
                           </span>
                         ) : (
-                          <span className="text-[11px] font-mono px-2.5 py-0.5 rounded-full bg-slate-900 text-slate-400 border border-slate-800 flex items-center gap-1">
+                          <span className="text-[11px] font-mono px-2.5 py-0.5 rounded-full bg-slate-900 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-800 flex items-center gap-1">
                             <Lock className="w-3 h-3" />
                             <span>{m.completedCount} / {m.total} 章</span>
                           </span>
@@ -428,20 +428,20 @@ export const MilestoneModal: React.FC<MilestoneModalProps> = ({
                         <h4 className="text-base sm:text-lg font-bold text-white font-sans leading-snug">
                           {m.title}
                         </h4>
-                        <p className="text-xs text-slate-400 font-sans mt-1 leading-relaxed">
+                        <p className="text-xs text-slate-600 dark:text-slate-400 font-sans mt-1 leading-relaxed">
                           {m.description}
                         </p>
                       </div>
 
                       {/* 進捗バー */}
                       <div className="space-y-1">
-                        <div className="flex justify-between text-[11px] font-mono text-slate-400">
+                        <div className="flex justify-between text-[11px] font-mono text-slate-600 dark:text-slate-400">
                           <span>進捗状況</span>
-                          <span className={m.isUnlocked ? 'text-cyan-400 font-bold' : 'text-slate-400'}>
+                          <span className={m.isUnlocked ? 'text-cyan-400 font-bold' : 'text-slate-600 dark:text-slate-400'}>
                             {percent}% ({m.completedCount}/{m.total})
                           </span>
                         </div>
-                        <div className="w-full h-2 rounded-full bg-slate-900 overflow-hidden border border-slate-800">
+                        <div className="w-full h-2 rounded-full bg-slate-900 overflow-hidden border border-slate-200 dark:border-slate-800">
                           <div
                             className={`h-full rounded-full transition-all duration-500 ${
                               m.isUnlocked ? 'bg-cyan-400' : 'bg-slate-600'
@@ -457,7 +457,7 @@ export const MilestoneModal: React.FC<MilestoneModalProps> = ({
                       className={`w-full py-2.5 px-4 rounded-xl text-xs font-mono font-bold transition flex items-center justify-center gap-2 cursor-pointer ${
                         m.isUnlocked
                           ? 'bg-amber-500 hover:bg-amber-400 text-slate-950 shadow-lg shadow-amber-500/20'
-                          : 'bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-700'
+                          : 'bg-slate-900 hover:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-300 dark:border-slate-700'
                       }`}
                     >
                       <Award className="w-4 h-4" />
@@ -470,8 +470,8 @@ export const MilestoneModal: React.FC<MilestoneModalProps> = ({
             </div>
 
             {/* 💾 進捗データの保存・端末引き継ぎ（バックアップ／復元） */}
-            <div className="p-5 sm:p-6 rounded-3xl bg-slate-900/80 border border-slate-800 space-y-4">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-800/80 pb-3">
+            <div className="p-5 sm:p-6 rounded-3xl bg-white/90 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 space-y-4">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-200 dark:border-slate-800/80 pb-3">
                 <div className="flex items-center gap-2.5">
                   <div className="w-8 h-8 rounded-xl bg-cyan-500/20 border border-cyan-500/30 flex items-center justify-center text-cyan-400">
                     <Download className="w-4 h-4" />
@@ -480,7 +480,7 @@ export const MilestoneModal: React.FC<MilestoneModalProps> = ({
                     <h3 className="text-sm sm:text-base font-bold text-white font-sans flex items-center gap-2">
                       <span>進捗データの保存・端末引き継ぎ（バックアップ / 復元）</span>
                     </h3>
-                    <p className="text-xs text-slate-400 font-mono mt-0.5">
+                    <p className="text-xs text-slate-600 dark:text-slate-400 font-mono mt-0.5">
                       ログイン不要。引継ぎコードをコピー＆ペーストするだけで別ブラウザやスマホへ進捗を移行できます。
                     </p>
                   </div>
@@ -491,7 +491,7 @@ export const MilestoneModal: React.FC<MilestoneModalProps> = ({
                     {!showResetConfirm ? (
                       <button
                         onClick={() => setShowResetConfirm(true)}
-                        className="text-[11px] font-mono text-slate-400 hover:text-rose-400 transition cursor-pointer flex items-center gap-1"
+                        className="text-[11px] font-mono text-slate-600 dark:text-slate-400 hover:text-rose-400 transition cursor-pointer flex items-center gap-1"
                         title="進捗をリセット"
                       >
                         <RotateCcw className="w-3 h-3" />
@@ -508,7 +508,7 @@ export const MilestoneModal: React.FC<MilestoneModalProps> = ({
                         </button>
                         <button
                           onClick={() => setShowResetConfirm(false)}
-                          className="px-2 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 text-[11px] cursor-pointer"
+                          className="px-2 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-700 dark:text-slate-300 text-[11px] cursor-pointer"
                         >
                           キャンセル
                         </button>
@@ -525,7 +525,7 @@ export const MilestoneModal: React.FC<MilestoneModalProps> = ({
                   <p className="font-bold text-amber-300 font-mono text-[11px]">
                     ⚠️ ブラウザのキャッシュ・履歴消去による進捗消失にご注意ください
                   </p>
-                  <p className="text-[11px] text-slate-300 leading-relaxed">
+                  <p className="text-[11px] text-slate-700 dark:text-slate-300 leading-relaxed">
                     本サイトは登録不要で利用できるため、学習進捗はお使いのブラウザ（localStorage）に保存されています。ブラウザの「閲覧履歴・Cookieの消去」を実行すると進捗がリセットされるため、大切な学習記録は定期的に下の「引継ぎコード」をコピーしてメモ帳等にバックアップしてください。
                   </p>
                 </div>
@@ -548,7 +548,7 @@ export const MilestoneModal: React.FC<MilestoneModalProps> = ({
                   <span className="flex-1">{backupMessage.text}</span>
                   <button
                     onClick={() => setBackupMessage(null)}
-                    className="text-slate-400 hover:text-white cursor-pointer"
+                    className="text-slate-600 dark:text-slate-400 hover:text-white cursor-pointer"
                   >
                     <X className="w-3.5 h-3.5" />
                   </button>
@@ -558,7 +558,7 @@ export const MilestoneModal: React.FC<MilestoneModalProps> = ({
               {/* 2カラム：書き出し ＆ 読み込み */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {/* 1. 書き出し（エクスポート） */}
-                <div className="p-4 rounded-2xl bg-slate-950/60 border border-slate-800/80 flex flex-col justify-between gap-3">
+                <div className="p-4 rounded-2xl bg-white/80 dark:bg-slate-950/60 border border-slate-200 dark:border-slate-800/80 flex flex-col justify-between gap-3">
                   <div className="space-y-1.5">
                     <div className="flex items-center justify-between">
                       <span className="text-[11px] font-mono font-bold text-cyan-400 uppercase tracking-wider flex items-center gap-1.5">
@@ -569,7 +569,7 @@ export const MilestoneModal: React.FC<MilestoneModalProps> = ({
                         {totalCount}章完了
                       </span>
                     </div>
-                    <p className="text-xs text-slate-400 font-sans leading-relaxed">
+                    <p className="text-xs text-slate-600 dark:text-slate-400 font-sans leading-relaxed">
                       現在の学習進捗をテキストコードに変換します。PCからスマートフォンへの引き継ぎや、バックアップ保存に利用できます。
                     </p>
                   </div>
@@ -599,14 +599,14 @@ export const MilestoneModal: React.FC<MilestoneModalProps> = ({
                     <div className="flex items-center justify-between text-[11px] font-mono">
                       <button
                         onClick={() => setShowCodePreview((prev) => !prev)}
-                        className="text-slate-400 hover:text-cyan-400 underline cursor-pointer"
+                        className="text-slate-600 dark:text-slate-400 hover:text-cyan-400 underline cursor-pointer"
                       >
                         {showCodePreview ? 'コードプレビューを閉じる' : 'コード文字列を表示して直接確認'}
                       </button>
                     </div>
 
                     {showCodePreview && (
-                      <div className="p-2 rounded-xl bg-slate-900 border border-slate-800 text-[10px] font-mono text-slate-300 break-all select-all animate-fadeIn">
+                      <div className="p-2 rounded-xl bg-slate-900 border border-slate-200 dark:border-slate-800 text-[10px] font-mono text-slate-700 dark:text-slate-300 break-all select-all animate-fadeIn">
                         {currentBackupCode}
                       </div>
                     )}
@@ -614,13 +614,13 @@ export const MilestoneModal: React.FC<MilestoneModalProps> = ({
                 </div>
 
                 {/* 2. 読み込み（インポート） */}
-                <div className="p-4 rounded-2xl bg-slate-950/60 border border-slate-800/80 flex flex-col justify-between gap-3">
+                <div className="p-4 rounded-2xl bg-white/80 dark:bg-slate-950/60 border border-slate-200 dark:border-slate-800/80 flex flex-col justify-between gap-3">
                   <div className="space-y-1.5">
                     <span className="text-[11px] font-mono font-bold text-amber-400 uppercase tracking-wider flex items-center gap-1.5">
                       <Upload className="w-3.5 h-3.5" />
                       <span>進捗を復元（インポート）</span>
                     </span>
-                    <p className="text-xs text-slate-400 font-sans leading-relaxed">
+                    <p className="text-xs text-slate-600 dark:text-slate-400 font-sans leading-relaxed">
                       別ブラウザや端末で発行した引継ぎコード（SKCP-V1:...）を貼り付けて、進捗を現在のブラウザに安全に復元します。
                     </p>
                   </div>
@@ -631,7 +631,7 @@ export const MilestoneModal: React.FC<MilestoneModalProps> = ({
                       value={backupInput}
                       onChange={(e) => setBackupInput(e.target.value)}
                       placeholder="SKCP-V1:..."
-                      className="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs font-mono text-slate-200 placeholder-slate-500 focus:outline-none focus:border-amber-400 transition"
+                      className="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-300 dark:border-slate-700 text-xs font-mono text-slate-800 dark:text-slate-200 placeholder-slate-500 focus:outline-none focus:border-amber-400 transition"
                     />
 
                     <button
@@ -651,10 +651,10 @@ export const MilestoneModal: React.FC<MilestoneModalProps> = ({
         </div>
 
         {/* モーダルフッター */}
-        <div className="p-4 bg-slate-900/80 border-t border-slate-800 flex justify-end flex-shrink-0">
+        <div className="p-4 bg-white/90 dark:bg-slate-900/80 border-t border-slate-200 dark:border-slate-800 flex justify-end flex-shrink-0">
           <button
             onClick={onClose}
-            className="px-5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs font-mono transition cursor-pointer"
+            className="px-5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-800 dark:text-slate-200 font-bold text-xs font-mono transition cursor-pointer"
           >
             閉じる
           </button>

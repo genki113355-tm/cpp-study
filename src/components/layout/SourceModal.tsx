@@ -23,10 +23,10 @@ g++ -std=c++17 main.cpp Game.cpp Player.cpp Item.cpp BitDrone.cpp Bullet.cpp Par
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
-      <div className="relative w-full max-w-2xl rounded-2xl bg-[#0c121e] border border-slate-700 shadow-2xl p-6 overflow-hidden max-h-[90vh] overflow-y-auto scrollbar-thin">
+      <div className="relative w-full max-w-2xl rounded-2xl bg-[#0c121e] border border-slate-300 dark:border-slate-700 shadow-2xl p-6 overflow-hidden max-h-[90vh] overflow-y-auto scrollbar-thin">
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800"
+          className="absolute top-4 right-4 p-1.5 rounded-lg text-slate-600 dark:text-slate-400 hover:text-white hover:bg-slate-800"
         >
           <X className="w-5 h-5" />
         </button>
@@ -36,7 +36,7 @@ g++ -std=c++17 main.cpp Game.cpp Player.cpp Item.cpp BitDrone.cpp Bullet.cpp Par
           <h2 className="text-xl font-bold font-mono text-white">ローカル実行用 C++ プロジェクト一式</h2>
         </div>
 
-        <p className="text-sm text-slate-300 mb-4 leading-relaxed font-sans">
+        <p className="text-sm text-slate-700 dark:text-slate-300 mb-4 leading-relaxed font-sans">
           本教材のC++コードは、実際のコンパイルおよびローカル実行が可能なソースコード一式として配布しています。以下のボタンからZIPファイルをダウンロードしてご自由にお使いいただけます。
         </p>
 
@@ -50,7 +50,7 @@ g++ -std=c++17 main.cpp Game.cpp Player.cpp Item.cpp BitDrone.cpp Bullet.cpp Par
                 ZIP形式 (約55KB)
               </span>
             </div>
-            <p className="text-xs text-slate-300">
+            <p className="text-xs text-slate-700 dark:text-slate-300">
               各章のCMakeLists.txt、ヘッダー、実装、Windows用起動バッチ（run.bat）を完全収録。
             </p>
           </div>
@@ -65,7 +65,7 @@ g++ -std=c++17 main.cpp Game.cpp Player.cpp Item.cpp BitDrone.cpp Bullet.cpp Par
         </div>
 
         {/* ファイルツリー */}
-        <div className="p-4 rounded-xl bg-slate-950 border border-slate-800 font-mono text-sm text-slate-300 space-y-2 mb-5">
+        <div className="p-4 rounded-xl bg-slate-950 border border-slate-200 dark:border-slate-800 font-mono text-sm text-slate-700 dark:text-slate-300 space-y-2 mb-5">
           <div className="flex items-center gap-2 text-cyan-300 font-bold">
             <Folder className="w-4 h-4 text-cyan-400" />
             <span>cpp-projects/</span>
@@ -104,22 +104,22 @@ g++ -std=c++17 main.cpp Game.cpp Player.cpp Item.cpp BitDrone.cpp Bullet.cpp Par
 
         {/* ワンクリックコンパイルコマンド */}
         <div className="space-y-2.5">
-          <div className="flex items-center justify-between text-xs sm:text-sm font-mono text-slate-400">
+          <div className="flex items-center justify-between text-xs sm:text-sm font-mono text-slate-600 dark:text-slate-400">
             <span>第5章（スマートポインタ＆RAII版）のワンライナーコンパイルコマンド:</span>
             <button
               onClick={handleCopyCmd}
               className="flex items-center gap-1.5 text-cyan-400 hover:text-cyan-300 font-sans font-medium"
             >
-              {copiedCmd ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4 text-slate-400" />}
+              {copiedCmd ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4 text-slate-600 dark:text-slate-400" />}
               <span>{copiedCmd ? 'コピー完了' : 'コピー'}</span>
             </button>
           </div>
-          <div className="p-3.5 rounded-xl bg-slate-950 border border-slate-800 text-xs sm:text-sm font-mono text-emerald-400 whitespace-pre overflow-x-auto">
+          <div className="p-3.5 rounded-xl bg-slate-950 border border-slate-200 dark:border-slate-800 text-xs sm:text-sm font-mono text-emerald-400 whitespace-pre overflow-x-auto">
             {buildCmd}
           </div>
         </div>
 
-        <div className="mt-6 flex flex-wrap items-center justify-between gap-3 pt-4 border-t border-slate-800">
+        <div className="mt-6 flex flex-wrap items-center justify-between gap-3 pt-4 border-t border-slate-200 dark:border-slate-800">
           <a
             href="/downloads/cpp-projects.zip"
             download="cpp-projects.zip"
@@ -130,7 +130,7 @@ g++ -std=c++17 main.cpp Game.cpp Player.cpp Item.cpp BitDrone.cpp Bullet.cpp Par
           </a>
           <button
             onClick={onClose}
-            className="px-5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-sm font-mono font-bold transition ml-auto"
+            className="px-5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-800 dark:text-slate-200 text-sm font-mono font-bold transition ml-auto"
           >
             閉じる
           </button>

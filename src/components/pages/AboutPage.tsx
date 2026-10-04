@@ -183,7 +183,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
           >
             サイトマップ（Sitemap） ➔
           </button>
-          <span className="text-slate-400 dark:text-slate-600">|</span>
+          <span className="text-slate-600 dark:text-slate-400 dark:text-slate-600">|</span>
           <button
             onClick={() => onNavigate('contact')}
             className="text-cyan-700 dark:text-cyan-400 hover:underline cursor-pointer"

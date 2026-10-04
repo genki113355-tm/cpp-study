@@ -105,7 +105,7 @@ public:
 
   return (
     <section className="space-y-6">
-      <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between gap-4 border-b border-slate-800 pb-5">
+      <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between gap-4 border-b border-slate-200 dark:border-slate-800 pb-5">
         <div className="space-y-2">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-950/80 border border-cyan-500/40 text-cyan-300 font-mono text-xs font-semibold shadow-inner">
             <GitCompare className="w-4 h-4 text-cyan-400" />
@@ -114,18 +114,18 @@ public:
           <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white font-sans tracking-tight">
             圧倒的進化を比較。「最初のコード」vs「10ステージ後のコード」
           </h2>
-          <p className="text-sm sm:text-base text-slate-300 font-sans max-w-3xl leading-relaxed">
+          <p className="text-sm sm:text-base text-slate-700 dark:text-slate-300 font-sans max-w-3xl leading-relaxed">
             カリキュラムを完走したとき、あなたの手で生み出せるコードの劇的な変化をご覧ください。
             「動けばいい」泥臭い神クラスが、商用ゲームエンジン同等の堅牢・疎結合・高速なクリーンアーキテクチャへと脱皮します。
           </p>
         </div>
 
         {/* 表示モード切り替えタブ */}
-        <div className="flex p-1 rounded-xl bg-slate-900 border border-slate-800 shrink-0">
+        <div className="flex p-1 rounded-xl bg-slate-900 border border-slate-200 dark:border-slate-800 shrink-0">
           <button
             onClick={() => setViewMode('sideBySide')}
             className={`px-3 py-1.5 rounded-lg text-xs font-mono font-bold transition ${
-              viewMode === 'sideBySide' ? 'bg-cyan-600 text-white' : 'text-slate-400 hover:text-slate-200'
+              viewMode === 'sideBySide' ? 'bg-cyan-600 text-white' : 'text-slate-600 dark:text-slate-400 hover:text-slate-800 dark:text-slate-200'
             }`}
           >
             並列比較
@@ -133,7 +133,7 @@ public:
           <button
             onClick={() => setViewMode('stage1')}
             className={`px-3 py-1.5 rounded-lg text-xs font-mono font-bold transition ${
-              viewMode === 'stage1' ? 'bg-rose-600 text-white' : 'text-slate-400 hover:text-slate-200'
+              viewMode === 'stage1' ? 'bg-rose-600 text-white' : 'text-slate-600 dark:text-slate-400 hover:text-slate-800 dark:text-slate-200'
             }`}
           >
             Stage 1 (Before)
@@ -141,7 +141,7 @@ public:
           <button
             onClick={() => setViewMode('stage10')}
             className={`px-3 py-1.5 rounded-lg text-xs font-mono font-bold transition ${
-              viewMode === 'stage10' ? 'bg-emerald-600 text-white' : 'text-slate-400 hover:text-slate-200'
+              viewMode === 'stage10' ? 'bg-emerald-600 text-white' : 'text-slate-600 dark:text-slate-400 hover:text-slate-800 dark:text-slate-200'
             }`}
           >
             Stage 10 (After)
@@ -151,40 +151,40 @@ public:
 
       {/* 5大指標の対比テーブル */}
       <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
-        <div className="p-3.5 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-1">
-          <span className="text-[10px] font-mono font-bold text-slate-400 uppercase">結合度 (Coupling)</span>
+        <div className="p-3.5 rounded-2xl bg-white/90 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 space-y-1">
+          <span className="text-[10px] font-mono font-bold text-slate-600 dark:text-slate-400 uppercase">結合度 (Coupling)</span>
           <div className="text-xs font-bold text-rose-400 line-through">超密結合 (Spaghetti)</div>
           <div className="text-xs font-bold text-emerald-400 flex items-center gap-1">
             <span>➔ 完全疎結合 (Decoupled)</span>
           </div>
         </div>
 
-        <div className="p-3.5 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-1">
-          <span className="text-[10px] font-mono font-bold text-slate-400 uppercase">単一責任 (SRP)</span>
+        <div className="p-3.5 rounded-2xl bg-white/90 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 space-y-1">
+          <span className="text-[10px] font-mono font-bold text-slate-600 dark:text-slate-400 uppercase">単一責任 (SRP)</span>
           <div className="text-xs font-bold text-rose-400 line-through">1クラスが10個の仕事</div>
           <div className="text-xs font-bold text-emerald-400 flex items-center gap-1">
             <span>➔ 1クラス1責務に特化</span>
           </div>
         </div>
 
-        <div className="p-3.5 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-1">
-          <span className="text-[10px] font-mono font-bold text-slate-400 uppercase">開閉原則 (OCP)</span>
+        <div className="p-3.5 rounded-2xl bg-white/90 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 space-y-1">
+          <span className="text-[10px] font-mono font-bold text-slate-600 dark:text-slate-400 uppercase">開閉原則 (OCP)</span>
           <div className="text-xs font-bold text-rose-400 line-through">新敵追加で既存switch破壊</div>
           <div className="text-xs font-bold text-emerald-400 flex items-center gap-1">
             <span>➔ 既存コード変更ゼロ拡張</span>
           </div>
         </div>
 
-        <div className="p-3.5 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-1">
-          <span className="text-[10px] font-mono font-bold text-slate-400 uppercase">メモリ安全性</span>
+        <div className="p-3.5 rounded-2xl bg-white/90 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 space-y-1">
+          <span className="text-[10px] font-mono font-bold text-slate-600 dark:text-slate-400 uppercase">メモリ安全性</span>
           <div className="text-xs font-bold text-rose-400 line-through">二重解放・リークのリスク</div>
           <div className="text-xs font-bold text-emerald-400 flex items-center gap-1">
             <span>➔ RAIIでリーク率 0%</span>
           </div>
         </div>
 
-        <div className="p-3.5 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-1 col-span-2 md:col-span-1">
-          <span className="text-[10px] font-mono font-bold text-slate-400 uppercase">テスト容易性</span>
+        <div className="p-3.5 rounded-2xl bg-white/90 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 space-y-1 col-span-2 md:col-span-1">
+          <span className="text-[10px] font-mono font-bold text-slate-600 dark:text-slate-400 uppercase">テスト容易性</span>
           <div className="text-xs font-bold text-rose-400 line-through">手動キーボードプレイのみ</div>
           <div className="text-xs font-bold text-emerald-400 flex items-center gap-1">
             <span>➔ GoogleTest自動検証</span>
@@ -211,7 +211,7 @@ public:
                 アンチパターンの温床
               </span>
             </div>
-            <pre className="p-5 text-xs font-mono text-slate-300 overflow-x-auto leading-relaxed max-h-[500px]">
+            <pre className="p-5 text-xs font-mono text-slate-700 dark:text-slate-300 overflow-x-auto leading-relaxed max-h-[500px]">
               <code>{stage1Code}</code>
             </pre>
           </div>

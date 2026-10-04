@@ -48,7 +48,7 @@ type GlobalGameVersion = 'v1_spaghetti' | 'v2_classes' | 'v3_dynamic' | 'v4_poly
 const PageLoadingFallback: React.FC = () => (
   <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4 text-cyan-400 font-mono">
     <div className="w-10 h-10 border-2 border-cyan-400 border-t-transparent rounded-full animate-spin" />
-    <span className="text-sm tracking-widest text-slate-400">LOADING CURRICULUM...</span>
+    <span className="text-sm tracking-widest text-slate-600 dark:text-slate-400">LOADING CURRICULUM...</span>
   </div>
 );
 
@@ -306,9 +306,9 @@ const AppContent: React.FC = () => {
       {/* 🎮 Webエミュレータ（ゲーム）大画面モーダル（グローバル起動対応） */}
       {isGlobalGameModalOpen && (
         <React.Suspense fallback={
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-md">
-            <div className="flex items-center gap-3 p-6 rounded-2xl bg-slate-900 border border-cyan-500/50 text-cyan-400 font-mono text-sm shadow-2xl">
-              <div className="w-5 h-5 border-2 border-cyan-400 border-t-transparent rounded-full animate-spin" />
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-md">
+            <div className="flex items-center gap-3 p-6 rounded-2xl bg-white dark:bg-slate-900 border border-cyan-500/50 text-cyan-800 dark:text-cyan-400 font-mono text-sm shadow-2xl">
+              <div className="w-5 h-5 border-2 border-cyan-500 border-t-transparent rounded-full animate-spin" />
               <span>RETRO SPACE SHOOTER 起動中...</span>
             </div>
           </div>

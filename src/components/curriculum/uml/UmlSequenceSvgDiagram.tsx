@@ -40,9 +40,9 @@ export const UmlSequenceSvgDiagram: React.FC<UmlSequenceSvgDiagramProps> = ({
   const lifelineEndY = totalHeight - 30;
 
   return (
-    <div className="w-full max-w-full my-6 rounded-3xl bg-slate-950/90 border border-cyan-500/40 shadow-2xl p-4 sm:p-6 overflow-x-auto backdrop-blur-md">
+    <div className="w-full max-w-full my-6 rounded-3xl bg-white/95 dark:bg-slate-950/90 border border-cyan-500/40 shadow-2xl p-4 sm:p-6 overflow-x-auto backdrop-blur-md">
       {(title || subtitle) && (
-        <div className="border-b border-slate-800 pb-4 mb-4">
+        <div className="border-b border-slate-200 dark:border-slate-800 pb-4 mb-4">
           {title && <h4 className="text-lg sm:text-xl font-bold text-white font-mono">{title}</h4>}
           {subtitle && <p className="text-xs sm:text-sm text-cyan-300 font-mono mt-0.5">{subtitle}</p>}
         </div>

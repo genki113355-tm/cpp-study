@@ -133,7 +133,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                   className={`px-2 py-1 rounded-lg transition-all flex items-center justify-center min-w-[32px] flex-shrink-0 whitespace-nowrap font-bold ${
                     isActive
                       ? 'bg-amber-500 text-slate-950 shadow-md shadow-amber-500/30'
-                      : 'text-slate-400 hover:text-amber-200 hover:bg-slate-800'
+                      : 'text-slate-600 dark:text-slate-400 hover:text-amber-200 hover:bg-slate-800'
                   }`}
                   title={ch.title}
                 >
@@ -157,7 +157,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                   className={`px-2 py-1 rounded-lg transition-all flex items-center justify-center min-w-[32px] flex-shrink-0 whitespace-nowrap font-bold ${
                     isActive
                       ? 'bg-cyan-500 text-slate-950 shadow-md shadow-cyan-500/30'
-                      : 'text-slate-400 hover:text-cyan-200 hover:bg-slate-800'
+                      : 'text-slate-600 dark:text-slate-400 hover:text-cyan-200 hover:bg-slate-800'
                   }`}
                   title={ch.title}
                 >
@@ -181,7 +181,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                   className={`px-2 py-1 rounded-lg transition-all flex items-center justify-center min-w-[32px] flex-shrink-0 whitespace-nowrap font-bold ${
                     isActive
                       ? 'bg-purple-500 text-slate-950 shadow-md shadow-purple-500/30'
-                      : 'text-slate-400 hover:text-purple-200 hover:bg-slate-800'
+                      : 'text-slate-600 dark:text-slate-400 hover:text-purple-200 hover:bg-slate-800'
                   }`}
                   title={ch.title}
                 >
@@ -218,8 +218,8 @@ export const Navbar: React.FC<NavbarProps> = ({
                         ? 'bg-purple-600 text-white shadow-md shadow-purple-500/30'
                         : 'bg-emerald-500 text-slate-950 shadow-md shadow-emerald-500/30'
                       : isColumn
-                        ? 'text-slate-400 hover:text-purple-200 hover:bg-slate-800'
-                        : 'text-slate-400 hover:text-emerald-200 hover:bg-slate-800'
+                        ? 'text-slate-600 dark:text-slate-400 hover:text-purple-200 hover:bg-slate-800'
+                        : 'text-slate-600 dark:text-slate-400 hover:text-emerald-200 hover:bg-slate-800'
                   }`}
                   title={guide.title}
                 >
