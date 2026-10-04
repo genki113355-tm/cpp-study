@@ -26,13 +26,13 @@ export const RichExplanation: React.FC<RichExplanationProps> = ({ content }) => 
     if (codeBuffer.length > 0) {
       const codeText = codeBuffer.join("\n");
       renderedElements.push(
-        <div key={key} className="my-4 rounded-xl bg-slate-950 border border-slate-800 p-4 font-mono text-xs sm:text-sm text-cyan-300 overflow-x-auto shadow-inner">
+        <div key={key} className="my-4 rounded-xl bg-slate-950 border border-slate-800 p-4 font-mono text-sm sm:text-base text-cyan-300 overflow-x-auto shadow-inner">
           {codeLang && (
-            <div className="text-[10px] uppercase font-bold text-slate-500 mb-2 border-b border-slate-800 pb-1">
+            <div className="text-xs uppercase font-bold text-slate-400 mb-2 border-b border-slate-800 pb-1">
               {codeLang}
             </div>
           )}
-          <pre className="whitespace-pre">{codeText}</pre>
+          <pre className="whitespace-pre leading-relaxed">{codeText}</pre>
         </div>
       );
       codeBuffer = [];
@@ -44,9 +44,9 @@ export const RichExplanation: React.FC<RichExplanationProps> = ({ content }) => 
     if (tableRows.length > 0) {
       const [headerRow, ...bodyRows] = tableRows;
       renderedElements.push(
-        <div key={key} className="my-5 overflow-x-auto rounded-xl border border-slate-800 bg-slate-950/80 shadow-md">
+        <div key={key} className="my-5 overflow-x-auto rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950/80 shadow-sm dark:shadow-md">
           <table className="w-full text-left font-sans text-xs sm:text-sm">
-            <thead className="bg-slate-900 text-cyan-300 font-mono border-b border-slate-800">
+            <thead className="bg-slate-100 dark:bg-slate-900 text-cyan-900 dark:text-cyan-300 font-mono border-b border-slate-200 dark:border-slate-800">
               <tr>
                 {headerRow.map((h, i) => (
                   <th key={i} className="p-3 font-bold align-top whitespace-nowrap sm:whitespace-normal">
@@ -55,9 +55,9 @@ export const RichExplanation: React.FC<RichExplanationProps> = ({ content }) => 
                 ))}
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-800/80 text-slate-300">
+            <tbody className="divide-y divide-slate-200 dark:divide-slate-800/80 text-slate-700 dark:text-slate-300">
               {bodyRows.map((row, rIdx) => (
-                <tr key={rIdx} className="hover:bg-slate-900/40 transition-colors">
+                <tr key={rIdx} className="hover:bg-slate-50 dark:hover:bg-slate-900/40 transition-colors">
                   {row.map((cell, cIdx) => (
                     <td key={cIdx} className="p-3 align-top leading-relaxed">
                       {renderFormattedText(cell.trim())}
@@ -193,9 +193,9 @@ export const RichExplanation: React.FC<RichExplanationProps> = ({ content }) => 
       renderedElements.push(
         <h5
           key={`h5-${i}`}
-          className="text-base sm:text-lg font-bold text-slate-100 font-mono pt-4 pb-1 flex items-center gap-2.5 text-cyan-200"
+          className="text-base sm:text-lg font-bold text-slate-800 dark:text-slate-100 font-mono pt-4 pb-1 flex items-center gap-2.5 text-cyan-900 dark:text-cyan-200"
         >
-          <span className="w-1.5 h-4 bg-cyan-400/80 rounded-sm flex-shrink-0" />
+          <span className="w-1.5 h-4 bg-cyan-500 dark:bg-cyan-400/80 rounded-sm flex-shrink-0" />
           <span>{renderFormattedText(headingText, true)}</span>
         </h5>
       );
@@ -208,9 +208,9 @@ export const RichExplanation: React.FC<RichExplanationProps> = ({ content }) => 
       renderedElements.push(
         <h4
           key={`h4-${i}`}
-          className="text-lg sm:text-xl md:text-2xl font-bold text-cyan-300 font-mono pt-5 pb-2 border-b border-slate-800/80 flex items-center gap-3"
+          className="text-lg sm:text-xl md:text-2xl font-bold text-cyan-900 dark:text-cyan-300 font-mono pt-5 pb-2 border-b border-slate-200 dark:border-slate-800/80 flex items-center gap-3"
         >
-          <span className="w-2.5 h-5 bg-cyan-400 rounded-sm flex-shrink-0" />
+          <span className="w-2.5 h-5 bg-cyan-500 dark:bg-cyan-400 rounded-sm flex-shrink-0" />
           <span>{renderFormattedText(headingText, true)}</span>
         </h4>
       );
@@ -220,7 +220,7 @@ export const RichExplanation: React.FC<RichExplanationProps> = ({ content }) => 
     // 区切り線 ---
     if (trimmed === "---") {
       renderedElements.push(
-        <hr key={`hr-${i}`} className="border-slate-800/80 my-4" />
+        <hr key={`hr-${i}`} className="border-slate-200 dark:border-slate-800/80 my-4" />
       );
       continue;
     }
@@ -230,8 +230,8 @@ export const RichExplanation: React.FC<RichExplanationProps> = ({ content }) => 
       const itemContent = trimmed.slice(2);
       renderedElements.push(
         <div key={`li-${i}`} className="flex items-start gap-3 pl-2">
-          <ChevronRight className="w-5 h-5 text-cyan-400 flex-shrink-0 mt-1" />
-          <div className="flex-1 text-base sm:text-lg text-slate-200 leading-relaxed font-sans">
+          <ChevronRight className="w-5 h-5 text-cyan-600 dark:text-cyan-400 flex-shrink-0 mt-1" />
+          <div className="flex-1 text-base sm:text-lg text-slate-800 dark:text-slate-200 leading-relaxed font-sans">
             {renderFormattedText(itemContent)}
           </div>
         </div>
@@ -244,10 +244,10 @@ export const RichExplanation: React.FC<RichExplanationProps> = ({ content }) => 
     if (orderedMatch) {
       renderedElements.push(
         <div key={`ol-${i}`} className="flex items-start gap-3 pl-2">
-          <span className="w-6 h-6 rounded-full bg-cyan-950 text-cyan-400 border border-cyan-500/40 text-xs sm:text-sm font-mono font-bold flex items-center justify-center flex-shrink-0 mt-0.5">
+          <span className="w-6 h-6 rounded-full bg-cyan-100 text-cyan-800 border border-cyan-300 dark:bg-cyan-950 dark:text-cyan-400 dark:border-cyan-500/40 text-xs sm:text-sm font-mono font-bold flex items-center justify-center flex-shrink-0 mt-0.5">
             {orderedMatch[1]}
           </span>
-          <div className="flex-1 text-base sm:text-lg text-slate-200 leading-relaxed font-sans">
+          <div className="flex-1 text-base sm:text-lg text-slate-800 dark:text-slate-200 leading-relaxed font-sans">
             {renderFormattedText(orderedMatch[2])}
           </div>
         </div>
@@ -263,14 +263,14 @@ export const RichExplanation: React.FC<RichExplanationProps> = ({ content }) => 
 
       if (isShirokuma) {
         renderedElements.push(
-          <div key={`tip-sh-${i}`} className="my-5 rounded-2xl bg-gradient-to-r from-cyan-950/60 to-slate-900 border border-cyan-500/40 p-4 sm:p-5 flex items-start gap-3.5 shadow-lg relative overflow-hidden">
+          <div key={`tip-sh-${i}`} className="my-5 rounded-2xl bg-gradient-to-r from-cyan-50 via-sky-50 to-white dark:from-cyan-950/60 dark:to-slate-900 border border-cyan-300 dark:border-cyan-500/40 p-4 sm:p-5 flex items-start gap-3.5 shadow-sm dark:shadow-lg relative overflow-hidden">
             <img
               src={getAssetUrl('/images/characters/shirokuma_sensei.png')}
               alt="シロクマ先生"
-              className="w-11 h-11 rounded-xl object-cover border border-cyan-400/60 shadow-md flex-shrink-0"
+              className="w-11 h-11 rounded-xl object-cover border border-cyan-400/60 shadow-sm flex-shrink-0"
             />
-            <div className="flex-1 text-sm sm:text-base text-cyan-100 leading-relaxed font-sans">
-              <strong className="text-cyan-300 font-bold block mb-1 font-mono text-xs uppercase tracking-wider">シロクマ先生の落とし穴回避Tips</strong>
+            <div className="flex-1 text-sm sm:text-base text-cyan-950 dark:text-cyan-100 leading-relaxed font-sans">
+              <strong className="text-cyan-800 dark:text-cyan-300 font-bold block mb-1 font-mono text-xs uppercase tracking-wider">シロクマ先生の落とし穴回避Tips</strong>
               {renderFormattedText(quoteText.replace(/^[🐻‍❄️\s]*シロクマ[先生君]*[の指南・Tips]*[:：]?\s*/, ''))}
             </div>
           </div>
@@ -280,14 +280,14 @@ export const RichExplanation: React.FC<RichExplanationProps> = ({ content }) => 
 
       if (isPenguin) {
         renderedElements.push(
-          <div key={`tip-pen-${i}`} className="my-5 rounded-2xl bg-gradient-to-r from-amber-950/60 to-slate-900 border border-amber-500/40 p-4 sm:p-5 flex items-start gap-3.5 shadow-lg relative overflow-hidden">
+          <div key={`tip-pen-${i}`} className="my-5 rounded-2xl bg-gradient-to-r from-amber-50 via-yellow-50 to-white dark:from-amber-950/60 dark:to-slate-900 border border-amber-300 dark:border-amber-500/40 p-4 sm:p-5 flex items-start gap-3.5 shadow-sm dark:shadow-lg relative overflow-hidden">
             <img
               src={getAssetUrl('/images/characters/penguin_student.jpg')}
               alt="ペンギン生徒"
-              className="w-11 h-11 rounded-xl object-cover border border-amber-400/60 shadow-md flex-shrink-0"
+              className="w-11 h-11 rounded-xl object-cover border border-amber-400/60 shadow-sm flex-shrink-0"
             />
-            <div className="flex-1 text-sm sm:text-base text-amber-100 leading-relaxed font-sans">
-              <strong className="text-amber-300 font-bold block mb-1 font-mono text-xs uppercase tracking-wider">ペンギン生徒のなるほどメモ</strong>
+            <div className="flex-1 text-sm sm:text-base text-amber-950 dark:text-amber-100 leading-relaxed font-sans">
+              <strong className="text-amber-800 dark:text-amber-300 font-bold block mb-1 font-mono text-xs uppercase tracking-wider">ペンギン生徒のなるほどメモ</strong>
               {renderFormattedText(quoteText.replace(/^[🐧\s]*ペンギン[生徒先輩のメモ・気づき]*[:：]?\s*/, ''))}
             </div>
           </div>
@@ -297,7 +297,7 @@ export const RichExplanation: React.FC<RichExplanationProps> = ({ content }) => 
 
       // 一般の引用
       renderedElements.push(
-        <blockquote key={`quote-${i}`} className="my-4 border-l-4 border-cyan-500/60 pl-4 py-2 italic text-slate-300 bg-slate-900/40 rounded-r-xl">
+        <blockquote key={`quote-${i}`} className="my-4 border-l-4 border-cyan-500 pl-4 py-2 italic text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-slate-900/40 rounded-r-xl">
           {renderFormattedText(quoteText)}
         </blockquote>
       );
@@ -306,7 +306,7 @@ export const RichExplanation: React.FC<RichExplanationProps> = ({ content }) => 
 
     // 通常段落
     renderedElements.push(
-      <p key={`p-${i}`} className="text-base sm:text-lg text-slate-200 leading-relaxed font-sans">
+      <p key={`p-${i}`} className="text-base sm:text-lg text-slate-800 dark:text-slate-200 leading-relaxed font-sans">
         {renderFormattedText(trimmed)}
       </p>
     );
@@ -320,13 +320,13 @@ export const RichExplanation: React.FC<RichExplanationProps> = ({ content }) => 
   }
 
   return (
-    <div className="rounded-2xl bg-gradient-to-br from-[#0c1322] via-[#090e1a] to-[#060a14] border border-cyan-500/25 shadow-xl p-6 md:p-7 my-6">
-      <div className="flex items-center gap-2.5 text-cyan-400 font-mono font-bold text-xs sm:text-sm uppercase tracking-wider mb-5 pb-3 border-b border-cyan-500/20">
-        <BookOpen className="w-4 h-4 sm:w-5 sm:h-5 text-cyan-400" />
+    <div className="rounded-2xl bg-white dark:bg-gradient-to-br dark:from-[#0c1322] dark:via-[#090e1a] dark:to-[#060a14] border border-slate-200 dark:border-cyan-500/25 shadow-sm dark:shadow-xl p-6 md:p-7 my-6">
+      <div className="flex items-center gap-2.5 text-cyan-800 dark:text-cyan-400 font-mono font-bold text-xs sm:text-sm uppercase tracking-wider mb-5 pb-3 border-b border-slate-200 dark:border-cyan-500/20">
+        <BookOpen className="w-4 h-4 sm:w-5 sm:h-5 text-cyan-600 dark:text-cyan-400" />
         <span>設計意図 &amp; アーキテクチャ解説ノート</span>
       </div>
 
-      <div className="space-y-4 font-sans text-base sm:text-lg text-slate-200 leading-relaxed">
+      <div className="space-y-4 font-sans text-base sm:text-lg text-slate-800 dark:text-slate-200 leading-relaxed">
         {renderedElements}
       </div>
     </div>
@@ -344,7 +344,7 @@ function renderFormattedText(text: string, isHeading: boolean = false): React.Re
     const content = parts.map((part, i) => {
       if (part.startsWith("**") && part.endsWith("**")) {
         return (
-          <strong key={i} className="font-bold text-cyan-200">
+          <strong key={i} className="font-bold text-cyan-900 dark:text-cyan-200">
             {part.slice(2, -2)}
           </strong>
         );
@@ -355,8 +355,8 @@ function renderFormattedText(text: string, isHeading: boolean = false): React.Re
             key={i}
             className={
               isHeading
-                ? "px-2 py-0.5 rounded bg-slate-950/80 text-cyan-200 font-mono text-[0.9em] border border-cyan-800/60 mx-1 align-baseline inline-block font-bold shadow-sm"
-                : "px-1.5 py-0.5 rounded bg-slate-950 text-cyan-300 font-mono text-[0.88em] border border-slate-800 mx-0.5 align-baseline inline-block font-medium"
+                ? "px-2 py-0.5 rounded bg-slate-100 text-cyan-900 border-slate-300 dark:bg-slate-950/80 dark:text-cyan-200 font-mono text-[0.9em] border dark:border-cyan-800/60 mx-1 align-baseline inline-block font-bold shadow-sm"
+                : "px-1.5 py-0.5 rounded bg-slate-100 text-cyan-800 border-slate-300 dark:bg-slate-950 dark:text-cyan-300 font-mono text-[0.88em] border dark:border-slate-800 mx-0.5 align-baseline inline-block font-medium"
             }
           >
             {part.slice(1, -1)}
@@ -365,7 +365,7 @@ function renderFormattedText(text: string, isHeading: boolean = false): React.Re
       }
       if (part.startsWith("*") && part.endsWith("*") && !part.startsWith("**")) {
         return (
-          <em key={i} className="italic text-slate-400">
+          <em key={i} className="italic text-slate-600 dark:text-slate-400">
             {part.slice(1, -1)}
           </em>
         );

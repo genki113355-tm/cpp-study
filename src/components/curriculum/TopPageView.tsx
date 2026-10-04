@@ -453,7 +453,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
       </section>
 
       {/* 🌟 【特別コラム抜粋】なぜ世界は今もC++で動いているのか？ 〜シリコンの鼓動とゼロオーバーヘッドの美学〜 */}
-      <section className="relative rounded-3xl border border-cyan-500/40 bg-gradient-to-br from-slate-900 via-[#070e1c] to-slate-950 p-6 sm:p-9 shadow-2xl overflow-hidden space-y-6">
+      <section className="relative rounded-3xl border border-sky-300/70 dark:border-cyan-500/40 bg-gradient-to-br from-white/95 via-sky-50/70 to-slate-50/90 dark:from-slate-900 dark:via-[#070e1c] dark:to-slate-950 p-6 sm:p-9 shadow-xl dark:shadow-2xl overflow-hidden space-y-6">
         {/* 背景のネオングロー */}
         <div className="absolute top-0 right-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none" />
         <div className="absolute bottom-0 left-1/4 w-80 h-80 bg-blue-600/10 rounded-full blur-3xl pointer-events-none" />
@@ -461,13 +461,13 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
         {/* ヘッダー部分 */}
         <div className="relative z-10 flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-cyan-500/20 pb-5">
           <div className="space-y-2 max-w-3xl">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-950/90 border border-cyan-500/40 text-cyan-300 font-mono text-xs font-bold shadow-sm">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-sky-100 dark:bg-cyan-950/90 border border-sky-300 dark:border-cyan-500/40 text-sky-800 dark:text-cyan-300 font-mono text-xs font-bold shadow-sm">
               <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
               <span>SPECIAL COLUMN DIGEST / 特別コラム抜粋</span>
             </div>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-white font-sans tracking-tight leading-tight [text-wrap:balance]">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-slate-900 dark:text-white font-sans tracking-tight leading-tight [text-wrap:balance]">
               なぜ世界は今も<span className="text-cyan-400">C++</span>で動いているのか？
-              <span className="block text-lg sm:text-2xl text-slate-300 font-bold mt-1">
+              <span className="block text-lg sm:text-2xl text-slate-700 dark:text-slate-300 font-bold mt-1">
                 〜シリコンの鼓動とゼロオーバーヘッドの美学〜
               </span>
             </h2>
@@ -494,7 +494,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
             {/* Unreal Engine 5 */}
-            <div className="p-4 rounded-2xl bg-slate-950/70 border border-slate-800/80 hover:border-cyan-500/40 transition space-y-2">
+            <div className="p-4 rounded-2xl bg-white/90 dark:bg-slate-950/70 border border-sky-100 dark:border-slate-800/80 hover:border-sky-300 dark:hover:border-cyan-500/40 transition space-y-2 shadow-sm dark:shadow-none">
               <div className="flex items-center gap-2 text-amber-400 font-bold text-sm">
                 <span className="text-lg">🎮</span>
                 <span>Unreal Engine 5</span>
@@ -505,7 +505,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
             </div>
 
             {/* NASA & SpaceX */}
-            <div className="p-4 rounded-2xl bg-slate-950/70 border border-slate-800/80 hover:border-cyan-500/40 transition space-y-2">
+            <div className="p-4 rounded-2xl bg-white/90 dark:bg-slate-950/70 border border-sky-100 dark:border-slate-800/80 hover:border-sky-300 dark:hover:border-cyan-500/40 transition space-y-2 shadow-sm dark:shadow-none">
               <div className="flex items-center gap-2 text-cyan-400 font-bold text-sm">
                 <span className="text-lg">🚀</span>
                 <span>NASA探査機 ＆ SpaceX</span>
@@ -516,7 +516,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
             </div>
 
             {/* PyTorch / AI */}
-            <div className="p-4 rounded-2xl bg-slate-950/70 border border-slate-800/80 hover:border-cyan-500/40 transition space-y-2">
+            <div className="p-4 rounded-2xl bg-white/90 dark:bg-slate-950/70 border border-sky-100 dark:border-slate-800/80 hover:border-sky-300 dark:hover:border-cyan-500/40 transition space-y-2 shadow-sm dark:shadow-none">
               <div className="flex items-center gap-2 text-purple-400 font-bold text-sm">
                 <span className="text-lg">🧠</span>
                 <span>PyTorch / AIコア</span>
@@ -527,7 +527,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
             </div>
 
             {/* Chrome & OS */}
-            <div className="p-4 rounded-2xl bg-slate-950/70 border border-slate-800/80 hover:border-cyan-500/40 transition space-y-2">
+            <div className="p-4 rounded-2xl bg-white/90 dark:bg-slate-950/70 border border-sky-100 dark:border-slate-800/80 hover:border-sky-300 dark:hover:border-cyan-500/40 transition space-y-2 shadow-sm dark:shadow-none">
               <div className="flex items-center gap-2 text-emerald-400 font-bold text-sm">
                 <span className="text-lg">⚡</span>
                 <span>Google Chrome ＆ OS基盤</span>
@@ -542,7 +542,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
         {/* 2. ゼロオーバーヘッド原則 ＆ 二刀流の極み（2カラム対比） */}
         <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 gap-4 pt-1">
           {/* ゼロオーバーヘッド原則 */}
-          <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-br from-slate-950/90 to-slate-900/60 border border-cyan-500/30 space-y-2.5">
+          <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-br from-white/95 to-sky-50/80 dark:from-slate-950/90 dark:to-slate-900/60 border border-sky-200 dark:border-cyan-500/30 space-y-2.5 shadow-sm dark:shadow-none">
             <div className="flex items-center justify-between">
               <div className="inline-flex items-center gap-1.5 text-xs font-mono font-bold text-cyan-300">
                 <Cpu className="w-4 h-4 text-cyan-400" />
@@ -562,7 +562,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
           </div>
 
           {/* 二刀流の極み */}
-          <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-br from-slate-950/90 to-slate-900/60 border border-amber-500/30 space-y-2.5">
+          <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-br from-white/95 to-amber-50/50 dark:from-slate-950/90 dark:to-slate-900/60 border border-amber-200 dark:border-amber-500/30 space-y-2.5 shadow-sm dark:shadow-none">
             <div className="flex items-center justify-between">
               <div className="inline-flex items-center gap-1.5 text-xs font-mono font-bold text-amber-300">
                 <Workflow className="w-4 h-4 text-amber-400" />
@@ -583,7 +583,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
         </div>
 
         {/* 3. 指導官メッセージ ＆ 全文CTA */}
-        <div className="relative z-10 flex flex-col sm:flex-row items-center justify-between gap-4 p-4 sm:p-5 rounded-2xl bg-slate-950/80 border border-slate-800">
+        <div className="relative z-10 flex flex-col sm:flex-row items-center justify-between gap-4 p-4 sm:p-5 rounded-2xl bg-white/90 dark:bg-slate-950/80 border border-sky-200 dark:border-slate-800 shadow-sm dark:shadow-none">
           <div className="flex items-center gap-3.5">
             <img
               src={getAssetUrl('/images/polar-bear-guide-pointing.png')}
@@ -611,7 +611,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
       </section>
 
       {/* 1.5 【初心者支援】30秒・学習ルート診断ナビゲーション */}
-      <section className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-slate-900 via-[#0c162d] to-slate-950 border-2 border-cyan-500/30 p-5 sm:p-7 shadow-xl shadow-cyan-950/20">
+      <section className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-white/95 via-sky-50/60 to-slate-50/90 dark:from-slate-900 dark:via-[#0c162d] dark:to-slate-950 border-2 border-sky-300/80 dark:border-cyan-500/30 p-5 sm:p-7 shadow-lg dark:shadow-xl shadow-sky-100/50 dark:shadow-cyan-950/20">
         <div className="absolute top-0 right-0 w-80 h-80 bg-cyan-500/5 rounded-full blur-3xl pointer-events-none -mr-20 -mt-20" />
         
         <div className="relative z-10 space-y-5">
@@ -649,7 +649,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
                 <button
                   type="button"
                   onClick={() => handleSelectExperience('c_beginner')}
-                  className="p-4 rounded-xl bg-slate-800/60 hover:bg-cyan-950/40 border border-slate-700/80 hover:border-cyan-400 text-left transition-all duration-200 group cursor-pointer hover:shadow-lg hover:shadow-cyan-950/50 flex flex-col justify-between"
+                  className="p-4 rounded-xl bg-white dark:bg-slate-800/60 hover:bg-sky-50 dark:hover:bg-cyan-950/40 border border-sky-200/90 dark:border-slate-700/80 hover:border-sky-400 dark:hover:border-cyan-400 text-left transition-all duration-200 group cursor-pointer shadow-sm hover:shadow-md flex flex-col justify-between"
                 >
                   <div className="space-y-1.5">
                     <span className="text-xl">🌱</span>
@@ -669,7 +669,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
                 <button
                   type="button"
                   onClick={() => handleSelectExperience('c_ok')}
-                  className="p-4 rounded-xl bg-slate-800/60 hover:bg-cyan-950/40 border border-slate-700/80 hover:border-cyan-400 text-left transition-all duration-200 group cursor-pointer hover:shadow-lg hover:shadow-cyan-950/50 flex flex-col justify-between"
+                  className="p-4 rounded-xl bg-white dark:bg-slate-800/60 hover:bg-sky-50 dark:hover:bg-cyan-950/40 border border-sky-200/90 dark:border-slate-700/80 hover:border-sky-400 dark:hover:border-cyan-400 text-left transition-all duration-200 group cursor-pointer shadow-sm hover:shadow-md flex flex-col justify-between"
                 >
                   <div className="space-y-1.5">
                     <span className="text-xl">🌿</span>
@@ -689,7 +689,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
                 <button
                   type="button"
                   onClick={() => handleSelectExperience('cpp_ok')}
-                  className="p-4 rounded-xl bg-slate-800/60 hover:bg-cyan-950/40 border border-slate-700/80 hover:border-cyan-400 text-left transition-all duration-200 group cursor-pointer hover:shadow-lg hover:shadow-cyan-950/50 flex flex-col justify-between"
+                  className="p-4 rounded-xl bg-white dark:bg-slate-800/60 hover:bg-sky-50 dark:hover:bg-cyan-950/40 border border-sky-200/90 dark:border-slate-700/80 hover:border-sky-400 dark:hover:border-cyan-400 text-left transition-all duration-200 group cursor-pointer shadow-sm hover:shadow-md flex flex-col justify-between"
                 >
                   <div className="space-y-1.5">
                     <span className="text-xl">⚡</span>
@@ -1863,8 +1863,8 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
         </div>
       </section>
 
-      {/* 8. 勉強を頑張った自分へのご褒美・お取り寄せグルメPR */}
-      <AffiliatePromoBanner type="reward" limit={3} />
+      {/* 8. スキルアップ・転職・ご褒美旅行PRセレクション */}
+      <AffiliatePromoBanner defaultCategory="school" limit={3} showTabs={true} />
 
       {/* 9. シロクマ技術学習エコシステム（4サイト連携ロードマップ） */}
       <section className="space-y-6">

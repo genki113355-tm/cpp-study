@@ -164,9 +164,9 @@ export const CodeViewer: React.FC<CodeViewerProps> = ({ files, targetHighlight }
   }, [targetHighlight, files]);
 
   return (
-    <div className="rounded-xl overflow-hidden border border-slate-800 bg-[#0c121e] shadow-2xl my-6">
+    <div className="rounded-2xl overflow-hidden border border-slate-300 dark:border-slate-800 bg-[#0c121e] shadow-xl dark:shadow-2xl my-6">
       {/* 上部ヘッダー：タブバー */}
-      <div className="flex items-center justify-between bg-slate-900/90 border-b border-slate-800 px-4 py-2.5 flex-wrap gap-2.5">
+      <div className="flex items-center justify-between bg-slate-100 dark:bg-slate-900/90 border-b border-slate-300 dark:border-slate-800 px-4 py-2.5 flex-wrap gap-2.5">
         <div className="flex items-center gap-1.5 overflow-x-auto max-w-full pb-1 sm:pb-0 no-scrollbar select-none">
           {files.map((file, idx) => {
             const isActive = idx === activeTab;
@@ -177,18 +177,18 @@ export const CodeViewer: React.FC<CodeViewerProps> = ({ files, targetHighlight }
                 onClick={() => setActiveTab(idx)}
                 className={`flex items-center gap-2 px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-mono transition-all duration-150 flex-shrink-0 whitespace-nowrap ${
                   isActive
-                    ? 'bg-slate-800 text-cyan-400 border border-cyan-500/50 shadow-md font-bold'
-                    : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'
+                    ? 'bg-white dark:bg-slate-800 text-cyan-800 dark:text-cyan-400 border border-cyan-400 dark:border-cyan-500/50 shadow-sm font-bold'
+                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-200/70 dark:hover:bg-slate-800/50'
                 }`}
               >
                 {isHeader ? (
-                  <FileText className="w-4 h-4 text-purple-400 flex-shrink-0" />
+                  <FileText className="w-4 h-4 text-purple-600 dark:text-purple-400 flex-shrink-0" />
                 ) : (
-                  <FileCode className="w-4 h-4 text-cyan-400 flex-shrink-0" />
+                  <FileCode className="w-4 h-4 text-cyan-600 dark:text-cyan-400 flex-shrink-0" />
                 )}
                 <span>{file.filename}</span>
                 {file.isMain && (
-                  <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse flex-shrink-0" />
+                  <span className="w-2 h-2 rounded-full bg-cyan-500 animate-pulse flex-shrink-0" />
                 )}
               </button>
             );
@@ -203,15 +203,15 @@ export const CodeViewer: React.FC<CodeViewerProps> = ({ files, targetHighlight }
               onClick={() => setAnatomyMode((prev) => !prev)}
               className={`flex items-center gap-1.5 px-3 py-1.5 text-xs rounded-xl font-mono transition border active:scale-95 cursor-pointer ${
                 anatomyMode
-                  ? 'bg-amber-950/90 text-amber-300 border-amber-500/50 shadow-md shadow-amber-500/20 font-bold'
-                  : 'bg-slate-800/80 text-amber-400/80 border-slate-700 hover:text-amber-300 hover:border-amber-500/40'
+                  ? 'bg-amber-100 dark:bg-amber-950/90 text-amber-800 dark:text-amber-300 border-amber-400 dark:border-amber-500/50 shadow-md font-bold'
+                  : 'bg-white dark:bg-slate-800/80 text-amber-700 dark:text-amber-400/80 border-slate-300 dark:border-slate-700 hover:text-amber-900 dark:hover:text-amber-300 hover:border-amber-400'
               }`}
               title="初心者向け：各行の構文・キーワードを1行ずつ分解解説（解剖モード）"
             >
-              <Microscope className="w-3.5 h-3.5 text-amber-400" />
+              <Microscope className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
               <span>1行解剖モード</span>
-              <span className={`px-1.5 py-0.2 rounded text-[10px] font-bold ${
-                anatomyMode ? 'bg-amber-900/80 text-amber-200' : 'bg-slate-900 text-slate-400'
+              <span className={`px-1.5 py-0.5 rounded text-xs font-bold ${
+                anatomyMode ? 'bg-amber-200 dark:bg-amber-900/80 text-amber-900 dark:text-amber-200' : 'bg-slate-200 dark:bg-slate-900 text-slate-600 dark:text-slate-400'
               }`}>
                 {anatomyCount}
               </span>
@@ -223,14 +223,14 @@ export const CodeViewer: React.FC<CodeViewerProps> = ({ files, targetHighlight }
               onClick={() => setHighlightCoreLines(prev => !prev)}
               className={`flex items-center gap-1.5 px-3 py-1.5 text-xs rounded-xl font-mono transition border active:scale-95 ${
                 highlightCoreLines
-                  ? 'bg-cyan-950/80 text-cyan-300 border-cyan-500/40 shadow-inner'
-                  : 'bg-slate-800/80 text-slate-400 border-slate-700 hover:text-slate-200'
+                  ? 'bg-cyan-100 dark:bg-cyan-950/80 text-cyan-800 dark:text-cyan-300 border-cyan-400 dark:border-cyan-500/40 shadow-inner font-bold'
+                  : 'bg-white dark:bg-slate-800/80 text-slate-600 dark:text-slate-400 border-slate-300 dark:border-slate-700 hover:text-slate-900 dark:hover:text-slate-200'
               }`}
               title="設計の核心行をハイライト表示"
             >
-              <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
+              <Sparkles className="w-3.5 h-3.5 text-cyan-600 dark:text-cyan-400" />
               <span>核心行ハイライト</span>
-              <span className="px-1.5 py-0.2 rounded bg-cyan-900/60 text-[10px] font-bold">
+              <span className="px-1.5 py-0.5 rounded bg-cyan-200 dark:bg-cyan-900/60 text-cyan-900 dark:text-cyan-200 text-xs font-bold">
                 {coreLineCount}
               </span>
             </button>
@@ -246,17 +246,17 @@ export const CodeViewer: React.FC<CodeViewerProps> = ({ files, targetHighlight }
 
           <button
             onClick={handleCopy}
-            className="flex items-center gap-1.5 px-3 py-1.5 text-xs sm:text-sm rounded-xl bg-slate-800/90 hover:bg-slate-700 text-slate-200 hover:text-white transition border border-slate-700 active:scale-95 shadow-sm font-mono font-medium"
+            className="flex items-center gap-1.5 px-3 py-1.5 text-xs sm:text-sm rounded-xl bg-white dark:bg-slate-800/90 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white transition border border-slate-300 dark:border-slate-700 active:scale-95 shadow-sm font-mono font-medium cursor-pointer"
             title="コードをクリップボードにコピー"
           >
             {copied ? (
               <>
-                <Check className="w-4 h-4 text-emerald-400" />
-                <span className="text-emerald-400 font-bold">コピー完了!</span>
+                <Check className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+                <span className="text-emerald-600 dark:text-emerald-400 font-bold">コピー完了!</span>
               </>
             ) : (
               <>
-                <Copy className="w-4 h-4 text-slate-400" />
+                <Copy className="w-4 h-4 text-slate-500 dark:text-slate-400" />
                 <span>コピー</span>
               </>
             )}
@@ -266,18 +266,18 @@ export const CodeViewer: React.FC<CodeViewerProps> = ({ files, targetHighlight }
 
       {/* ファイルの簡易説明バー */}
       {currentFile.description && (
-        <div className="px-5 py-2 bg-slate-900/40 border-b border-slate-800/60 text-xs sm:text-sm text-slate-300 flex items-center gap-2.5 font-sans">
-          <span className="text-cyan-400 font-mono font-bold">▸</span>
+        <div className="px-5 py-2.5 bg-slate-50 dark:bg-slate-900/40 border-b border-slate-200 dark:border-slate-800/60 text-xs sm:text-sm text-slate-700 dark:text-slate-300 flex items-center gap-2.5 font-sans">
+          <span className="text-cyan-600 dark:text-cyan-400 font-mono font-bold">▸</span>
           <span>{currentFile.description}</span>
         </div>
       )}
 
       {/* アンチパターン警告バナー（学習用コードの誤用・コピペ事故防止） */}
       {isAntiPatternFile && (
-        <div className="px-5 py-2.5 bg-rose-950/80 border-b border-rose-500/50 text-xs text-rose-200 flex items-center justify-between gap-3 font-sans shadow-inner">
+        <div className="px-5 py-2.5 bg-rose-50 dark:bg-rose-950/80 border-b border-rose-300 dark:border-rose-500/50 text-xs sm:text-sm text-rose-800 dark:text-rose-200 flex items-center justify-between gap-3 font-sans shadow-inner">
           <div className="flex items-center gap-2.5 flex-wrap">
-            <span className="px-2 py-0.5 rounded-full bg-rose-900 text-rose-100 font-mono font-bold text-[10px] flex items-center gap-1 border border-rose-600/50 shadow-sm">
-              <AlertTriangle className="w-3 h-3 text-rose-300" />
+            <span className="px-2.5 py-0.5 rounded-full bg-rose-200 dark:bg-rose-900 text-rose-800 dark:text-rose-100 font-mono font-bold text-xs flex items-center gap-1 border border-rose-400 dark:border-rose-600/50 shadow-sm">
+              <AlertTriangle className="w-3.5 h-3.5 text-rose-600 dark:text-rose-300" />
               <span>学習用アンチパターン</span>
             </span>
             <span className="leading-relaxed">
@@ -288,17 +288,17 @@ export const CodeViewer: React.FC<CodeViewerProps> = ({ files, targetHighlight }
       )}
 
       {/* スマホ閲覧時：横スクロール＆行タップ案内バー */}
-      <div className="sm:hidden px-3.5 py-1.5 bg-slate-950/90 border-b border-slate-800/80 text-[10px] font-mono text-slate-400 flex items-center justify-between">
-        <span className="flex items-center gap-1 text-cyan-400/90">
+      <div className="sm:hidden px-3.5 py-1.5 bg-slate-100 dark:bg-slate-950/90 border-b border-slate-200 dark:border-slate-800/80 text-xs font-mono text-slate-500 dark:text-slate-400 flex items-center justify-between">
+        <span className="flex items-center gap-1 text-cyan-600 dark:text-cyan-400/90">
           <span>↔</span>
           <span>左右スワイプで全文表示</span>
         </span>
-        <span className="text-slate-500">💡 行タップで構文解説</span>
+        <span className="text-slate-600 dark:text-slate-500">💡 行タップで構文解説</span>
       </div>
 
       {/* コード表示エリア（行番号 ＆ 核心行ハイライト付き） */}
       <div className="relative overflow-x-auto max-h-[700px] scrollbar-thin py-3">
-        <pre className="!m-0 !p-0 !bg-transparent text-xs sm:text-sm md:text-base font-mono leading-relaxed">
+        <pre className="!m-0 !p-0 !bg-transparent text-sm sm:text-[15px] md:text-base font-mono leading-relaxed">
           {processedLines.map((line) => {
             const isHighlighted = highlightCoreLines && line.isCore;
             const isBlinking = blinkLineNumber === line.lineNumber;
@@ -323,7 +323,7 @@ export const CodeViewer: React.FC<CodeViewerProps> = ({ files, targetHighlight }
                   }`}
                 >
                   {/* 行番号 & 💡解剖アイコン */}
-                  <span className={`w-12 text-right pr-3 select-none flex-shrink-0 text-xs sm:text-sm font-mono flex items-center justify-end gap-1 ${
+                  <span className={`w-12 text-right pr-3 select-none flex-shrink-0 text-xs sm:text-[13px] font-mono flex items-center justify-end gap-1 ${
                     isBlinking 
                       ? 'text-amber-400 font-black' 
                       : isHighlighted 
@@ -335,7 +335,7 @@ export const CodeViewer: React.FC<CodeViewerProps> = ({ files, targetHighlight }
                     {explanation && (
                       <span 
                         title="クリックでこの行の構文解剖カードを展開"
-                        className={`text-[11px] transition-transform ${
+                        className={`text-xs transition-transform ${
                           isExpanded ? 'text-amber-400 scale-125' : 'text-amber-400/50 group-hover:text-amber-300 group-hover:scale-110'
                         }`}
                       >
@@ -354,37 +354,37 @@ export const CodeViewer: React.FC<CodeViewerProps> = ({ files, targetHighlight }
 
                 {/* 🔬 行の解剖カード（Anatomy Card） */}
                 {explanation && isExpanded && (
-                  <div className="my-2 ml-14 mr-4 p-3.5 sm:p-4 rounded-2xl bg-gradient-to-br from-slate-900 via-[#0a1120] to-slate-950 border border-amber-500/40 shadow-xl shadow-amber-500/5 space-y-2.5 text-xs font-sans animate-fadeIn">
-                    <div className="flex items-center justify-between border-b border-slate-800/80 pb-1.5 flex-wrap gap-2">
-                      <div className="flex items-center gap-2 font-bold text-amber-300 font-mono text-xs sm:text-sm">
-                        <Microscope className="w-4 h-4 text-amber-400" />
+                  <div className="my-2.5 ml-14 mr-4 p-4 sm:p-5 rounded-2xl bg-gradient-to-br from-[#0e1626] via-[#090f1d] to-[#060a14] border-2 border-amber-500/50 shadow-xl shadow-amber-500/10 space-y-3 text-sm font-sans animate-fadeIn">
+                    <div className="flex items-center justify-between border-b border-slate-800 pb-2 flex-wrap gap-2">
+                      <div className="flex items-center gap-2 font-bold text-amber-300 font-mono text-sm sm:text-base">
+                        <Microscope className="w-4 h-4 text-amber-400 shrink-0" />
                         <span>行 {line.lineNumber} の解剖：{explanation.title}</span>
                       </div>
-                      <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-amber-950 text-amber-400 border border-amber-500/40 font-bold">
+                      <span className="text-xs font-mono px-2.5 py-0.5 rounded-full bg-amber-950 text-amber-300 border border-amber-500/40 font-bold">
                         初心者サポート
                       </span>
                     </div>
 
-                    <p className="text-slate-200 leading-relaxed font-sans text-xs sm:text-sm">
+                    <p className="text-slate-200 leading-relaxed font-sans text-sm sm:text-base">
                       {explanation.summary}
                     </p>
 
                     {/* トークン分解 */}
                     {explanation.tokens && explanation.tokens.length > 0 && (
-                      <div className="space-y-1 pt-1">
-                        <div className="text-[11px] font-mono font-bold text-slate-400">
+                      <div className="space-y-1.5 pt-1">
+                        <div className="text-xs font-mono font-bold text-slate-300">
                           単語・記号の役割：
                         </div>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                           {explanation.tokens.map((t: { token: string; explanation: string }, tIdx: number) => (
                             <div
                               key={tIdx}
-                              className="p-2 rounded-xl bg-slate-950/80 border border-slate-800/80 font-mono text-[11px] flex items-start gap-2"
+                              className="p-2.5 rounded-xl bg-slate-950/90 border border-slate-800 font-mono text-xs sm:text-sm flex items-start gap-2.5"
                             >
-                              <code className="text-cyan-300 bg-cyan-950/80 px-1.5 py-0.5 rounded border border-cyan-500/30 shrink-0 font-bold">
+                              <code className="text-cyan-300 bg-cyan-950/90 px-2 py-0.5 rounded border border-cyan-500/40 shrink-0 font-bold text-xs">
                                 {t.token}
                               </code>
-                              <span className="text-slate-300 font-sans leading-snug">
+                              <span className="text-slate-200 font-sans leading-normal">
                                 {t.explanation}
                               </span>
                             </div>
@@ -395,8 +395,8 @@ export const CodeViewer: React.FC<CodeViewerProps> = ({ files, targetHighlight }
 
                     {/* 落とし穴 */}
                     {explanation.pitfall && (
-                      <div className="p-2.5 rounded-xl bg-amber-950/30 border border-amber-500/30 text-[11px] sm:text-xs text-amber-200/90 flex items-start gap-2 font-sans leading-relaxed">
-                        <span className="text-sm shrink-0">⚠️</span>
+                      <div className="p-3 rounded-xl bg-amber-950/40 border border-amber-500/40 text-xs sm:text-sm text-amber-200 flex items-start gap-2 font-sans leading-relaxed">
+                        <span className="text-base shrink-0">⚠️</span>
                         <div>
                           <strong className="text-amber-300 font-bold">もし書かないと起きる問題：</strong>
                           <span>{explanation.pitfall}</span>
@@ -412,18 +412,18 @@ export const CodeViewer: React.FC<CodeViewerProps> = ({ files, targetHighlight }
       </div>
 
       {/* 下部ステータス */}
-      <div className="px-5 py-2 bg-slate-950 border-t border-slate-800/60 flex items-center justify-between text-xs text-slate-400 font-mono flex-wrap gap-2">
+      <div className="px-5 py-2.5 bg-slate-100 dark:bg-slate-950 border-t border-slate-300 dark:border-slate-800/60 flex items-center justify-between text-xs text-slate-600 dark:text-slate-400 font-mono flex-wrap gap-2">
         <div className="flex items-center gap-3 flex-wrap">
-          <span className="font-bold text-slate-300">{currentFile.filename}</span>
+          <span className="font-bold text-slate-800 dark:text-slate-300">{currentFile.filename}</span>
           {highlightCoreLines && coreLineCount > 0 && (
-            <span className="text-cyan-400 text-[11px] flex items-center gap-1">
-              <Sparkles className="w-3 h-3" />
+            <span className="text-cyan-700 dark:text-cyan-400 text-xs flex items-center gap-1 font-bold">
+              <Sparkles className="w-3.5 h-3.5" />
               <span>設計核心行: {coreLineCount} 行強調中</span>
             </span>
           )}
           {anatomyCount > 0 && (
-            <span className="text-amber-400 text-[11px] flex items-center gap-1">
-              <Microscope className="w-3 h-3" />
+            <span className="text-amber-700 dark:text-amber-400 text-xs flex items-center gap-1 font-bold">
+              <Microscope className="w-3.5 h-3.5" />
               <span>解剖解説: {anatomyCount} 行（💡クリックで個別展開）</span>
             </span>
           )}

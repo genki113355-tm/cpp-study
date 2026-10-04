@@ -114,30 +114,30 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
       {/* サイドバー本体 */}
       <aside
-        className={`fixed md:sticky top-0 md:top-[4.5rem] z-50 md:z-20 h-screen md:h-[calc(100vh-4.5rem)] w-72 sm:w-80 max-w-[85vw] shrink-0 bg-[#0c121e] border-r border-slate-800 flex flex-col transition-transform duration-300 ease-in-out overflow-y-auto overscroll-contain scrollbar-thin ${
+        className={`fixed md:sticky top-0 md:top-[4.5rem] z-50 md:z-20 h-screen md:h-[calc(100vh-4.5rem)] w-72 sm:w-80 max-w-[85vw] shrink-0 bg-white dark:bg-[#0c121e] border-r border-slate-200 dark:border-slate-800 text-slate-800 dark:text-slate-100 flex flex-col transition-transform duration-300 ease-in-out overflow-y-auto overscroll-contain scrollbar-thin ${
           isOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'
         }`}
       >
         {/* モバイル時のヘッダー閉じるボタン */}
-        <div className="flex items-center justify-between p-4 border-b border-slate-800 md:hidden">
-          <span className="font-mono text-sm font-bold text-slate-200">カリキュラム目次</span>
+        <div className="flex items-center justify-between p-4 border-b border-slate-200 dark:border-slate-800 md:hidden">
+          <span className="font-mono text-sm font-bold text-slate-800 dark:text-slate-200">カリキュラム目次</span>
           <button
             onClick={onClose}
-            className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800"
+            className="p-1.5 rounded-lg text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
         {/* 全体進捗バー（全体系総合） */}
-        <div className="p-4 border-b border-slate-800/80 bg-slate-900/40">
+        <div className="p-4 border-b border-slate-200 dark:border-slate-800/80 bg-slate-50 dark:bg-slate-900/40">
           <div className="flex items-center justify-between text-sm mb-2 font-mono">
-            <span className="text-slate-300 font-medium">カリキュラム達成率</span>
-            <span className="text-cyan-400 font-bold text-base">
+            <span className="text-slate-700 dark:text-slate-300 font-medium">カリキュラム達成率</span>
+            <span className="text-cyan-600 dark:text-cyan-400 font-bold text-base">
               {Math.round((completedChapters.length / ALL_CHAPTERS.length) * 100)}%
             </span>
           </div>
-          <div className="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
+          <div className="w-full h-2 bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden">
             <div
               className="h-full bg-gradient-to-r from-amber-500 via-cyan-500 to-purple-500 transition-all duration-300"
               style={{
@@ -145,18 +145,18 @@ export const Sidebar: React.FC<SidebarProps> = ({
               }}
             />
           </div>
-          <div className="grid grid-cols-3 text-[10px] text-slate-400 mt-2.5 font-mono gap-1 text-center">
-            <span className="bg-slate-900/80 py-1 rounded border border-slate-800">🏛️ {classicCount}/{CLASSIC_CHAPTERS.length}</span>
-            <span className="bg-slate-900/80 py-1 rounded border border-slate-800">🚀 {modernCount}/{MODERN_CHAPTERS.length}</span>
-            <span className="bg-slate-900/80 py-1 rounded border border-slate-800">🧭 {readingCount}/{READING_CHAPTERS.length}</span>
+          <div className="grid grid-cols-3 text-xs text-slate-600 dark:text-slate-400 mt-2.5 font-mono gap-1 text-center">
+            <span className="bg-white dark:bg-slate-900/80 py-1 rounded border border-slate-200 dark:border-slate-800">🏛️ {classicCount}/{CLASSIC_CHAPTERS.length}</span>
+            <span className="bg-white dark:bg-slate-900/80 py-1 rounded border border-slate-200 dark:border-slate-800">🚀 {modernCount}/{MODERN_CHAPTERS.length}</span>
+            <span className="bg-white dark:bg-slate-900/80 py-1 rounded border border-slate-200 dark:border-slate-800">🧭 {readingCount}/{READING_CHAPTERS.length}</span>
           </div>
 
           {onOpenMilestoneModal && (
             <button
               onClick={onOpenMilestoneModal}
-              className="mt-3 w-full py-1.5 px-2.5 rounded-xl bg-gradient-to-r from-amber-500/20 to-yellow-500/20 hover:from-amber-500/30 hover:to-yellow-500/30 text-amber-300 border border-amber-500/40 text-xs font-mono font-bold transition flex items-center justify-center gap-1.5 shadow-sm active:scale-95 cursor-pointer"
+              className="mt-3 w-full py-1.5 px-2.5 rounded-xl bg-gradient-to-r from-amber-500/20 to-yellow-500/20 hover:from-amber-500/30 hover:to-yellow-500/30 text-amber-700 dark:text-amber-300 border border-amber-500/40 text-xs font-mono font-bold transition flex items-center justify-center gap-1.5 shadow-sm active:scale-95 cursor-pointer"
             >
-              <Trophy className="w-3.5 h-3.5 text-amber-400" />
+              <Trophy className="w-3.5 h-3.5 text-amber-500 dark:text-amber-400" />
               <span>🏆 修了証・進捗引継ぎ</span>
             </button>
           )}
@@ -165,53 +165,53 @@ export const Sidebar: React.FC<SidebarProps> = ({
         {/* カリキュラム章リスト */}
         <div className="p-3 space-y-2">
           {/* コース切り替えタブボタン */}
-          <div className="grid grid-cols-5 gap-1 p-1 bg-slate-900 rounded-xl border border-slate-800 text-[9.5px] sm:text-[10px] font-mono whitespace-nowrap select-none">
+          <div className="grid grid-cols-5 gap-1 p-1 bg-slate-100 dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 text-xs font-mono whitespace-nowrap select-none">
             <button
               onClick={() => setActiveTab('all')}
-              className={`py-1 rounded-lg font-bold transition text-center whitespace-nowrap px-0.5 ${
+              className={`py-1 rounded-lg font-bold transition text-center whitespace-nowrap px-0.5 cursor-pointer ${
                 activeTab === 'all'
-                  ? 'bg-slate-700 text-white shadow'
-                  : 'text-slate-400 hover:text-slate-200'
+                  ? 'bg-slate-800 text-white dark:bg-slate-700 shadow-sm'
+                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
               }`}
             >
               全一覧
             </button>
             <button
               onClick={() => setActiveTab('classic')}
-              className={`py-1 rounded-lg font-bold transition text-center whitespace-nowrap px-0.5 ${
+              className={`py-1 rounded-lg font-bold transition text-center whitespace-nowrap px-0.5 cursor-pointer ${
                 activeTab === 'classic'
-                  ? 'bg-amber-500 text-slate-950 shadow'
-                  : 'text-slate-400 hover:text-amber-300'
+                  ? 'bg-amber-500 text-slate-950 shadow-sm'
+                  : 'text-slate-600 dark:text-slate-400 hover:text-amber-700 dark:hover:text-amber-300'
               }`}
             >
               🏛️ 現場
             </button>
             <button
               onClick={() => setActiveTab('modern')}
-              className={`py-1 rounded-lg font-bold transition text-center whitespace-nowrap px-0.5 ${
+              className={`py-1 rounded-lg font-bold transition text-center whitespace-nowrap px-0.5 cursor-pointer ${
                 activeTab === 'modern'
-                  ? 'bg-cyan-500 text-slate-950 shadow'
-                  : 'text-slate-400 hover:text-cyan-300'
+                  ? 'bg-cyan-500 text-slate-950 shadow-sm'
+                  : 'text-slate-600 dark:text-slate-400 hover:text-cyan-700 dark:hover:text-cyan-300'
               }`}
             >
               🚀 モダン
             </button>
             <button
               onClick={() => setActiveTab('reading')}
-              className={`py-1 rounded-lg font-bold transition text-center whitespace-nowrap px-0.5 ${
+              className={`py-1 rounded-lg font-bold transition text-center whitespace-nowrap px-0.5 cursor-pointer ${
                 activeTab === 'reading'
-                  ? 'bg-purple-500 text-slate-950 shadow'
-                  : 'text-slate-400 hover:text-purple-300'
+                  ? 'bg-purple-600 text-white dark:bg-purple-500 dark:text-slate-950 shadow-sm'
+                  : 'text-slate-600 dark:text-slate-400 hover:text-purple-700 dark:hover:text-purple-300'
               }`}
             >
               🧭 読解
             </button>
             <button
               onClick={() => setActiveTab('guide')}
-              className={`py-1 rounded-lg font-bold transition text-center whitespace-nowrap px-0.5 ${
+              className={`py-1 rounded-lg font-bold transition text-center whitespace-nowrap px-0.5 cursor-pointer ${
                 activeTab === 'guide'
-                  ? 'bg-emerald-500 text-slate-950 shadow'
-                  : 'text-slate-400 hover:text-emerald-300'
+                  ? 'bg-emerald-500 text-slate-950 shadow-sm'
+                  : 'text-slate-600 dark:text-slate-400 hover:text-emerald-700 dark:hover:text-emerald-300'
               }`}
             >
               📚 特集
@@ -222,8 +222,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
           <div
             className={`group relative rounded-xl p-3 transition-all duration-150 cursor-pointer border flex items-center justify-between ${
               currentChapterSlug === 'top'
-                ? 'bg-slate-800/95 border-cyan-500/60 shadow-lg shadow-cyan-950/40 text-cyan-300'
-                : 'border-slate-800/60 bg-slate-900/40 hover:bg-slate-800/60 text-slate-300'
+                ? 'bg-cyan-50 dark:bg-slate-800/95 border-cyan-400 dark:border-cyan-500/60 shadow-sm dark:shadow-lg dark:shadow-cyan-950/40 text-cyan-900 dark:text-cyan-300 font-bold'
+                : 'border-slate-200 dark:border-slate-800/60 bg-white dark:bg-slate-900/40 hover:bg-slate-50 dark:hover:bg-slate-800/60 text-slate-700 dark:text-slate-300'
             }`}
             onClick={() => {
               onSelectChapter('top');
@@ -269,21 +269,21 @@ export const Sidebar: React.FC<SidebarProps> = ({
               <button
                 type="button"
                 onClick={() => toggleCategory('classic')}
-                className="w-full px-2 py-1.5 text-[11px] font-mono font-bold text-amber-400/90 uppercase tracking-wider flex items-center justify-between gap-1 rounded-lg hover:bg-amber-950/40 transition cursor-pointer select-none group"
+                className="w-full px-2 py-1.5 text-xs font-mono font-bold text-amber-700 dark:text-amber-400/90 uppercase tracking-wider flex items-center justify-between gap-1 rounded-lg hover:bg-amber-100/60 dark:hover:bg-amber-950/40 transition cursor-pointer select-none group"
               >
                 <div className="flex items-center gap-1.5 truncate">
                   <ChevronDown
-                    className={`w-3.5 h-3.5 text-amber-400/70 group-hover:text-amber-300 transition-transform duration-200 shrink-0 ${
+                    className={`w-3.5 h-3.5 text-amber-600 dark:text-amber-400/70 group-hover:text-amber-700 dark:group-hover:text-amber-300 transition-transform duration-200 shrink-0 ${
                       activeTab === 'classic' || expandedCategories.classic ? 'rotate-0' : '-rotate-90'
                     }`}
                   />
                   <span className="truncate">🏛️ レガシーC++（現場実務）</span>
                 </div>
                 <div className="flex items-center gap-1.5 shrink-0">
-                  <span className="text-[9.5px] text-slate-400 font-mono">
+                  <span className="text-xs text-slate-500 dark:text-slate-400 font-mono">
                     {classicCount}/{CLASSIC_CHAPTERS.length}
                   </span>
-                  <span className="text-[10px] bg-amber-950/80 text-amber-300 px-1.5 py-0.5 rounded border border-amber-500/30">
+                  <span className="text-xs bg-amber-100 text-amber-800 border-amber-300 dark:bg-amber-950/80 dark:text-amber-300 px-1.5 py-0.5 rounded border dark:border-amber-500/30">
                     L1〜L{CLASSIC_CHAPTERS.length}
                   </span>
                 </div>
@@ -302,8 +302,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
                         key={ch.id}
                         className={`group relative rounded-xl p-2.5 transition-all duration-150 cursor-pointer border ${
                           isActive
-                            ? 'bg-amber-950/30 border-amber-500/60 shadow-md shadow-amber-950/30'
-                            : 'border-transparent hover:bg-slate-800/60 hover:border-slate-700/60'
+                            ? 'bg-amber-50 dark:bg-amber-950/30 border-amber-400 dark:border-amber-500/60 shadow-sm dark:shadow-md dark:shadow-amber-950/30'
+                            : 'border-transparent hover:bg-slate-100 dark:hover:bg-slate-800/60 hover:border-slate-200 dark:hover:border-slate-700/60'
                         }`}
                         onClick={() => {
                           onSelectChapter(ch.slug);
@@ -316,31 +316,31 @@ export const Sidebar: React.FC<SidebarProps> = ({
                               e.stopPropagation();
                               onToggleComplete(ch.id);
                             }}
-                            className="text-slate-500 hover:text-amber-400 transition flex-shrink-0"
+                            className="text-slate-400 hover:text-amber-600 dark:hover:text-amber-400 transition flex-shrink-0 cursor-pointer"
                             title={isCompleted ? '未完了に戻す' : '完了にする'}
                           >
                             {isCompleted ? (
-                              <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                              <CheckCircle2 className="w-4 h-4 text-emerald-500 dark:text-emerald-400" />
                             ) : (
                               <Circle className="w-4 h-4" />
                             )}
                           </button>
                           <span
                             className={`text-xs font-mono font-bold ${
-                              isActive ? 'text-amber-300' : 'text-slate-200'
+                              isActive ? 'text-amber-800 dark:text-amber-300' : 'text-slate-700 dark:text-slate-200'
                             }`}
                           >
                             【L】第{chNum}章
                           </span>
-                          <span className="ml-auto text-[10px] font-mono text-slate-500 group-hover:text-slate-400 shrink-0">
+                          <span className="ml-auto text-xs font-mono text-slate-500 dark:text-slate-500 group-hover:text-slate-700 dark:group-hover:text-slate-400 shrink-0">
                             {meta.readingTimeMinutes}分
                           </span>
                         </div>
 
                         <div className="mt-1 pl-6">
                           <p
-                            className={`text-xs font-medium leading-snug line-clamp-2 break-words ${
-                              isActive ? 'text-white font-bold' : 'text-slate-300 group-hover:text-slate-100'
+                            className={`text-sm font-semibold leading-snug line-clamp-2 break-words ${
+                              isActive ? 'text-amber-950 dark:text-white font-bold' : 'text-slate-700 dark:text-slate-300 group-hover:text-slate-900 dark:group-hover:text-slate-100'
                             }`}
                           >
                             {getCleanSidebarTitle(ch.title)}
@@ -360,21 +360,21 @@ export const Sidebar: React.FC<SidebarProps> = ({
               <button
                 type="button"
                 onClick={() => toggleCategory('modern')}
-                className="w-full px-2 py-1.5 text-[11px] font-mono font-bold text-cyan-400/90 uppercase tracking-wider flex items-center justify-between gap-1 rounded-lg hover:bg-cyan-950/40 transition cursor-pointer select-none group"
+                className="w-full px-2 py-1.5 text-xs font-mono font-bold text-cyan-700 dark:text-cyan-400/90 uppercase tracking-wider flex items-center justify-between gap-1 rounded-lg hover:bg-cyan-100/60 dark:hover:bg-cyan-950/40 transition cursor-pointer select-none group"
               >
                 <div className="flex items-center gap-1.5 truncate">
                   <ChevronDown
-                    className={`w-3.5 h-3.5 text-cyan-400/70 group-hover:text-cyan-300 transition-transform duration-200 shrink-0 ${
+                    className={`w-3.5 h-3.5 text-cyan-600 dark:text-cyan-400/70 group-hover:text-cyan-700 dark:group-hover:text-cyan-300 transition-transform duration-200 shrink-0 ${
                       activeTab === 'modern' || expandedCategories.modern ? 'rotate-0' : '-rotate-90'
                     }`}
                   />
                   <span className="truncate">🚀 モダンC++（新世代）</span>
                 </div>
                 <div className="flex items-center gap-1.5 shrink-0">
-                  <span className="text-[9.5px] text-slate-400 font-mono">
+                  <span className="text-xs text-slate-500 dark:text-slate-400 font-mono">
                     {modernCount}/{MODERN_CHAPTERS.length}
                   </span>
-                  <span className="text-[10px] bg-cyan-950/80 text-cyan-300 px-1.5 py-0.5 rounded border border-cyan-500/30 flex-shrink-0">
+                  <span className="text-xs bg-cyan-100 text-cyan-800 border-cyan-300 dark:bg-cyan-950/80 dark:text-cyan-300 px-1.5 py-0.5 rounded border dark:border-cyan-500/30 flex-shrink-0">
                     M1〜M{MODERN_CHAPTERS.length}
                   </span>
                 </div>
@@ -393,8 +393,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
                         key={ch.id}
                         className={`group relative rounded-xl p-2.5 transition-all duration-150 cursor-pointer border ${
                           isActive
-                            ? 'bg-cyan-950/30 border-cyan-500/60 shadow-md shadow-cyan-950/30'
-                            : 'border-transparent hover:bg-slate-800/60 hover:border-slate-700/60'
+                            ? 'bg-cyan-50 dark:bg-cyan-950/30 border-cyan-400 dark:border-cyan-500/60 shadow-sm dark:shadow-md dark:shadow-cyan-950/30'
+                            : 'border-transparent hover:bg-slate-100 dark:hover:bg-slate-800/60 hover:border-slate-200 dark:hover:border-slate-700/60'
                         }`}
                         onClick={() => {
                           onSelectChapter(ch.slug);
@@ -407,31 +407,31 @@ export const Sidebar: React.FC<SidebarProps> = ({
                               e.stopPropagation();
                               onToggleComplete(ch.id);
                             }}
-                            className="text-slate-500 hover:text-cyan-400 transition flex-shrink-0"
+                            className="text-slate-400 hover:text-cyan-600 dark:hover:text-cyan-400 transition flex-shrink-0 cursor-pointer"
                             title={isCompleted ? '未完了に戻す' : '完了にする'}
                           >
                             {isCompleted ? (
-                              <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                              <CheckCircle2 className="w-4 h-4 text-emerald-500 dark:text-emerald-400" />
                             ) : (
                               <Circle className="w-4 h-4" />
                             )}
                           </button>
                           <span
                             className={`text-xs font-mono font-bold ${
-                              isActive ? 'text-cyan-300' : 'text-slate-200'
+                              isActive ? 'text-cyan-800 dark:text-cyan-300' : 'text-slate-700 dark:text-slate-200'
                             }`}
                           >
                             【M】第{chNum}章
                           </span>
-                          <span className="ml-auto text-[10px] font-mono text-slate-500 group-hover:text-slate-400 shrink-0">
+                          <span className="ml-auto text-xs font-mono text-slate-500 dark:text-slate-500 group-hover:text-slate-700 dark:group-hover:text-slate-400 shrink-0">
                             {meta.readingTimeMinutes}分
                           </span>
                         </div>
 
                         <div className="mt-1 pl-6">
                           <p
-                            className={`text-xs font-medium leading-snug line-clamp-2 break-words ${
-                              isActive ? 'text-white font-bold' : 'text-slate-300 group-hover:text-slate-100'
+                            className={`text-sm font-semibold leading-snug line-clamp-2 break-words ${
+                              isActive ? 'text-cyan-950 dark:text-white font-bold' : 'text-slate-700 dark:text-slate-300 group-hover:text-slate-900 dark:group-hover:text-slate-100'
                             }`}
                           >
                             {getCleanSidebarTitle(ch.title)}
@@ -447,25 +447,25 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
           {/* 🧭 コード読解演習トラックセクション */}
           {(activeTab === 'all' || activeTab === 'reading') && (
-            <div className="space-y-1.5 pt-3 border-t border-slate-800/80">
+            <div className="space-y-1.5 pt-3 border-t border-slate-200 dark:border-slate-800/80">
               <button
                 type="button"
                 onClick={() => toggleCategory('reading')}
-                className="w-full px-2 py-1.5 text-[11px] font-mono font-bold text-purple-400/90 uppercase tracking-wider flex items-center justify-between gap-1 rounded-lg hover:bg-purple-950/40 transition cursor-pointer select-none group"
+                className="w-full px-2 py-1.5 text-xs font-mono font-bold text-purple-700 dark:text-purple-400/90 uppercase tracking-wider flex items-center justify-between gap-1 rounded-lg hover:bg-purple-100/60 dark:hover:bg-purple-950/40 transition cursor-pointer select-none group"
               >
                 <div className="flex items-center gap-1.5 truncate">
                   <ChevronDown
-                    className={`w-3.5 h-3.5 text-purple-400/70 group-hover:text-purple-300 transition-transform duration-200 shrink-0 ${
+                    className={`w-3.5 h-3.5 text-purple-600 dark:text-purple-400/70 group-hover:text-purple-700 dark:group-hover:text-purple-300 transition-transform duration-200 shrink-0 ${
                       activeTab === 'reading' || expandedCategories.reading ? 'rotate-0' : '-rotate-90'
                     }`}
                   />
                   <span className="truncate">🧭 コード読解（現場鑑識）</span>
                 </div>
                 <div className="flex items-center gap-1.5 shrink-0">
-                  <span className="text-[9.5px] text-slate-400 font-mono">
+                  <span className="text-xs text-slate-500 dark:text-slate-400 font-mono">
                     {readingCount}/{READING_CHAPTERS.length}
                   </span>
-                  <span className="text-[10px] bg-purple-950/80 text-purple-300 px-1.5 py-0.5 rounded border border-purple-500/30 flex-shrink-0">
+                  <span className="text-xs bg-purple-100 text-purple-800 border-purple-300 dark:bg-purple-950/80 dark:text-purple-300 px-1.5 py-0.5 rounded border dark:border-purple-500/30 flex-shrink-0">
                     R1〜R{READING_CHAPTERS.length}
                   </span>
                 </div>
@@ -484,8 +484,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
                         key={ch.id}
                         className={`group relative rounded-xl p-2.5 transition-all duration-150 cursor-pointer border ${
                           isActive
-                            ? 'bg-purple-950/30 border-purple-500/60 shadow-md shadow-purple-950/30'
-                            : 'border-transparent hover:bg-slate-800/60 hover:border-slate-700/60'
+                            ? 'bg-purple-50 dark:bg-purple-950/30 border-purple-400 dark:border-purple-500/60 shadow-sm dark:shadow-md dark:shadow-purple-950/30'
+                            : 'border-transparent hover:bg-slate-100 dark:hover:bg-slate-800/60 hover:border-slate-200 dark:hover:border-slate-700/60'
                         }`}
                         onClick={() => {
                           onSelectChapter(ch.slug);
@@ -498,31 +498,31 @@ export const Sidebar: React.FC<SidebarProps> = ({
                               e.stopPropagation();
                               onToggleComplete(ch.id);
                             }}
-                            className="text-slate-500 hover:text-purple-400 transition flex-shrink-0"
+                            className="text-slate-400 hover:text-purple-600 dark:hover:text-purple-400 transition flex-shrink-0 cursor-pointer"
                             title={isCompleted ? '未完了に戻す' : '完了にする'}
                           >
                             {isCompleted ? (
-                              <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                              <CheckCircle2 className="w-4 h-4 text-emerald-500 dark:text-emerald-400" />
                             ) : (
                               <Circle className="w-4 h-4" />
                             )}
                           </button>
                           <span
                             className={`text-xs font-mono font-bold ${
-                              isActive ? 'text-purple-300' : 'text-slate-200'
+                              isActive ? 'text-purple-800 dark:text-purple-300' : 'text-slate-700 dark:text-slate-200'
                             }`}
                           >
                             【R】Step {chNum}
                           </span>
-                          <span className="ml-auto text-[10px] font-mono text-slate-500 group-hover:text-slate-400 shrink-0">
+                          <span className="ml-auto text-xs font-mono text-slate-500 dark:text-slate-500 group-hover:text-slate-700 dark:group-hover:text-slate-400 shrink-0">
                             {meta.readingTimeMinutes}分
                           </span>
                         </div>
 
                         <div className="mt-1 pl-6">
                           <p
-                            className={`text-xs font-medium leading-snug line-clamp-2 break-words ${
-                              isActive ? 'text-white font-bold' : 'text-slate-300 group-hover:text-slate-100'
+                            className={`text-sm font-semibold leading-snug line-clamp-2 break-words ${
+                              isActive ? 'text-purple-950 dark:text-white font-bold' : 'text-slate-700 dark:text-slate-300 group-hover:text-slate-900 dark:group-hover:text-slate-100'
                             }`}
                           >
                             {getCleanSidebarTitle(ch.title)}
@@ -538,25 +538,25 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
           {/* 📚 特集ガイド＆実践コラムセクション */}
           {(activeTab === 'all' || activeTab === 'guide') && (
-            <div className="space-y-1.5 pt-3 border-t border-slate-800/80">
+            <div className="space-y-1.5 pt-3 border-t border-slate-200 dark:border-slate-800/80">
               <button
                 type="button"
                 onClick={() => toggleCategory('guide')}
-                className="w-full px-2 py-1.5 text-[11px] font-mono font-bold text-emerald-400/90 uppercase tracking-wider flex items-center justify-between gap-1 rounded-lg hover:bg-emerald-950/40 transition cursor-pointer select-none group"
+                className="w-full px-2 py-1.5 text-xs font-mono font-bold text-emerald-700 dark:text-emerald-400/90 uppercase tracking-wider flex items-center justify-between gap-1 rounded-lg hover:bg-emerald-100/60 dark:hover:bg-emerald-950/40 transition cursor-pointer select-none group"
               >
                 <div className="flex items-center gap-1.5 truncate">
                   <ChevronDown
-                    className={`w-3.5 h-3.5 text-emerald-400/70 group-hover:text-emerald-300 transition-transform duration-200 shrink-0 ${
+                    className={`w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400/70 group-hover:text-emerald-700 dark:group-hover:text-emerald-300 transition-transform duration-200 shrink-0 ${
                       activeTab === 'guide' || expandedCategories.guide ? 'rotate-0' : '-rotate-90'
                     }`}
                   />
                   <span className="truncate">📚 特集ガイド＆コラム</span>
                 </div>
                 <div className="flex items-center gap-1.5 shrink-0">
-                  <span className="text-[9.5px] text-slate-400 font-mono">
+                  <span className="text-xs text-slate-500 dark:text-slate-400 font-mono">
                     {guideCount}/{SPECIAL_GUIDES.length}
                   </span>
-                  <span className="text-[10px] bg-emerald-950/80 text-emerald-300 px-1.5 py-0.5 rounded border border-emerald-500/30 flex-shrink-0">
+                  <span className="text-xs bg-emerald-100 text-emerald-800 border-emerald-300 dark:bg-emerald-950/80 dark:text-emerald-300 px-1.5 py-0.5 rounded border dark:border-emerald-500/30 flex-shrink-0">
                     現場手引き
                   </span>
                 </div>
@@ -589,9 +589,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
                         className={`group relative rounded-xl p-2.5 transition-all duration-150 cursor-pointer border ${
                           isActive
                             ? isColumn
-                              ? 'bg-purple-950/30 border-purple-500/60 shadow-md shadow-purple-950/30'
-                              : 'bg-emerald-950/30 border-emerald-500/60 shadow-md shadow-emerald-950/30'
-                            : 'border-transparent hover:bg-slate-800/60 hover:border-slate-700/60'
+                              ? 'bg-purple-50 dark:bg-purple-950/30 border-purple-400 dark:border-purple-500/60 shadow-sm dark:shadow-md dark:shadow-purple-950/30'
+                              : 'bg-emerald-50 dark:bg-emerald-950/30 border-emerald-400 dark:border-emerald-500/60 shadow-sm dark:shadow-md dark:shadow-emerald-950/30'
+                            : 'border-transparent hover:bg-slate-100 dark:hover:bg-slate-800/60 hover:border-slate-200 dark:hover:border-slate-700/60'
                         }`}
                         onClick={() => {
                           onSelectChapter(guide.slug);
@@ -604,11 +604,11 @@ export const Sidebar: React.FC<SidebarProps> = ({
                               e.stopPropagation();
                               onToggleComplete(guide.id);
                             }}
-                            className="text-slate-500 hover:text-emerald-400 transition flex-shrink-0"
+                            className="text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition flex-shrink-0 cursor-pointer"
                             title={isCompleted ? '未読了に戻す' : '読了にする'}
                           >
                             {isCompleted ? (
-                              <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                              <CheckCircle2 className="w-4 h-4 text-emerald-500 dark:text-emerald-400" />
                             ) : (
                               <Circle className="w-4 h-4" />
                             )}
@@ -617,21 +617,23 @@ export const Sidebar: React.FC<SidebarProps> = ({
                           <span
                             className={`text-xs font-mono font-bold ${
                               isActive 
-                                ? isColumn ? 'text-purple-300' : 'text-emerald-300'
-                                : 'text-slate-200'
+                                ? isColumn ? 'text-purple-800 dark:text-purple-300' : 'text-emerald-800 dark:text-emerald-300'
+                                : 'text-slate-700 dark:text-slate-200'
                             }`}
                           >
                             {guide.badge}
                           </span>
-                          <span className="ml-auto text-[10px] font-mono text-slate-500 group-hover:text-slate-400 shrink-0">
+                          <span className="ml-auto text-xs font-mono text-slate-500 dark:text-slate-500 group-hover:text-slate-700 dark:group-hover:text-slate-400 shrink-0">
                             {meta.readingTimeMinutes}分
                           </span>
                         </div>
 
                         <div className="mt-1 pl-6">
                           <p
-                            className={`text-xs font-medium leading-relaxed line-clamp-2 break-words ${
-                              isActive ? 'text-white font-bold' : 'text-slate-300 group-hover:text-slate-100'
+                            className={`text-sm font-semibold leading-relaxed line-clamp-2 break-words ${
+                              isActive 
+                                ? isColumn ? 'text-purple-950 dark:text-white font-bold' : 'text-emerald-950 dark:text-white font-bold'
+                                : 'text-slate-700 dark:text-slate-300 group-hover:text-slate-900 dark:group-hover:text-slate-100'
                             }`}
                           >
                             {guide.title}
@@ -646,16 +648,14 @@ export const Sidebar: React.FC<SidebarProps> = ({
           )}
         </div>
 
-
-
         {/* 技術学習エコシステム（相互リンク） */}
-        <div className="p-3 border-t border-slate-800/80 bg-slate-950/60 space-y-2 shrink-0">
-          <div className="text-[10px] font-mono text-slate-400 font-bold mb-1.5 flex items-center justify-between">
-            <span className="flex items-center gap-1.5 text-cyan-400">
+        <div className="p-3 border-t border-slate-200 dark:border-slate-800/80 bg-slate-50 dark:bg-slate-950/60 space-y-2 shrink-0">
+          <div className="text-xs font-mono text-slate-600 dark:text-slate-400 font-bold mb-1.5 flex items-center justify-between">
+            <span className="flex items-center gap-1.5 text-cyan-600 dark:text-cyan-400">
               <span>🔗</span>
               <span>技術学習エコシステム</span>
             </span>
-            <span className="text-[9px] text-slate-400 font-mono px-1.5 py-0.5 rounded bg-slate-850 border border-slate-700/60">
+            <span className="text-[10px] text-slate-500 dark:text-slate-400 font-mono px-1.5 py-0.5 rounded bg-white dark:bg-slate-850 border border-slate-200 dark:border-slate-700/60">
               相互リンク
             </span>
           </div>
@@ -666,20 +666,20 @@ export const Sidebar: React.FC<SidebarProps> = ({
               href="https://shirokuma-auto-cpp.jp/"
               target="_blank"
               rel="noopener noreferrer"
-              className="group flex items-center justify-between p-2 rounded-xl bg-slate-900/80 hover:bg-slate-850 border border-slate-800 hover:border-amber-500/40 transition shadow-sm"
+              className="group flex items-center justify-between p-2 rounded-xl bg-white dark:bg-slate-900/80 hover:bg-slate-50 dark:hover:bg-slate-850 border border-slate-200 dark:border-slate-800 hover:border-amber-400 dark:hover:border-amber-500/40 transition shadow-sm"
             >
               <div className="min-w-0 pr-2">
                 <div className="flex items-center gap-1.5">
                   <span className="text-xs">⚡</span>
-                  <div className="text-xs font-bold text-slate-200 group-hover:text-amber-300 font-sans truncate">
+                  <div className="text-xs font-bold text-slate-800 dark:text-slate-200 group-hover:text-amber-700 dark:group-hover:text-amber-300 font-sans truncate">
                     シロクマC++自動化ラボ
                   </div>
                 </div>
-                <div className="text-[10px] text-slate-400 mt-0.5 truncate font-sans">
+                <div className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5 truncate font-sans">
                   Docker / pybind11 / 自動評価
                 </div>
               </div>
-              <span className="text-xs text-slate-500 group-hover:text-amber-400 font-mono flex-shrink-0">
+              <span className="text-xs text-slate-400 group-hover:text-amber-600 dark:group-hover:text-amber-400 font-mono flex-shrink-0">
                 ↗
               </span>
             </a>
@@ -689,20 +689,20 @@ export const Sidebar: React.FC<SidebarProps> = ({
               href="https://shirokuma-qt-cpp.jp/"
               target="_blank"
               rel="noopener noreferrer"
-              className="group flex items-center justify-between p-2 rounded-xl bg-slate-900/80 hover:bg-slate-850 border border-slate-800 hover:border-cyan-500/40 transition shadow-sm"
+              className="group flex items-center justify-between p-2 rounded-xl bg-white dark:bg-slate-900/80 hover:bg-slate-50 dark:hover:bg-slate-850 border border-slate-200 dark:border-slate-800 hover:border-cyan-400 dark:hover:border-cyan-500/40 transition shadow-sm"
             >
               <div className="min-w-0 pr-2">
                 <div className="flex items-center gap-1.5">
                   <span className="text-xs">🖥️</span>
-                  <div className="text-xs font-bold text-slate-200 group-hover:text-cyan-300 font-sans truncate">
+                  <div className="text-xs font-bold text-slate-800 dark:text-slate-200 group-hover:text-cyan-700 dark:group-hover:text-cyan-300 font-sans truncate">
                     シロクマQt×C++ラボ
                   </div>
                 </div>
-                <div className="text-[10px] text-slate-400 mt-0.5 truncate font-sans">
+                <div className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5 truncate font-sans">
                   QML / 60fps波形描画 / 実務GUI
                 </div>
               </div>
-              <span className="text-xs text-slate-500 group-hover:text-cyan-400 font-mono flex-shrink-0">
+              <span className="text-xs text-slate-400 group-hover:text-cyan-600 dark:group-hover:text-cyan-400 font-mono flex-shrink-0">
                 ↗
               </span>
             </a>
@@ -712,20 +712,20 @@ export const Sidebar: React.FC<SidebarProps> = ({
               href="https://sonar-guide.jp/"
               target="_blank"
               rel="noopener noreferrer"
-              className="group flex items-center justify-between p-2 rounded-xl bg-slate-900/80 hover:bg-slate-850 border border-slate-800 hover:border-blue-500/40 transition shadow-sm"
+              className="group flex items-center justify-between p-2 rounded-xl bg-white dark:bg-slate-900/80 hover:bg-slate-50 dark:hover:bg-slate-850 border border-slate-200 dark:border-slate-800 hover:border-blue-400 dark:hover:border-blue-500/40 transition shadow-sm"
             >
               <div className="min-w-0 pr-2">
                 <div className="flex items-center gap-1.5">
                   <span className="text-xs">🌊</span>
-                  <div className="text-xs font-bold text-slate-200 group-hover:text-blue-300 font-sans truncate">
+                  <div className="text-xs font-bold text-slate-800 dark:text-slate-200 group-hover:text-blue-700 dark:group-hover:text-blue-300 font-sans truncate">
                     水中音響・ソナー入門
                   </div>
                 </div>
-                <div className="text-[10px] text-slate-400 mt-0.5 truncate font-sans">
+                <div className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5 truncate font-sans">
                   波の物理 / FFT / 音響解析
                 </div>
               </div>
-              <span className="text-xs text-slate-500 group-hover:text-blue-400 font-mono flex-shrink-0">
+              <span className="text-xs text-slate-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 font-mono flex-shrink-0">
                 ↗
               </span>
             </a>
@@ -733,27 +733,27 @@ export const Sidebar: React.FC<SidebarProps> = ({
         </div>
 
         {/* キャラクター紹介（シロクマ先生 & ペンギン生徒） */}
-        <div className="mt-auto border-t border-cyan-500/20 p-4 pb-6 bg-[#080d1a]/80 space-y-3 shrink-0">
+        <div className="mt-auto border-t border-slate-200 dark:border-cyan-500/20 p-4 pb-6 bg-slate-50 dark:bg-[#080d1a]/80 space-y-3 shrink-0">
           <div className="flex items-center gap-3">
             <img
               src={getAssetUrl('/images/characters/shirokuma_sensei.png')}
               alt="シロクマ先生"
-              className="w-10 h-10 rounded-full border-2 border-cyan-500 object-cover bg-slate-900 shadow-[0_0_10px_rgba(6,182,212,0.3)]"
+              className="w-10 h-10 rounded-full border-2 border-cyan-500 object-cover bg-slate-900 shadow-sm"
             />
             <div>
-              <p className="text-sm font-bold text-white leading-none mb-1">シロクマ先生 (Sensei)</p>
-              <p className="text-[10px] text-slate-400">低レイヤ・数理アルゴリズム専門家</p>
+              <p className="text-sm font-bold text-slate-900 dark:text-white leading-none mb-1">シロクマ先生 (Sensei)</p>
+              <p className="text-xs text-slate-500 dark:text-slate-400">低レイヤ・数理アルゴリズム専門家</p>
             </div>
           </div>
           <div className="flex items-center gap-3">
             <img
               src={getAssetUrl('/images/characters/penguin_student.jpg')}
               alt="ペンギン生徒"
-              className="w-10 h-10 rounded-full border-2 border-slate-500 object-cover bg-slate-900 shadow"
+              className="w-10 h-10 rounded-full border-2 border-slate-400 dark:border-slate-500 object-cover bg-slate-900 shadow-sm"
             />
             <div>
-              <p className="text-sm font-bold text-white leading-none mb-1">ペンギン生徒 (Student)</p>
-              <p className="text-[10px] text-slate-400">手動評価に苦しむ若手エンジニア</p>
+              <p className="text-sm font-bold text-slate-900 dark:text-white leading-none mb-1">ペンギン生徒 (Student)</p>
+              <p className="text-xs text-slate-500 dark:text-slate-400">手動評価に苦しむ若手エンジニア</p>
             </div>
           </div>
         </div>

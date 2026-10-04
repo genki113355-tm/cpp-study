@@ -3,8 +3,10 @@ import { ALL_CHAPTERS, getChapterBySlug, SLUG_REDIRECT_MAP } from './data/chapte
 import { Navbar } from './components/layout/Navbar';
 import { Sidebar } from './components/layout/Sidebar';
 import { Footer } from './components/layout/Footer';
+import { ArcticBackground } from './components/layout/ArcticBackground';
 import { useSEO } from './hooks/useSEO';
 import { loadCompletedChapters, saveCompletedChapters } from './utils/progressManager';
+import { ThemeProvider } from './context/ThemeContext';
 
 // カリキュラムに実在する有効な章ID一覧（不整合防御用）
 const VALID_CHAPTER_IDS = ALL_CHAPTERS.map((c) => c.id);
@@ -67,7 +69,7 @@ const getSlugFromUrl = (): string => {
   return 'top';
 };
 
-export const App: React.FC = () => {
+const AppContent: React.FC = () => {
   const [currentSlug, setCurrentSlug] = useState<string>(getSlugFromUrl);
 
   const [completedChapters, setCompletedChapters] = useState<number[]>(() => {
@@ -201,7 +203,10 @@ export const App: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#090d16] text-slate-100 flex flex-col font-sans overflow-x-clip">
+    <div className="min-h-screen bg-[#f8fafc] dark:bg-[#080d1a] text-slate-900 dark:text-slate-100 flex flex-col font-sans overflow-x-clip relative transition-colors duration-300">
+      {/* 🏔️ ほんのり薄い氷山＆オーロラ背景ビジュアル（ライト/ダーク両対応） */}
+      <ArcticBackground />
+
       {/* ナビゲーションバー */}
       <Navbar
         currentChapterId={currentChapterId}
@@ -213,7 +218,7 @@ export const App: React.FC = () => {
       />
 
       {/* メインエリア：サイドバー ＋ 広々としたカリキュラム本文 */}
-      <div className="flex-1 flex w-full min-w-0">
+      <div className="flex-1 flex w-full min-w-0 relative z-10">
         <Sidebar
           currentChapterSlug={currentSlug}
           onSelectChapter={handleSelectChapter}
@@ -321,5 +326,15 @@ export const App: React.FC = () => {
     </div>
   );
 };
+
+export const App: React.FC = () => {
+  return (
+    <ThemeProvider>
+      <AppContent />
+    </ThemeProvider>
+  );
+};
+
 export default App;
+
 
