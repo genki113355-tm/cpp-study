@@ -1979,7 +1979,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
                   <span className="text-xs font-mono font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-emerald-950 text-emerald-300 border border-emerald-500/40">
                     Linux × Qt GUI開発
                   </span>
-                  <span className="text-xs font-mono text-slate-600 dark:text-slate-400">shirokuma-qt-cpp.jp</span>
+                  <span className="text-xs font-mono text-slate-600 dark:text-slate-400">shirokuma-tech.jp/qt</span>
                 </div>
               </div>
 
@@ -1999,7 +1999,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
 
             <div className="pt-2 relative z-10">
               <a
-                href="https://shirokuma-qt-cpp.jp/"
+                href="https://shirokuma-tech.jp/qt/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold font-mono text-xs sm:text-sm transition shadow-lg shadow-emerald-500/20 active:scale-95 flex items-center justify-center gap-2"
@@ -2022,7 +2022,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
                   <span className="text-xs font-mono font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-cyan-950 text-cyan-300 border border-cyan-500/40">
                     C++自動化・実務効率化
                   </span>
-                  <span className="text-xs font-mono text-slate-600 dark:text-slate-400">shirokuma-auto-cpp.jp</span>
+                  <span className="text-xs font-mono text-slate-600 dark:text-slate-400">shirokuma-tech.jp/auto</span>
                 </div>
               </div>
 
@@ -2042,7 +2042,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
 
             <div className="pt-2 relative z-10">
               <a
-                href="https://shirokuma-auto-cpp.jp/"
+                href="https://shirokuma-tech.jp/auto/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white font-bold font-mono text-xs sm:text-sm transition shadow-lg shadow-cyan-500/20 active:scale-95 flex items-center justify-center gap-2"
@@ -2065,7 +2065,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
                   <span className="text-xs font-mono font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-indigo-950 text-indigo-300 border border-indigo-500/40">
                     水中音響・信号処理
                   </span>
-                  <span className="text-xs font-mono text-slate-600 dark:text-slate-400">sonar-guide.jp</span>
+                  <span className="text-xs font-mono text-slate-600 dark:text-slate-400">shirokuma-tech.jp/sonar</span>
                 </div>
               </div>
 
@@ -2085,7 +2085,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
 
             <div className="pt-2 relative z-10">
               <a
-                href="https://sonar-guide.jp/"
+                href="https://shirokuma-tech.jp/sonar/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-indigo-600 to-cyan-600 hover:from-indigo-500 hover:to-cyan-500 text-white font-bold font-mono text-xs sm:text-sm transition shadow-lg shadow-indigo-500/20 active:scale-95 flex items-center justify-center gap-2"

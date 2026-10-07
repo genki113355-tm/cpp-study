@@ -58,7 +58,7 @@ export const PrivacyPolicyPage: React.FC<PrivacyPolicyPageProps> = ({ onNavigate
           </div>
           <div className="space-y-3 text-slate-700 dark:text-slate-300">
             <p>
-              当サイト（<span className="text-cyan-700 dark:text-cyan-300 font-mono font-semibold">https://shirokuma-cpp.jp</span>）では、第三者配信の広告サービス「Google AdSense（グーグルアドセンス）」を利用しています。
+              当サイト（<span className="text-cyan-700 dark:text-cyan-300 font-mono font-semibold">https://shirokuma-tech.jp/cpp</span>）では、第三者配信の広告サービス「Google AdSense（グーグルアドセンス）」を利用しています。
             </p>
             <p>
               Google などの第三者広告配信事業者は、ユーザーの興味に応じた商品やサービスの広告を表示するため、当サイトや他のウェブサイトへのアクセス情報に基づき「Cookie（クッキー）」を使用することがあります。このCookieには、氏名、住所、メールアドレス、電話番号などの個人を特定できる情報は含まれません。

@@ -7,7 +7,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const rootDir = path.resolve(__dirname, '..');
 const distDir = path.resolve(rootDir, 'dist');
-const baseUrl = 'https://shirokuma-cpp.jp';
+const baseUrl = 'https://shirokuma-tech.jp/cpp';
 const siteTitle = 'シロクマC++ラボ 〜ゲーム開発で学ぶオブジェクト指向開発 レガシー設計からモダン設計まで〜';
 const siteDesc = '1本のインベーダーゲーム風のゲームを10段階でリファクタリングしながら学ぶ！レガシー生ポインタからモダンC++17、ECS設計、TDD、UML設計書、C++基本文法総覧まで完全網羅したオブジェクト指向実践学習メディア。';
 const ogImage = `${baseUrl}/images/characters_mission.jpg`;
@@ -36,13 +36,13 @@ const footerNavHtml = `
     <nav aria-label="姉妹メディア公式相互リンク" style="margin-bottom: 20px;">
       <div style="font-weight: bold; color: #cbd5e1; margin-bottom: 8px;">🔗 公式姉妹メディア（相互リンク）</div>
       <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 14px; justify-content: center; font-size: 12px;">
-        <li><a href="https://shirokuma-auto-cpp.jp/" target="_blank" rel="noopener" style="color: #38bdf8; text-decoration: none;">⚡ シロクマC++自動化ラボ ↗</a></li>
-        <li><a href="https://shirokuma-qt-cpp.jp/" target="_blank" rel="noopener" style="color: #34d399; text-decoration: none;">🖥️ シロクマQt×C++ラボ ↗</a></li>
-        <li><a href="https://sonar-guide.jp/" target="_blank" rel="noopener" style="color: #60a5fa; text-decoration: none;">🌊 水中音響・ソナー技術入門 ↗</a></li>
+        <li><a href="https://shirokuma-tech.jp/auto/" target="_blank" rel="noopener" style="color: #38bdf8; text-decoration: none;">⚡ シロクマC++自動化ラボ ↗</a></li>
+        <li><a href="https://shirokuma-tech.jp/qt/" target="_blank" rel="noopener" style="color: #34d399; text-decoration: none;">🖥️ シロクマQt×C++ラボ ↗</a></li>
+        <li><a href="https://shirokuma-tech.jp/sonar/" target="_blank" rel="noopener" style="color: #60a5fa; text-decoration: none;">🌊 水中音響・ソナー技術入門 ↗</a></li>
       </ul>
     </nav>
     <div style="font-size: 12px; color: #64748b;">
-      © 2026 シロクマC++ラボ (shirokuma-cpp.jp). All rights reserved.
+      © 2026 シロクマC++ラボ (shirokuma-tech.jp/cpp). All rights reserved.
     </div>
   </footer>
 `;
@@ -384,7 +384,7 @@ async function generateSEO() {
 
         <section style="margin-bottom: 30px; padding: 20px; background: #0f172a; border-radius: 12px; border: 1px solid #1e293b;">
           <h2 style="font-size: 20px; color: #38bdf8; margin-top: 0;">1. 広告の配信（Google AdSense 等）について</h2>
-          <p>当サイト（https://shirokuma-cpp.jp）では、第三者配信の広告サービス「Google AdSense（グーグルアドセンス）」を利用しています。</p>
+          <p>当サイト（https://shirokuma-tech.jp/cpp）では、第三者配信の広告サービス「Google AdSense（グーグルアドセンス）」を利用しています。</p>
           <p>Google などの第三者広告配信事業者は、ユーザーの興味に応じた商品やサービスの広告を表示するため、当サイトや他のウェブサイトへのアクセス情報に基づき「Cookie（クッキー）」を使用することがあります。Cookieには氏名、住所、メールアドレス、電話番号などの個人を特定する情報は含まれません。</p>
           <p>Cookie を無効にする方法や Google AdSense に関する詳細・パーソナライズ広告の無効化（オプトアウト）については、<a href="https://adssettings.google.com/" target="_blank" rel="noopener noreferrer" style="color: #38bdf8; font-weight: bold;">Google 広告設定</a> または <a href="https://www.aboutads.info/choices/" target="_blank" rel="noopener noreferrer" style="color: #38bdf8; font-weight: bold;">www.aboutads.info</a> をご参照ください。</p>
         </section>

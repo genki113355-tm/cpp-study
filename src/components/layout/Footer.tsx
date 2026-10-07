@@ -31,9 +31,9 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
           <div className="pt-3 pb-2 max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-3">
             {/* 1. シロクマC++自動化ラボ */}
             <a
-              href="https://shirokuma-auto-cpp.jp/"
+              href="https://shirokuma-tech.jp/auto/"
               target="_blank"
-              rel="nofollow noopener noreferrer"
+              rel="noopener noreferrer"
               className="group flex items-center justify-between gap-3 p-3.5 rounded-2xl bg-white dark:bg-slate-900/90 hover:bg-slate-50 dark:hover:bg-slate-850 border border-slate-200 dark:border-slate-800 hover:border-cyan-400 dark:hover:border-cyan-500/40 transition-all shadow-sm dark:shadow-lg text-left"
             >
               <div className="flex items-center gap-3 min-w-0 flex-1">
@@ -61,9 +61,9 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
 
             {/* 2. シロクマQt×C++ラボ */}
             <a
-              href="https://shirokuma-qt-cpp.jp/"
+              href="https://shirokuma-tech.jp/qt/"
               target="_blank"
-              rel="nofollow noopener noreferrer"
+              rel="noopener noreferrer"
               className="group flex items-center justify-between gap-3 p-3.5 rounded-2xl bg-white dark:bg-slate-900/90 hover:bg-slate-50 dark:hover:bg-slate-850 border border-slate-200 dark:border-slate-800 hover:border-emerald-400 dark:hover:border-emerald-500/40 transition-all shadow-sm dark:shadow-lg text-left"
             >
               <div className="flex items-center gap-3 min-w-0 flex-1">
@@ -91,9 +91,9 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
 
             {/* 3. 水中音響・ソナー技術入門 */}
             <a
-              href="https://sonar-guide.jp/"
+              href="https://shirokuma-tech.jp/sonar/"
               target="_blank"
-              rel="nofollow noopener noreferrer"
+              rel="noopener noreferrer"
               className="group flex items-center justify-between gap-3 p-3.5 rounded-2xl bg-white dark:bg-slate-900/90 hover:bg-slate-50 dark:hover:bg-slate-850 border border-slate-200 dark:border-slate-800 hover:border-blue-400 dark:hover:border-blue-500/40 transition-all shadow-sm dark:shadow-lg text-left"
             >
               <div className="flex items-center gap-3 min-w-0 flex-1">
@@ -227,7 +227,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
           </div>
 
           <p className="text-slate-500 dark:text-slate-400 flex items-center justify-center gap-1 text-xs pt-1 font-mono">
-            <span>© 2026 シロクマC++ラボ (shirokuma-cpp.jp). All rights reserved.</span>
+            <span>© 2026 シロクマC++ラボ (shirokuma-tech.jp/cpp). All rights reserved.</span>
           </p>
         </div>
       </footer>

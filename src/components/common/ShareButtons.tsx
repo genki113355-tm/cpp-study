@@ -25,7 +25,7 @@ export const ShareButtons: React.FC<ShareButtonsProps> = ({
     if (typeof window !== 'undefined') {
       return window.location.href;
     }
-    return 'https://shirokuma-cpp.jp';
+    return 'https://shirokuma-tech.jp/cpp';
   };
 
   const finalUrl = getShareUrl();

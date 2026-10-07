@@ -663,7 +663,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
           <div className="space-y-1.5">
             {/* 1. シロクマC++自動化ラボ */}
             <a
-              href="https://shirokuma-auto-cpp.jp/"
+              href="https://shirokuma-tech.jp/auto/"
               target="_blank"
               rel="noopener noreferrer"
               className="group flex items-center justify-between p-2 rounded-xl bg-white dark:bg-slate-900/80 hover:bg-slate-50 dark:hover:bg-slate-850 border border-slate-200 dark:border-slate-800 hover:border-amber-400 dark:hover:border-amber-500/40 transition shadow-sm"
@@ -686,7 +686,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
             {/* 2. シロクマQt×C++ラボ */}
             <a
-              href="https://shirokuma-qt-cpp.jp/"
+              href="https://shirokuma-tech.jp/qt/"
               target="_blank"
               rel="noopener noreferrer"
               className="group flex items-center justify-between p-2 rounded-xl bg-white dark:bg-slate-900/80 hover:bg-slate-50 dark:hover:bg-slate-850 border border-slate-200 dark:border-slate-800 hover:border-cyan-400 dark:hover:border-cyan-500/40 transition shadow-sm"
@@ -709,7 +709,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
             {/* 3. 水中音響・ソナー技術入門 */}
             <a
-              href="https://sonar-guide.jp/"
+              href="https://shirokuma-tech.jp/sonar/"
               target="_blank"
               rel="noopener noreferrer"
               className="group flex items-center justify-between p-2 rounded-xl bg-white dark:bg-slate-900/80 hover:bg-slate-50 dark:hover:bg-slate-850 border border-slate-200 dark:border-slate-800 hover:border-blue-400 dark:hover:border-blue-500/40 transition shadow-sm"
