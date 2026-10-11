@@ -112,7 +112,7 @@ export const OnlinePlaygroundModal: React.FC<OnlinePlaygroundModalProps> = ({
             <div>
               <h2 className="text-base sm:text-lg font-bold text-white flex items-center gap-2 font-sans leading-tight">
                 <span>C++オンライン実行ラボ</span>
-                <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-cyan-950 text-cyan-400 border border-cyan-500/30">
+                <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-cyan-100 text-cyan-900 border border-cyan-300 dark:bg-cyan-950 dark:text-cyan-400 dark:border-cyan-500/30">
                   GCC C++23
                 </span>
               </h2>
@@ -161,7 +161,7 @@ export const OnlinePlaygroundModal: React.FC<OnlinePlaygroundModalProps> = ({
                   const tmpl = PLAYGROUND_TEMPLATES.find((t) => t.id === e.target.value);
                   if (tmpl) handleSelectTemplate(tmpl);
                 }}
-                className="w-full bg-slate-900 border border-cyan-500/40 hover:border-cyan-400 text-cyan-200 text-xs font-mono rounded-xl px-3 py-1.5 focus:outline-none focus:ring-1 focus:ring-cyan-400 cursor-pointer shadow-sm appearance-none pr-8 transition"
+                className="w-full bg-white dark:bg-slate-900 border border-sky-300 dark:border-cyan-500/40 hover:border-cyan-400 text-slate-900 dark:text-cyan-200 text-xs font-mono rounded-xl px-3 py-1.5 focus:outline-none focus:ring-1 focus:ring-cyan-400 cursor-pointer shadow-sm appearance-none pr-8 transition"
               >
                 {categories.map((cat) => (
                   <optgroup key={cat} label={`【${cat}】`} className="bg-slate-900 text-cyan-400 font-bold font-mono">
@@ -265,7 +265,7 @@ export const OnlinePlaygroundModal: React.FC<OnlinePlaygroundModalProps> = ({
                     </ul>
                   </div>
 
-                  <div className="p-2.5 rounded-xl bg-amber-950/20 border border-amber-500/30 space-y-1.5">
+                  <div className="p-2.5 rounded-xl bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-500/30 space-y-1.5">
                     <div className="text-[11px] font-mono font-bold text-amber-300 flex items-center gap-1.5">
                       <Code2 className="w-3.5 h-3.5 text-amber-400" />
                       <span>やってみよう！実験ヒント:</span>
@@ -332,7 +332,7 @@ export const OnlinePlaygroundModal: React.FC<OnlinePlaygroundModalProps> = ({
 
             {/* 標準入力ボックス（展開時） */}
             {showStdin && (
-              <div className="p-3 bg-slate-950 border-b border-slate-200 dark:border-slate-800">
+              <div className="p-3 bg-slate-50 dark:bg-slate-950 border-b border-slate-200 dark:border-slate-800">
                 <label className="block text-[11px] font-mono text-slate-600 dark:text-slate-400 mb-1">
                   標準入力（cin に渡す値）:
                 </label>
@@ -425,7 +425,7 @@ export const OnlinePlaygroundModal: React.FC<OnlinePlaygroundModalProps> = ({
         </div>
 
         {/* モーダルフッター（シロクマ先生のひとこと） */}
-        <div className="px-4 sm:px-6 py-2.5 bg-slate-950 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between text-xs text-slate-600 dark:text-slate-400 font-sans">
+        <div className="px-4 sm:px-6 py-2.5 bg-slate-50 dark:bg-slate-950 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between text-xs text-slate-600 dark:text-slate-400 font-sans">
           <div className="flex items-center gap-2">
             <img
               src={getAssetUrl('/images/characters/shirokuma_sensei.png')}

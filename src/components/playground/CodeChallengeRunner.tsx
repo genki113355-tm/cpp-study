@@ -130,25 +130,25 @@ export const CodeChallengeRunner: React.FC<CodeChallengeRunnerProps> = ({ challe
   const godboltUrl = createGodboltUrl(code);
 
   return (
-    <div className="my-10 rounded-3xl bg-gradient-to-b from-[#080e1c] via-[#050a16] to-[#03060f] border-2 border-cyan-500/40 p-5 sm:p-8 shadow-2xl relative overflow-hidden backdrop-blur-md">
+    <div className="my-10 rounded-3xl bg-white/95 dark:bg-slate-900 border-2 border-sky-200 dark:border-cyan-500/40 p-5 sm:p-8 shadow-2xl relative overflow-hidden backdrop-blur-md">
       {/* 背景アクセント */}
       <div className="absolute top-0 right-0 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none" />
 
       {/* ヘッダーエリア */}
       <div className="relative z-10 space-y-4 pb-6 border-b border-slate-200 dark:border-slate-800">
         <div className="flex items-center justify-between gap-3 flex-wrap">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono font-bold border bg-cyan-950/80 text-cyan-300 border-cyan-500/40 shadow-sm">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono font-bold border bg-cyan-100 text-cyan-900 border-cyan-300 dark:bg-cyan-950/80 dark:text-cyan-300 dark:border-cyan-500/40 shadow-sm">
             <Code2 className="w-4 h-4 text-cyan-400" />
             <span>【{challenge.chapterBadge} 実践ハンズオン演習】</span>
           </div>
 
-          <span className="text-[11px] font-mono text-emerald-400 px-2.5 py-1 rounded bg-slate-900 border border-emerald-500/30 font-bold">
+          <span className="text-[11px] font-mono text-emerald-800 dark:text-emerald-400 px-2.5 py-1 rounded bg-emerald-50 dark:bg-slate-900 border border-emerald-300 dark:border-emerald-500/30 font-bold font-bold">
             ⚡ 本物GCC (C++23) 即時実行
           </span>
         </div>
 
         <div>
-          <h3 className="text-xl sm:text-2xl font-extrabold text-white tracking-tight font-sans">
+          <h3 className="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white tracking-tight font-sans">
             {challenge.title}
           </h3>
           <p className="text-sm sm:text-base text-slate-700 dark:text-slate-300 mt-2 leading-relaxed font-sans">
@@ -172,7 +172,7 @@ export const CodeChallengeRunner: React.FC<CodeChallengeRunnerProps> = ({ challe
         </div>
 
         {/* 🔰 実践ハンズオン演習の進め方（3ステップ・ガイド） */}
-        <div className="p-4 sm:p-5 rounded-2xl bg-cyan-950/30 border border-cyan-500/30 text-xs sm:text-sm text-cyan-200 shadow-inner">
+        <div className="p-4 sm:p-5 rounded-2xl bg-sky-50 dark:bg-cyan-950/30 border border-sky-200 dark:border-cyan-500/30 text-xs sm:text-sm text-cyan-200 shadow-inner">
           <div className="font-bold text-cyan-300 flex items-center gap-2 mb-2 flex-wrap">
             <span className="px-2.5 py-0.5 rounded-full bg-cyan-900/90 text-cyan-200 border border-cyan-400/40 text-[11px] font-mono font-bold">
               🔰 はじめての方へ：演習の進め方
@@ -241,7 +241,7 @@ export const CodeChallengeRunner: React.FC<CodeChallengeRunnerProps> = ({ challe
 
           {/* エディタ直上にも折りたたみヒントボックスを展開 */}
           {showHint && (
-            <div className="mt-3 p-4 rounded-xl bg-amber-950/40 border border-amber-500/40 text-xs sm:text-sm text-amber-200/90 leading-relaxed font-sans animate-fadeIn">
+            <div className="mt-3 p-4 rounded-xl bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-500/40 text-xs sm:text-sm text-amber-200/90 leading-relaxed font-sans animate-fadeIn">
               <div className="font-bold flex items-center gap-1.5 mb-1.5 text-amber-400">
                 <Lightbulb className="w-4 h-4" />
                 <span>攻略のヒント:</span>
@@ -327,7 +327,7 @@ export const CodeChallengeRunner: React.FC<CodeChallengeRunnerProps> = ({ challe
             </div>
           </div>
         ) : (
-          <div className="p-3.5 rounded-xl bg-emerald-950/40 border border-emerald-500/40 flex items-center justify-between gap-3 flex-wrap animate-fadeIn">
+          <div className="p-3.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-500/40 flex items-center justify-between gap-3 flex-wrap animate-fadeIn">
             <div className="flex items-center gap-2.5">
               <CheckCircle2 size={18} className="text-emerald-400 shrink-0" />
               <div>
@@ -423,7 +423,7 @@ export const CodeChallengeRunner: React.FC<CodeChallengeRunnerProps> = ({ challe
 
       {/* 折りたたみヒント */}
       {showHint && (
-        <div className="relative z-10 mt-4 p-4 rounded-2xl bg-amber-950/30 border border-amber-500/30 text-xs sm:text-sm text-amber-200/90 leading-relaxed font-sans">
+        <div className="relative z-10 mt-4 p-4 rounded-2xl bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-500/30 text-xs sm:text-sm text-amber-200/90 leading-relaxed font-sans">
           <div className="font-bold flex items-center gap-1.5 mb-1 text-amber-400">
             <Lightbulb className="w-4 h-4" />
             <span>攻略のヒント:</span>
@@ -434,7 +434,7 @@ export const CodeChallengeRunner: React.FC<CodeChallengeRunnerProps> = ({ challe
 
       {/* 折りたたみ模範解答 */}
       {showSolution && (
-        <div className="relative z-10 mt-4 p-4 rounded-2xl bg-slate-900 border border-slate-200 dark:border-slate-800 text-xs font-mono space-y-2">
+        <div className="relative z-10 mt-4 p-4 rounded-2xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-xs font-mono space-y-2">
           <div className="flex items-center justify-between text-slate-700 dark:text-slate-300 font-bold border-b border-slate-200 dark:border-slate-800 pb-2">
             <span>🔑 模範解答コード:</span>
             <button
@@ -512,7 +512,7 @@ export const CodeChallengeRunner: React.FC<CodeChallengeRunnerProps> = ({ challe
 
           {/* 合格・不合格バナー */}
           {isPassed ? (
-            <div className="p-4 sm:p-5 rounded-2xl bg-emerald-950/60 border-2 border-emerald-500/60 shadow-xl shadow-emerald-950/50 flex items-center gap-4">
+            <div className="p-4 sm:p-5 rounded-2xl bg-emerald-50 dark:bg-emerald-950/60 border-2 border-emerald-300 dark:border-emerald-500/60 shadow-xl shadow-emerald-950/50 flex items-center gap-4">
               <div className="w-14 h-14 rounded-xl overflow-hidden border-2 border-emerald-400 flex-shrink-0 shadow-lg hidden sm:block">
                 <img
                   src={getAssetUrl('/images/characters_victory.png')}

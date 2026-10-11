@@ -306,18 +306,18 @@ ECS World ＋ RAII ＋ Stateマシン ＋ ゼロコスト抽象化 ＋ 単体テ
       {/* セクションタイトル */}
       <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between gap-4 border-b border-slate-200 dark:border-slate-800 pb-5">
         <div className="space-y-2">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-950/80 border border-cyan-500/40 text-cyan-300 font-mono text-xs font-semibold shadow-inner">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-100 dark:bg-cyan-950/80 border border-cyan-300 dark:border-cyan-500/40 text-cyan-900 dark:text-cyan-300 font-mono text-xs font-semibold shadow-sm">
             <Workflow className="w-4 h-4 text-cyan-400" />
             <span>10 STAGES GAME EVOLUTION ROADMAP</span>
           </div>
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white font-sans tracking-tight">
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 dark:text-white font-sans tracking-tight">
             1つのゲームが育つ「C++設計進化の全10段階物語」
           </h2>
           <p className="text-sm sm:text-base text-slate-700 dark:text-slate-300 font-sans max-w-3xl leading-relaxed">
-            「最初は動けばいいと全部 <code className="text-amber-300 font-mono">GameManager</code> に書いた」。そこから直面する数々の破綻と苦痛を、C++のオブジェクト指向と設計パターンで1つずつ解決していく<strong className="text-cyan-300">成長ストーリー</strong>です。
+            「最初は動けばいいと全部 <code className="text-amber-800 dark:text-amber-300 bg-amber-50 dark:bg-slate-900 px-1 py-0.5 rounded border border-amber-200 dark:border-slate-800 font-mono">GameManager</code> に書いた」。そこから直面する数々の破綻と苦痛を、C++のオブジェクト指向と設計パターンで1つずつ解決していく<strong className="text-cyan-700 dark:text-cyan-300 font-bold">成長ストーリー</strong>です。
           </p>
         </div>
-        <div className="flex items-center gap-2 font-mono text-xs text-slate-600 dark:text-slate-400 bg-slate-900 px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-800">
+        <div className="flex items-center gap-2 font-mono text-xs text-slate-600 dark:text-slate-400 bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-300 px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
           <span>クリックで各段階を探索 ↓</span>
         </div>
       </div>
@@ -343,19 +343,19 @@ ECS World ＋ RAII ＋ Stateマシン ＋ ゼロコスト抽象化 ＋ 単体テ
       </div>
 
       {/* 選択されたステージの詳細カード */}
-      <div className="p-6 sm:p-8 lg:p-10 rounded-3xl bg-gradient-to-b from-slate-900/95 via-[#080e18] to-slate-950 border border-cyan-500/40 shadow-2xl space-y-8">
+      <div className="p-6 sm:p-8 lg:p-10 rounded-3xl bg-white/95 dark:bg-slate-900 border border-sky-200 dark:border-cyan-500/40 shadow-xl space-y-8">
         {/* ヘッダー情報 */}
         <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 border-b border-slate-200 dark:border-slate-800/80 pb-6">
           <div className="space-y-2">
             <div className="flex items-center gap-3">
-              <span className="w-10 h-10 rounded-xl bg-cyan-950 text-cyan-300 border border-cyan-500/40 flex items-center justify-center font-mono font-black text-base shadow-inner">
+              <span className="w-10 h-10 rounded-xl bg-cyan-500 text-white dark:bg-cyan-950 dark:text-cyan-300 border border-cyan-600 dark:border-cyan-500/40 flex items-center justify-center font-mono font-black text-base shadow-md">
                 {currentStage.stage}
               </span>
-              <span className="text-xs font-mono font-bold px-3 py-1 rounded-full bg-cyan-950 text-cyan-300 border border-cyan-500/30">
+              <span className="text-xs font-mono font-bold px-3 py-1 rounded-full bg-cyan-100 text-cyan-900 border border-cyan-300 dark:bg-cyan-950 dark:text-cyan-300 dark:border-cyan-500/30">
                 {currentStage.tag}
               </span>
             </div>
-            <h3 className="text-xl sm:text-2xl lg:text-3xl font-black text-white font-sans">
+            <h3 className="text-xl sm:text-2xl lg:text-3xl font-black text-slate-900 dark:text-white font-sans">
               {currentStage.title}
             </h3>
             <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 font-sans">
@@ -378,7 +378,7 @@ ECS World ＋ RAII ＋ Stateマシン ＋ ゼロコスト抽象化 ＋ 単体テ
 
             <button
               onClick={() => onSelectChapter(currentStage.chapterSlug)}
-              className="px-4 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-bold font-mono text-xs sm:text-sm flex items-center gap-2 transition border border-slate-300 dark:border-slate-700 hover:border-slate-600 active:scale-95 shrink-0 cursor-pointer shadow"
+              className="px-4 py-3 rounded-xl bg-white hover:bg-sky-50 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-900 dark:text-white font-bold font-mono text-xs sm:text-sm flex items-center gap-2 transition border border-slate-300 dark:border-slate-700 hover:border-cyan-400 active:scale-95 shrink-0 cursor-pointer shadow-sm"
             >
               <span>{currentStage.chapterLabel}</span>
               <ArrowRight className="w-4 h-4" />
@@ -389,8 +389,8 @@ ECS World ＋ RAII ＋ Stateマシン ＋ ゼロコスト抽象化 ＋ 単体テ
         {/* 苦痛（Before） vs 解決（After） */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* 直面する苦痛（Before） */}
-          <div className="p-5 rounded-2xl bg-rose-950/20 border border-rose-500/30 space-y-3">
-            <div className="flex items-center gap-2 text-rose-400 font-mono font-bold text-xs">
+          <div className="p-5 rounded-2xl bg-rose-50/80 dark:bg-rose-950/20 border border-rose-200 dark:border-rose-500/30 space-y-3 shadow-sm">
+            <div className="flex items-center gap-2 text-rose-700 dark:text-rose-400 font-mono font-bold text-xs">
               <AlertTriangle className="w-4 h-4" />
               <span>直面する苦痛・動くけどヤバいコード</span>
             </div>
@@ -400,8 +400,8 @@ ECS World ＋ RAII ＋ Stateマシン ＋ ゼロコスト抽象化 ＋ 単体テ
           </div>
 
           {/* 身につく設計力（After） */}
-          <div className="p-5 rounded-2xl bg-emerald-950/20 border border-emerald-500/30 space-y-3">
-            <div className="flex items-center gap-2 text-emerald-400 font-mono font-bold text-xs">
+          <div className="p-5 rounded-2xl bg-emerald-50/80 dark:bg-emerald-950/20 border border-emerald-200 dark:border-emerald-500/30 space-y-3 shadow-sm">
+            <div className="flex items-center gap-2 text-emerald-700 dark:text-emerald-400 font-mono font-bold text-xs">
               <Sparkles className="w-4 h-4" />
               <span>解決する設計思想・必然性（なぜ？）</span>
             </div>
@@ -427,10 +427,10 @@ ECS World ＋ RAII ＋ Stateマシン ＋ ゼロコスト抽象化 ＋ 単体テ
             />
           )}
           <div className="space-y-1">
-            <div className="text-xs font-mono font-bold text-cyan-400">
+            <div className="text-xs font-mono font-bold text-cyan-800 dark:text-cyan-400">
               {currentStage.storyQuote.character === 'shirokuma' ? 'シロクマ君の素朴な疑問' : '先輩ペンギンの設計指南'}
             </div>
-            <p className="text-xs sm:text-sm text-slate-700 dark:text-slate-300 font-sans italic">
+            <p className="text-xs sm:text-sm text-slate-800 dark:text-slate-200 font-sans italic font-medium">
               {currentStage.storyQuote.text}
             </p>
           </div>
@@ -443,19 +443,19 @@ ECS World ＋ RAII ＋ Stateマシン ＋ ゼロコスト抽象化 ＋ 単体テ
             <span className="text-[10px] text-cyan-400">Before ➔ After</span>
           </div>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-            <div className="rounded-xl overflow-hidden border border-rose-500/30 bg-slate-950">
-              <div className="px-3.5 py-1.5 bg-rose-950/50 border-b border-rose-500/20 text-[10px] font-mono font-bold text-rose-300">
+            <div className="rounded-xl overflow-hidden border border-rose-200 dark:border-rose-500/30 bg-rose-50/40 dark:bg-slate-950 shadow-sm">
+              <div className="px-3.5 py-1.5 bg-rose-100 dark:bg-rose-950/50 border-b border-rose-200 dark:border-rose-500/20 text-[10px] font-mono font-bold text-rose-900 dark:text-rose-300">
                 ❌ 問題のコード（または考え方）
               </div>
-              <pre className="p-4 text-xs font-mono text-slate-700 dark:text-slate-300 overflow-x-auto leading-relaxed">
+              <pre className="p-4 text-xs font-mono text-slate-900 dark:text-slate-200 overflow-x-auto leading-relaxed">
                 <code>{currentStage.codeSnippetBefore}</code>
               </pre>
             </div>
-            <div className="rounded-xl overflow-hidden border border-emerald-500/30 bg-slate-950">
-              <div className="px-3.5 py-1.5 bg-emerald-950/50 border-b border-emerald-500/20 text-[10px] font-mono font-bold text-emerald-300">
+            <div className="rounded-xl overflow-hidden border border-emerald-200 dark:border-emerald-500/30 bg-emerald-50/40 dark:bg-slate-950 shadow-sm">
+              <div className="px-3.5 py-1.5 bg-emerald-100 dark:bg-emerald-950/50 border-b border-emerald-200 dark:border-emerald-500/20 text-[10px] font-mono font-bold text-emerald-900 dark:text-emerald-300">
                 ✨ 改善後の設計コード（または指針）
               </div>
-              <pre className="p-4 text-xs font-mono text-emerald-200 overflow-x-auto leading-relaxed">
+              <pre className="p-4 text-xs font-mono text-emerald-900 dark:text-emerald-200 overflow-x-auto leading-relaxed font-semibold">
                 <code>{currentStage.codeSnippetAfter}</code>
               </pre>
             </div>
@@ -470,7 +470,7 @@ ECS World ＋ RAII ＋ Stateマシン ＋ ゼロコスト抽象化 ＋ 単体テ
             className={`px-4 py-2 rounded-xl text-xs font-mono font-bold transition ${
               selectedStageIndex === 0
                 ? 'opacity-40 cursor-not-allowed text-slate-500'
-                : 'bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-700'
+                : 'bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 text-slate-800 dark:text-slate-300 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 shadow-sm'
             }`}
           >
             ← 前のStage

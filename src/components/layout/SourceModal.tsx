@@ -46,7 +46,7 @@ g++ -std=c++17 main.cpp Game.cpp Player.cpp Item.cpp BitDrone.cpp Bullet.cpp Par
             <div className="text-sm font-bold text-white flex items-center justify-center sm:justify-start gap-2 flex-wrap">
               <span className="text-base">📦</span>
               <span>全7章のC++実機ソースコード一式</span>
-              <span className="text-[11px] font-mono px-2 py-0.5 rounded-full bg-cyan-950 text-cyan-300 border border-cyan-500/30">
+              <span className="text-[11px] font-mono px-2 py-0.5 rounded-full bg-cyan-100 text-cyan-900 border border-cyan-300 dark:bg-cyan-950 dark:text-cyan-300 dark:border-cyan-500/30">
                 ZIP形式 (約55KB)
               </span>
             </div>
@@ -65,7 +65,7 @@ g++ -std=c++17 main.cpp Game.cpp Player.cpp Item.cpp BitDrone.cpp Bullet.cpp Par
         </div>
 
         {/* ファイルツリー */}
-        <div className="p-4 rounded-xl bg-slate-950 border border-slate-200 dark:border-slate-800 font-mono text-sm text-slate-700 dark:text-slate-300 space-y-2 mb-5">
+        <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 font-mono text-sm text-slate-800 dark:text-slate-200 space-y-2 mb-5">
           <div className="flex items-center gap-2 text-cyan-300 font-bold">
             <Folder className="w-4 h-4 text-cyan-400" />
             <span>cpp-projects/</span>
@@ -114,7 +114,7 @@ g++ -std=c++17 main.cpp Game.cpp Player.cpp Item.cpp BitDrone.cpp Bullet.cpp Par
               <span>{copiedCmd ? 'コピー完了' : 'コピー'}</span>
             </button>
           </div>
-          <div className="p-3.5 rounded-xl bg-slate-950 border border-slate-200 dark:border-slate-800 text-xs sm:text-sm font-mono text-emerald-400 whitespace-pre overflow-x-auto">
+          <div className="p-3.5 rounded-xl bg-emerald-50 dark:bg-slate-950 border border-emerald-200 dark:border-slate-800 text-xs sm:text-sm font-mono text-emerald-900 dark:text-emerald-400 whitespace-pre overflow-x-auto">
             {buildCmd}
           </div>
         </div>
