@@ -287,18 +287,18 @@ export const UmlStateSvgDiagram: React.FC<UmlStateSvgDiagramProps> = ({
           </span>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 text-xs font-mono">
             {transitions.map((t, idx) => (
-              <div key={idx} className="p-2.5 rounded-xl bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-1">
-                <div className="flex items-center justify-between text-white font-bold">
-                  <span className="text-cyan-400">{t.from}</span>
-                  <span className="text-slate-500">──&gt;</span>
-                  <span className="text-emerald-400">{t.to}</span>
+              <div key={idx} className="p-2.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-1 shadow-sm">
+                <div className="flex items-center justify-between text-slate-900 dark:text-white font-bold">
+                  <span className="text-cyan-700 dark:text-cyan-400">{t.from}</span>
+                  <span className="text-slate-400 dark:text-slate-500">──&gt;</span>
+                  <span className="text-emerald-700 dark:text-emerald-400">{t.to}</span>
                 </div>
                 <div className="text-[11px] text-slate-700 dark:text-slate-300">
                   <span className="text-slate-500">Evt: </span>{t.event}
                 </div>
                 {t.guard && (
-                  <div className="text-[10px] text-amber-300">
-                    <span className="text-slate-500">Grd: </span>[{t.guard}]
+                  <div className="text-[10px] text-amber-700 dark:text-amber-300 font-semibold">
+                    <span className="text-slate-500 font-normal">Grd: </span>[{t.guard}]
                   </div>
                 )}
               </div>

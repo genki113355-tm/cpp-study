@@ -35,11 +35,11 @@ export const PersonaTrackSelector: React.FC<PersonaTrackSelectorProps> = ({ onSe
       {/* セクション見出し */}
       <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between gap-3 border-b border-slate-200 dark:border-slate-800 pb-4">
         <div>
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-950/80 border border-cyan-500/40 text-cyan-300 font-mono text-xs font-semibold shadow-inner mb-2">
-            <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-100 dark:bg-cyan-950/80 border border-cyan-300 dark:border-cyan-500/40 text-cyan-900 dark:text-cyan-300 font-mono text-xs font-semibold shadow-sm mb-2">
+            <Sparkles className="w-3.5 h-3.5 text-cyan-500" />
             <span>LEARNING PATH BY PERSONA</span>
           </div>
-          <h2 className="text-2xl sm:text-3xl font-extrabold text-white font-sans tracking-tight">
+          <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white font-sans tracking-tight">
             あなたの現在地はどこですか？ 2大ペルソナ別・学習ナビゲーション
           </h2>
         </div>
@@ -77,13 +77,13 @@ export const PersonaTrackSelector: React.FC<PersonaTrackSelectorProps> = ({ onSe
       {/* タブコンテンツ */}
       {activeTab === 'beginner' ? (
         /* 初心者向けパネル */
-        <div className="p-6 sm:p-8 lg:p-10 rounded-3xl bg-gradient-to-b from-slate-900/90 via-[#0a1816] to-slate-950 border border-emerald-500/40 shadow-2xl space-y-8 animate-fadeIn">
+        <div className="p-6 sm:p-8 lg:p-10 rounded-3xl bg-white/95 dark:bg-slate-900 border border-emerald-200 dark:border-emerald-500/40 shadow-xl space-y-8 animate-fadeIn">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
             <div className="lg:col-span-7 space-y-4">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-emerald-950/80 border border-emerald-500/30 text-emerald-300 font-mono text-xs font-bold">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-emerald-100 dark:bg-emerald-950/80 border border-emerald-300 dark:border-emerald-500/30 text-emerald-900 dark:text-emerald-300 font-mono text-xs font-bold shadow-sm">
                 <span>🔰 初心者ロードマップ：ゼロからゲームを育てる旅</span>
               </div>
-              <h3 className="text-xl sm:text-3xl font-black text-white font-sans tracking-tight">
+              <h3 className="text-xl sm:text-3xl font-black text-slate-900 dark:text-white font-sans tracking-tight">
                 「文法は覚えた。でも、どうクラスを作ればいいか分からない」を完全解決。
               </h3>
               <p className="text-sm sm:text-base text-slate-700 dark:text-slate-300 leading-relaxed font-sans">
@@ -94,7 +94,7 @@ export const PersonaTrackSelector: React.FC<PersonaTrackSelectorProps> = ({ onSe
               </p>
 
               {/* シロクマ＆先輩のミニ掛け合い */}
-              <div className="p-4 rounded-2xl bg-white/90 dark:bg-slate-950/80 border border-emerald-500/30 space-y-3">
+              <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-950/80 border border-emerald-200 dark:border-emerald-500/30 space-y-3 shadow-sm">
                 <div className="flex items-start gap-3">
                   <img
                     src={getAssetUrl('/images/characters/shirokuma_sensei.png')}
@@ -102,7 +102,7 @@ export const PersonaTrackSelector: React.FC<PersonaTrackSelectorProps> = ({ onSe
                     className="w-8 h-8 rounded-full object-cover border border-cyan-400/50 shadow flex-shrink-0 mt-0.5"
                   />
                   <div className="text-xs sm:text-sm text-slate-700 dark:text-slate-300 font-sans">
-                    <strong className="text-emerald-300 font-mono">シロクマ君: </strong>
+                    <strong className="text-emerald-800 dark:text-emerald-300 font-mono">シロクマ君: </strong>
                     「C++って機能が多すぎてどこから手をつければいいか迷子になってました…」
                   </div>
                 </div>
@@ -113,7 +113,7 @@ export const PersonaTrackSelector: React.FC<PersonaTrackSelectorProps> = ({ onSe
                     className="w-8 h-8 rounded-full object-cover border border-amber-400/50 shadow flex-shrink-0 mt-0.5"
                   />
                   <div className="text-xs sm:text-sm text-slate-700 dark:text-slate-300 font-sans">
-                    <strong className="text-cyan-300 font-mono">先輩ペンギン: </strong>
+                    <strong className="text-cyan-800 dark:text-cyan-300 font-mono">先輩ペンギン: </strong>
                     「最初は全部GameManagerに書くところからでいいんだ。そこから『動くけどヤバいコード』を1つずつ直していけば、自然とオブジェクト指向の神髄が身につくぞ！」
                   </div>
                 </div>
@@ -121,35 +121,35 @@ export const PersonaTrackSelector: React.FC<PersonaTrackSelectorProps> = ({ onSe
             </div>
 
             {/* 右側：学習ステップツリー */}
-            <div className="lg:col-span-5 p-5 rounded-2xl bg-white/95 dark:bg-slate-950/90 border border-slate-200 dark:border-slate-800 space-y-3">
-              <div className="text-xs font-mono font-bold text-emerald-400 uppercase tracking-wider mb-2 flex items-center justify-between">
+            <div className="lg:col-span-5 p-5 rounded-2xl bg-slate-50/90 dark:bg-slate-950/90 border border-slate-200 dark:border-slate-800 space-y-3 shadow-sm">
+              <div className="text-xs font-mono font-bold text-emerald-700 dark:text-emerald-400 uppercase tracking-wider mb-2 flex items-center justify-between">
                 <span>成長の6大ステップ</span>
                 <span className="text-[10px] text-slate-600 dark:text-slate-400">Step by Step</span>
               </div>
               
               <div className="space-y-2 font-mono text-xs">
-                <div className="p-2.5 rounded-xl bg-slate-900 border border-emerald-500/30 flex items-center gap-2.5">
-                  <span className="w-5 h-5 rounded-full bg-emerald-950 text-emerald-300 flex items-center justify-center font-bold text-[10px]">1</span>
-                  <span className="text-slate-800 dark:text-slate-200">動くゲーム作成 & 手続き型の限界 (Ch.1)</span>
+                <div className="p-2.5 rounded-xl bg-white dark:bg-slate-900 border border-emerald-300 dark:border-emerald-500/30 flex items-center gap-2.5 shadow-sm">
+                  <span className="w-5 h-5 rounded-full bg-emerald-100 text-emerald-900 border border-emerald-300 dark:bg-emerald-950 dark:text-emerald-300 flex items-center justify-center font-bold text-[10px]">1</span>
+                  <span className="text-slate-800 dark:text-slate-200 font-semibold">動くゲーム作成 & 手続き型の限界 (Ch.1)</span>
                 </div>
-                <div className="p-2.5 rounded-xl bg-slate-900 border border-slate-200 dark:border-slate-800 flex items-center gap-2.5">
-                  <span className="w-5 h-5 rounded-full bg-slate-800 text-slate-700 dark:text-slate-300 flex items-center justify-center font-bold text-[10px]">2</span>
+                <div className="p-2.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex items-center gap-2.5 shadow-sm">
+                  <span className="w-5 h-5 rounded-full bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-300 dark:border-slate-700 flex items-center justify-center font-bold text-[10px]">2</span>
                   <span className="text-slate-800 dark:text-slate-200">クラス化と責務のカプセル化 (Ch.2)</span>
                 </div>
-                <div className="p-2.5 rounded-xl bg-slate-900 border border-slate-200 dark:border-slate-800 flex items-center gap-2.5">
-                  <span className="w-5 h-5 rounded-full bg-slate-800 text-slate-700 dark:text-slate-300 flex items-center justify-center font-bold text-[10px]">3</span>
+                <div className="p-2.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex items-center gap-2.5 shadow-sm">
+                  <span className="w-5 h-5 rounded-full bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-300 dark:border-slate-700 flex items-center justify-center font-bold text-[10px]">3</span>
                   <span className="text-slate-800 dark:text-slate-200">動的配列とオブジェクトの寿命 (Ch.3)</span>
                 </div>
-                <div className="p-2.5 rounded-xl bg-slate-900 border border-slate-200 dark:border-slate-800 flex items-center gap-2.5">
-                  <span className="w-5 h-5 rounded-full bg-slate-800 text-slate-700 dark:text-slate-300 flex items-center justify-center font-bold text-[10px]">4</span>
+                <div className="p-2.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex items-center gap-2.5 shadow-sm">
+                  <span className="w-5 h-5 rounded-full bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-300 dark:border-slate-700 flex items-center justify-center font-bold text-[10px]">4</span>
                   <span className="text-slate-800 dark:text-slate-200">敵の多様化とポリモーフィズム (Ch.4)</span>
                 </div>
-                <div className="p-2.5 rounded-xl bg-slate-900 border border-slate-200 dark:border-slate-800 flex items-center gap-2.5">
-                  <span className="w-5 h-5 rounded-full bg-slate-800 text-slate-700 dark:text-slate-300 flex items-center justify-center font-bold text-[10px]">5</span>
+                <div className="p-2.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex items-center gap-2.5 shadow-sm">
+                  <span className="w-5 h-5 rounded-full bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-300 dark:border-slate-700 flex items-center justify-center font-bold text-[10px]">5</span>
                   <span className="text-slate-800 dark:text-slate-200">ゲーム画面遷移とデザインパターン (Ch.5)</span>
                 </div>
-                <div className="p-2.5 rounded-xl bg-slate-900 border border-slate-200 dark:border-slate-800 flex items-center gap-2.5">
-                  <span className="w-5 h-5 rounded-full bg-slate-800 text-slate-700 dark:text-slate-300 flex items-center justify-center font-bold text-[10px]">6</span>
+                <div className="p-2.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex items-center gap-2.5 shadow-sm">
+                  <span className="w-5 h-5 rounded-full bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-300 dark:border-slate-700 flex items-center justify-center font-bold text-[10px]">6</span>
                   <span className="text-slate-800 dark:text-slate-200">モダンC++のRAIIとスマートポインタ (Ch.6)</span>
                 </div>
               </div>
@@ -168,39 +168,39 @@ export const PersonaTrackSelector: React.FC<PersonaTrackSelectorProps> = ({ onSe
         </div>
       ) : (
         /* 経験者向けパネル：コードスメル診断 */
-        <div className="p-6 sm:p-8 lg:p-10 rounded-3xl bg-gradient-to-b from-slate-900/90 via-[#181008] to-slate-950 border border-amber-500/40 shadow-2xl space-y-8 animate-fadeIn">
+        <div className="p-6 sm:p-8 lg:p-10 rounded-3xl bg-white/95 dark:bg-slate-900 border border-amber-200 dark:border-amber-500/40 shadow-xl space-y-8 animate-fadeIn">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
             <div className="lg:col-span-6 space-y-4">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-amber-950/80 border border-amber-500/30 text-amber-300 font-mono text-xs font-bold">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-amber-100 dark:bg-amber-950/80 border border-amber-300 dark:border-amber-500/30 text-amber-900 dark:text-amber-300 font-mono text-xs font-bold shadow-sm">
                 <span>⚠️ 経験者・現場リファクタリング診断</span>
               </div>
-              <h3 className="text-xl sm:text-3xl font-black text-white font-sans tracking-tight">
+              <h3 className="text-xl sm:text-3xl font-black text-slate-900 dark:text-white font-sans tracking-tight">
                 「動いてはいるが、怖くて誰も触れない」コードを卒業する。
               </h3>
               <p className="text-sm sm:text-base text-slate-700 dark:text-slate-300 leading-relaxed font-sans">
-                現場で何千行にも肥大化したレガシーC++や、手動の <code className="text-amber-300 font-mono">new/delete</code> で破綻しかけているコードベースに直面していませんか？
+                現場で何千行にも肥大化したレガシーC++や、手動の <code className="text-amber-800 dark:text-amber-300 font-mono font-bold bg-amber-50 dark:bg-slate-900 px-1 py-0.5 rounded border border-amber-200 dark:border-slate-800">new/delete</code> で破綻しかけているコードベースに直面していませんか？
                 右の診断チェックリストに当てはまるものがあれば、このカリキュラムがまさに特効薬です。
               </p>
 
               {/* 診断結果メッセージ */}
-              <div className="p-4 rounded-2xl bg-white/90 dark:bg-slate-950/80 border border-amber-500/30 space-y-2">
+              <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-950/80 border border-amber-200 dark:border-amber-500/30 space-y-2 shadow-sm">
                 <div className="flex items-center justify-between font-mono text-xs">
-                  <span className="text-amber-400 font-bold">現在の危険度スコア:</span>
-                  <span className="px-2.5 py-0.5 rounded-full bg-amber-950 text-amber-300 border border-amber-500/40 font-bold">
+                  <span className="text-amber-800 dark:text-amber-400 font-bold">現在の危険度スコア:</span>
+                  <span className="px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-900 border border-amber-300 dark:bg-amber-950 dark:text-amber-300 dark:border-amber-500/40 font-bold">
                     {smellCount} / 5 項目該当
                   </span>
                 </div>
                 <p className="text-xs sm:text-sm text-slate-700 dark:text-slate-300 font-sans">
                   {smellCount >= 3 ? (
-                    <span className="text-rose-400 font-semibold">
+                    <span className="text-rose-700 dark:text-rose-400 font-semibold">
                       🚨 重度のレガシー・アンチパターン警戒警報！「神クラス解体」「多態性へのリファクタリング」「RAII」を今すぐ適用して技術的負債を解消しましょう。
                     </span>
                   ) : smellCount > 0 ? (
-                    <span className="text-amber-300 font-semibold">
+                    <span className="text-amber-800 dark:text-amber-300 font-semibold">
                       ⚠️ 潜伏バグの温床あり！仕様変更のたびにデグレが発生しやすい状態です。開閉原則（OCP）とスマートポインタを導入する絶好のタイミングです。
                     </span>
                   ) : (
-                    <span className="text-emerald-300 font-semibold">
+                    <span className="text-emerald-800 dark:text-emerald-300 font-semibold">
                       ✨ 素晴らしい！さらにワンランク上の「ゼロコスト抽象化」「モダンECS（Entity-Component-System）」へステップアップしましょう！
                     </span>
                   )}
@@ -226,7 +226,7 @@ export const PersonaTrackSelector: React.FC<PersonaTrackSelectorProps> = ({ onSe
                       href={shareUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-black hover:bg-slate-900 text-white font-semibold text-xs border border-slate-300 dark:border-slate-700 transition shadow-md active:scale-98"
+                      className="inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 dark:bg-slate-900 dark:hover:bg-slate-800 dark:text-white font-semibold text-xs border border-slate-300 dark:border-slate-700 transition shadow-sm active:scale-98"
                       title="診断結果をXでポスト"
                     >
                       <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
@@ -240,8 +240,8 @@ export const PersonaTrackSelector: React.FC<PersonaTrackSelectorProps> = ({ onSe
             </div>
 
             {/* 右側：現場あるあるアンチパターン診断インタラクティブチェックリスト */}
-            <div className="lg:col-span-6 p-5 sm:p-6 rounded-2xl bg-white/95 dark:bg-slate-950/90 border border-slate-200 dark:border-slate-800 space-y-3">
-              <div className="text-xs font-mono font-bold text-amber-400 uppercase tracking-wider mb-2 flex items-center justify-between">
+            <div className="lg:col-span-6 p-5 sm:p-6 rounded-2xl bg-slate-50/90 dark:bg-slate-950/90 border border-slate-200 dark:border-slate-800 space-y-3 shadow-sm">
+              <div className="text-xs font-mono font-bold text-amber-800 dark:text-amber-400 uppercase tracking-wider mb-2 flex items-center justify-between">
                 <span>こんなコードを書いていませんか？（クリックで診断）</span>
                 <span className="text-[10px] text-slate-500">コードスメル診断</span>
               </div>
@@ -281,19 +281,19 @@ export const PersonaTrackSelector: React.FC<PersonaTrackSelectorProps> = ({ onSe
                       onClick={() => toggleSmell(item.key)}
                       className={`p-3 rounded-xl border transition-all cursor-pointer flex items-start gap-3 select-none ${
                         isChecked
-                          ? 'bg-amber-950/40 border-amber-500/50 shadow-sm'
-                          : 'bg-white/80 dark:bg-slate-900/60 border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:border-slate-700'
+                          ? 'bg-amber-50 dark:bg-amber-950/40 border-amber-300 dark:border-amber-500/50 shadow-sm'
+                          : 'bg-white dark:bg-slate-900/60 border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700'
                       }`}
                     >
                       <div
                         className={`w-5 h-5 rounded-md mt-0.5 flex items-center justify-center transition-colors shrink-0 ${
-                          isChecked ? 'bg-amber-500 text-slate-950' : 'border border-slate-600 bg-slate-900'
+                          isChecked ? 'bg-amber-500 text-white shadow-sm' : 'border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900'
                         }`}
                       >
                         {isChecked && <Check className="w-3.5 h-3.5 stroke-[3]" />}
                       </div>
                       <div className="space-y-0.5">
-                        <div className={`text-xs font-bold font-sans ${isChecked ? 'text-amber-200' : 'text-slate-700 dark:text-slate-300'}`}>
+                        <div className={`text-xs font-bold font-sans ${isChecked ? 'text-amber-950 dark:text-amber-200 font-extrabold' : 'text-slate-800 dark:text-slate-300'}`}>
                           {item.title}
                         </div>
                         <div className="text-[11px] text-slate-600 dark:text-slate-400 font-sans leading-tight">

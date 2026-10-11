@@ -72,7 +72,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           </button>
 
           <div className="flex items-center gap-2.5 sm:gap-3 cursor-pointer select-none flex-shrink-0" onClick={() => onSelectChapter('top')}>
-            <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-full border-2 border-cyan-500 overflow-hidden bg-slate-900 shadow-md flex-shrink-0">
+            <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-full border-2 border-cyan-500 overflow-hidden bg-white shadow-md flex-shrink-0">
               <img
                 src={getAssetUrl('/images/polar-bear-guide-pointing.png')}
                 alt="シロクマ先生"
@@ -120,8 +120,8 @@ export const Navbar: React.FC<NavbarProps> = ({
           </button>
 
           {/* レガシーC++コースグループ */}
-          <div className="flex items-center gap-1 pl-1.5 border-l border-slate-800 flex-shrink-0">
-            <span className="text-[10px] text-amber-400/80 font-bold px-1 select-none flex-shrink-0 whitespace-nowrap">🏛️ レガシー</span>
+          <div className="flex items-center gap-1 pl-1.5 border-l border-slate-300 dark:border-slate-800 flex-shrink-0">
+            <span className="text-[10px] text-amber-600 dark:text-amber-400/80 font-bold px-1 select-none flex-shrink-0 whitespace-nowrap">🏛️ レガシー</span>
             {CLASSIC_CHAPTERS.map((ch) => {
               const isActive = ch.id === currentChapterId;
               const code = (ch.courseChapterCode || `C${ch.id}`).replace(/^C/, 'L');
@@ -130,10 +130,10 @@ export const Navbar: React.FC<NavbarProps> = ({
                   key={ch.id}
                   ref={isActive ? activeItemRef : undefined}
                   onClick={() => onSelectChapter(ch.slug)}
-                  className={`px-2 py-1 rounded-lg transition-all flex items-center justify-center min-w-[32px] flex-shrink-0 whitespace-nowrap font-bold ${
+                  className={`px-2 py-1 rounded-lg transition-all flex items-center justify-center min-w-[32px] flex-shrink-0 whitespace-nowrap font-bold cursor-pointer ${
                     isActive
                       ? 'bg-amber-500 text-slate-950 shadow-md shadow-amber-500/30'
-                      : 'text-slate-600 dark:text-slate-400 hover:text-amber-200 hover:bg-slate-800'
+                      : 'text-slate-600 dark:text-slate-400 hover:text-amber-800 hover:bg-amber-100 dark:hover:text-amber-200 dark:hover:bg-slate-800'
                   }`}
                   title={ch.title}
                 >
@@ -144,8 +144,8 @@ export const Navbar: React.FC<NavbarProps> = ({
           </div>
 
           {/* モダンコースグループ */}
-          <div className="flex items-center gap-1 pl-1.5 border-l border-slate-800 flex-shrink-0">
-            <span className="text-[10px] text-cyan-400/80 font-bold px-1 select-none flex-shrink-0 whitespace-nowrap">🚀 モダン</span>
+          <div className="flex items-center gap-1 pl-1.5 border-l border-slate-300 dark:border-slate-800 flex-shrink-0">
+            <span className="text-[10px] text-cyan-700 dark:text-cyan-400/80 font-bold px-1 select-none flex-shrink-0 whitespace-nowrap">🚀 モダン</span>
             {MODERN_CHAPTERS.map((ch) => {
               const isActive = ch.id === currentChapterId;
               const code = ch.courseChapterCode || `M${ch.id}`;
@@ -154,10 +154,10 @@ export const Navbar: React.FC<NavbarProps> = ({
                   key={ch.id}
                   ref={isActive ? activeItemRef : undefined}
                   onClick={() => onSelectChapter(ch.slug)}
-                  className={`px-2 py-1 rounded-lg transition-all flex items-center justify-center min-w-[32px] flex-shrink-0 whitespace-nowrap font-bold ${
+                  className={`px-2 py-1 rounded-lg transition-all flex items-center justify-center min-w-[32px] flex-shrink-0 whitespace-nowrap font-bold cursor-pointer ${
                     isActive
                       ? 'bg-cyan-500 text-slate-950 shadow-md shadow-cyan-500/30'
-                      : 'text-slate-600 dark:text-slate-400 hover:text-cyan-200 hover:bg-slate-800'
+                      : 'text-slate-600 dark:text-slate-400 hover:text-cyan-800 hover:bg-cyan-100 dark:hover:text-cyan-200 dark:hover:bg-slate-800'
                   }`}
                   title={ch.title}
                 >
@@ -168,8 +168,8 @@ export const Navbar: React.FC<NavbarProps> = ({
           </div>
 
           {/* 読解演習トラックグループ */}
-          <div className="flex items-center gap-1 pl-1.5 border-l border-slate-800 flex-shrink-0">
-            <span className="text-[10px] text-purple-400/80 font-bold px-1 select-none flex-shrink-0 whitespace-nowrap">🧭 読解</span>
+          <div className="flex items-center gap-1 pl-1.5 border-l border-slate-300 dark:border-slate-800 flex-shrink-0">
+            <span className="text-[10px] text-purple-700 dark:text-purple-400/80 font-bold px-1 select-none flex-shrink-0 whitespace-nowrap">🧭 読解</span>
             {READING_CHAPTERS.map((ch) => {
               const isActive = ch.id === currentChapterId;
               const code = ch.courseChapterCode || `R${ch.id}`;
@@ -178,10 +178,10 @@ export const Navbar: React.FC<NavbarProps> = ({
                   key={ch.id}
                   ref={isActive ? activeItemRef : undefined}
                   onClick={() => onSelectChapter(ch.slug)}
-                  className={`px-2 py-1 rounded-lg transition-all flex items-center justify-center min-w-[32px] flex-shrink-0 whitespace-nowrap font-bold ${
+                  className={`px-2 py-1 rounded-lg transition-all flex items-center justify-center min-w-[32px] flex-shrink-0 whitespace-nowrap font-bold cursor-pointer ${
                     isActive
                       ? 'bg-purple-500 text-slate-950 shadow-md shadow-purple-500/30'
-                      : 'text-slate-600 dark:text-slate-400 hover:text-purple-200 hover:bg-slate-800'
+                      : 'text-slate-600 dark:text-slate-400 hover:text-purple-800 hover:bg-purple-100 dark:hover:text-purple-200 dark:hover:bg-slate-800'
                   }`}
                   title={ch.title}
                 >
@@ -192,8 +192,8 @@ export const Navbar: React.FC<NavbarProps> = ({
           </div>
 
           {/* 特集・品質保証グループ */}
-          <div className="flex items-center gap-1 pl-1.5 border-l border-slate-800 flex-shrink-0">
-            <span className="text-[10px] text-emerald-400/80 font-bold px-1 select-none flex-shrink-0 whitespace-nowrap">📚 特集</span>
+          <div className="flex items-center gap-1 pl-1.5 border-l border-slate-300 dark:border-slate-800 flex-shrink-0">
+            <span className="text-[10px] text-emerald-700 dark:text-emerald-400/80 font-bold px-1 select-none flex-shrink-0 whitespace-nowrap">📚 特集</span>
             {SPECIAL_GUIDES.map((guide) => {
               const isActive = guide.id === currentChapterId;
               const isColumn = guide.category === 'column';
@@ -212,14 +212,14 @@ export const Navbar: React.FC<NavbarProps> = ({
                   key={guide.id}
                   ref={isActive ? activeItemRef : undefined}
                   onClick={() => onSelectChapter(guide.slug)}
-                  className={`px-2 py-1 rounded-lg transition-all flex items-center justify-center flex-shrink-0 whitespace-nowrap text-[11px] font-sans font-bold ${
+                  className={`px-2 py-1 rounded-lg transition-all flex items-center justify-center flex-shrink-0 whitespace-nowrap text-[11px] font-sans font-bold cursor-pointer ${
                     isActive
                       ? isColumn
                         ? 'bg-purple-600 text-white shadow-md shadow-purple-500/30'
                         : 'bg-emerald-500 text-slate-950 shadow-md shadow-emerald-500/30'
                       : isColumn
-                        ? 'text-slate-600 dark:text-slate-400 hover:text-purple-200 hover:bg-slate-800'
-                        : 'text-slate-600 dark:text-slate-400 hover:text-emerald-200 hover:bg-slate-800'
+                        ? 'text-slate-600 dark:text-slate-400 hover:text-purple-800 hover:bg-purple-100 dark:hover:text-purple-200 dark:hover:bg-slate-800'
+                        : 'text-slate-600 dark:text-slate-400 hover:text-emerald-800 hover:bg-emerald-100 dark:hover:text-emerald-200 dark:hover:bg-slate-800'
                   }`}
                   title={guide.title}
                 >

@@ -26,9 +26,9 @@ export const RichExplanation: React.FC<RichExplanationProps> = ({ content }) => 
     if (codeBuffer.length > 0) {
       const codeText = codeBuffer.join("\n");
       renderedElements.push(
-        <div key={key} className="my-4 rounded-xl bg-slate-950 border border-slate-800 p-4 font-mono text-sm sm:text-base text-cyan-300 overflow-x-auto shadow-inner">
+        <div key={key} className="my-4 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-4 font-mono text-sm sm:text-base text-slate-800 dark:text-cyan-300 overflow-x-auto shadow-sm dark:shadow-inner">
           {codeLang && (
-            <div className="text-xs uppercase font-bold text-slate-600 dark:text-slate-400 mb-2 border-b border-slate-800 pb-1">
+            <div className="text-xs uppercase font-bold text-slate-700 dark:text-slate-400 mb-2 border-b border-slate-200 dark:border-slate-800 pb-1">
               {codeLang}
             </div>
           )}

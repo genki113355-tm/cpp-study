@@ -373,19 +373,19 @@ export function getChapterMeta(chapter: {
 
   const importanceBadge =
     importance === 3
-      ? 'bg-rose-950/80 text-rose-300 border-rose-500/40'
+      ? 'bg-rose-100 text-rose-900 border-rose-300 dark:bg-rose-950/80 dark:text-rose-300 dark:border-rose-500/40 font-semibold shadow-sm'
       : importance === 2
-      ? 'bg-amber-950/80 text-amber-300 border-amber-500/40'
-      : 'bg-indigo-950/80 text-indigo-300 border-indigo-500/40';
+      ? 'bg-amber-100 text-amber-900 border-amber-300 dark:bg-amber-950/80 dark:text-amber-300 dark:border-amber-500/40 font-semibold shadow-sm'
+      : 'bg-indigo-100 text-indigo-900 border-indigo-300 dark:bg-indigo-950/80 dark:text-indigo-300 dark:border-indigo-500/40 font-semibold shadow-sm';
 
   const difficultyBadge =
     difficulty === '初級'
-      ? 'bg-emerald-950/80 text-emerald-300 border-emerald-500/40'
+      ? 'bg-emerald-100 text-emerald-900 border-emerald-300 dark:bg-emerald-950/80 dark:text-emerald-300 dark:border-emerald-500/40 shadow-sm'
       : difficulty === '中級'
-      ? 'bg-cyan-950/80 text-cyan-300 border-cyan-500/40'
-      : 'bg-purple-950/80 text-purple-300 border-purple-500/40';
+      ? 'bg-cyan-100 text-cyan-900 border-cyan-300 dark:bg-cyan-950/80 dark:text-cyan-300 dark:border-cyan-500/40 shadow-sm'
+      : 'bg-purple-100 text-purple-900 border-purple-300 dark:bg-purple-950/80 dark:text-purple-300 dark:border-purple-500/40 shadow-sm';
 
-  const timeBadge = 'bg-slate-900/90 text-slate-300 border-slate-700/80';
+  const timeBadge = 'bg-slate-100 text-slate-800 border-slate-200 dark:bg-slate-900/90 dark:text-slate-300 dark:border-slate-700/80 shadow-sm';
 
   return {
     readingTimeMinutes,

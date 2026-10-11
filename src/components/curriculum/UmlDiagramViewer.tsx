@@ -42,32 +42,32 @@ export const UmlDiagramViewer: React.FC<UmlDiagramViewerProps> = ({
         return {
           symbol: "◆──>",
           label: "コンポジション (強固な所有・寿命連動)",
-          color: "bg-emerald-950 text-emerald-300 border-emerald-500/40",
+          color: "bg-emerald-100 text-emerald-900 border-emerald-300 dark:bg-emerald-950 dark:text-emerald-300 dark:border-emerald-500/40",
         };
       case "aggregation":
         return {
           symbol: "◇──>",
           label: "集約 (共有所有・寿命独立)",
-          color: "bg-cyan-950 text-cyan-300 border-cyan-500/40",
+          color: "bg-cyan-100 text-cyan-900 border-cyan-300 dark:bg-cyan-950 dark:text-cyan-300 dark:border-cyan-500/40",
         };
       case "generalization":
         return {
           symbol: "◁───",
           label: "汎化・継承 (is-a 関係)",
-          color: "bg-amber-950 text-amber-300 border-amber-500/40",
+          color: "bg-amber-100 text-amber-900 border-amber-300 dark:bg-amber-950 dark:text-amber-300 dark:border-amber-500/40",
         };
       case "realization":
         return {
           symbol: "◁- - -",
           label: "実現 (インターフェース実装)",
-          color: "bg-purple-950 text-purple-300 border-purple-500/40",
+          color: "bg-purple-100 text-purple-900 border-purple-300 dark:bg-purple-950 dark:text-purple-300 dark:border-purple-500/40",
         };
       case "association":
       default:
         return {
           symbol: "───>",
           label: "関連 (単なる参照・利用)",
-          color: "bg-slate-900 text-slate-700 dark:text-slate-300 border-slate-300 dark:border-slate-700",
+          color: "bg-slate-100 text-slate-800 dark:bg-slate-900 dark:text-slate-300 border-slate-200 dark:border-slate-700",
         };
     }
   };
@@ -75,9 +75,9 @@ export const UmlDiagramViewer: React.FC<UmlDiagramViewerProps> = ({
   return (
     <div className="my-8 rounded-3xl bg-white/95 dark:bg-slate-950/90 border border-cyan-500/40 shadow-2xl overflow-hidden backdrop-blur-md">
       {/* 設計書ヘッダー */}
-      <div className="p-5 sm:p-6 bg-gradient-to-r from-slate-900 via-slate-900/90 to-slate-950 border-b border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="p-5 sm:p-6 bg-gradient-to-r from-sky-100/90 via-sky-50 to-blue-50/80 dark:from-slate-900 dark:via-slate-900/90 dark:to-slate-950 border-b border-sky-100 dark:border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-950 text-cyan-300 border border-cyan-500/30 text-xs font-mono font-bold mb-2">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-100 text-cyan-900 border border-cyan-300 dark:bg-cyan-950 dark:text-cyan-300 dark:border-cyan-500/30 text-xs font-mono font-bold mb-2">
             <Layers className="w-3.5 h-3.5 text-cyan-400" />
             <span>
               {data.diagramType === "class" && "UML CLASS DIAGRAM : クラス設計図 (幾何描画)"}
@@ -85,16 +85,16 @@ export const UmlDiagramViewer: React.FC<UmlDiagramViewerProps> = ({
               {data.diagramType === "state" && "UML STATE MACHINE : 状態遷移設計図 (幾何描画)"}
             </span>
           </div>
-          <h3 className="text-xl sm:text-2xl font-extrabold text-white font-sans">
+          <h3 className="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white font-sans">
             {data.title}
           </h3>
           {data.subtitle && (
-            <p className="text-xs sm:text-sm font-mono text-cyan-300 mt-0.5">
+            <p className="text-xs sm:text-sm font-mono text-cyan-800 dark:text-cyan-300 mt-0.5">
               {data.subtitle}
             </p>
           )}
         </div>
-        <span className="text-xs font-mono text-cyan-400 bg-cyan-950/80 px-3 py-1.5 rounded-xl border border-cyan-500/30 self-start sm:self-auto shadow-sm">
+        <span className="text-xs font-mono text-cyan-900 bg-cyan-100 px-3 py-1.5 rounded-xl border border-cyan-300 dark:text-cyan-400 dark:bg-cyan-950/80 dark:border-cyan-500/30 self-start sm:self-auto shadow-sm">
           幾何ベクトル描画 ＆ C++コード並列同期
         </span>
       </div>
@@ -109,7 +109,7 @@ export const UmlDiagramViewer: React.FC<UmlDiagramViewerProps> = ({
         {/* ① クラス図モード：SVG幾何パス＋HTMLコンパートメント */}
         {data.diagramType === "class" && data.classes && (
           <div className="space-y-6">
-            <div className="flex items-center justify-between text-xs text-cyan-300 bg-cyan-950/40 border border-cyan-500/30 px-3.5 py-2.5 rounded-xl">
+            <div className="flex items-center justify-between text-xs text-cyan-900 bg-cyan-50 border border-cyan-200 dark:text-cyan-300 dark:bg-cyan-950/40 dark:border-cyan-500/30 px-3.5 py-2.5 rounded-xl">
               <span className="flex items-center gap-2">
                 <Sparkles className="w-4 h-4 text-cyan-400 animate-pulse" />
                 <span>💡 クラス図内の属性・操作をクリックすると、画面左端（サイドメニュー上）にC++コードが並んでポップアップします</span>
@@ -150,25 +150,25 @@ export const UmlDiagramViewer: React.FC<UmlDiagramViewerProps> = ({
                     return (
                       <div
                         key={rIdx}
-                        className="p-3.5 rounded-xl bg-slate-950 border border-slate-200 dark:border-slate-800 flex flex-col justify-between gap-2"
+                        className="p-3.5 rounded-xl bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col justify-between gap-2"
                       >
                         <div className="flex items-center justify-between gap-2 font-mono text-xs">
-                          <span className="font-bold text-white bg-slate-800 px-2 py-0.5 rounded">
+                          <span className="font-bold text-slate-800 dark:text-white bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded border border-slate-200 dark:border-slate-700">
                             {rel.from}
                           </span>
                           <span className={`px-2 py-0.5 rounded font-bold border ${badge.color}`}>
                             {badge.symbol}
                           </span>
-                          <span className="font-bold text-white bg-slate-800 px-2 py-0.5 rounded">
+                          <span className="font-bold text-slate-800 dark:text-white bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded border border-slate-200 dark:border-slate-700">
                             {rel.to}
                           </span>
                         </div>
                         <div className="text-[11px] text-slate-700 dark:text-slate-300 font-sans flex items-baseline justify-between gap-2">
-                          <span className="font-semibold text-cyan-300">{badge.label}</span>
+                          <span className="font-semibold text-cyan-800 dark:text-cyan-300">{badge.label}</span>
                           {rel.label && <span className="text-slate-600 dark:text-slate-400">({rel.label})</span>}
                         </div>
                         {rel.cppMapping && (
-                          <div className="mt-1 p-2 rounded bg-slate-900 border border-slate-200 dark:border-slate-800 text-[11px] font-mono text-emerald-400">
+                          <div className="mt-1 p-2 rounded bg-emerald-50 dark:bg-slate-900 border border-emerald-200 dark:border-slate-800 text-[11px] font-mono text-emerald-800 dark:text-emerald-400">
                             <code>{rel.cppMapping}</code>
                           </div>
                         )}
@@ -202,8 +202,8 @@ export const UmlDiagramViewer: React.FC<UmlDiagramViewerProps> = ({
 
         {/* ④ 設計書とC++コードの対応ポイント解説 (Code Mapping Notes) */}
         {data.codeMappingNotes && data.codeMappingNotes.length > 0 && (
-          <div className="p-5 sm:p-6 rounded-2xl bg-gradient-to-r from-cyan-950/40 via-slate-900/60 to-slate-950 border border-cyan-500/30 space-y-3">
-            <div className="flex items-center gap-2 text-xs font-mono font-bold text-cyan-300 uppercase tracking-wider">
+          <div className="p-5 sm:p-6 rounded-2xl bg-gradient-to-r from-sky-50 via-white to-blue-50 dark:from-cyan-950/40 dark:via-slate-900/60 dark:to-slate-950 border border-sky-200 dark:border-cyan-500/30 shadow-sm space-y-3">
+            <div className="flex items-center gap-2 text-xs font-mono font-bold text-cyan-900 dark:text-cyan-300 uppercase tracking-wider">
               <Sparkles className="w-4 h-4 text-cyan-400" />
               <span>プロの視点：この設計書をC++コードに落とし込む際の着眼点</span>
             </div>

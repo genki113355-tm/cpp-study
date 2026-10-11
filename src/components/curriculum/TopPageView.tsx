@@ -224,7 +224,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
         <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
           {/* 左側：キャッチコピー・解説・バッジ・CTA */}
           <div className="lg:col-span-7 space-y-4">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-100 dark:bg-cyan-100 dark:bg-cyan-950/80 border border-cyan-500/40 text-cyan-800 dark:text-cyan-300 font-mono text-xs font-semibold">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-100 dark:bg-cyan-950/80 border border-cyan-500/40 text-cyan-800 dark:text-cyan-300 font-mono text-xs font-semibold">
               <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
               <span>ゲーム開発で学ぶ C++ オブジェクト指向＆実践設計メディア</span>
             </div>
@@ -249,7 +249,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
             </p>
 
             {/* 🐻‍❄️＆🐧 初心者も安心のクイック対話メッセージ */}
-            <div className="p-3 sm:p-3.5 rounded-2xl bg-cyan-100 dark:bg-sky-50 dark:bg-cyan-950/40 border border-sky-200 dark:border-cyan-500/30 shadow-sm flex items-start gap-3 shadow-md">
+            <div className="p-3 sm:p-3.5 rounded-2xl bg-sky-50 dark:bg-slate-900 border border-sky-200 dark:border-cyan-500/30 shadow-md flex items-start gap-3">
               <div className="flex items-center -space-x-2 shrink-0 mt-0.5">
                 <img
                   src={getAssetUrl('/images/characters/shirokuma_sensei.png')}
@@ -262,7 +262,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
                   className="w-7 h-7 rounded-full object-cover border border-amber-400/70 shadow"
                 />
               </div>
-              <div className="text-xs sm:text-sm text-slate-200 font-sans leading-relaxed">
+              <div className="text-xs sm:text-sm text-slate-800 dark:text-slate-200 font-sans leading-relaxed">
                 <span className="text-amber-800 dark:text-amber-300 font-bold">ペンギン生徒: </span>
                 「C++って専門用語が多くて難しそう…」
                 <br className="hidden sm:inline" />
@@ -278,13 +278,13 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
               <button
                 type="button"
                 onClick={() => onOpenGameModal ? onOpenGameModal('v2_classes', 'L2', 'クラス化とファイル分割') : onSelectChapter('chapter-classic-2-classes-and-files')}
-                className="px-3 py-1 rounded-lg bg-cyan-100 dark:bg-cyan-100 dark:bg-cyan-950/80 hover:bg-cyan-900/90 border border-cyan-500/50 text-cyan-800 dark:text-cyan-300 hover:text-cyan-100 transition active:scale-95 cursor-pointer flex items-center gap-1.5 shadow-sm hover:shadow-[0_0_15px_rgba(6,182,212,0.35)]"
+                className="px-3 py-1 rounded-lg bg-cyan-100 dark:bg-cyan-950/80 hover:bg-cyan-900/90 border border-cyan-500/50 text-cyan-800 dark:text-cyan-300 hover:text-cyan-100 transition active:scale-95 cursor-pointer flex items-center gap-1.5 shadow-sm hover:shadow-[0_0_15px_rgba(6,182,212,0.35)]"
                 title="Webエミュレータを今すぐ起動して遊ぶ"
               >
                 <Gamepad2 className="w-3.5 h-3.5 text-cyan-400 animate-pulse" />
                 <span>🎮 Webエミュレータ起動</span>
               </button>
-              <span className="px-3 py-1 rounded-lg bg-emerald-50 dark:bg-emerald-100 dark:bg-emerald-950/50 border border-emerald-300 dark:border-emerald-500/30 text-emerald-800 dark:text-emerald-300">💻 実行演習完備</span>
+              <span className="px-3 py-1 rounded-lg bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-300 dark:border-emerald-500/30 text-emerald-800 dark:text-emerald-300">💻 実行演習完備</span>
             </div>
 
             {/* 学習開始・再開 CTA ボタン（最初から学ぶ / 続きから学ぶ） */}
@@ -334,7 +334,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
             </div>
 
             {/* 🧭 ペルソナ別クイックスタート（あなたの現在地から選ぶ） */}
-            <div className="pt-2 border-t border-slate-800/80">
+            <div className="pt-2 border-t border-slate-200 dark:border-slate-800/80">
               <div className="text-[11px] font-mono text-slate-600 dark:text-slate-400 mb-2 flex items-center gap-1.5">
                 <Sparkles className="w-3 h-3 text-cyan-400" />
                 <span>あなたのレベルに合わせてスタート：</span>
@@ -400,7 +400,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
               className="w-full max-w-md lg:max-w-none rounded-3xl border-2 border-cyan-400 shadow-xl shadow-cyan-500/10 overflow-hidden relative group bg-white dark:bg-slate-950/90 cursor-pointer"
               title="クリックしてゲームエミュレータを起動！"
             >
-              <div className="aspect-[4/3] w-full overflow-hidden bg-gradient-to-br from-slate-950 via-slate-900 to-[#070e1c] relative flex items-center justify-center">
+              <div className="aspect-[4/3] w-full overflow-hidden bg-gradient-to-br from-sky-100 via-sky-50 to-blue-50 dark:from-slate-950 dark:via-slate-900 dark:to-[#070e1c] relative flex items-center justify-center">
                 <img
                   src={getAssetUrl('/images/shirokuma_chibi_game_lab.jpg')}
                   alt="シロクマ先生とペンギン生徒がレトロゲーム開発に熱中するC++ラボ"
@@ -415,9 +415,9 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
                   }}
                 />
                 {/* 画像背面のレトロアーケード・フォールバックプレビュー */}
-                <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center z-0 bg-gradient-to-b from-[#0a1124] to-[#040810]">
+                <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center z-0 bg-gradient-to-b from-sky-50 to-white dark:from-[#0a1124] dark:to-[#040810]">
                   <div className="text-4xl sm:text-5xl mb-3 animate-bounce">👾</div>
-                  <div className="font-mono text-cyan-400 font-black text-sm tracking-wider uppercase mb-1">
+                  <div className="font-mono text-cyan-800 dark:text-cyan-400 font-black text-sm tracking-wider uppercase mb-1">
                     INVASION RETRO LAB
                   </div>
                   <div className="text-xs text-slate-600 dark:text-slate-400 font-sans">
@@ -425,7 +425,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
                   </div>
                 </div>
 
-                <div className="absolute inset-0 bg-slate-950/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center z-20">
+                <div className="absolute inset-0 bg-slate-950/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center z-20">
                   <span className="px-5 py-2.5 rounded-2xl bg-cyan-400 text-slate-950 font-mono font-black text-sm flex items-center gap-2 shadow-2xl shadow-cyan-400/60 scale-95 group-hover:scale-100 transition-transform">
                     <Gamepad2 className="w-5 h-5 text-slate-950" />
                     <span>ゲームを起動する ▶</span>
@@ -438,7 +438,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
                     <Sparkles className="w-3.5 h-3.5 text-cyan-400 shrink-0" />
                     シロクマ先生＆ペンギンの開発ラボ
                   </span>
-                  <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-400 border border-emerald-500/40 font-bold flex items-center gap-1 group-hover:bg-emerald-500 group-hover:text-slate-950 transition-colors">
+                  <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-400 border border-emerald-500/40 font-bold flex items-center gap-1 group-hover:bg-emerald-500 group-hover:text-slate-950 transition-colors">
                     <Play className="w-2.5 h-2.5 fill-current" />
                     <span>PLAY GAME</span>
                   </span>
@@ -461,7 +461,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
         {/* ヘッダー部分 */}
         <div className="relative z-10 flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-cyan-500/20 pb-5">
           <div className="space-y-2 max-w-3xl">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-sky-100 dark:bg-cyan-100 dark:bg-cyan-950/90 border border-sky-300 dark:border-cyan-500/40 text-sky-800 dark:text-cyan-300 font-mono text-xs font-bold shadow-sm">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-sky-100 dark:bg-cyan-950/90 border border-sky-300 dark:border-cyan-500/40 text-sky-800 dark:text-cyan-300 font-mono text-xs font-bold shadow-sm">
               <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
               <span>SPECIAL COLUMN DIGEST / 特別コラム抜粋</span>
             </div>
@@ -548,11 +548,11 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
                 <Cpu className="w-4 h-4 text-cyan-400" />
                 <span>2. ゼロオーバーヘッド原則（Zero-Overhead）</span>
               </div>
-              <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-cyan-100 dark:bg-cyan-950 text-cyan-400 border border-cyan-500/30">
+              <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-cyan-100 text-cyan-900 border border-cyan-300 dark:bg-cyan-950 dark:text-cyan-400 dark:border-cyan-500/30 shadow-sm">
                 C++至高の思想
               </span>
             </div>
-            <div className="text-xs sm:text-sm text-slate-200 font-bold">
+            <div className="text-xs sm:text-sm text-slate-900 dark:text-slate-100 font-bold">
               「使わない機能のために、1バイト・1クロックの代償も払わない」
             </div>
             <p className="text-xs text-slate-700 dark:text-slate-300 leading-relaxed font-sans">
@@ -572,7 +572,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
                 唯一無二の表現力
               </span>
             </div>
-            <div className="text-xs sm:text-sm text-slate-200 font-bold">
+            <div className="text-xs sm:text-sm text-slate-900 dark:text-slate-100 font-bold">
               泥臭いハードウェア制御から、現代数学の高階抽象化まで
             </div>
             <p className="text-xs text-slate-700 dark:text-slate-300 leading-relaxed font-sans">
@@ -594,7 +594,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
               <div className="text-xs font-mono font-bold text-cyan-700 dark:text-cyan-400">
                 🐻‍❄️ シロクマ指導官の激励
               </div>
-              <p className="text-xs sm:text-sm text-slate-200 font-sans font-medium">
+              <p className="text-xs sm:text-sm text-slate-800 dark:text-slate-200 font-sans font-medium">
                 「C++でコンピュータの根本原理を味方につけたエンジニアは、将来どんな新しい言語が現れても決して迷子にならん！」
               </p>
             </div>
@@ -615,9 +615,9 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
         <div className="absolute top-0 right-0 w-80 h-80 bg-cyan-500/5 rounded-full blur-3xl pointer-events-none -mr-20 -mt-20" />
         
         <div className="relative z-10 space-y-5">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800 pb-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-200 dark:border-slate-800 pb-4">
             <div className="space-y-1">
-              <div className="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full bg-cyan-100 dark:bg-cyan-100 dark:bg-cyan-950/80 border border-cyan-500/40 text-cyan-800 dark:text-cyan-300 font-mono text-xs font-bold">
+              <div className="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full bg-cyan-100 dark:bg-cyan-950/80 border border-cyan-500/40 text-cyan-800 dark:text-cyan-300 font-mono text-xs font-bold">
                 <Compass className="w-3.5 h-3.5 text-cyan-400" />
                 <span>NAVIGATION / 迷わない学習ナビ</span>
               </div>
@@ -632,7 +632,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
                   setDiagnosisStep(1);
                   setDiagnosisResult(null);
                 }}
-                className="self-start sm:self-auto text-xs font-mono text-slate-600 dark:text-slate-400 hover:text-cyan-800 dark:text-cyan-300 flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800/80 border border-slate-700 hover:border-cyan-500/50 transition cursor-pointer"
+                className="self-start sm:self-auto text-xs font-mono text-slate-700 dark:text-slate-300 hover:text-cyan-800 dark:hover:text-cyan-300 flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white hover:bg-slate-100 dark:bg-slate-800/80 border border-slate-300 dark:border-slate-700 hover:border-cyan-500/50 transition cursor-pointer shadow-sm"
               >
                 <RotateCcw className="w-3.5 h-3.5" />
                 <span>最初からやり直す</span>
@@ -779,7 +779,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
           )}
 
           {diagnosisStep === 3 && diagnosisResult && (
-            <div className="p-5 sm:p-6 rounded-xl bg-cyan-100 dark:bg-white/95 dark:bg-slate-900 border-2 border-cyan-400 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5 animate-in fade-in duration-300">
+            <div className="p-5 sm:p-6 rounded-xl bg-white/95 dark:bg-slate-900 border-2 border-cyan-400 shadow-md flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5 animate-in fade-in duration-300">
               <div className="space-y-2">
                 <div className="flex items-center gap-2">
                   <Target className="w-5 h-5 text-cyan-400" />
@@ -813,7 +813,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
       {/* 2. 【問題提起・課題駆動】「最初にこの設計の壁に答えられますか？」 */}
       <section className="space-y-5">
         <div className="border-l-4 border-amber-400 pl-4 space-y-1">
-          <div className="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full bg-amber-100 dark:bg-amber-100 dark:bg-amber-100 dark:bg-amber-950/80 border border-amber-300 dark:border-amber-500/40 text-amber-900 dark:text-amber-300 font-mono text-xs font-semibold shadow-sm">
+          <div className="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full bg-amber-100 dark:bg-amber-950/80 border border-amber-300 dark:border-amber-500/40 text-amber-900 dark:text-amber-300 font-mono text-xs font-semibold shadow-sm">
             <AlertTriangle className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
             <span>CHALLENGE-DRIVEN LEARNING / なぜ設計が必要なのか？</span>
           </div>
@@ -931,7 +931,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
       {/* 3. 【主線コンテンツ】ゲーム設計進化ロードマップ（10段階の進化ストーリー） */}
       <section className="space-y-4">
         <div className="border-l-4 border-cyan-400 pl-4 space-y-1">
-          <div className="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full bg-cyan-100 dark:bg-cyan-100 dark:bg-cyan-950/80 border border-cyan-500/40 text-cyan-800 dark:text-cyan-300 font-mono text-xs font-semibold">
+          <div className="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full bg-cyan-100 dark:bg-cyan-950/80 border border-cyan-500/40 text-cyan-800 dark:text-cyan-300 font-mono text-xs font-semibold">
             <Workflow className="w-3.5 h-3.5 text-cyan-400" />
             <span>GAME REFACTORING STORY / 主線ロードマップ</span>
           </div>
@@ -985,7 +985,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
             <div className="space-y-2">
               <div className="flex items-center justify-between">
                 <span className="text-2xl">🚀</span>
-                <span className="text-[11px] font-mono px-2 py-0.5 rounded bg-cyan-100 text-cyan-900 border border-cyan-300 dark:bg-cyan-100 dark:bg-cyan-950 dark:text-cyan-300 dark:border-cyan-500/40 font-bold">C++11〜20</span>
+                <span className="text-[11px] font-mono px-2 py-0.5 rounded bg-cyan-100 text-cyan-900 border border-cyan-300 dark:bg-cyan-950 dark:text-cyan-300 dark:border-cyan-500/40 font-bold">C++11〜20</span>
               </div>
               <h3 className="text-sm font-bold text-slate-900 dark:text-white group-hover:text-cyan-700 dark:group-hover:text-cyan-800 dark:text-cyan-300 transition-colors">モダンC++を極める</h3>
               <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">スマポ、ムーブ、ラムダ、可変引数、ECSなど現代の実戦規格を一気習得。</p>
@@ -1005,7 +1005,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
             <div className="space-y-2">
               <div className="flex items-center justify-between">
                 <span className="text-2xl">🔍</span>
-                <span className="text-[11px] font-mono px-2 py-0.5 rounded bg-purple-100 text-purple-900 border border-purple-300 dark:bg-purple-100 dark:bg-purple-950 dark:text-purple-300 dark:border-purple-500/40 font-bold">鑑識・実戦</span>
+                <span className="text-[11px] font-mono px-2 py-0.5 rounded bg-purple-100 text-purple-900 border border-purple-300 dark:bg-purple-950 dark:text-purple-300 dark:border-purple-500/40 font-bold">鑑識・実戦</span>
               </div>
               <h3 className="text-sm font-bold text-slate-900 dark:text-white group-hover:text-purple-700 dark:group-hover:text-purple-800 dark:text-purple-300 transition-colors">他人のコードを読む</h3>
               <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">書く前に読む！巨大リポジトリ攻略、スレッド競合、メモリ破壊の鑑識法。</p>
@@ -1025,7 +1025,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
             <div className="space-y-2">
               <div className="flex items-center justify-between">
                 <span className="text-2xl">📖</span>
-                <span className="text-[11px] font-mono px-2 py-0.5 rounded bg-emerald-100 text-emerald-900 border border-emerald-300 dark:bg-emerald-100 dark:bg-emerald-950 dark:text-emerald-300 dark:border-emerald-500/40 font-bold">逆引きリファレンス</span>
+                <span className="text-[11px] font-mono px-2 py-0.5 rounded bg-emerald-100 text-emerald-900 border border-emerald-300 dark:bg-emerald-950 dark:text-emerald-300 dark:border-emerald-500/40 font-bold">逆引きリファレンス</span>
               </div>
               <h3 className="text-sm font-bold text-slate-900 dark:text-white group-hover:text-emerald-700 dark:group-hover:text-emerald-800 dark:text-emerald-300 transition-colors">文法急所チートシート</h3>
               <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">「ポインタと参照の違いは？」「cast4種は？」実務で迷うポイントを網羅。</p>
@@ -1041,7 +1041,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
       {/* 3. 4大メインコンテンツ（サイトの柱） */}
       <section className="space-y-6">
         <div>
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-800 border border-slate-700 text-slate-700 dark:text-slate-300 font-mono text-xs font-semibold mb-2">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-sky-100 dark:bg-slate-800 border border-sky-300 dark:border-slate-700 text-sky-900 dark:text-slate-300 font-mono text-xs font-semibold mb-2 shadow-sm">
             <Layers className="w-3.5 h-3.5 text-cyan-400" />
             <span>FOUR MAIN PILLARS</span>
           </div>
@@ -1058,7 +1058,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
           <div className="rounded-3xl border border-amber-200 dark:border-amber-500/30 bg-white/95 dark:bg-slate-900 p-6 sm:p-7 flex flex-col justify-between space-y-5 shadow-md hover:border-amber-400 transition-all">
             <div className="space-y-4">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-mono font-bold px-3 py-1 rounded-full bg-amber-100 text-amber-900 border border-amber-300 dark:bg-amber-100 dark:bg-amber-950 dark:text-amber-300 dark:border-amber-500/40">
+                <span className="text-xs font-mono font-bold px-3 py-1 rounded-full bg-amber-100 text-amber-900 border border-amber-300 dark:bg-amber-950 dark:text-amber-300 dark:border-amber-500/40">
                   全{CLASSIC_CHAPTERS.length}章（L1〜L{CLASSIC_CHAPTERS.length}）
                 </span>
                 <span className="text-xs font-mono text-slate-600 dark:text-slate-400">進捗: {classicCompleted} / {CLASSIC_CHAPTERS.length} 完了</span>
@@ -1116,7 +1116,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
           <div className="rounded-3xl border border-sky-200 dark:border-cyan-500/30 bg-white/95 dark:bg-slate-900 p-6 sm:p-7 flex flex-col justify-between space-y-5 shadow-md hover:border-cyan-400 transition-all">
             <div className="space-y-4">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-mono font-bold px-3 py-1 rounded-full bg-cyan-100 text-cyan-900 border border-cyan-300 dark:bg-cyan-100 dark:bg-cyan-950 dark:text-cyan-300 dark:border-cyan-500/40">
+                <span className="text-xs font-mono font-bold px-3 py-1 rounded-full bg-cyan-100 text-cyan-900 border border-cyan-300 dark:bg-cyan-950 dark:text-cyan-300 dark:border-cyan-500/40">
                   全14章（M1〜M14）
                 </span>
                 <span className="text-xs font-mono text-slate-600 dark:text-slate-400">進捗: {modernCompleted} / 14 完了</span>
@@ -1172,7 +1172,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
           <div className="rounded-3xl border border-purple-200 dark:border-purple-500/30 bg-white/95 dark:bg-slate-900 p-6 sm:p-7 flex flex-col justify-between space-y-5 shadow-md hover:border-purple-400 transition-all">
             <div className="space-y-4">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-mono font-bold px-3 py-1 rounded-full bg-purple-100 text-purple-900 border border-purple-300 dark:bg-purple-100 dark:bg-purple-950 dark:text-purple-300 dark:border-purple-500/40">
+                <span className="text-xs font-mono font-bold px-3 py-1 rounded-full bg-purple-100 text-purple-900 border border-purple-300 dark:bg-purple-950 dark:text-purple-300 dark:border-purple-500/40">
                   全{READING_CHAPTERS.length}ステップ（R1〜R{READING_CHAPTERS.length}）
                 </span>
                 <span className="text-xs font-mono text-slate-600 dark:text-slate-400">進捗: {readingCompleted} / {READING_CHAPTERS.length} 完了</span>
@@ -1232,7 +1232,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
           <div className="rounded-3xl border border-emerald-200 dark:border-emerald-500/30 bg-white/95 dark:bg-slate-900 p-6 sm:p-7 flex flex-col justify-between space-y-5 shadow-md hover:border-emerald-400 transition-all">
             <div className="space-y-4">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-mono font-bold px-3 py-1 rounded-full bg-emerald-100 text-emerald-900 border border-emerald-300 dark:bg-emerald-100 dark:bg-emerald-950 dark:text-emerald-300 dark:border-emerald-500/40">
+                <span className="text-xs font-mono font-bold px-3 py-1 rounded-full bg-emerald-100 text-emerald-900 border border-emerald-300 dark:bg-emerald-950 dark:text-emerald-300 dark:border-emerald-500/40">
                   全8ガイド・特別コラム
                 </span>
                 <span className="text-xs font-mono text-slate-600 dark:text-slate-400">現場リファレンス</span>
@@ -1289,7 +1289,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
       <section className="space-y-4 rounded-3xl border border-sky-200 dark:border-slate-800 bg-white/95 dark:bg-slate-900 p-5 sm:p-7 shadow-md">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-200 dark:border-slate-800/80 pb-4">
           <div className="space-y-1">
-            <div className="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full bg-cyan-100 dark:bg-cyan-100 dark:bg-cyan-950/80 border border-cyan-500/40 text-cyan-800 dark:text-cyan-300 font-mono text-xs font-semibold">
+            <div className="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full bg-cyan-100 dark:bg-cyan-950/80 border border-cyan-500/40 text-cyan-800 dark:text-cyan-300 font-mono text-xs font-semibold">
               <Tag className="w-3.5 h-3.5 text-cyan-400" />
               <span>KEYWORD INDEX / 用語・設計思想から探す</span>
             </div>
@@ -1315,7 +1315,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
               <button
                 type="button"
                 onClick={() => setSearchQuery('')}
-                className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-600 dark:text-slate-400 hover:text-white transition cursor-pointer"
+                className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition cursor-pointer"
                 title="クリア"
               >
                 <X className="w-3.5 h-3.5" />
@@ -1401,8 +1401,8 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
       {/* 4. カリキュラム全目次（コンパクト・ディレクトリ） */}
       <section id="curriculum-directory" className="space-y-6 pt-4">
         {/* セクションヘッダー */}
-        <div className="border-b border-slate-800 pb-4 space-y-2">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-100 dark:bg-cyan-100 dark:bg-cyan-950/80 border border-cyan-500/40 text-cyan-800 dark:text-cyan-300 font-mono text-xs font-semibold">
+        <div className="border-b border-slate-200 dark:border-slate-800 pb-4 space-y-2">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-100 dark:bg-cyan-950/80 border border-cyan-500/40 text-cyan-800 dark:text-cyan-300 font-mono text-xs font-semibold">
             <BookOpen className="w-3.5 h-3.5 text-cyan-400" />
             <span>CURRICULUM DIRECTORY</span>
           </div>
@@ -1417,7 +1417,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
         {/* コース選択コントロール（ラジオボタン ＆ ドロップダウンセレクター） */}
         <div className="p-4 sm:p-5 rounded-2xl bg-white/95 dark:bg-slate-900/90 border border-sky-200 dark:border-slate-800 space-y-4 shadow-md">
           {/* ヘッダー部：説明ラベル ＆ ドロップダウンリスト（プルダウン） */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-800/80">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-200 dark:border-slate-800/80">
             <div className="flex items-center gap-2">
               <span className="w-2.5 h-2.5 rounded-full bg-cyan-400 animate-pulse" />
               <span className="text-sm sm:text-base font-bold text-slate-900 dark:text-white font-sans">
@@ -1459,14 +1459,14 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
               onClick={() => setActiveTab('classic')}
               className={`p-3.5 rounded-xl border text-left transition-all cursor-pointer flex flex-col justify-between gap-2.5 ${
                 activeTab === 'classic'
-                  ? 'bg-amber-50 dark:bg-amber-100 dark:bg-amber-950/60 border-2 border-amber-500 shadow-md ring-1 ring-amber-400/30'
+                  ? 'bg-amber-50 dark:bg-amber-950/60 border-2 border-amber-500 shadow-md ring-1 ring-amber-400/30'
                   : 'bg-white/80 dark:bg-slate-950/60 border-slate-200 dark:border-slate-800 hover:border-cyan-400 dark:hover:border-slate-700 hover:bg-sky-50 dark:hover:bg-slate-900/60 text-slate-700 dark:text-slate-300 shadow-sm'
               }`}
             >
               <div className="flex items-center justify-between gap-2">
                 <div className="flex items-center gap-2.5 min-w-0">
                   <span className={`w-4 h-4 rounded-full border-2 flex items-center justify-center shrink-0 ${
-                    activeTab === 'classic' ? 'border-amber-500 bg-amber-100 dark:bg-amber-100 dark:bg-amber-950 text-amber-900 dark:text-amber-200' : 'border-slate-300 dark:border-slate-600 bg-slate-100 dark:bg-slate-900 text-slate-600 dark:text-slate-400'
+                    activeTab === 'classic' ? 'border-amber-500 bg-amber-100 dark:bg-amber-950 text-amber-900 dark:text-amber-200' : 'border-slate-300 dark:border-slate-600 bg-slate-100 dark:bg-slate-900 text-slate-600 dark:text-slate-400'
                   }`}>
                     {activeTab === 'classic' && <span className="w-2 h-2 rounded-full bg-amber-400" />}
                   </span>
@@ -1476,7 +1476,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
                 </div>
                 <span className={`text-[11px] font-mono font-bold px-2 py-0.5 rounded-full border shrink-0 ${
                   activeTab === 'classic'
-                    ? 'bg-amber-200 text-amber-950 border-amber-300 dark:bg-amber-100 dark:bg-amber-950 dark:text-amber-300 dark:border-amber-500/50'
+                    ? 'bg-amber-200 text-amber-950 border-amber-300 dark:bg-amber-950 dark:text-amber-300 dark:border-amber-500/50'
                     : 'bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-400 border-slate-200 dark:border-slate-800 shadow-sm'
                 }`}>
                   {CLASSIC_CHAPTERS.length}章
@@ -1495,14 +1495,14 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
               onClick={() => setActiveTab('modern')}
               className={`p-3.5 rounded-xl border text-left transition-all cursor-pointer flex flex-col justify-between gap-2.5 ${
                 activeTab === 'modern'
-                  ? 'bg-sky-50 dark:bg-cyan-100 dark:bg-cyan-950/60 border-2 border-cyan-500 shadow-md ring-1 ring-cyan-400/30'
+                  ? 'bg-sky-50 dark:bg-cyan-950/60 border-2 border-cyan-500 shadow-md ring-1 ring-cyan-400/30'
                   : 'bg-white/80 dark:bg-slate-950/60 border-slate-200 dark:border-slate-800 hover:border-cyan-400 dark:hover:border-slate-700 hover:bg-sky-50 dark:hover:bg-slate-900/60 text-slate-700 dark:text-slate-300 shadow-sm'
               }`}
             >
               <div className="flex items-center justify-between gap-2">
                 <div className="flex items-center gap-2.5 min-w-0">
                   <span className={`w-4 h-4 rounded-full border-2 flex items-center justify-center shrink-0 ${
-                    activeTab === 'modern' ? 'border-cyan-500 bg-cyan-100 dark:bg-cyan-100 dark:bg-cyan-950 text-cyan-900 dark:text-cyan-200' : 'border-slate-300 dark:border-slate-600 bg-slate-100 dark:bg-slate-900 text-slate-600 dark:text-slate-400'
+                    activeTab === 'modern' ? 'border-cyan-500 bg-cyan-100 dark:bg-cyan-950 text-cyan-900 dark:text-cyan-200' : 'border-slate-300 dark:border-slate-600 bg-slate-100 dark:bg-slate-900 text-slate-600 dark:text-slate-400'
                   }`}>
                     {activeTab === 'modern' && <span className="w-2 h-2 rounded-full bg-cyan-400" />}
                   </span>
@@ -1512,7 +1512,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
                 </div>
                 <span className={`text-[11px] font-mono font-bold px-2 py-0.5 rounded-full border shrink-0 ${
                   activeTab === 'modern'
-                    ? 'bg-cyan-200 text-cyan-950 border-cyan-300 dark:bg-cyan-100 dark:bg-cyan-950 dark:text-cyan-300 dark:border-cyan-500/50'
+                    ? 'bg-cyan-200 text-cyan-950 border-cyan-300 dark:bg-cyan-950 dark:text-cyan-300 dark:border-cyan-500/50'
                     : 'bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-400 border-slate-200 dark:border-slate-800 shadow-sm'
                 }`}>
                   14章
@@ -1531,14 +1531,14 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
               onClick={() => setActiveTab('reading')}
               className={`p-3.5 rounded-xl border text-left transition-all cursor-pointer flex flex-col justify-between gap-2.5 ${
                 activeTab === 'reading'
-                  ? 'bg-purple-50 dark:bg-purple-100 dark:bg-purple-950/60 border-2 border-purple-500 shadow-md ring-1 ring-purple-400/30'
+                  ? 'bg-purple-50 dark:bg-purple-950/60 border-2 border-purple-500 shadow-md ring-1 ring-purple-400/30'
                   : 'bg-white/80 dark:bg-slate-950/60 border-slate-200 dark:border-slate-800 hover:border-cyan-400 dark:hover:border-slate-700 hover:bg-sky-50 dark:hover:bg-slate-900/60 text-slate-700 dark:text-slate-300 shadow-sm'
               }`}
             >
               <div className="flex items-center justify-between gap-2">
                 <div className="flex items-center gap-2.5 min-w-0">
                   <span className={`w-4 h-4 rounded-full border-2 flex items-center justify-center shrink-0 ${
-                    activeTab === 'reading' ? 'border-purple-500 bg-purple-100 dark:bg-purple-100 dark:bg-purple-950 text-purple-900 dark:text-purple-200' : 'border-slate-300 dark:border-slate-600 bg-slate-100 dark:bg-slate-900 text-slate-600 dark:text-slate-400'
+                    activeTab === 'reading' ? 'border-purple-500 bg-purple-100 dark:bg-purple-950 text-purple-900 dark:text-purple-200' : 'border-slate-300 dark:border-slate-600 bg-slate-100 dark:bg-slate-900 text-slate-600 dark:text-slate-400'
                   }`}>
                     {activeTab === 'reading' && <span className="w-2 h-2 rounded-full bg-purple-400" />}
                   </span>
@@ -1548,7 +1548,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
                 </div>
                 <span className={`text-[11px] font-mono font-bold px-2 py-0.5 rounded-full border shrink-0 ${
                   activeTab === 'reading'
-                    ? 'bg-purple-200 text-purple-950 border-purple-300 dark:bg-purple-100 dark:bg-purple-950 dark:text-purple-300 dark:border-purple-500/50'
+                    ? 'bg-purple-200 text-purple-950 border-purple-300 dark:bg-purple-950 dark:text-purple-300 dark:border-purple-500/50'
                     : 'bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-400 border-slate-200 dark:border-slate-800 shadow-sm'
                 }`}>
                   {READING_CHAPTERS.length}章
@@ -1567,14 +1567,14 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
               onClick={() => setActiveTab('guides')}
               className={`p-3.5 rounded-xl border text-left transition-all cursor-pointer flex flex-col justify-between gap-2.5 ${
                 activeTab === 'guides'
-                  ? 'bg-emerald-50 dark:bg-emerald-100 dark:bg-emerald-950/60 border-2 border-emerald-500 shadow-md ring-1 ring-emerald-400/30'
+                  ? 'bg-emerald-50 dark:bg-emerald-950/60 border-2 border-emerald-500 shadow-md ring-1 ring-emerald-400/30'
                   : 'bg-white/80 dark:bg-slate-950/60 border-slate-200 dark:border-slate-800 hover:border-cyan-400 dark:hover:border-slate-700 hover:bg-sky-50 dark:hover:bg-slate-900/60 text-slate-700 dark:text-slate-300 shadow-sm'
               }`}
             >
               <div className="flex items-center justify-between gap-2">
                 <div className="flex items-center gap-2.5 min-w-0">
                   <span className={`w-4 h-4 rounded-full border-2 flex items-center justify-center shrink-0 ${
-                    activeTab === 'guides' ? 'border-emerald-500 bg-emerald-100 dark:bg-emerald-100 dark:bg-emerald-950 text-emerald-900 dark:text-emerald-200' : 'border-slate-300 dark:border-slate-600 bg-slate-100 dark:bg-slate-900 text-slate-600 dark:text-slate-400'
+                    activeTab === 'guides' ? 'border-emerald-500 bg-emerald-100 dark:bg-emerald-950 text-emerald-900 dark:text-emerald-200' : 'border-slate-300 dark:border-slate-600 bg-slate-100 dark:bg-slate-900 text-slate-600 dark:text-slate-400'
                   }`}>
                     {activeTab === 'guides' && <span className="w-2 h-2 rounded-full bg-emerald-400" />}
                   </span>
@@ -1584,7 +1584,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
                 </div>
                 <span className={`text-[11px] font-mono font-bold px-2 py-0.5 rounded-full border shrink-0 ${
                   activeTab === 'guides'
-                    ? 'bg-emerald-200 text-emerald-950 border-emerald-300 dark:bg-emerald-100 dark:bg-emerald-950 dark:text-emerald-300 dark:border-emerald-500/50'
+                    ? 'bg-emerald-200 text-emerald-950 border-emerald-300 dark:bg-emerald-950 dark:text-emerald-300 dark:border-emerald-500/50'
                     : 'bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-400 border-slate-200 dark:border-slate-800 shadow-sm'
                 }`}>
                   8本
@@ -1678,7 +1678,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
                         {ch.title}
                       </h3>
                       {isCompleted && (
-                        <span className="inline-flex items-center gap-1 text-[10px] font-mono text-emerald-400 bg-emerald-100 dark:bg-emerald-100 dark:bg-emerald-950/80 border border-emerald-500/30 px-1.5 py-0.5 rounded">
+                        <span className="inline-flex items-center gap-1 text-[10px] font-mono text-emerald-400 bg-emerald-100 dark:bg-emerald-950/80 border border-emerald-500/30 px-1.5 py-0.5 rounded">
                           <CheckCircle2 className="w-3 h-3" />
                           完了
                         </span>
@@ -1723,9 +1723,9 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
       </section>
 
       {/* 5. サイトの4大特長（なぜゲーム開発で学ぶのか？） */}
-      <section className="space-y-6 pt-4 border-t border-slate-800/60">
+      <section className="space-y-6 pt-4 border-t border-slate-200 dark:border-slate-800/60">
         <div>
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-800 border border-slate-700 text-slate-700 dark:text-slate-300 font-mono text-xs font-semibold mb-2">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-sky-100 dark:bg-slate-800 border border-sky-300 dark:border-slate-700 text-sky-900 dark:text-slate-300 font-mono text-xs font-semibold mb-2 shadow-sm">
             <ShieldCheck className="w-3.5 h-3.5 text-cyan-400" />
             <span>LEARNING FEATURES</span>
           </div>
@@ -1739,7 +1739,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <div className="p-5 rounded-2xl bg-white/90 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 space-y-3 shadow-sm">
-            <span className="w-10 h-10 rounded-xl bg-amber-100 text-amber-800 border border-amber-300 dark:bg-amber-100 dark:bg-amber-950 dark:text-amber-300 dark:border-amber-500/40 flex items-center justify-center text-xl">
+            <span className="w-10 h-10 rounded-xl bg-amber-100 text-amber-800 border border-amber-300 dark:bg-amber-950 dark:text-amber-300 dark:border-amber-500/40 flex items-center justify-center text-xl">
               🎮
             </span>
             <h3 className="text-base font-bold text-slate-900 dark:text-white font-sans">
@@ -1751,7 +1751,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
           </div>
 
           <div className="p-5 rounded-2xl bg-white/90 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 space-y-3 shadow-sm">
-            <span className="w-10 h-10 rounded-xl bg-rose-950 text-rose-300 border border-rose-500/40 flex items-center justify-center text-xl">
+            <span className="w-10 h-10 rounded-xl bg-rose-100 text-rose-800 border border-rose-300 dark:bg-rose-950 dark:text-rose-300 dark:border-rose-500/40 flex items-center justify-center text-xl">
               ⚖️
             </span>
             <h3 className="text-base font-bold text-slate-900 dark:text-white font-sans">
@@ -1763,7 +1763,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
           </div>
 
           <div className="p-5 rounded-2xl bg-white/90 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 space-y-3 shadow-sm">
-            <span className="w-10 h-10 rounded-xl bg-cyan-100 text-cyan-800 border border-cyan-300 dark:bg-cyan-100 dark:bg-cyan-950 dark:text-cyan-300 dark:border-cyan-500/40 flex items-center justify-center text-xl">
+            <span className="w-10 h-10 rounded-xl bg-cyan-100 text-cyan-800 border border-cyan-300 dark:bg-cyan-950 dark:text-cyan-300 dark:border-cyan-500/40 flex items-center justify-center text-xl">
               🔬
             </span>
             <h3 className="text-base font-bold text-slate-900 dark:text-white font-sans">
@@ -1775,7 +1775,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
           </div>
 
           <div className="p-5 rounded-2xl bg-white/90 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 space-y-3 shadow-sm">
-            <span className="w-10 h-10 rounded-xl bg-purple-100 text-purple-800 border border-purple-300 dark:bg-purple-100 dark:bg-purple-950 dark:text-purple-300 dark:border-purple-500/40 flex items-center justify-center text-xl">
+            <span className="w-10 h-10 rounded-xl bg-purple-100 text-purple-800 border border-purple-300 dark:bg-purple-950 dark:text-purple-300 dark:border-purple-500/40 flex items-center justify-center text-xl">
               🛡️
             </span>
             <h3 className="text-base font-bold text-slate-900 dark:text-white font-sans">
@@ -1874,7 +1874,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
           </div>
           <div>
             <div className="flex items-center gap-2 flex-wrap">
-              <span className="text-[10px] sm:text-xs font-mono font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-cyan-100 dark:bg-cyan-950 text-cyan-400 border border-cyan-500/30">
+              <span className="text-[10px] sm:text-xs font-mono font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-cyan-100 text-cyan-900 border border-cyan-300 dark:bg-cyan-950 dark:text-cyan-400 dark:border-cyan-500/30 shadow-sm">
                 4サイト連携エコシステム
               </span>
               <span className="text-xs text-slate-600 dark:text-slate-400 font-mono">Shirokuma Engineering Ecosystem</span>
@@ -1976,7 +1976,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
                   🖥️
                 </div>
                 <div className="flex items-center gap-2 flex-wrap">
-                  <span className="text-xs font-mono font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-900 border border-emerald-300 dark:bg-emerald-100 dark:bg-emerald-950 dark:text-emerald-300 dark:border-emerald-500/40">
+                  <span className="text-xs font-mono font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-900 border border-emerald-300 dark:bg-emerald-950 dark:text-emerald-300 dark:border-emerald-500/40">
                     Linux × Qt GUI開発
                   </span>
                   <span className="text-xs font-mono text-slate-600 dark:text-slate-400">shirokuma-tech.jp/qt</span>
@@ -2019,7 +2019,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
                   ⚡
                 </div>
                 <div className="flex items-center gap-2 flex-wrap">
-                  <span className="text-xs font-mono font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-cyan-100 text-cyan-900 border border-cyan-300 dark:bg-cyan-100 dark:bg-cyan-950 dark:text-cyan-300 dark:border-cyan-500/40">
+                  <span className="text-xs font-mono font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-cyan-100 text-cyan-900 border border-cyan-300 dark:bg-cyan-950 dark:text-cyan-300 dark:border-cyan-500/40">
                     C++自動化・実務効率化
                   </span>
                   <span className="text-xs font-mono text-slate-600 dark:text-slate-400">shirokuma-tech.jp/auto</span>
@@ -2062,7 +2062,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
                   🌊
                 </div>
                 <div className="flex items-center gap-2 flex-wrap">
-                  <span className="text-xs font-mono font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-indigo-950 text-indigo-300 border border-indigo-500/40">
+                  <span className="text-xs font-mono font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-indigo-100 text-indigo-900 border border-indigo-300 dark:bg-indigo-950 dark:text-indigo-300 dark:border-indigo-500/40 shadow-sm">
                     水中音響・信号処理
                   </span>
                   <span className="text-xs font-mono text-slate-600 dark:text-slate-400">shirokuma-tech.jp/sonar</span>

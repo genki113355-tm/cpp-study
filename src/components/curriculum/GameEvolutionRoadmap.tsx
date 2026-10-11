@@ -317,7 +317,7 @@ ECS World ＋ RAII ＋ Stateマシン ＋ ゼロコスト抽象化 ＋ 単体テ
             「最初は動けばいいと全部 <code className="text-amber-800 dark:text-amber-300 bg-amber-50 dark:bg-slate-900 px-1 py-0.5 rounded border border-amber-200 dark:border-slate-800 font-mono">GameManager</code> に書いた」。そこから直面する数々の破綻と苦痛を、C++のオブジェクト指向と設計パターンで1つずつ解決していく<strong className="text-cyan-700 dark:text-cyan-300 font-bold">成長ストーリー</strong>です。
           </p>
         </div>
-        <div className="flex items-center gap-2 font-mono text-xs text-slate-600 dark:text-slate-400 bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-300 px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+        <div className="flex items-center gap-2 font-mono text-xs text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-slate-900 px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
           <span>クリックで各段階を探索 ↓</span>
         </div>
       </div>
@@ -333,7 +333,7 @@ ECS World ＋ RAII ＋ Stateマシン ＋ ゼロコスト抽象化 ＋ 単体テ
               className={`flex-shrink-0 px-3.5 py-2 rounded-xl font-mono text-xs font-bold transition-all duration-150 flex items-center gap-1.5 ${
                 isSelected
                   ? 'bg-gradient-to-r from-cyan-500 to-blue-600 text-slate-950 shadow-lg shadow-cyan-500/30 scale-105 border-transparent'
-                  : 'bg-white/90 dark:bg-slate-900/90 hover:bg-slate-800 text-slate-600 dark:text-slate-400 hover:text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-800'
+                  : 'bg-white/90 dark:bg-slate-900/90 hover:bg-sky-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 border border-slate-200 dark:border-slate-800 shadow-sm'
               }`}
             >
               <span>Stage {s.stage}</span>
@@ -484,7 +484,7 @@ ECS World ＋ RAII ＋ Stateマシン ＋ ゼロコスト抽象化 ＋ 単体テ
             className={`px-4 py-2 rounded-xl text-xs font-mono font-bold transition ${
               selectedStageIndex === stages.length - 1
                 ? 'opacity-40 cursor-not-allowed text-slate-500'
-                : 'bg-cyan-950 text-cyan-300 border border-cyan-500/40 hover:bg-cyan-900'
+                : 'bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold shadow-md shadow-cyan-500/20 active:scale-95'
             }`}
           >
             次のStage →

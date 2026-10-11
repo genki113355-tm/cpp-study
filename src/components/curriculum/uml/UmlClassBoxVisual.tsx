@@ -9,11 +9,11 @@ export const UmlClassBoxVisual: React.FC = () => {
           <span className="text-xs font-mono font-bold text-cyan-400 uppercase tracking-wider block mb-1">
             Standard Class Compartment Visual
           </span>
-          <h3 className="text-xl sm:text-2xl font-extrabold text-white">
+          <h3 className="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white">
             UMLクラスボックス「標準3段構造」の完全解剖
           </h3>
         </div>
-        <span className="text-xs font-mono text-cyan-300 bg-cyan-950 px-3 py-1.5 rounded-xl border border-cyan-500/30 hidden sm:inline">
+        <span className="text-xs font-mono text-cyan-900 bg-cyan-100 px-3 py-1.5 rounded-xl border border-cyan-300 dark:bg-cyan-950 dark:text-cyan-300 dark:border-cyan-500/30 hidden sm:inline">
           UML 2.5 規格準拠
         </span>
       </div>
@@ -27,11 +27,11 @@ export const UmlClassBoxVisual: React.FC = () => {
         {/* 左側：精密なクラス図ボックス (7 cols) */}
         <div className="lg:col-span-7 bg-white/90 dark:bg-slate-900/90 rounded-2xl border-2 border-cyan-500/60 shadow-2xl overflow-hidden">
           {/* 1段目：クラス名ヘッダー */}
-          <div className="p-4 bg-slate-800 text-center border-b-2 border-cyan-500/50 relative">
+          <div className="p-4 bg-sky-50 dark:bg-slate-800 text-center border-b-2 border-cyan-500/50 relative">
             <span className="text-[11px] font-mono text-cyan-400 font-semibold block uppercase tracking-widest">
               &laquo;Entity&raquo;
             </span>
-            <h4 className="text-lg sm:text-xl font-bold text-white font-mono">
+            <h4 className="text-lg sm:text-xl font-bold text-slate-900 dark:text-white font-mono">
               Player
             </h4>
             <span className="absolute right-3 top-3 text-[10px] font-mono text-slate-600 dark:text-slate-400 bg-white/90 dark:bg-slate-950/80 px-2 py-0.5 rounded border border-slate-300 dark:border-slate-700">
@@ -45,7 +45,7 @@ export const UmlClassBoxVisual: React.FC = () => {
               <span className="text-[10px] font-mono font-bold text-slate-500 uppercase tracking-wider">
                 Attributes (属性 / メンバ変数)
               </span>
-              <span className="text-[10px] font-mono text-slate-600 dark:text-slate-400 bg-slate-900 px-2 py-0.5 rounded border border-slate-200 dark:border-slate-800">
+              <span className="text-[10px] font-mono text-slate-600 dark:text-slate-400 bg-slate-100 dark:bg-slate-900 px-2 py-0.5 rounded border border-slate-200 dark:border-slate-800">
                 第2段：属性
               </span>
             </div>
@@ -85,7 +85,7 @@ export const UmlClassBoxVisual: React.FC = () => {
               <span className="text-[10px] font-mono font-bold text-slate-500 uppercase tracking-wider">
                 Operations (操作 / メンバ関数)
               </span>
-              <span className="text-[10px] font-mono text-slate-600 dark:text-slate-400 bg-slate-900 px-2 py-0.5 rounded border border-slate-200 dark:border-slate-800">
+              <span className="text-[10px] font-mono text-slate-600 dark:text-slate-400 bg-slate-100 dark:bg-slate-900 px-2 py-0.5 rounded border border-slate-200 dark:border-slate-800">
                 第3段：操作
               </span>
             </div>
@@ -122,8 +122,8 @@ export const UmlClassBoxVisual: React.FC = () => {
 
         {/* 右側：C++との対応解説 (5 cols) */}
         <div className="lg:col-span-5 space-y-3 font-sans text-xs sm:text-sm">
-          <div className="p-4 rounded-xl bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-1.5">
-            <h5 className="font-bold text-white flex items-center gap-2">
+          <div className="p-4 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-1.5 shadow-sm">
+            <h5 className="font-bold text-slate-900 dark:text-white flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-cyan-400" />
               <span>表記順の違い（C++と逆）</span>
             </h5>
@@ -132,29 +132,29 @@ export const UmlClassBoxVisual: React.FC = () => {
             </p>
           </div>
 
-          <div className="p-4 rounded-xl bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-1.5">
-            <h5 className="font-bold text-white flex items-center gap-2">
+          <div className="p-4 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-1.5 shadow-sm">
+            <h5 className="font-bold text-slate-900 dark:text-white flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-red-400" />
               <span>アクセス可視性記号</span>
             </h5>
             <div className="grid grid-cols-2 gap-2 text-xs font-mono">
-              <div className="p-1.5 rounded bg-slate-950 border border-slate-200 dark:border-slate-800">
+              <div className="p-1.5 rounded bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800">
                 <span className="text-emerald-400 font-bold">+</span> : public
               </div>
-              <div className="p-1.5 rounded bg-slate-950 border border-slate-200 dark:border-slate-800">
+              <div className="p-1.5 rounded bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800">
                 <span className="text-red-400 font-bold">-</span> : private
               </div>
-              <div className="p-1.5 rounded bg-slate-950 border border-slate-200 dark:border-slate-800">
+              <div className="p-1.5 rounded bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800">
                 <span className="text-amber-400 font-bold">#</span> : protected
               </div>
-              <div className="p-1.5 rounded bg-slate-950 border border-slate-200 dark:border-slate-800">
+              <div className="p-1.5 rounded bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800">
                 <span className="text-purple-400 font-bold">~</span> : package
               </div>
             </div>
           </div>
 
-          <div className="p-4 rounded-xl bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-1.5">
-            <h5 className="font-bold text-white flex items-center gap-2">
+          <div className="p-4 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-1.5 shadow-sm">
+            <h5 className="font-bold text-slate-900 dark:text-white flex items-center gap-2">
               <Sparkles className="w-4 h-4 text-cyan-400" />
               <span>ステレオタイプ &laquo;...&raquo;</span>
             </h5>

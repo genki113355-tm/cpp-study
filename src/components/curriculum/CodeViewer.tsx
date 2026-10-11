@@ -76,10 +76,10 @@ export const CodeViewer: React.FC<CodeViewerProps> = ({ files, targetHighlight }
   };
 
   const getFileBadgeColor = (filename: string) => {
-    if (filename.endsWith('.h')) return 'bg-purple-950/70 text-purple-300 border-purple-500/40';
-    if (filename === 'main.cpp') return 'bg-cyan-950/70 text-cyan-300 border-cyan-500/40';
-    if (filename.endsWith('.cpp')) return 'bg-blue-950/70 text-blue-300 border-blue-500/40';
-    return 'bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-700';
+    if (filename.endsWith('.h')) return 'bg-purple-100 text-purple-900 border-purple-300 dark:bg-purple-950/70 dark:text-purple-300 dark:border-purple-500/40';
+    if (filename === 'main.cpp') return 'bg-cyan-100 text-cyan-900 border-cyan-300 dark:bg-cyan-950/70 dark:text-cyan-300 dark:border-cyan-500/40';
+    if (filename.endsWith('.cpp')) return 'bg-blue-100 text-blue-900 border-blue-300 dark:bg-blue-950/70 dark:text-blue-300 dark:border-blue-500/40';
+    return 'bg-slate-100 text-slate-700 border-slate-300 dark:bg-slate-800 dark:text-slate-300 dark:border-slate-700';
   };
 
   const getFileBadgeLabel = (filename: string) => {
@@ -164,7 +164,7 @@ export const CodeViewer: React.FC<CodeViewerProps> = ({ files, targetHighlight }
   }, [targetHighlight, files]);
 
   return (
-    <div className="rounded-2xl overflow-hidden border border-slate-300 dark:border-slate-800 bg-[#0c121e] shadow-xl dark:shadow-2xl my-6">
+    <div className="rounded-2xl overflow-hidden border border-sky-200 dark:border-slate-800 bg-white dark:bg-[#0c121e] shadow-xl dark:shadow-2xl my-6">
       {/* 上部ヘッダー：タブバー */}
       <div className="flex items-center justify-between bg-slate-100 dark:bg-slate-900/90 border-b border-slate-300 dark:border-slate-800 px-4 py-2.5 flex-wrap gap-2.5">
         <div className="flex items-center gap-1.5 overflow-x-auto max-w-full pb-1 sm:pb-0 no-scrollbar select-none">
@@ -298,7 +298,7 @@ export const CodeViewer: React.FC<CodeViewerProps> = ({ files, targetHighlight }
 
       {/* コード表示エリア（行番号 ＆ 核心行ハイライト付き） */}
       <div className="relative overflow-x-auto max-h-[700px] scrollbar-thin py-3">
-        <pre className="!m-0 !p-0 !bg-transparent text-sm sm:text-[15px] md:text-base font-mono leading-relaxed">
+        <pre className="!m-0 !p-0 !bg-transparent text-sm sm:text-[15px] md:text-base font-mono leading-relaxed text-slate-800 dark:text-slate-100">
           {processedLines.map((line) => {
             const isHighlighted = highlightCoreLines && line.isCore;
             const isBlinking = blinkLineNumber === line.lineNumber;
@@ -318,25 +318,25 @@ export const CodeViewer: React.FC<CodeViewerProps> = ({ files, targetHighlight }
                       : isHighlighted
                       ? 'bg-cyan-500/10 border-l-4 border-cyan-400 pl-2 pr-4'
                       : isExpanded && explanation
-                      ? 'bg-amber-950/20 border-l-4 border-amber-400/80 pl-2 pr-4'
-                      : 'border-l-4 border-transparent pl-2 pr-4 hover:bg-slate-800/30'
+                      ? 'bg-amber-100/70 dark:bg-amber-950/20 border-l-4 border-amber-500 pl-2 pr-4'
+                      : 'border-l-4 border-transparent pl-2 pr-4 hover:bg-sky-50 dark:hover:bg-slate-800/30'
                   }`}
                 >
                   {/* 行番号 & 💡解剖アイコン */}
                   <span className={`w-12 text-right pr-3 select-none flex-shrink-0 text-xs sm:text-[13px] font-mono flex items-center justify-end gap-1 ${
                     isBlinking 
-                      ? 'text-amber-400 font-black' 
+                      ? 'text-amber-500 dark:text-amber-400 font-black' 
                       : isHighlighted 
-                      ? 'text-cyan-400 font-bold' 
+                      ? 'text-cyan-600 dark:text-cyan-400 font-bold' 
                       : isExpanded && explanation
-                      ? 'text-amber-300 font-bold'
-                      : 'text-slate-600'
+                      ? 'text-amber-600 dark:text-amber-300 font-bold'
+                      : 'text-slate-400 dark:text-slate-600'
                   }`}>
                     {explanation && (
                       <span 
                         title="クリックでこの行の構文解剖カードを展開"
                         className={`text-xs transition-transform ${
-                          isExpanded ? 'text-amber-400 scale-125' : 'text-amber-400/50 group-hover:text-amber-300 group-hover:scale-110'
+                          isExpanded ? 'text-amber-500 scale-125' : 'text-amber-500/60 group-hover:text-amber-600 group-hover:scale-110'
                         }`}
                       >
                         💡
@@ -354,18 +354,18 @@ export const CodeViewer: React.FC<CodeViewerProps> = ({ files, targetHighlight }
 
                 {/* 🔬 行の解剖カード（Anatomy Card） */}
                 {explanation && isExpanded && (
-                  <div className="my-2.5 ml-14 mr-4 p-4 sm:p-5 rounded-2xl bg-gradient-to-br from-[#0e1626] via-[#090f1d] to-[#060a14] border-2 border-amber-500/50 shadow-xl shadow-amber-500/10 space-y-3 text-sm font-sans animate-fadeIn">
-                    <div className="flex items-center justify-between border-b border-slate-800 pb-2 flex-wrap gap-2">
-                      <div className="flex items-center gap-2 font-bold text-amber-300 font-mono text-sm sm:text-base">
-                        <Microscope className="w-4 h-4 text-amber-400 shrink-0" />
+                  <div className="my-2.5 ml-14 mr-4 p-4 sm:p-5 rounded-2xl bg-gradient-to-br from-amber-50/95 via-orange-50/60 to-white dark:from-[#0e1626] dark:via-[#090f1d] dark:to-[#060a14] border-2 border-amber-300 dark:border-amber-500/50 shadow-xl shadow-amber-500/10 space-y-3 text-sm font-sans animate-fadeIn">
+                    <div className="flex items-center justify-between border-b border-amber-200 dark:border-slate-800 pb-2 flex-wrap gap-2">
+                      <div className="flex items-center gap-2 font-bold text-amber-900 dark:text-amber-300 font-mono text-sm sm:text-base">
+                        <Microscope className="w-4 h-4 text-amber-500 shrink-0" />
                         <span>行 {line.lineNumber} の解剖：{explanation.title}</span>
                       </div>
-                      <span className="text-xs font-mono px-2.5 py-0.5 rounded-full bg-amber-950 text-amber-300 border border-amber-500/40 font-bold">
+                      <span className="text-xs font-mono px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-900 border border-amber-300 dark:bg-amber-950 dark:text-amber-300 dark:border-amber-500/40 font-bold">
                         初心者サポート
                       </span>
                     </div>
 
-                    <p className="text-slate-200 leading-relaxed font-sans text-sm sm:text-base">
+                    <p className="text-slate-700 dark:text-slate-200 leading-relaxed font-sans text-sm sm:text-base">
                       {explanation.summary}
                     </p>
 
@@ -379,12 +379,12 @@ export const CodeViewer: React.FC<CodeViewerProps> = ({ files, targetHighlight }
                           {explanation.tokens.map((t: { token: string; explanation: string }, tIdx: number) => (
                             <div
                               key={tIdx}
-                              className="p-2.5 rounded-xl bg-slate-950/90 border border-slate-800 font-mono text-xs sm:text-sm flex items-start gap-2.5"
+                              className="p-2.5 rounded-xl bg-white dark:bg-slate-950/90 border border-amber-200 dark:border-slate-800 font-mono text-xs sm:text-sm flex items-start gap-2.5 shadow-sm"
                             >
-                              <code className="text-cyan-300 bg-cyan-950/90 px-2 py-0.5 rounded border border-cyan-500/40 shrink-0 font-bold text-xs">
+                              <code className="text-cyan-800 bg-cyan-100 border border-cyan-300 dark:text-cyan-300 dark:bg-cyan-950/90 dark:border-cyan-500/40 px-2 py-0.5 rounded shrink-0 font-bold text-xs">
                                 {t.token}
                               </code>
-                              <span className="text-slate-200 font-sans leading-normal">
+                              <span className="text-slate-800 dark:text-slate-200 font-sans leading-normal">
                                 {t.explanation}
                               </span>
                             </div>

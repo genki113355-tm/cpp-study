@@ -12,7 +12,7 @@ export const PrivacyPolicyModal: React.FC<PrivacyPolicyModalProps> = ({ isOpen, 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/85 backdrop-blur-md overflow-y-auto animate-fade-in">
       <div 
-        className="relative w-full max-w-3xl max-h-[90vh] bg-[#070b16] border-2 border-cyan-500/50 rounded-3xl shadow-2xl flex flex-col overflow-hidden text-left"
+        className="relative w-full max-w-3xl max-h-[90vh] bg-white/95 dark:bg-[#070b16] border-2 border-sky-300 dark:border-cyan-500/50 rounded-3xl shadow-2xl flex flex-col overflow-hidden text-left"
         onClick={(e) => e.stopPropagation()}
       >
         {/* ヘッダー */}
@@ -22,7 +22,7 @@ export const PrivacyPolicyModal: React.FC<PrivacyPolicyModalProps> = ({ isOpen, 
               <Shield className="w-4 h-4 text-white" />
             </div>
             <div>
-              <h2 className="text-base sm:text-lg font-bold text-white font-sans leading-tight">
+              <h2 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white font-sans leading-tight">
                 プライバシーポリシー ＆ 免責事項
               </h2>
               <p className="text-[11px] text-slate-600 dark:text-slate-400 font-mono">
@@ -33,7 +33,7 @@ export const PrivacyPolicyModal: React.FC<PrivacyPolicyModalProps> = ({ isOpen, 
 
           <button
             onClick={onClose}
-            className="p-1.5 rounded-xl text-slate-600 dark:text-slate-400 hover:text-white hover:bg-slate-800 transition cursor-pointer"
+            className="p-1.5 rounded-xl text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition cursor-pointer"
             title="閉じる"
           >
             <X className="w-5 h-5" />
@@ -44,7 +44,7 @@ export const PrivacyPolicyModal: React.FC<PrivacyPolicyModalProps> = ({ isOpen, 
         <div className="p-5 sm:p-8 overflow-y-auto space-y-6 text-xs sm:text-sm text-slate-700 dark:text-slate-300 leading-relaxed font-sans">
           {/* 第1条: 広告配信について */}
           <section className="space-y-2 rounded-2xl bg-white/80 dark:bg-slate-900/60 p-4 border border-slate-200 dark:border-slate-800">
-            <h3 className="text-sm sm:text-base font-bold text-cyan-300 flex items-center gap-2">
+            <h3 className="text-sm sm:text-base font-bold text-cyan-900 dark:text-cyan-300 flex items-center gap-2">
               <Eye className="w-4 h-4 text-cyan-400" />
               <span>1. 広告の配信（Google AdSense 等）について</span>
             </h3>
@@ -79,7 +79,7 @@ export const PrivacyPolicyModal: React.FC<PrivacyPolicyModalProps> = ({ isOpen, 
 
           {/* 第2条: アクセス解析ツールについて */}
           <section className="space-y-2 rounded-2xl bg-white/80 dark:bg-slate-900/60 p-4 border border-slate-200 dark:border-slate-800">
-            <h3 className="text-sm sm:text-base font-bold text-cyan-300 flex items-center gap-2">
+            <h3 className="text-sm sm:text-base font-bold text-cyan-900 dark:text-cyan-300 flex items-center gap-2">
               <Lock className="w-4 h-4 text-cyan-400" />
               <span>2. アクセス解析ツール（Google アナリティクス）について</span>
             </h3>
@@ -93,7 +93,7 @@ export const PrivacyPolicyModal: React.FC<PrivacyPolicyModalProps> = ({ isOpen, 
 
           {/* 第3条: 免責事項 */}
           <section className="space-y-2 rounded-2xl bg-white/80 dark:bg-slate-900/60 p-4 border border-slate-200 dark:border-slate-800">
-            <h3 className="text-sm sm:text-base font-bold text-cyan-300 flex items-center gap-2">
+            <h3 className="text-sm sm:text-base font-bold text-cyan-900 dark:text-cyan-300 flex items-center gap-2">
               <FileText className="w-4 h-4 text-cyan-400" />
               <span>3. 免責事項</span>
             </h3>
@@ -107,7 +107,7 @@ export const PrivacyPolicyModal: React.FC<PrivacyPolicyModalProps> = ({ isOpen, 
 
           {/* 第4条: 著作権・商標について */}
           <section className="space-y-2 rounded-2xl bg-white/80 dark:bg-slate-900/60 p-4 border border-slate-200 dark:border-slate-800">
-            <h3 className="text-sm sm:text-base font-bold text-cyan-300 flex items-center gap-2">
+            <h3 className="text-sm sm:text-base font-bold text-cyan-900 dark:text-cyan-300 flex items-center gap-2">
               <CheckCircle2 className="w-4 h-4 text-cyan-400" />
               <span>4. 著作権・商標について</span>
             </h3>
@@ -121,7 +121,7 @@ export const PrivacyPolicyModal: React.FC<PrivacyPolicyModalProps> = ({ isOpen, 
 
           {/* 第5条: 運営者・技術監修体制（E-E-A-T）及び教材コードの利用について */}
           <section className="space-y-2 rounded-2xl bg-white/80 dark:bg-slate-900/60 p-4 border border-slate-200 dark:border-slate-800">
-            <h3 className="text-sm sm:text-base font-bold text-cyan-300 flex items-center gap-2">
+            <h3 className="text-sm sm:text-base font-bold text-cyan-900 dark:text-cyan-300 flex items-center gap-2">
               <Shield className="w-4 h-4 text-cyan-400" />
               <span>5. 技術監修体制（E-E-A-T）及び教材コードの利用について</span>
             </h3>
@@ -134,8 +134,8 @@ export const PrivacyPolicyModal: React.FC<PrivacyPolicyModalProps> = ({ isOpen, 
             <p>
               掲載されているモダンC++コードは、主要3大コンパイラ（GCC 13+、Clang 17+、MSVC 2022）においてC++11〜C++20標準規格に準拠したビルドおよび動作検証を行っています。
             </p>
-            <div className="p-3 rounded-xl bg-amber-950/40 border border-amber-500/40 text-xs text-amber-200/90 leading-relaxed">
-              <span className="font-bold text-amber-300">⚠️ 教材用アンチパターンコードの取扱い：</span><br />
+            <div className="p-3 rounded-xl bg-amber-50 border border-amber-200 text-xs text-amber-950 dark:bg-amber-950/40 dark:border-amber-500/40 dark:text-amber-200/90 leading-relaxed">
+              <span className="font-bold text-amber-900 dark:text-amber-300">⚠️ 教材用アンチパターンコードの取扱い：</span><br />
               クラシック基礎編等に掲載されている「C言語的アプローチ」や「第1章〜第4章のレガシーコード」は、設計の破綻やメモリリーク・スパゲティ構造を体感していただくための【反面教師としての学習用アンチパターン】です。これらを商用・実務プロダクション環境へ転用・コピペしたことにより生じたバグや損害について、当サイト運営チームは一切の責任を負いかねます。実務開発においては、各章で推奨しているモダンC++設計（RAII、スマートポインタ等）をご採用ください。
             </div>
           </section>
@@ -151,7 +151,7 @@ export const PrivacyPolicyModal: React.FC<PrivacyPolicyModalProps> = ({ isOpen, 
         <div className="p-4 bg-white/90 dark:bg-slate-900/80 border-t border-slate-200 dark:border-slate-800 flex justify-end flex-shrink-0">
           <button
             onClick={onClose}
-            className="px-5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-800 dark:text-slate-200 font-bold text-xs font-mono transition cursor-pointer"
+            className="px-5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700 font-bold text-xs font-mono transition cursor-pointer"
           >
             閉じる
           </button>

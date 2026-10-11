@@ -89,11 +89,11 @@ export const UmlArrowGuideVisual: React.FC = () => {
           <span className="text-xs font-mono font-bold text-cyan-400 uppercase tracking-wider block mb-1">
             UML 2.5 Specification Master Visual
           </span>
-          <h3 className="text-xl sm:text-2xl font-extrabold text-white">
+          <h3 className="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white">
             UML 5大関連矢印 ＆ C++メモリモデル完全リファレンス
           </h3>
         </div>
-        <span className="text-xs font-mono text-slate-600 dark:text-slate-400 bg-slate-900 px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-800 hidden sm:inline">
+        <span className="text-xs font-mono text-slate-700 dark:text-slate-400 bg-slate-100 dark:bg-slate-900 px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-800 hidden sm:inline">
           SVG幾何ベクトル描画
         </span>
       </div>
@@ -107,14 +107,14 @@ export const UmlArrowGuideVisual: React.FC = () => {
             {/* 上部：タイトル & 意味 */}
             <div>
               <div className="flex items-center justify-between gap-2 mb-1.5">
-                <h4 className="text-base font-bold text-white font-sans flex items-center gap-2">
+                <h4 className="text-base font-bold text-slate-900 dark:text-white font-sans flex items-center gap-2">
                   <span
                     className="w-2.5 h-2.5 rounded-full"
                     style={{ backgroundColor: spec.accentColor }}
                   />
                   <span>{spec.name}</span>
                 </h4>
-                <span className="text-[11px] font-mono text-slate-600 dark:text-slate-400 bg-slate-950 px-2 py-0.5 rounded border border-slate-200 dark:border-slate-800">
+                <span className="text-[11px] font-mono text-slate-700 dark:text-slate-400 bg-slate-100 dark:bg-slate-950 px-2 py-0.5 rounded border border-slate-200 dark:border-slate-800">
                   {spec.umlName}
                 </span>
               </div>
@@ -124,7 +124,7 @@ export const UmlArrowGuideVisual: React.FC = () => {
             </div>
 
             {/* 中央：厳密な座標計算によるSVG図形描画 */}
-            <div className="bg-slate-950 rounded-xl p-3 border border-slate-200 dark:border-slate-800 flex items-center justify-center">
+            <div className="bg-slate-50 dark:bg-slate-950 rounded-xl p-3 border border-slate-200 dark:border-slate-800 flex items-center justify-center">
               <svg width="100%" height="46" viewBox="0 0 340 46" className="overflow-visible">
                 <defs>
                   {/* 白抜き三角マーカー (汎化・継承) */}
@@ -303,7 +303,7 @@ export const UmlArrowGuideVisual: React.FC = () => {
 
             {/* 下部：C++対応コード ＆ メモリノート */}
             <div className="space-y-2">
-              <div className="p-2.5 rounded-lg bg-slate-950 border border-slate-200 dark:border-slate-800 font-mono text-xs text-emerald-400">
+              <div className="p-2.5 rounded-lg bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 font-mono text-slate-800 dark:text-slate-200 text-xs text-emerald-400">
                 <code>{spec.cppCode}</code>
               </div>
               <div className="text-[11px] font-sans text-slate-600 dark:text-slate-400 bg-white/80 dark:bg-slate-900/50 px-2.5 py-1.5 rounded-lg border border-slate-200 dark:border-slate-800/60 flex items-start gap-1.5">

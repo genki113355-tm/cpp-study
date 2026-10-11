@@ -64,7 +64,7 @@ export const ShareButtons: React.FC<ShareButtonsProps> = ({
           target="_blank"
           rel="noopener noreferrer"
           title="X (Twitter) でポストする"
-          className="p-1.5 rounded-md bg-slate-800 hover:bg-slate-700 text-slate-700 dark:text-slate-300 hover:text-white transition-colors border border-slate-700/60 flex items-center justify-center"
+          className="p-1.5 rounded-md bg-slate-100 hover:bg-slate-200 text-slate-700 dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-colors border border-slate-300 dark:border-slate-700/60 flex items-center justify-center shadow-sm"
         >
           <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
             <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
@@ -74,9 +74,9 @@ export const ShareButtons: React.FC<ShareButtonsProps> = ({
           type="button"
           onClick={handleCopy}
           title="リンクをコピー"
-          className="p-1.5 rounded-md bg-slate-800 hover:bg-slate-700 text-slate-700 dark:text-slate-300 hover:text-cyan-400 transition-colors border border-slate-700/60 flex items-center justify-center relative"
+          className="p-1.5 rounded-md bg-slate-100 hover:bg-slate-200 text-slate-700 dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-slate-300 hover:text-cyan-800 dark:hover:text-cyan-400 transition-colors border border-slate-300 dark:border-slate-700/60 flex items-center justify-center relative shadow-sm"
         >
-          {copied ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
+          {copied ? <Check className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
         </button>
       </div>
     );
@@ -84,14 +84,14 @@ export const ShareButtons: React.FC<ShareButtonsProps> = ({
 
   if (variant === 'card') {
     return (
-      <div className={`p-4 rounded-xl bg-gradient-to-r from-slate-900/90 via-indigo-950/40 to-slate-900/90 border border-cyan-500/20 shadow-lg ${className}`}>
+      <div className={`p-4 rounded-xl bg-white/95 dark:bg-slate-900 border border-sky-200 dark:border-cyan-500/20 shadow-md ${className}`}>
         <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400">
+            <div className="w-8 h-8 rounded-lg bg-cyan-100 dark:bg-cyan-500/10 border border-cyan-300 dark:border-cyan-500/30 flex items-center justify-center text-cyan-700 dark:text-cyan-400">
               <Share2 className="w-4 h-4" />
             </div>
             <div>
-              <p className="text-sm font-semibold text-slate-200">この記事が役に立ったらシェアしよう！</p>
+              <p className="text-sm font-bold text-slate-900 dark:text-white">この記事が役に立ったらシェアしよう！</p>
               <p className="text-xs text-slate-600 dark:text-slate-400">学習の振り返りや知見の共有、ブックマークにぜひ活用してください</p>
             </div>
           </div>
@@ -119,15 +119,15 @@ export const ShareButtons: React.FC<ShareButtonsProps> = ({
             <button
               type="button"
               onClick={handleCopy}
-              className={`inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium border transition ${
+              className={`inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium border transition shadow-sm ${
                 copied
-                  ? 'bg-emerald-950/60 border-emerald-500 text-emerald-300'
-                  : 'bg-slate-800 hover:bg-slate-700 border-slate-700 text-slate-700 dark:text-slate-300 hover:text-white'
+                  ? 'bg-emerald-100 text-emerald-900 border-emerald-300 dark:bg-emerald-950/60 dark:border-emerald-500 dark:text-emerald-300'
+                  : 'bg-slate-100 hover:bg-slate-200 border-slate-300 text-slate-700 dark:bg-slate-800 dark:hover:bg-slate-700 dark:border-slate-700 dark:text-slate-300'
               }`}
             >
               {copied ? (
                 <>
-                  <Check className="w-3.5 h-3.5 text-emerald-400" />
+                  <Check className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
                   <span>コピー完了！</span>
                 </>
               ) : (
@@ -173,15 +173,15 @@ export const ShareButtons: React.FC<ShareButtonsProps> = ({
       <button
         type="button"
         onClick={handleCopy}
-        className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-xs transition border ${
+        className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-xs transition border shadow-sm ${
           copied
-            ? 'bg-emerald-950/60 border-emerald-500 text-emerald-300'
-            : 'bg-slate-800/80 hover:bg-slate-700 border-slate-700 text-slate-700 dark:text-slate-300 hover:text-white'
+            ? 'bg-emerald-100 text-emerald-900 border-emerald-300 dark:bg-emerald-950/60 dark:border-emerald-500 dark:text-emerald-300'
+            : 'bg-slate-100 hover:bg-slate-200 border-slate-300 text-slate-700 dark:bg-slate-800/80 dark:hover:bg-slate-700 dark:border-slate-700 dark:text-slate-300'
         }`}
       >
         {copied ? (
           <>
-            <Check className="w-3 h-3 text-emerald-400" />
+            <Check className="w-3 h-3 text-emerald-600 dark:text-emerald-400" />
             <span>コピー済</span>
           </>
         ) : (

@@ -36,28 +36,28 @@ export const ConceptDiagram: React.FC<ConceptDiagramProps> = ({ type }) => {
           </div>
 
           {/* main関数の中身 */}
-          <div className="p-5 rounded-xl bg-slate-800/40 border border-slate-300 dark:border-slate-700/60">
-            <h4 className="text-xs sm:text-sm font-mono font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-3">
+          <div className="p-5 rounded-xl bg-slate-50 dark:bg-slate-800/40 border border-slate-200 dark:border-slate-700/60 shadow-sm">
+            <h4 className="text-xs sm:text-sm font-mono font-bold text-slate-800 dark:text-slate-300 uppercase tracking-wider mb-3">
               巨大な main() 関数 (100行以上)
             </h4>
             <div className="space-y-2 text-xs sm:text-sm font-mono">
-              <div className="p-2 rounded-lg bg-slate-800 text-slate-800 dark:text-slate-200 border-l-3 border-red-500 flex items-center justify-between">
+              <div className="p-2 rounded-lg bg-slate-100 text-slate-800 dark:bg-slate-800 dark:text-slate-200 border-l-3 border-red-500 flex items-center justify-between">
                 <span>キー入力処理 (kbhit)</span>
                 <span className="text-xs text-red-400 font-bold">playerXを直接変更</span>
               </div>
-              <div className="p-2 rounded-lg bg-slate-800 text-slate-800 dark:text-slate-200 border-l-3 border-red-500 flex items-center justify-between">
+              <div className="p-2 rounded-lg bg-slate-100 text-slate-800 dark:bg-slate-800 dark:text-slate-200 border-l-3 border-red-500 flex items-center justify-between">
                 <span>弾の移動 &amp; 画面外判定</span>
                 <span className="text-xs text-red-400 font-bold">bulletActiveを直接変更</span>
               </div>
-              <div className="p-2 rounded-lg bg-slate-800 text-slate-800 dark:text-slate-200 border-l-3 border-red-500 flex items-center justify-between">
+              <div className="p-2 rounded-lg bg-slate-100 text-slate-800 dark:bg-slate-800 dark:text-slate-200 border-l-3 border-red-500 flex items-center justify-between">
                 <span>敵の移動 &amp; 壁バウンド</span>
                 <span className="text-xs text-red-400 font-bold">invaderX/Yを直接変更</span>
               </div>
-              <div className="p-2 rounded-lg bg-slate-800 text-slate-800 dark:text-slate-200 border-l-3 border-red-500 flex items-center justify-between">
+              <div className="p-2 rounded-lg bg-slate-100 text-slate-800 dark:bg-slate-800 dark:text-slate-200 border-l-3 border-red-500 flex items-center justify-between">
                 <span>当たり判定 2重ループ</span>
                 <span className="text-xs text-red-400 font-bold">全変数が絡み合う</span>
               </div>
-              <div className="p-2 rounded-lg bg-slate-800 text-slate-800 dark:text-slate-200 border-l-3 border-red-500 flex items-center justify-between">
+              <div className="p-2 rounded-lg bg-slate-100 text-slate-800 dark:bg-slate-800 dark:text-slate-200 border-l-3 border-red-500 flex items-center justify-between">
                 <span>文字バッファ描画 &amp; Sleep</span>
                 <span className="text-xs text-red-400 font-bold">全変数を参照</span>
               </div>
@@ -82,10 +82,10 @@ export const ConceptDiagram: React.FC<ConceptDiagramProps> = ({ type }) => {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 font-mono">
           {/* Player クラス */}
-          <div className="p-4 rounded-xl bg-slate-950 border border-cyan-500/40">
+          <div className="p-4 rounded-xl bg-white/95 dark:bg-slate-950 border border-cyan-500/40">
             <div className="text-sm font-bold text-cyan-300 pb-2 border-b border-cyan-500/20 flex items-center justify-between">
               <span>class Player</span>
-              <span className="text-xs bg-cyan-950 text-cyan-400 px-2 py-0.5 rounded border border-cyan-800 font-sans">自機</span>
+              <span className="text-xs bg-cyan-100 text-cyan-900 dark:bg-cyan-950 dark:text-cyan-400 px-2 py-0.5 rounded border border-cyan-800 font-sans">自機</span>
             </div>
             {/* private */}
             <div className="mt-3 p-3 rounded-lg bg-red-950/30 border border-red-500/30">
@@ -104,7 +104,7 @@ export const ConceptDiagram: React.FC<ConceptDiagramProps> = ({ type }) => {
           </div>
 
           {/* Invader クラス */}
-          <div className="p-4 rounded-xl bg-slate-950 border border-purple-500/40">
+          <div className="p-4 rounded-xl bg-white/95 dark:bg-slate-950 border border-purple-500/40">
             <div className="text-sm font-bold text-purple-300 pb-2 border-b border-purple-500/20 flex items-center justify-between">
               <span>class Invader</span>
               <span className="text-xs bg-purple-950 text-purple-400 px-2 py-0.5 rounded border border-purple-800 font-sans">敵</span>
@@ -123,7 +123,7 @@ export const ConceptDiagram: React.FC<ConceptDiagramProps> = ({ type }) => {
           </div>
 
           {/* Bullet クラス */}
-          <div className="p-4 rounded-xl bg-slate-950 border border-amber-500/40">
+          <div className="p-4 rounded-xl bg-white/95 dark:bg-slate-950 border border-amber-500/40">
             <div className="text-sm font-bold text-amber-300 pb-2 border-b border-amber-500/20 flex items-center justify-between">
               <span>class Bullet</span>
               <span className="text-xs bg-amber-950 text-amber-400 px-2 py-0.5 rounded border border-amber-800 font-sans">弾</span>
@@ -142,7 +142,7 @@ export const ConceptDiagram: React.FC<ConceptDiagramProps> = ({ type }) => {
           </div>
         </div>
 
-        <div className="mt-5 p-4 rounded-xl bg-cyan-950/40 border border-cyan-500/30 text-xs sm:text-sm text-cyan-200 flex items-center gap-3 font-sans">
+        <div className="mt-5 p-4 rounded-xl bg-cyan-50 dark:bg-cyan-950/40 border border-cyan-200 dark:border-cyan-500/30 text-xs sm:text-sm text-cyan-950 dark:text-cyan-200 flex items-center gap-3 font-sans">
           <Layers className="w-5 h-5 text-cyan-400 flex-shrink-0" />
           <span className="leading-relaxed"><strong>恩恵：</strong> 「.h」で約束されたpublic関数だけを使ってメイン処理を書くため、クラス内部の実装がどう変わっても呼び出し側は壊れません。</span>
         </div>
@@ -164,13 +164,13 @@ export const ConceptDiagram: React.FC<ConceptDiagramProps> = ({ type }) => {
             <div className="absolute -left-[29px] top-1 w-5 h-5 rounded-full bg-emerald-500 border-2 border-slate-900 flex items-center justify-center text-xs text-slate-950 font-bold">
               1
             </div>
-            <div className="bg-slate-950 p-4 rounded-xl border border-emerald-500/30">
-              <div className="flex items-center justify-between text-xs sm:text-sm font-mono font-bold text-emerald-300 mb-1">
+            <div className="bg-white/95 dark:bg-slate-950 p-4 rounded-xl border border-emerald-500/30">
+              <div className="flex items-center justify-between text-xs sm:text-sm font-mono font-bold text-emerald-800 dark:text-emerald-300 mb-1">
                 <span>【誕生】弾が敵にヒット！</span>
-                <span className="text-xs bg-emerald-950 text-emerald-400 px-2.5 py-0.5 rounded">emplace_back()</span>
+                <span className="text-xs bg-emerald-100 text-emerald-900 border border-emerald-300 dark:bg-emerald-950 dark:text-emerald-400 dark:border-transparent px-2.5 py-0.5 rounded font-bold">emplace_back()</span>
               </div>
               <p className="text-xs sm:text-sm text-slate-700 dark:text-slate-300 leading-relaxed font-sans">
-                敵の撃破座標から、角度と初速を変えて10個の <code className="text-emerald-400 bg-slate-900 px-1.5 py-0.5 rounded">Particle</code> インスタンスを動的に生成し、<code className="text-emerald-400">m_particles</code> に追加。
+                敵の撃破座標から、角度と初速を変えて10個の <code className="text-emerald-800 bg-emerald-100 border border-emerald-300 dark:text-emerald-400 dark:bg-slate-900 px-1.5 py-0.5 rounded font-bold">Particle</code> インスタンスを動的に生成し、<code className="text-emerald-700 dark:text-emerald-400 font-bold">m_particles</code> に追加。
               </p>
             </div>
           </div>
@@ -180,13 +180,13 @@ export const ConceptDiagram: React.FC<ConceptDiagramProps> = ({ type }) => {
             <div className="absolute -left-[29px] top-1 w-5 h-5 rounded-full bg-cyan-500 border-2 border-slate-900 flex items-center justify-center text-xs text-slate-950 font-bold">
               2
             </div>
-            <div className="bg-slate-950 p-4 rounded-xl border border-cyan-500/30">
-              <div className="flex items-center justify-between text-xs sm:text-sm font-mono font-bold text-cyan-300 mb-1">
+            <div className="bg-white/95 dark:bg-slate-950 p-4 rounded-xl border border-cyan-500/30">
+              <div className="flex items-center justify-between text-xs sm:text-sm font-mono font-bold text-cyan-800 dark:text-cyan-300 mb-1">
                 <span>【活動 &amp; 老化】毎フレームの更新</span>
-                <span className="text-xs bg-cyan-950 text-cyan-400 px-2.5 py-0.5 rounded">p.update()</span>
+                <span className="text-xs bg-cyan-100 text-cyan-900 border border-cyan-300 dark:bg-cyan-950 dark:text-cyan-400 dark:border-transparent px-2.5 py-0.5 rounded font-bold">p.update()</span>
               </div>
               <p className="text-xs sm:text-sm text-slate-700 dark:text-slate-300 leading-relaxed font-sans">
-                速度に応じて座標が移動（<code className="text-cyan-400">x += vx, y += vy</code>）。同時に寿命カウンターが減算（<code className="text-amber-400">lifetime--</code>）。
+                速度に応じて座標が移動（<code className="text-cyan-700 dark:text-cyan-400 font-bold">x += vx, y += vy</code>）。同時に寿命カウンターが減算（<code className="text-amber-700 dark:text-amber-400 font-bold">lifetime--</code>）。
               </p>
             </div>
           </div>
@@ -196,13 +196,13 @@ export const ConceptDiagram: React.FC<ConceptDiagramProps> = ({ type }) => {
             <div className="absolute -left-[29px] top-1 w-5 h-5 rounded-full bg-rose-500 border-2 border-slate-900 flex items-center justify-center text-xs text-slate-950 font-bold">
               3
             </div>
-            <div className="bg-slate-950 p-4 rounded-xl border border-rose-500/30">
-              <div className="flex items-center justify-between text-xs sm:text-sm font-mono font-bold text-rose-300 mb-1">
+            <div className="bg-white/95 dark:bg-slate-950 p-4 rounded-xl border border-rose-500/30">
+              <div className="flex items-center justify-between text-xs sm:text-sm font-mono font-bold text-rose-800 dark:text-rose-300 mb-1">
                 <span>【消滅】寿命到達 &amp; 安全なメモリ解放</span>
-                <span className="text-xs bg-rose-950 text-rose-400 px-2.5 py-0.5 rounded">erase-remove</span>
+                <span className="text-xs bg-rose-100 text-rose-900 border border-rose-300 dark:bg-rose-950 dark:text-rose-400 dark:border-transparent px-2.5 py-0.5 rounded font-bold">erase-remove</span>
               </div>
               <p className="text-xs sm:text-sm text-slate-700 dark:text-slate-300 leading-relaxed font-sans">
-                <code className="text-rose-400">lifetime &lt;= 0</code> となった火花は、デストラクタが呼ばれてメモリからきれいに消去されます。メモリリークは一切発生しません！
+                <code className="text-rose-700 dark:text-rose-400 font-bold">lifetime &lt;= 0</code> となった火花は、デストラクタが呼ばれてメモリからきれいに消去されます。メモリリークは一切発生しません！
               </p>
             </div>
           </div>
@@ -234,62 +234,62 @@ export const ConceptDiagram: React.FC<ConceptDiagramProps> = ({ type }) => {
           </h4>
 
           {/* NormalEnemy 実体 */}
-          <div className="p-4 rounded-xl bg-slate-950 border border-blue-500/40 font-mono text-xs sm:text-sm space-y-2">
-            <div className="flex items-center justify-between text-blue-300 font-bold pb-1.5 border-b border-slate-200 dark:border-slate-800">
+          <div className="p-4 rounded-xl bg-white/95 dark:bg-slate-950 border border-blue-500/40 font-mono text-xs sm:text-sm space-y-2 shadow-sm">
+            <div className="flex items-center justify-between text-blue-900 dark:text-blue-300 font-bold pb-1.5 border-b border-slate-200 dark:border-slate-800">
               <span>インスタンス: NormalEnemy</span>
               <span className="text-xs text-slate-500">Heap: 0x10A0</span>
             </div>
             <div className="grid grid-cols-2 gap-2 text-xs">
-              <div className="bg-purple-950/40 p-2 rounded border border-purple-500/40 text-purple-300">
+              <div className="bg-purple-100 dark:bg-purple-950/40 p-2 rounded border border-purple-300 dark:border-purple-500/40 text-purple-900 dark:text-purple-300">
                 <span className="font-bold block">void* __vptr</span>
-                <span className="text-[11px] text-slate-600 dark:text-slate-400">─► &amp;vtable_NormalEnemy</span>
+                <span className="text-[11px] text-purple-700 dark:text-slate-400">─► &amp;vtable_NormalEnemy</span>
               </div>
-              <div className="bg-slate-900 p-2 rounded border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300">
-                <span className="text-slate-600 dark:text-slate-400 block">int m_x, m_y</span>
+              <div className="bg-slate-50 dark:bg-slate-900 p-2 rounded border border-slate-200 dark:border-slate-800 text-slate-800 dark:text-slate-300">
+                <span className="text-slate-500 dark:text-slate-400 block">int m_x, m_y</span>
                 <span>(10, 4)</span>
               </div>
             </div>
           </div>
 
           {/* ShieldEnemy 実体 */}
-          <div className="p-4 rounded-xl bg-slate-950 border border-emerald-500/40 font-mono text-xs sm:text-sm space-y-2">
-            <div className="flex items-center justify-between text-emerald-300 font-bold pb-1.5 border-b border-slate-200 dark:border-slate-800">
+          <div className="p-4 rounded-xl bg-white/95 dark:bg-slate-950 border border-emerald-500/40 font-mono text-xs sm:text-sm space-y-2 shadow-sm">
+            <div className="flex items-center justify-between text-emerald-900 dark:text-emerald-300 font-bold pb-1.5 border-b border-slate-200 dark:border-slate-800">
               <span>インスタンス: ShieldEnemy</span>
               <span className="text-xs text-slate-500">Heap: 0x10F0</span>
             </div>
             <div className="grid grid-cols-3 gap-2 text-xs">
-              <div className="bg-purple-950/40 p-2 rounded border border-purple-500/40 text-purple-300">
+              <div className="bg-purple-100 dark:bg-purple-950/40 p-2 rounded border border-purple-300 dark:border-purple-500/40 text-purple-900 dark:text-purple-300">
                 <span className="font-bold block">void* __vptr</span>
-                <span className="text-[10px] text-slate-600 dark:text-slate-400">─► &amp;vtable_Shield</span>
+                <span className="text-[10px] text-purple-700 dark:text-slate-400">─► &amp;vtable_Shield</span>
               </div>
-              <div className="bg-slate-900 p-2 rounded border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300">
-                <span className="text-slate-600 dark:text-slate-400 block">m_x, m_y</span>
+              <div className="bg-slate-50 dark:bg-slate-900 p-2 rounded border border-slate-200 dark:border-slate-800 text-slate-800 dark:text-slate-300">
+                <span className="text-slate-500 dark:text-slate-400 block">m_x, m_y</span>
                 <span>(18, 2)</span>
               </div>
-              <div className="bg-amber-950/30 p-2 rounded border border-amber-500/30 text-amber-300">
-                <span className="text-amber-400 block">int m_shield</span>
+              <div className="bg-amber-100 dark:bg-amber-950/30 p-2 rounded border border-amber-300 dark:border-amber-500/30 text-amber-900 dark:text-amber-300 font-semibold">
+                <span className="text-amber-700 dark:text-amber-400 block font-normal">int m_shield</span>
                 <span>HP: 2</span>
               </div>
             </div>
           </div>
 
           {/* UfoEnemy 実体 */}
-          <div className="p-4 rounded-xl bg-slate-950 border border-amber-500/40 font-mono text-xs sm:text-sm space-y-2">
-            <div className="flex items-center justify-between text-amber-300 font-bold pb-1.5 border-b border-slate-200 dark:border-slate-800">
+          <div className="p-4 rounded-xl bg-white/95 dark:bg-slate-950 border border-amber-500/40 font-mono text-xs sm:text-sm space-y-2 shadow-sm">
+            <div className="flex items-center justify-between text-amber-900 dark:text-amber-300 font-bold pb-1.5 border-b border-slate-200 dark:border-slate-800">
               <span>インスタンス: UfoEnemy (ボーナス)</span>
               <span className="text-xs text-slate-500">Heap: 0x1140</span>
             </div>
             <div className="grid grid-cols-3 gap-2 text-xs">
-              <div className="bg-purple-950/40 p-2 rounded border border-purple-500/40 text-purple-300">
+              <div className="bg-purple-100 dark:bg-purple-950/40 p-2 rounded border border-purple-300 dark:border-purple-500/40 text-purple-900 dark:text-purple-300">
                 <span className="font-bold block">void* __vptr</span>
-                <span className="text-[10px] text-slate-600 dark:text-slate-400">─► &amp;vtable_Ufo</span>
+                <span className="text-[10px] text-purple-700 dark:text-slate-400">─► &amp;vtable_Ufo</span>
               </div>
-              <div className="bg-slate-900 p-2 rounded border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300">
-                <span className="text-slate-600 dark:text-slate-400 block">m_x, m_y</span>
+              <div className="bg-slate-50 dark:bg-slate-900 p-2 rounded border border-slate-200 dark:border-slate-800 text-slate-800 dark:text-slate-300">
+                <span className="text-slate-500 dark:text-slate-400 block">m_x, m_y</span>
                 <span>(1, 1)</span>
               </div>
-              <div className="bg-cyan-950/30 p-2 rounded border border-cyan-500/30 text-cyan-300">
-                <span className="text-cyan-400 block">int m_bonus</span>
+              <div className="bg-cyan-50 dark:bg-cyan-950/30 p-2 rounded border border-cyan-200 dark:border-cyan-500/30 text-cyan-900 dark:text-cyan-300 font-semibold">
+                <span className="text-cyan-700 dark:text-cyan-400 block font-normal">int m_bonus</span>
                 <span>500 pts</span>
               </div>
             </div>
@@ -303,7 +303,7 @@ export const ConceptDiagram: React.FC<ConceptDiagramProps> = ({ type }) => {
             <span>2. 静的メモリ上の仮想関数テーブル群（vtable）</span>
           </h4>
 
-          <div className="p-4 rounded-xl bg-slate-950 border border-purple-500/40 font-mono text-xs sm:text-sm space-y-4">
+          <div className="p-4 rounded-xl bg-white/95 dark:bg-slate-950 border border-purple-500/40 font-mono text-xs sm:text-sm space-y-4">
             {/* NormalEnemy vtable */}
             <div className="p-3 rounded-lg bg-white/90 dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800">
               <div className="text-purple-300 font-bold mb-1.5 pb-1 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
@@ -374,18 +374,18 @@ export const ConceptDiagram: React.FC<ConceptDiagramProps> = ({ type }) => {
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 font-mono">
           {/* 1. std::unique_ptr */}
-          <div className="p-5 rounded-xl bg-slate-950 border border-cyan-500/40 flex flex-col justify-between space-y-4">
+          <div className="p-5 rounded-xl bg-white/95 dark:bg-slate-950 border border-cyan-500/40 flex flex-col justify-between space-y-4">
             <div>
               <div className="flex items-center justify-between pb-2 border-b border-slate-200 dark:border-slate-800">
                 <span className="text-cyan-300 font-bold text-sm sm:text-base">std::unique_ptr&lt;T&gt;</span>
-                <span className="px-2 py-0.5 rounded bg-cyan-950 text-cyan-400 text-[11px] border border-cyan-500/30">単独所有権</span>
+                <span className="px-2 py-0.5 rounded bg-cyan-100 text-cyan-900 dark:bg-cyan-950 dark:text-cyan-400 text-[11px] border border-cyan-500/30">単独所有権</span>
               </div>
               <div className="mt-3 space-y-2 text-xs">
-                <div className="p-2.5 rounded bg-cyan-950/30 border border-cyan-500/20 text-cyan-200">
+                <div className="p-2.5 rounded bg-cyan-50 dark:bg-cyan-950/30 border border-cyan-200 dark:border-cyan-500/20 text-cyan-950 dark:text-cyan-200">
                   <span className="text-slate-600 dark:text-slate-400 block mb-1">【オーバーヘッド】</span>
                   <span className="font-bold text-emerald-400">0バイト（生ポインタと同一）</span>
                 </div>
-                <div className="p-2.5 rounded bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 leading-relaxed font-sans">
+                <div className="p-2.5 rounded bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 leading-relaxed font-sans">
                   唯一の所有者。<strong>コピー禁止</strong>（コンパイルエラー）。所有権の移動は <code className="text-cyan-300 font-mono">std::move()</code> のみ許可。
                 </div>
                 <div className="p-2 rounded bg-white/90 dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 space-y-1">
@@ -395,13 +395,13 @@ export const ConceptDiagram: React.FC<ConceptDiagramProps> = ({ type }) => {
                 </div>
               </div>
             </div>
-            <div className="text-[11px] text-cyan-300/80 bg-cyan-950/20 p-2 rounded border border-cyan-500/20 font-sans">
+            <div className="text-[11px] text-cyan-800 dark:text-cyan-300/80 bg-cyan-50 dark:bg-cyan-950/20 p-2 rounded border border-cyan-500/20 font-sans">
               用途: 敵（Enemy）、アイテム（Item）、弾（Bullet）の管理。C++現場の9割はこれで完結！
             </div>
           </div>
 
           {/* 2. std::shared_ptr */}
-          <div className="p-5 rounded-xl bg-slate-950 border border-emerald-500/40 flex flex-col justify-between space-y-4">
+          <div className="p-5 rounded-xl bg-white/95 dark:bg-slate-950 border border-emerald-500/40 flex flex-col justify-between space-y-4">
             <div>
               <div className="flex items-center justify-between pb-2 border-b border-slate-200 dark:border-slate-800">
                 <span className="text-emerald-300 font-bold text-sm sm:text-base">std::shared_ptr&lt;T&gt;</span>
@@ -412,7 +412,7 @@ export const ConceptDiagram: React.FC<ConceptDiagramProps> = ({ type }) => {
                   <span className="text-slate-600 dark:text-slate-400 block mb-1">【内部物理構造】</span>
                   <span className="font-bold text-emerald-300">実体ポインタ + 管理ブロック</span>
                 </div>
-                <div className="p-2.5 rounded bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 space-y-1.5">
+                <div className="p-2.5 rounded bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 space-y-1.5">
                   <div className="flex justify-between text-[11px] text-slate-600 dark:text-slate-400">
                     <span>管理ブロック (Control Block):</span>
                   </div>
@@ -420,7 +420,7 @@ export const ConceptDiagram: React.FC<ConceptDiagramProps> = ({ type }) => {
                     <div className="p-1 rounded bg-emerald-950/60 border border-emerald-500/30 text-emerald-300">
                       use_count: 2
                     </div>
-                    <div className="p-1 rounded bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400">
+                    <div className="p-1 rounded bg-white/95 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400">
                       weak_count: 1
                     </div>
                   </div>
@@ -436,7 +436,7 @@ export const ConceptDiagram: React.FC<ConceptDiagramProps> = ({ type }) => {
           </div>
 
           {/* 3. std::weak_ptr */}
-          <div className="p-5 rounded-xl bg-slate-950 border border-amber-500/40 flex flex-col justify-between space-y-4">
+          <div className="p-5 rounded-xl bg-white/95 dark:bg-slate-950 border border-amber-500/40 flex flex-col justify-between space-y-4">
             <div>
               <div className="flex items-center justify-between pb-2 border-b border-slate-200 dark:border-slate-800">
                 <span className="text-amber-300 font-bold text-sm sm:text-base">std::weak_ptr&lt;T&gt;</span>
@@ -447,7 +447,7 @@ export const ConceptDiagram: React.FC<ConceptDiagramProps> = ({ type }) => {
                   <span className="text-slate-600 dark:text-slate-400 block mb-1">【循環参照の破壊者】</span>
                   <span className="font-bold text-amber-300">use_count を増やさない！</span>
                 </div>
-                <div className="p-2.5 rounded bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 leading-relaxed font-sans">
+                <div className="p-2.5 rounded bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 leading-relaxed font-sans">
                   実体を所有せず、ただ「見守る」だけ。実体が生きていれば <code className="text-amber-300 font-mono">lock()</code> で一時的な <code className="text-emerald-300 font-mono">shared_ptr</code> を安全取得。
                 </div>
                 <div className="p-2 rounded bg-red-950/30 border border-red-500/30 text-red-300 text-[11px] font-sans">
@@ -462,7 +462,7 @@ export const ConceptDiagram: React.FC<ConceptDiagramProps> = ({ type }) => {
         </div>
 
         {/* 現場の鉄則 */}
-        <div className="mt-5 p-4 rounded-xl bg-cyan-950/40 border border-cyan-500/30 text-xs sm:text-sm text-cyan-200 leading-relaxed font-sans flex items-start gap-3">
+        <div className="mt-5 p-4 rounded-xl bg-cyan-50 dark:bg-cyan-950/40 border border-cyan-200 dark:border-cyan-500/30 text-xs sm:text-sm text-cyan-950 dark:text-cyan-200 leading-relaxed font-sans flex items-start gap-3">
           <Shield className="w-5 h-5 text-cyan-400 flex-shrink-0 mt-0.5" />
           <div>
             <strong className="text-cyan-300 font-mono block mb-1">
@@ -489,7 +489,7 @@ export const ConceptDiagram: React.FC<ConceptDiagramProps> = ({ type }) => {
         </div>
 
         {/* 1. State パターンの状態マシン */}
-        <div className="p-5 rounded-xl bg-slate-950 border border-amber-500/30 space-y-4">
+        <div className="p-5 rounded-xl bg-white/95 dark:bg-slate-950 border border-amber-500/30 space-y-4">
           <h4 className="text-sm font-mono font-bold text-amber-300 flex items-center gap-2">
             <span className="w-2.5 h-2.5 rounded-full bg-amber-400" />
             <span>1. State パターン：巨大 switch 文を追放する状態ポリモーフィズム</span>
@@ -497,14 +497,14 @@ export const ConceptDiagram: React.FC<ConceptDiagramProps> = ({ type }) => {
 
           <div className="grid grid-cols-1 md:grid-cols-4 gap-3 font-mono text-xs">
             {/* TitleState */}
-            <div className="p-3 rounded-lg bg-slate-900 border border-slate-300 dark:border-slate-700 space-y-1">
+            <div className="p-3 rounded-lg bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 space-y-1">
               <div className="text-amber-400 font-bold pb-1 border-b border-slate-200 dark:border-slate-800">TitleState</div>
               <div className="text-slate-700 dark:text-slate-300">タイトル画面を描画</div>
               <div className="text-[11px] text-cyan-400">SPACE ──► PlayStateへ</div>
             </div>
 
             {/* PlayState */}
-            <div className="p-3 rounded-lg bg-slate-900 border border-emerald-500/40 space-y-1">
+            <div className="p-3 rounded-lg bg-emerald-50 dark:bg-slate-900 border border-emerald-300 dark:border-emerald-500/40 space-y-1">
               <div className="text-emerald-300 font-bold pb-1 border-b border-slate-200 dark:border-slate-800">PlayState</div>
               <div className="text-slate-700 dark:text-slate-300">通常のゲームループ</div>
               <div className="text-[11px] text-amber-400">Pキー ──► PauseStateへ</div>
@@ -512,14 +512,14 @@ export const ConceptDiagram: React.FC<ConceptDiagramProps> = ({ type }) => {
             </div>
 
             {/* PauseState */}
-            <div className="p-3 rounded-lg bg-slate-900 border border-cyan-500/40 space-y-1">
+            <div className="p-3 rounded-lg bg-sky-50 dark:bg-slate-900 border border-sky-300 dark:border-cyan-500/40 space-y-1">
               <div className="text-cyan-300 font-bold pb-1 border-b border-slate-200 dark:border-slate-800">PauseState</div>
               <div className="text-slate-700 dark:text-slate-300">更新停止・暗転描画</div>
               <div className="text-[11px] text-emerald-400">Pキー ──► PlayState復帰</div>
             </div>
 
             {/* GameOverState */}
-            <div className="p-3 rounded-lg bg-slate-900 border border-rose-500/40 space-y-1">
+            <div className="p-3 rounded-lg bg-rose-50 dark:bg-slate-900 border border-rose-300 dark:border-rose-500/40 space-y-1">
               <div className="text-rose-400 font-bold pb-1 border-b border-slate-200 dark:border-slate-800">GameOverState</div>
               <div className="text-slate-700 dark:text-slate-300">スコア結果発表</div>
               <div className="text-[11px] text-amber-400">Rキー ──► TitleStateへ</div>
@@ -533,7 +533,7 @@ export const ConceptDiagram: React.FC<ConceptDiagramProps> = ({ type }) => {
         </div>
 
         {/* 2. Observer パターンのイベント配信 */}
-        <div className="p-5 rounded-xl bg-slate-950 border border-cyan-500/30 space-y-4">
+        <div className="p-5 rounded-xl bg-white/95 dark:bg-slate-950 border border-cyan-500/30 space-y-4">
           <h4 className="text-sm font-mono font-bold text-cyan-300 flex items-center gap-2">
             <span className="w-2.5 h-2.5 rounded-full bg-cyan-400" />
             <span>2. Observer パターン：発行元（Subject）と受信側（Observer）の完全疎結合</span>
@@ -541,9 +541,9 @@ export const ConceptDiagram: React.FC<ConceptDiagramProps> = ({ type }) => {
 
           <div className="grid grid-cols-1 md:grid-cols-12 gap-4 items-center font-mono text-xs">
             {/* Subject */}
-            <div className="md:col-span-4 p-4 rounded-xl bg-cyan-950/40 border border-cyan-500/40 text-center space-y-2">
+            <div className="md:col-span-4 p-4 rounded-xl bg-cyan-50 dark:bg-cyan-950/40 border border-cyan-300 dark:border-cyan-500/40 text-center space-y-2">
               <div className="text-cyan-300 font-bold text-sm">【Subject: 発行元】</div>
-              <div className="text-white font-bold bg-slate-900 py-1 rounded">PlayState / Game</div>
+              <div className="text-slate-900 dark:text-white font-bold bg-sky-100 dark:bg-slate-900 py-1 rounded">PlayState / Game</div>
               <div className="text-[11px] text-slate-600 dark:text-slate-400 font-sans">
                 敵撃破やスコア加算時に <code className="text-cyan-300">notify(Event)</code> を呼ぶだけ！誰が購読しているか関知しない。
               </div>
@@ -556,21 +556,21 @@ export const ConceptDiagram: React.FC<ConceptDiagramProps> = ({ type }) => {
 
             {/* Observers */}
             <div className="md:col-span-6 space-y-2">
-              <div className="p-2.5 rounded-lg bg-slate-900 border border-slate-200 dark:border-slate-800 flex items-center justify-between">
+              <div className="p-2.5 rounded-lg bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex items-center justify-between">
                 <div>
                   <span className="text-emerald-400 font-bold">AchievementObserver: </span>
                   <span className="text-slate-700 dark:text-slate-300">撃破数カウント &amp; 実績解除トースト</span>
                 </div>
                 <span className="text-[10px] text-emerald-400 bg-emerald-950 px-2 py-0.5 rounded">購読中</span>
               </div>
-              <div className="p-2.5 rounded-lg bg-slate-900 border border-slate-200 dark:border-slate-800 flex items-center justify-between">
+              <div className="p-2.5 rounded-lg bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex items-center justify-between">
                 <div>
                   <span className="text-amber-400 font-bold">ScoreObserver: </span>
                   <span className="text-slate-700 dark:text-slate-300">コンボ倍率計算 &amp; ハイスコア保存</span>
                 </div>
                 <span className="text-[10px] text-amber-400 bg-amber-950 px-2 py-0.5 rounded">購読中</span>
               </div>
-              <div className="p-2.5 rounded-lg bg-slate-900 border border-slate-200 dark:border-slate-800 flex items-center justify-between">
+              <div className="p-2.5 rounded-lg bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex items-center justify-between">
                 <div>
                   <span className="text-purple-400 font-bold">AudioObserver: </span>
                   <span className="text-slate-700 dark:text-slate-300">撃破SE・爆発BGMの再生トリガー</span>
@@ -623,16 +623,16 @@ export const ConceptDiagram: React.FC<ConceptDiagramProps> = ({ type }) => {
                 Entity（単なるID容器：ID=101 BossEnemy）
               </div>
               <div className="grid grid-cols-2 gap-2 text-[11px]">
-                <div className="p-1.5 rounded bg-slate-900 border border-emerald-500/30 text-cyan-300">
+                <div className="p-1.5 rounded bg-emerald-50 dark:bg-slate-900 border border-emerald-300 dark:border-emerald-500/30 text-cyan-300">
                   + TransformComponent
                 </div>
-                <div className="p-1.5 rounded bg-slate-900 border border-emerald-500/30 text-emerald-300">
+                <div className="p-1.5 rounded bg-emerald-50 dark:bg-slate-900 border border-emerald-300 dark:border-emerald-500/30 text-emerald-300">
                   + HealthComponent(HP:10)
                 </div>
-                <div className="p-1.5 rounded bg-slate-900 border border-emerald-500/30 text-amber-300">
+                <div className="p-1.5 rounded bg-emerald-50 dark:bg-slate-900 border border-emerald-300 dark:border-emerald-500/30 text-amber-300">
                   + ShooterComponent(3WAY)
                 </div>
-                <div className="p-1.5 rounded bg-slate-900 border border-emerald-500/30 text-purple-300">
+                <div className="p-1.5 rounded bg-emerald-50 dark:bg-slate-900 border border-emerald-300 dark:border-emerald-500/30 text-purple-300">
                   + BossRenderComponent
                 </div>
               </div>
@@ -644,11 +644,11 @@ export const ConceptDiagram: React.FC<ConceptDiagramProps> = ({ type }) => {
         </div>
 
         {/* テンプレートによる型安全なパーツ取得 */}
-        <div className="p-4 rounded-xl bg-slate-950 border border-cyan-500/30 space-y-2 font-mono text-xs">
+        <div className="p-4 rounded-xl bg-white/95 dark:bg-slate-950 border border-cyan-500/30 space-y-2 font-mono text-xs">
           <div className="text-cyan-300 font-bold text-sm">
             【C++テンプレートの神髄：コンパイル時型安全な get&lt;T&gt;()】
           </div>
-          <div className="p-3 rounded-lg bg-slate-900 text-slate-800 dark:text-slate-200">
+          <div className="p-3 rounded-lg bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-200">
             <code>
               auto* hp = entity.get&lt;HealthComponent&gt;();<br />
               if (hp) &#123; hp-&gt;takeDamage(1); &#125;

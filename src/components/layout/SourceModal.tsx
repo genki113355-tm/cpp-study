@@ -22,18 +22,18 @@ g++ -std=c++17 main.cpp Game.cpp Player.cpp Item.cpp BitDrone.cpp Bullet.cpp Par
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
-      <div className="relative w-full max-w-2xl rounded-2xl bg-[#0c121e] border border-slate-300 dark:border-slate-700 shadow-2xl p-6 overflow-hidden max-h-[90vh] overflow-y-auto scrollbar-thin">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/50 backdrop-blur-sm">
+      <div className="relative w-full max-w-2xl rounded-2xl bg-white dark:bg-[#0c121e] border border-sky-200 dark:border-slate-700 shadow-2xl p-6 overflow-hidden max-h-[90vh] overflow-y-auto scrollbar-thin">
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 p-1.5 rounded-lg text-slate-600 dark:text-slate-400 hover:text-white hover:bg-slate-800"
+          className="absolute top-4 right-4 p-1.5 rounded-lg text-slate-500 hover:text-slate-900 hover:bg-slate-100 dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-800 transition"
         >
           <X className="w-5 h-5" />
         </button>
 
-        <div className="flex items-center gap-2.5 text-cyan-400 mb-3">
-          <Terminal className="w-6 h-6" />
-          <h2 className="text-xl font-bold font-mono text-white">ローカル実行用 C++ プロジェクト一式</h2>
+        <div className="flex items-center gap-2.5 text-cyan-700 dark:text-cyan-400 mb-3">
+          <Terminal className="w-6 h-6 text-cyan-600 dark:text-cyan-400" />
+          <h2 className="text-xl font-bold font-mono text-slate-900 dark:text-white">ローカル実行用 C++ プロジェクト一式</h2>
         </div>
 
         <p className="text-sm text-slate-700 dark:text-slate-300 mb-4 leading-relaxed font-sans">
@@ -41,9 +41,9 @@ g++ -std=c++17 main.cpp Game.cpp Player.cpp Item.cpp BitDrone.cpp Bullet.cpp Par
         </p>
 
         {/* ダウンロードCTAカード */}
-        <div className="p-4 rounded-2xl bg-gradient-to-r from-cyan-950/70 via-slate-900 to-blue-950/70 border border-cyan-500/40 mb-5 shadow-lg flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="p-4 rounded-2xl bg-gradient-to-r from-sky-50 via-cyan-50/70 to-white dark:from-cyan-950/70 dark:via-slate-900 dark:to-blue-950/70 border border-sky-300 dark:border-cyan-500/40 mb-5 shadow-md flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="space-y-1 text-center sm:text-left">
-            <div className="text-sm font-bold text-white flex items-center justify-center sm:justify-start gap-2 flex-wrap">
+            <div className="text-sm font-bold text-slate-900 dark:text-white flex items-center justify-center sm:justify-start gap-2 flex-wrap">
               <span className="text-base">📦</span>
               <span>全7章のC++実機ソースコード一式</span>
               <span className="text-[11px] font-mono px-2 py-0.5 rounded-full bg-cyan-100 text-cyan-900 border border-cyan-300 dark:bg-cyan-950 dark:text-cyan-300 dark:border-cyan-500/30">
@@ -123,14 +123,14 @@ g++ -std=c++17 main.cpp Game.cpp Player.cpp Item.cpp BitDrone.cpp Bullet.cpp Par
           <a
             href="/downloads/cpp-projects.zip"
             download="cpp-projects.zip"
-            className="inline-flex items-center gap-2 text-cyan-400 hover:text-cyan-300 text-xs sm:text-sm font-mono font-bold transition"
+            className="inline-flex items-center gap-2 text-cyan-700 hover:text-cyan-800 dark:text-cyan-400 dark:hover:text-cyan-300 text-xs sm:text-sm font-mono font-bold transition"
           >
             <Download className="w-4 h-4" />
             <span>cpp-projects.zip を直接ダウンロード</span>
           </a>
           <button
             onClick={onClose}
-            className="px-5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-800 dark:text-slate-200 text-sm font-mono font-bold transition ml-auto"
+            className="px-5 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 text-sm font-mono font-bold transition ml-auto border border-slate-300 dark:border-slate-700 shadow-sm cursor-pointer"
           >
             閉じる
           </button>

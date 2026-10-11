@@ -10,7 +10,7 @@ export const VariableInspector: React.FC<VariableInspectorProps> = ({ variables 
   const [viewMode, setViewMode] = useState<'cards' | 'table'>('cards');
 
   return (
-    <div className="rounded-3xl border border-slate-200 dark:border-slate-800 bg-[#0c1222] shadow-2xl overflow-hidden my-8 w-full">
+    <div className="rounded-3xl border border-sky-100 dark:border-slate-800 bg-white/95 dark:bg-[#0c1222] shadow-xl overflow-hidden my-8 w-full">
       {/* ツールバーヘッダー */}
       <div className="px-6 py-4 bg-white/95 dark:bg-slate-900/95 border-b border-slate-200 dark:border-slate-800/80 flex flex-wrap items-center justify-between gap-4">
         <div className="flex items-center gap-3">
@@ -18,9 +18,9 @@ export const VariableInspector: React.FC<VariableInspectorProps> = ({ variables 
             <Code2 className="w-5 h-5" />
           </div>
           <div>
-            <h4 className="text-lg sm:text-xl font-bold text-white font-mono tracking-tight flex items-center gap-2.5">
+            <h4 className="text-lg sm:text-xl font-bold text-slate-900 dark:text-white font-mono tracking-tight flex items-center gap-2.5">
               <span>データ構造 &amp; 変数インスペクター</span>
-              <span className="text-xs sm:text-sm px-2.5 py-0.5 rounded-full bg-cyan-950 text-cyan-300 border border-cyan-500/30 font-semibold font-sans">
+              <span className="text-xs sm:text-sm px-2.5 py-0.5 rounded-full bg-cyan-100 text-cyan-900 border border-cyan-300 dark:bg-cyan-950 dark:text-cyan-300 dark:border-cyan-500/30 font-semibold font-sans">
                 {variables.length} 件の定義
               </span>
             </h4>
@@ -31,27 +31,27 @@ export const VariableInspector: React.FC<VariableInspectorProps> = ({ variables 
         </div>
 
         {/* 表示モード切り替え（選択式ラジオボタングループ） */}
-        <div role="radiogroup" aria-label="変数表示形式選択" className="flex items-center bg-slate-950 p-1.5 rounded-2xl border border-slate-200 dark:border-slate-800 font-mono text-xs sm:text-sm shadow-inner">
+        <div role="radiogroup" aria-label="変数表示形式選択" className="flex items-center bg-slate-100 dark:bg-slate-950 p-1.5 rounded-2xl border border-slate-200 dark:border-slate-800 font-mono text-xs sm:text-sm shadow-inner">
           <button
             role="radio"
             aria-checked={viewMode === 'cards'}
             onClick={() => setViewMode('cards')}
             className={`flex items-center gap-2 px-3.5 py-1.5 rounded-xl transition-all cursor-pointer select-none ${
               viewMode === 'cards'
-                ? 'bg-cyan-500/20 text-cyan-200 border border-cyan-500/50 font-bold shadow-sm shadow-cyan-500/10'
-                : 'text-slate-600 dark:text-slate-400 hover:text-slate-800 dark:text-slate-200 border border-transparent'
+                ? 'bg-cyan-100 text-cyan-900 border-cyan-400 dark:bg-cyan-500/20 dark:text-cyan-200 dark:border-cyan-500/50 font-bold shadow-sm'
+                : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 border border-transparent'
             }`}
           >
             {/* ラジオボタン円 */}
             <span
               className={`w-3.5 h-3.5 rounded-full border flex items-center justify-center transition shrink-0 ${
                 viewMode === 'cards'
-                  ? 'border-cyan-400 bg-slate-950 ring-1 ring-cyan-500/40'
-                  : 'border-slate-500 bg-slate-800'
+                  ? 'border-cyan-500 bg-white dark:bg-slate-950 dark:border-cyan-400 ring-1 ring-cyan-500/40'
+                  : 'border-slate-300 bg-slate-100 dark:border-slate-500 dark:bg-slate-800'
               }`}
             >
               {viewMode === 'cards' && (
-                <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 shadow-sm shadow-cyan-400" />
+                <span className="w-1.5 h-1.5 rounded-full bg-cyan-500 dark:bg-cyan-400 shadow-sm shadow-cyan-400" />
               )}
             </span>
             <LayoutGrid className="w-4 h-4" />
@@ -63,20 +63,20 @@ export const VariableInspector: React.FC<VariableInspectorProps> = ({ variables 
             onClick={() => setViewMode('table')}
             className={`flex items-center gap-2 px-3.5 py-1.5 rounded-xl transition-all cursor-pointer select-none ${
               viewMode === 'table'
-                ? 'bg-cyan-500/20 text-cyan-200 border border-cyan-500/50 font-bold shadow-sm shadow-cyan-500/10'
-                : 'text-slate-600 dark:text-slate-400 hover:text-slate-800 dark:text-slate-200 border border-transparent'
+                ? 'bg-cyan-100 text-cyan-900 border-cyan-400 dark:bg-cyan-500/20 dark:text-cyan-200 dark:border-cyan-500/50 font-bold shadow-sm'
+                : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 border border-transparent'
             }`}
           >
             {/* ラジオボタン円 */}
             <span
               className={`w-3.5 h-3.5 rounded-full border flex items-center justify-center transition shrink-0 ${
                 viewMode === 'table'
-                  ? 'border-cyan-400 bg-slate-950 ring-1 ring-cyan-500/40'
-                  : 'border-slate-500 bg-slate-800'
+                  ? 'border-cyan-500 bg-white dark:bg-slate-950 dark:border-cyan-400 ring-1 ring-cyan-500/40'
+                  : 'border-slate-300 bg-slate-100 dark:border-slate-500 dark:bg-slate-800'
               }`}
             >
               {viewMode === 'table' && (
-                <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 shadow-sm shadow-cyan-400" />
+                <span className="w-1.5 h-1.5 rounded-full bg-cyan-500 dark:bg-cyan-400 shadow-sm shadow-cyan-400" />
               )}
             </span>
             <TableIcon className="w-4 h-4" />
@@ -87,7 +87,7 @@ export const VariableInspector: React.FC<VariableInspectorProps> = ({ variables 
 
       {/* カード表示モード（広々とした2カラム・大文字・高可読性） */}
       {viewMode === 'cards' ? (
-        <div className="p-6 grid grid-cols-1 xl:grid-cols-2 gap-6 bg-gradient-to-b from-[#090d18] to-[#0c1222]">
+        <div className="p-6 grid grid-cols-1 xl:grid-cols-2 gap-6 bg-slate-50/50 dark:bg-gradient-to-b dark:from-[#090d18] dark:to-[#0c1222]">
           {variables.map((v, idx) => (
             <div
               key={idx}
@@ -96,14 +96,14 @@ export const VariableInspector: React.FC<VariableInspectorProps> = ({ variables 
               <div>
                 {/* カード上部：変数名とバッジ類 */}
                 <div className="flex flex-wrap items-start justify-between gap-3 pb-3.5 border-b border-slate-200 dark:border-slate-800 mb-4">
-                  <div className="font-mono font-bold text-cyan-300 text-lg sm:text-xl tracking-wide group-hover:text-cyan-200 transition-colors">
+                  <div className="font-mono font-bold text-cyan-800 dark:text-cyan-300 text-lg sm:text-xl tracking-wide group-hover:text-cyan-600 dark:group-hover:text-cyan-200 transition-colors">
                     <code>{v.name}</code>
                   </div>
                   <div className="flex flex-wrap items-center gap-2 flex-shrink-0">
-                    <span className="text-xs sm:text-sm font-mono font-semibold px-2.5 py-1 rounded-lg bg-amber-950/70 text-amber-300 border border-amber-500/40 shadow-sm whitespace-nowrap">
+                    <span className="text-xs sm:text-sm font-mono font-semibold px-2.5 py-1 rounded-lg bg-amber-100 text-amber-900 border border-amber-300 dark:bg-amber-950/70 dark:text-amber-300 dark:border-amber-500/40 shadow-sm whitespace-nowrap">
                       {v.type}
                     </span>
-                    <span className="text-xs sm:text-sm font-mono px-2.5 py-1 rounded-lg bg-slate-800 text-slate-800 dark:text-slate-200 border border-slate-300 dark:border-slate-700 shadow-sm whitespace-nowrap">
+                    <span className="text-xs sm:text-sm font-mono px-2.5 py-1 rounded-lg bg-slate-100 text-slate-800 dark:bg-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-700 shadow-sm whitespace-nowrap">
                       {v.scope}
                     </span>
                   </div>
@@ -124,12 +124,12 @@ export const VariableInspector: React.FC<VariableInspectorProps> = ({ variables 
               {/* C言語との対比ブロック（下部） */}
               {v.cComparison && (
                 <div className="mt-auto pt-4 border-t border-slate-200 dark:border-slate-800/80">
-                  <div className="p-4 rounded-xl bg-gradient-to-r from-amber-950/30 via-slate-900/40 to-slate-900/20 border border-amber-500/30">
-                    <div className="flex items-center gap-2 text-xs sm:text-sm font-mono font-bold text-amber-300 mb-1.5">
+                  <div className="p-4 rounded-xl bg-amber-50/80 dark:bg-gradient-to-r dark:from-amber-950/30 dark:via-slate-900/40 dark:to-slate-900/20 border border-amber-200 dark:border-amber-500/30">
+                    <div className="flex items-center gap-2 text-xs sm:text-sm font-mono font-bold text-amber-900 dark:text-amber-300 mb-1.5">
                       <AlertTriangle className="w-4 h-4 sm:w-5 sm:h-5 text-amber-400 flex-shrink-0" />
                       <span>C言語との対比 / 設計の落とし穴</span>
                     </div>
-                    <p className="text-sm sm:text-base text-amber-100/90 leading-relaxed font-sans pl-7">
+                    <p className="text-sm sm:text-base text-amber-950 dark:text-amber-100/90 leading-relaxed font-sans pl-7">
                       {v.cComparison}
                     </p>
                   </div>
@@ -143,34 +143,34 @@ export const VariableInspector: React.FC<VariableInspectorProps> = ({ variables 
         <div className="w-full max-w-full overflow-x-auto">
           <table className="w-full text-left border-collapse table-fixed min-w-[900px]">
             <thead>
-              <tr className="border-b border-slate-200 dark:border-slate-800 bg-slate-950 text-slate-700 dark:text-slate-300 font-mono text-sm">
+              <tr className="border-b border-slate-200 dark:border-slate-800 bg-slate-100 dark:bg-slate-950 text-slate-800 dark:text-slate-300 font-mono text-sm">
                 <th className="py-4 px-4 w-[22%] font-bold">変数・メンバ名</th>
                 <th className="py-4 px-4 w-[16%] font-bold">型</th>
                 <th className="py-4 px-4 w-[18%] font-bold">スコープ / 状態</th>
                 <th className="py-4 px-4 w-[24%] font-bold">役割と動作の解説</th>
-                <th className="py-4 px-4 w-[20%] font-bold text-amber-300">C言語との対比</th>
+                <th className="py-4 px-4 w-[20%] font-bold text-amber-800 dark:text-amber-300">C言語との対比</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-800/70 font-sans text-sm sm:text-base">
               {variables.map((v, vIdx) => (
                 <tr key={vIdx} className="hover:bg-white/80 dark:bg-slate-900/60 transition">
-                  <td className="py-4 px-4 font-mono font-bold text-cyan-300 break-words align-top text-base">
+                  <td className="py-4 px-4 font-mono font-bold text-cyan-800 dark:text-cyan-300 break-words align-top text-base">
                     {v.name}
                   </td>
-                  <td className="py-4 px-4 font-mono text-amber-300 align-top">
-                    <span className="inline-block px-2.5 py-1 rounded-lg bg-amber-950/50 border border-amber-500/30 text-xs sm:text-sm whitespace-nowrap font-semibold">
+                  <td className="py-4 px-4 font-mono text-amber-800 dark:text-amber-300 align-top">
+                    <span className="inline-block px-2.5 py-1 rounded-lg bg-amber-100 text-amber-900 border border-amber-300 dark:bg-amber-950/50 dark:border-amber-500/30 dark:text-amber-300 text-xs sm:text-sm whitespace-nowrap font-semibold">
                       {v.type}
                     </span>
                   </td>
                   <td className="py-4 px-4 font-mono text-slate-800 dark:text-slate-200 align-top">
-                    <span className="inline-block px-2.5 py-1 rounded-lg bg-slate-800/90 border border-slate-300 dark:border-slate-700 text-xs sm:text-sm whitespace-nowrap">
+                    <span className="inline-block px-2.5 py-1 rounded-lg bg-slate-100 text-slate-800 dark:bg-slate-800/90 dark:text-slate-200 border border-slate-200 dark:border-slate-700 text-xs sm:text-sm whitespace-nowrap">
                       {v.scope}
                     </span>
                   </td>
                   <td className="py-4 px-4 text-slate-800 dark:text-slate-200 leading-relaxed align-top text-base">
                     {v.description}
                   </td>
-                  <td className="py-4 px-4 text-amber-100/90 leading-relaxed text-sm sm:text-base bg-amber-950/15 border-l border-slate-200 dark:border-slate-800 align-top font-sans">
+                  <td className="py-4 px-4 text-amber-950 dark:text-amber-100/90 leading-relaxed text-sm sm:text-base bg-amber-50/50 dark:bg-amber-950/15 border-l border-slate-200 dark:border-slate-800 align-top font-sans">
                     {v.cComparison || '—'}
                   </td>
                 </tr>

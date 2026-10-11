@@ -107,11 +107,11 @@ public:
     <section className="space-y-6">
       <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between gap-4 border-b border-slate-200 dark:border-slate-800 pb-5">
         <div className="space-y-2">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-950/80 border border-cyan-500/40 text-cyan-300 font-mono text-xs font-semibold shadow-inner">
-            <GitCompare className="w-4 h-4 text-cyan-400" />
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-100 text-cyan-900 border border-cyan-300 dark:bg-cyan-950/80 dark:border-cyan-500/40 dark:text-cyan-300 font-mono text-xs font-semibold shadow-sm">
+            <GitCompare className="w-4 h-4 text-cyan-600 dark:text-cyan-400" />
             <span>THE ULTIMATE BEFORE & AFTER SHOWCASE</span>
           </div>
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white font-sans tracking-tight">
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 dark:text-white font-sans tracking-tight">
             圧倒的進化を比較。「最初のコード」vs「10ステージ後のコード」
           </h2>
           <p className="text-sm sm:text-base text-slate-700 dark:text-slate-300 font-sans max-w-3xl leading-relaxed">
@@ -121,27 +121,27 @@ public:
         </div>
 
         {/* 表示モード切り替えタブ */}
-        <div className="flex p-1 rounded-xl bg-slate-900 border border-slate-200 dark:border-slate-800 shrink-0">
+        <div className="flex p-1 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shrink-0 shadow-sm">
           <button
             onClick={() => setViewMode('sideBySide')}
-            className={`px-3 py-1.5 rounded-lg text-xs font-mono font-bold transition ${
-              viewMode === 'sideBySide' ? 'bg-cyan-600 text-white' : 'text-slate-600 dark:text-slate-400 hover:text-slate-800 dark:text-slate-200'
+            className={`px-3 py-1.5 rounded-lg text-xs font-mono font-bold transition cursor-pointer ${
+              viewMode === 'sideBySide' ? 'bg-cyan-600 text-white shadow-sm' : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
             }`}
           >
             並列比較
           </button>
           <button
             onClick={() => setViewMode('stage1')}
-            className={`px-3 py-1.5 rounded-lg text-xs font-mono font-bold transition ${
-              viewMode === 'stage1' ? 'bg-rose-600 text-white' : 'text-slate-600 dark:text-slate-400 hover:text-slate-800 dark:text-slate-200'
+            className={`px-3 py-1.5 rounded-lg text-xs font-mono font-bold transition cursor-pointer ${
+              viewMode === 'stage1' ? 'bg-rose-600 text-white shadow-sm' : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
             }`}
           >
             Stage 1 (Before)
           </button>
           <button
             onClick={() => setViewMode('stage10')}
-            className={`px-3 py-1.5 rounded-lg text-xs font-mono font-bold transition ${
-              viewMode === 'stage10' ? 'bg-emerald-600 text-white' : 'text-slate-600 dark:text-slate-400 hover:text-slate-800 dark:text-slate-200'
+            className={`px-3 py-1.5 rounded-lg text-xs font-mono font-bold transition cursor-pointer ${
+              viewMode === 'stage10' ? 'bg-emerald-600 text-white shadow-sm' : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
             }`}
           >
             Stage 10 (After)
@@ -195,46 +195,46 @@ public:
       {/* コード対比ビュー */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {(viewMode === 'sideBySide' || viewMode === 'stage1') && (
-          <div className={`rounded-3xl border border-rose-500/40 bg-slate-950 overflow-hidden shadow-2xl ${
+          <div className={`rounded-3xl border border-rose-200 dark:border-rose-500/40 bg-white/95 dark:bg-slate-950 overflow-hidden shadow-xl ${
             viewMode === 'stage1' ? 'lg:col-span-2' : ''
           }`}>
-            <div className="px-5 py-3.5 bg-gradient-to-r from-rose-950/80 to-slate-900 border-b border-rose-500/30 flex items-center justify-between">
+            <div className="px-5 py-3.5 bg-gradient-to-r from-rose-100/90 via-rose-50 to-white dark:from-rose-950/80 dark:to-slate-900 border-b border-rose-200 dark:border-rose-500/30 flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <span className="w-6 h-6 rounded-lg bg-rose-500 text-slate-950 flex items-center justify-center font-black text-xs">
+                <span className="w-6 h-6 rounded-lg bg-rose-500 text-white flex items-center justify-center font-black text-xs shadow-sm">
                   1
                 </span>
-                <span className="font-bold font-mono text-sm text-rose-200">
+                <span className="font-bold font-mono text-sm text-rose-950 dark:text-rose-200">
                   Stage 1: 最初期コード（全部入り神クラス）
                 </span>
               </div>
-              <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-rose-950 text-rose-400 border border-rose-500/30">
+              <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-rose-100 text-rose-900 border border-rose-300 dark:bg-rose-950 dark:text-rose-400 dark:border-rose-500/30 font-bold">
                 アンチパターンの温床
               </span>
             </div>
-            <pre className="p-5 text-xs font-mono text-slate-700 dark:text-slate-300 overflow-x-auto leading-relaxed max-h-[500px]">
+            <pre className="p-5 text-xs font-mono text-slate-800 dark:text-slate-300 overflow-x-auto leading-relaxed max-h-[500px] bg-rose-50/20 dark:bg-transparent">
               <code>{stage1Code}</code>
             </pre>
           </div>
         )}
 
         {(viewMode === 'sideBySide' || viewMode === 'stage10') && (
-          <div className={`rounded-3xl border border-emerald-500/40 bg-slate-950 overflow-hidden shadow-2xl ${
+          <div className={`rounded-3xl border border-emerald-200 dark:border-emerald-500/40 bg-white/95 dark:bg-slate-950 overflow-hidden shadow-xl ${
             viewMode === 'stage10' ? 'lg:col-span-2' : ''
           }`}>
-            <div className="px-5 py-3.5 bg-gradient-to-r from-emerald-950/80 to-slate-900 border-b border-emerald-500/30 flex items-center justify-between">
+            <div className="px-5 py-3.5 bg-gradient-to-r from-emerald-100/90 via-emerald-50 to-white dark:from-emerald-950/80 dark:to-slate-900 border-b border-emerald-200 dark:border-emerald-500/30 flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <span className="w-6 h-6 rounded-lg bg-emerald-400 text-slate-950 flex items-center justify-center font-black text-xs">
+                <span className="w-6 h-6 rounded-lg bg-emerald-500 text-white flex items-center justify-center font-black text-xs shadow-sm">
                   10
                 </span>
-                <span className="font-bold font-mono text-sm text-emerald-200">
+                <span className="font-bold font-mono text-sm text-emerald-950 dark:text-emerald-200">
                   Stage 10: 最終完成形（ECS ＋ RAII ＋ クリーン設計）
                 </span>
               </div>
-              <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-950 text-emerald-300 border border-emerald-500/30">
+              <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-100 text-emerald-900 border border-emerald-300 dark:bg-emerald-950 dark:text-emerald-300 dark:border-emerald-500/30 font-bold">
                 商用レベルの堅牢性
               </span>
             </div>
-            <pre className="p-5 text-xs font-mono text-emerald-200 overflow-x-auto leading-relaxed max-h-[500px]">
+            <pre className="p-5 text-xs font-mono text-emerald-950 dark:text-emerald-200 overflow-x-auto leading-relaxed max-h-[500px] font-medium bg-emerald-50/20 dark:bg-transparent">
               <code>{stage10Code}</code>
             </pre>
           </div>

@@ -170,7 +170,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
               onClick={() => setActiveTab('all')}
               className={`py-1 rounded-lg font-bold transition text-center whitespace-nowrap px-0.5 cursor-pointer ${
                 activeTab === 'all'
-                  ? 'bg-slate-800 text-white dark:bg-slate-700 shadow-sm'
+                  ? 'bg-white text-slate-900 border border-slate-300 dark:bg-slate-700 dark:text-white dark:border-transparent shadow-sm'
                   : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
               }`}
             >
@@ -738,7 +738,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
             <img
               src={getAssetUrl('/images/characters/shirokuma_sensei.png')}
               alt="シロクマ先生"
-              className="w-10 h-10 rounded-full border-2 border-cyan-500 object-cover bg-slate-900 shadow-sm"
+              className="w-10 h-10 rounded-full border-2 border-cyan-500 object-cover bg-white shadow-sm"
             />
             <div>
               <p className="text-sm font-bold text-slate-900 dark:text-white leading-none mb-1">シロクマ先生 (Sensei)</p>
@@ -749,7 +749,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
             <img
               src={getAssetUrl('/images/characters/penguin_student.jpg')}
               alt="ペンギン生徒"
-              className="w-10 h-10 rounded-full border-2 border-slate-400 dark:border-slate-500 object-cover bg-slate-900 shadow-sm"
+              className="w-10 h-10 rounded-full border-2 border-slate-400 dark:border-slate-500 object-cover bg-white shadow-sm"
             />
             <div>
               <p className="text-sm font-bold text-slate-900 dark:text-white leading-none mb-1">ペンギン生徒 (Student)</p>

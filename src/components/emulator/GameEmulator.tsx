@@ -1279,43 +1279,43 @@ export const GameEmulator: React.FC<GameEmulatorProps> = ({
       case 'v1_spaghetti':
         return {
           name: 'スパゲティコード版（C言語）',
-          color: 'text-amber-400 bg-amber-950/60 border-amber-500/30',
+          color: 'text-amber-900 bg-amber-100 border-amber-300 dark:text-amber-300 dark:bg-amber-950/60 dark:border-amber-500/30',
           desc: '1ファイル・固定ループ。白黒テキストでぎこちなく動作中。',
         };
       case 'v2_classes':
         return {
           name: 'クラス設計版（カプセル化）',
-          color: 'text-cyan-400 bg-cyan-950/60 border-cyan-500/30',
+          color: 'text-cyan-900 bg-cyan-100 border-cyan-300 dark:text-cyan-300 dark:bg-cyan-950/60 dark:border-cyan-500/30',
           desc: 'Player/Invader/Bullet独立。安定した制御とカラーリング。',
         };
       case 'v3_dynamic':
         return {
           name: '動的パーティクル版（STL動的配列）',
-          color: 'text-emerald-400 bg-emerald-950/60 border-emerald-500/30',
+          color: 'text-emerald-900 bg-emerald-100 border-emerald-300 dark:text-emerald-300 dark:bg-emerald-950/60 dark:border-emerald-500/30',
           desc: 'std::vector導入！撃破時に火花粒子が炸裂＆連射対応！',
         };
       case 'v4_polymorphism':
         return {
           name: 'ポリモーフィズム版（継承と仮想関数）',
-          color: 'text-purple-400 bg-purple-950/60 border-purple-500/30',
+          color: 'text-purple-900 bg-purple-100 border-purple-300 dark:text-purple-300 dark:bg-purple-950/60 dark:border-purple-500/30',
           desc: '基底クラスEnemyを継承！通常V、シールドS(HP2)、高速UFO(U)の多態的動作！',
         };
       case 'v5_smart_pointers':
         return {
           name: 'スマートポインタ版（RAIIと所有権）',
-          color: 'text-cyan-400 bg-cyan-950/60 border-cyan-500/30',
+          color: 'text-cyan-900 bg-cyan-100 border-cyan-300 dark:text-cyan-300 dark:bg-cyan-950/60 dark:border-cyan-500/30',
           desc: '生new/delete撲滅！unique_ptrでアイテム落下＆shared_ptrで護衛ビット機が旋回援護！',
         };
       case 'v6_patterns':
         return {
           name: 'デザインパターン版（State & Observer）',
-          color: 'text-amber-400 bg-amber-950/60 border-amber-500/30',
+          color: 'text-amber-900 bg-amber-100 border-amber-300 dark:text-amber-300 dark:bg-amber-950/60 dark:border-amber-500/30',
           desc: 'StateパターンでTitle/Play/Pause画面遷移を制御＆Observerパターンで実績解除を疎結合通知！',
         };
       case 'v7_ecs_final':
         return {
           name: 'ECSアーキテクチャ版（コンポーネント指向）',
-          color: 'text-emerald-400 bg-emerald-950/60 border-emerald-500/30',
+          color: 'text-emerald-900 bg-emerald-100 border-emerald-300 dark:text-emerald-300 dark:bg-emerald-950/60 dark:border-emerald-500/30',
           desc: '継承を超越したECS設計！Transform/Render/Shooter/Healthコンポーネント合成で巨大ボス[B]と弾幕エリート[E]を撃破せよ！',
         };
     }
@@ -1430,7 +1430,7 @@ export const GameEmulator: React.FC<GameEmulatorProps> = ({
   const activeUfo = invaders.find((inv) => inv.type === 'ufo' && inv.alive);
 
   const emulatorNode = (
-    <div className={`rounded-2xl border border-cyan-500/30 bg-slate-950 shadow-2xl p-2.5 sm:p-4 relative overflow-hidden backdrop-blur-md ${
+    <div className={`rounded-2xl border border-sky-200 dark:border-cyan-500/30 bg-white/95 dark:bg-slate-950 shadow-xl p-2.5 sm:p-4 relative overflow-hidden backdrop-blur-md ${
       isModal
         ? 'w-full max-w-5xl max-h-[94vh] flex flex-col border-cyan-500/50 shadow-[0_0_60px_rgba(6,182,212,0.35)] overflow-y-auto'
         : 'my-2 sm:my-3'
@@ -1439,16 +1439,16 @@ export const GameEmulator: React.FC<GameEmulatorProps> = ({
       <div className="absolute inset-0 bg-[radial-gradient(#1e293b_1px,transparent_1px)] [background-size:16px_16px] opacity-30 pointer-events-none" />
 
       {/* エミュレータ上部バー */}
-      <div className="flex items-center justify-between border-b border-slate-800 pb-2 mb-2 sm:mb-2.5 flex-wrap gap-2">
+      <div className="flex items-center justify-between border-b border-sky-100 dark:border-slate-800 pb-2 mb-2 sm:mb-2.5 flex-wrap gap-2">
         <div className="flex items-center gap-2">
           <Terminal className="w-4 h-4 sm:w-5 sm:h-5 text-cyan-400" />
-          <h3 className="font-mono text-sm sm:text-base font-bold text-slate-100 flex items-center gap-2 flex-wrap">
+          <h3 className="font-mono text-sm sm:text-base font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2 flex-wrap">
             <span>Webコンソール実行エミュレータ</span>
             <span className={`text-[11px] sm:text-xs px-2.5 py-0.5 rounded-full border font-sans font-semibold ${vInfo.color}`}>
               {vInfo.name}
             </span>
             {chapterCode && (
-              <span className="text-[10px] sm:text-xs px-2 py-0.5 rounded-full border border-slate-700 bg-slate-900 text-slate-700 dark:text-slate-300 font-mono">
+              <span className="text-[10px] sm:text-xs px-2 py-0.5 rounded-full border border-slate-300 dark:border-slate-700 bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-300 font-mono">
                 {chapterCode} 収録
               </span>
             )}
@@ -1457,13 +1457,13 @@ export const GameEmulator: React.FC<GameEmulatorProps> = ({
 
         <div className="flex items-center gap-1.5 flex-wrap">
           {/* GUI画像 / CUI文字 レンダリング切替 */}
-          <div className="flex items-center bg-slate-900 rounded-lg p-0.5 border border-slate-700 shadow-sm mr-1">
+          <div className="flex items-center bg-slate-100 dark:bg-slate-900 rounded-lg p-0.5 border border-slate-200 dark:border-slate-700 shadow-sm mr-1">
             <button
               onClick={() => setRenderMode('gui')}
               className={`px-2 py-1 rounded-md text-xs font-mono font-bold transition flex items-center gap-1 ${
                 renderMode === 'gui'
                   ? 'bg-cyan-500 text-slate-950 shadow-sm'
-                  : 'text-slate-600 dark:text-slate-400 hover:text-white'
+                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
               }`}
               title="2Dスプライト画像によるグラフィック描画（レトロアーケード）"
             >
@@ -1474,7 +1474,7 @@ export const GameEmulator: React.FC<GameEmulatorProps> = ({
               className={`px-2 py-1 rounded-md text-xs font-mono font-bold transition flex items-center gap-1 ${
                 renderMode === 'cui'
                   ? 'bg-emerald-500 text-slate-950 shadow-sm'
-                  : 'text-slate-600 dark:text-slate-400 hover:text-white'
+                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
               }`}
               title="C++コンソール出力（ASCII文字）描画"
             >
@@ -1488,7 +1488,7 @@ export const GameEmulator: React.FC<GameEmulatorProps> = ({
               className={`flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-mono font-bold transition border active:scale-95 shadow-sm ${
                 showEvolutionDiff
                   ? 'bg-amber-500 text-slate-950 border-amber-400 shadow-amber-500/30'
-                  : 'bg-slate-800 hover:bg-slate-700 text-amber-300 border-amber-500/30'
+                  : 'bg-amber-50 hover:bg-amber-100 text-amber-900 border-amber-300 dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-amber-300 dark:border-amber-500/30'
               }`}
               title="前の章（前世代）とのゲーム機能・C++設計の進化差分を表示"
             >
@@ -1502,7 +1502,7 @@ export const GameEmulator: React.FC<GameEmulatorProps> = ({
             className={`flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-mono font-bold transition border active:scale-95 shadow-sm ${
               isSandboxOpen
                 ? 'bg-cyan-500 text-slate-950 border-cyan-400 shadow-cyan-500/30'
-                : 'bg-slate-800 hover:bg-slate-700 text-cyan-300 border-cyan-500/30'
+                : 'bg-sky-50 hover:bg-sky-100 text-sky-900 border-sky-300 dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-cyan-300 dark:border-cyan-500/30'
             }`}
             title="C++コードの定数（速度・連射数など）をリアルタイムに変更"
           >
@@ -1515,7 +1515,7 @@ export const GameEmulator: React.FC<GameEmulatorProps> = ({
             className={`flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-mono font-bold transition border active:scale-95 shadow-sm ${
               showVirtualPad
                 ? 'bg-slate-700 text-slate-100 border-slate-600'
-                : 'bg-slate-800/60 hover:bg-slate-800 text-slate-600 dark:text-slate-400 border-slate-700'
+                : 'bg-slate-100 hover:bg-slate-200 text-slate-700 border-slate-200 dark:bg-slate-800/60 dark:hover:bg-slate-800 dark:text-slate-400 dark:border-slate-700'
             }`}
             title="スマホ・タッチ用バーチャルパッドの表示切替"
           >
@@ -1527,8 +1527,8 @@ export const GameEmulator: React.FC<GameEmulatorProps> = ({
             onClick={handleToggleMute}
             className={`flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-mono font-bold transition border active:scale-95 shadow-sm ${
               isMuted
-                ? 'bg-slate-800/60 hover:bg-slate-800 text-slate-600 dark:text-slate-400 border-slate-700'
-                : 'bg-cyan-950/80 border-cyan-500/50 text-cyan-300 shadow-md shadow-cyan-500/20'
+                ? 'bg-slate-100 hover:bg-slate-200 text-slate-700 border-slate-300 dark:bg-slate-800/60 dark:hover:bg-slate-800 dark:text-slate-400 dark:border-slate-700'
+                : 'bg-cyan-100 border-cyan-300 text-cyan-900 shadow-sm dark:bg-cyan-950/80 dark:border-cyan-500/50 dark:text-cyan-300'
             }`}
             title={isMuted ? 'サウンドをONにする（初期ミュート中）' : 'サウンドをミュート（消音）'}
             aria-label={isMuted ? '音声を有効化' : '音声をミュート'}
@@ -1540,7 +1540,7 @@ export const GameEmulator: React.FC<GameEmulatorProps> = ({
               </>
             ) : (
               <>
-                <Volume2 className="w-3.5 h-3.5 text-cyan-400 animate-pulse" />
+                <Volume2 className="w-3.5 h-3.5 text-cyan-700 dark:text-cyan-400 animate-pulse" />
                 <span className="hidden sm:inline">サウンドON</span>
               </>
             )}
@@ -1548,7 +1548,7 @@ export const GameEmulator: React.FC<GameEmulatorProps> = ({
 
           <button
             onClick={initGame}
-            className="flex items-center gap-1 px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-mono font-bold transition border border-slate-700 active:scale-95 shadow-sm"
+            className="flex items-center gap-1 px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-slate-200 text-xs font-mono font-bold transition border border-slate-200 dark:border-slate-700 active:scale-95 shadow-sm"
           >
             <RotateCcw className="w-3.5 h-3.5" />
             <span>リセット</span>
@@ -1569,7 +1569,7 @@ export const GameEmulator: React.FC<GameEmulatorProps> = ({
 
       {/* 🔄 前章からの進化差分（Changelog）パネル */}
       {showEvolutionDiff && (
-        <div className="mb-4 p-4 rounded-2xl bg-gradient-to-b from-slate-900/95 to-slate-950 border-2 border-amber-500/50 shadow-2xl space-y-3 font-mono text-xs sm:text-sm animate-fadeIn">
+        <div className="mb-4 p-4 rounded-2xl bg-gradient-to-b from-amber-50/95 to-white border-2 border-amber-300 dark:from-slate-900/95 dark:to-slate-950 dark:border-amber-500/50 shadow-2xl space-y-3 font-mono text-xs sm:text-sm animate-fadeIn">
           <div className="flex items-center justify-between border-b border-slate-800 pb-2.5 flex-wrap gap-2">
             <div className="flex items-center gap-2 text-amber-300 font-bold">
               <Sparkles className="w-4 h-4 text-amber-400" />
@@ -1583,13 +1583,13 @@ export const GameEmulator: React.FC<GameEmulatorProps> = ({
             </button>
           </div>
 
-          <div className="p-3 rounded-xl bg-amber-950/40 border border-amber-500/30 text-amber-200 text-xs sm:text-sm font-sans font-bold leading-relaxed">
+          <div className="p-3 rounded-xl bg-amber-100 border border-amber-300 text-amber-950 dark:bg-amber-950/40 dark:border-amber-500/30 dark:text-amber-200 text-xs sm:text-sm font-sans font-bold leading-relaxed">
             ✨ {evolution.headline}
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
             {evolution.diffItems.map((item, idx) => (
-              <div key={idx} className="p-3 rounded-xl bg-slate-950 border border-slate-800 space-y-2 flex flex-col justify-between">
+              <div key={idx} className="p-3 rounded-xl bg-white dark:bg-slate-950 border border-amber-200 dark:border-slate-800 space-y-2 flex flex-col justify-between">
                 <div className="text-cyan-400 font-bold text-xs flex items-center gap-1.5 border-b border-slate-800/80 pb-1">
                   <span>📌</span>
                   <span>{item.label}</span>
@@ -1608,7 +1608,7 @@ export const GameEmulator: React.FC<GameEmulatorProps> = ({
             ))}
           </div>
 
-          <div className="p-3 rounded-xl bg-slate-950 border border-cyan-500/30 text-xs text-slate-700 dark:text-slate-300 flex items-start gap-2.5">
+          <div className="p-3 rounded-xl bg-white dark:bg-slate-950 border border-sky-200 dark:border-cyan-500/30 text-xs text-slate-700 dark:text-slate-300 flex items-start gap-2.5">
             <Info className="w-4 h-4 text-cyan-400 flex-shrink-0 mt-0.5" />
             <div className="leading-relaxed">
               <span className="text-cyan-300 font-bold">💡 C++設計アーキテクチャの背景: </span>
@@ -1620,7 +1620,7 @@ export const GameEmulator: React.FC<GameEmulatorProps> = ({
 
       {/* C++定数・インタラクティブ実験室（サンドボックス）パネル */}
       {isSandboxOpen && (
-        <div className="mb-4 p-4 rounded-2xl bg-gradient-to-b from-slate-900/95 to-slate-950 border-2 border-cyan-500/50 shadow-2xl space-y-4 font-mono text-xs sm:text-sm animate-fadeIn">
+        <div className="mb-4 p-4 rounded-2xl bg-gradient-to-b from-sky-50/95 to-white border-2 border-sky-300 dark:from-slate-900/95 dark:to-slate-950 dark:border-cyan-500/50 shadow-2xl space-y-4 font-mono text-xs sm:text-sm animate-fadeIn">
           <div className="flex items-center justify-between border-b border-slate-800 pb-2.5 flex-wrap gap-2">
             <div className="flex items-center gap-2 text-cyan-300 font-bold">
               <Sliders className="w-4 h-4 text-cyan-400" />
@@ -1641,7 +1641,7 @@ export const GameEmulator: React.FC<GameEmulatorProps> = ({
           {/* スライダー＆トグルグリッド */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
             {/* 自機スピード */}
-            <div className="space-y-1.5 p-3 rounded-xl bg-slate-950 border border-slate-800">
+            <div className="space-y-1.5 p-3 rounded-xl bg-white dark:bg-slate-950 border border-sky-100 dark:border-slate-800">
               <div className="flex justify-between text-slate-700 dark:text-slate-300">
                 <span className="font-bold">自機スピード</span>
                 <span className="text-cyan-400 font-bold">{playerSpeed}マス/移動</span>
@@ -1659,7 +1659,7 @@ export const GameEmulator: React.FC<GameEmulatorProps> = ({
             </div>
 
             {/* 最大連射数 */}
-            <div className="space-y-1.5 p-3 rounded-xl bg-slate-950 border border-slate-800">
+            <div className="space-y-1.5 p-3 rounded-xl bg-white dark:bg-slate-950 border border-sky-100 dark:border-slate-800">
               <div className="flex justify-between text-slate-700 dark:text-slate-300">
                 <span className="font-bold">最大連射数 (RAII)</span>
                 <span className="text-amber-400 font-bold">{maxBullets}発</span>
@@ -1677,7 +1677,7 @@ export const GameEmulator: React.FC<GameEmulatorProps> = ({
             </div>
 
             {/* 敵行軍スピード倍率 */}
-            <div className="space-y-1.5 p-3 rounded-xl bg-slate-950 border border-slate-800">
+            <div className="space-y-1.5 p-3 rounded-xl bg-white dark:bg-slate-950 border border-sky-100 dark:border-slate-800">
               <div className="flex justify-between text-slate-700 dark:text-slate-300">
                 <span className="font-bold">敵行軍スピード</span>
                 <span className="text-rose-400 font-bold">{enemySpeedMul.toFixed(1)}x</span>
@@ -1695,7 +1695,7 @@ export const GameEmulator: React.FC<GameEmulatorProps> = ({
             </div>
 
             {/* 3WAYショットトグル */}
-            <div className="flex flex-col justify-between p-3 rounded-xl bg-slate-950 border border-slate-800">
+            <div className="flex flex-col justify-between p-3 rounded-xl bg-white dark:bg-slate-950 border border-sky-100 dark:border-slate-800">
               <div className="flex justify-between text-slate-700 dark:text-slate-300">
                 <span className="font-bold">3WAY弾幕ショット</span>
               </div>
@@ -1703,8 +1703,8 @@ export const GameEmulator: React.FC<GameEmulatorProps> = ({
                 onClick={() => setSandboxTripleShot((prev) => !prev)}
                 className={`py-1.5 px-3 rounded-lg font-bold text-xs transition border ${
                   sandboxTripleShot || hasTripleShot
-                    ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40 shadow'
-                    : 'bg-slate-800 text-slate-600 dark:text-slate-400 border-slate-700'
+                    ? 'bg-emerald-100 text-emerald-900 border-emerald-300 shadow dark:bg-emerald-500/20 dark:text-emerald-300 dark:border-emerald-500/40'
+                    : 'bg-slate-100 hover:bg-slate-200 text-slate-700 border-slate-300 dark:bg-slate-800 dark:text-slate-400 dark:border-slate-700'
                 }`}
               >
                 {sandboxTripleShot || hasTripleShot ? '✨ 3WAY 有効化中' : '通常弾 (単発)'}
@@ -1714,9 +1714,9 @@ export const GameEmulator: React.FC<GameEmulatorProps> = ({
           </div>
 
           {/* リアルタイムC++定数コードプレビュー */}
-          <div className="p-3 rounded-xl bg-slate-950/90 border border-cyan-500/30 text-xs font-mono text-cyan-300">
+          <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-950/90 border border-sky-200 dark:border-cyan-500/30 text-xs font-mono text-cyan-900 dark:text-cyan-300">
             <span className="text-slate-600 dark:text-slate-400 block mb-1 font-sans">// 💡 リアルタイムに適用された C++ 設計定数:</span>
-            <code className="block overflow-x-auto whitespace-pre">
+            <code className="block overflow-x-auto whitespace-pre text-slate-800 dark:text-cyan-300">
               {`constexpr int kPlayerSpeed = ${playerSpeed}; // 1回あたりの横移動距離\nconstexpr size_t kMaxBullets = ${maxBullets}; // 同時に存在可能な弾の最大寿命\nconstexpr float kEnemySpeedMul = ${enemySpeedMul.toFixed(1)}f; // インベーダーの行軍周波数\nconstexpr bool kEnableTripleShot = ${sandboxTripleShot || hasTripleShot ? 'true' : 'false'}; // 3WAY弾幕コンポーネント`}
             </code>
           </div>
@@ -1725,17 +1725,17 @@ export const GameEmulator: React.FC<GameEmulatorProps> = ({
 
       {/* 🔄 前章からの進化クイックバー ＆ バージョンガイダンス（L1以外の章のみ表示） */}
       {!isFirstChapter && (
-        <div className="mb-2 px-3 py-1.5 rounded-lg bg-slate-900/80 border border-slate-800 text-xs text-slate-700 dark:text-slate-300 flex items-center justify-between gap-2 font-mono flex-wrap">
+        <div className="mb-2 px-3 py-1.5 rounded-lg bg-sky-50/90 dark:bg-slate-900/80 border border-sky-200 dark:border-slate-800 text-xs text-slate-800 dark:text-slate-300 flex items-center justify-between gap-2 font-mono flex-wrap">
           <div className="flex items-center gap-2 flex-1 min-w-0">
-            <span className="px-1.5 py-0.5 rounded bg-amber-950/80 border border-amber-500/40 text-amber-300 font-bold text-[10px] sm:text-[11px] flex-shrink-0 flex items-center gap-1">
+            <span className="px-1.5 py-0.5 rounded bg-amber-100 text-amber-900 border border-amber-300 dark:bg-amber-950/80 dark:border-amber-500/40 dark:text-amber-300 font-bold text-[10px] sm:text-[11px] flex-shrink-0 flex items-center gap-1">
               <Sparkles className="w-3 h-3 text-amber-400" />
               <span>前章（{evolution.previousChapter}）からの変化</span>
             </span>
-            <span className="truncate text-slate-200 font-sans text-xs">{evolution.headline}</span>
+            <span className="truncate text-slate-800 dark:text-slate-200 font-sans text-xs">{evolution.headline}</span>
           </div>
           <button
             onClick={() => setShowEvolutionDiff((prev) => !prev)}
-            className="text-[11px] text-cyan-400 hover:text-cyan-300 underline flex-shrink-0 font-bold ml-auto"
+            className="text-[11px] text-cyan-700 dark:text-cyan-400 hover:text-cyan-900 dark:hover:text-cyan-300 underline flex-shrink-0 font-bold ml-auto"
           >
             {showEvolutionDiff ? '差分を閉じる ▲' : '前章との違いを見る ▼'}
           </button>
@@ -1888,7 +1888,7 @@ export const GameEmulator: React.FC<GameEmulatorProps> = ({
                   {titleInfo.stage}
                 </span>
                 {chapterCode && (
-                  <span className="text-[10px] sm:text-xs px-2 py-0.5 rounded-full border border-slate-700 bg-slate-900 text-slate-700 dark:text-slate-300 font-mono">
+                  <span className="text-[10px] sm:text-xs px-2 py-0.5 rounded-full border border-slate-300 dark:border-slate-700 bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-300 font-mono">
                     {chapterCode} 収録
                   </span>
                 )}
@@ -1903,7 +1903,7 @@ export const GameEmulator: React.FC<GameEmulatorProps> = ({
               </div>
 
               {chapterTitle && (
-                <div className="text-[11px] sm:text-xs text-slate-600 dark:text-slate-400 font-mono truncate max-w-sm mx-auto">
+                <div className="text-[11px] sm:text-xs text-slate-300 font-mono truncate max-w-sm mx-auto">
                   <span>章：{chapterTitle}</span>
                 </div>
               )}
@@ -1934,7 +1934,7 @@ export const GameEmulator: React.FC<GameEmulatorProps> = ({
                         <Sparkles className="w-3.5 h-3.5 text-amber-400 flex-shrink-0" />
                         <span>前章（{evolution.previousChapter}）からの進化点:</span>
                       </div>
-                      <span className="text-[10px] text-slate-600 dark:text-slate-400">
+                      <span className="text-[10px] text-slate-300">
                         C++設計 ＆ ゲーム挙動差分
                       </span>
                     </div>
@@ -1959,7 +1959,7 @@ export const GameEmulator: React.FC<GameEmulatorProps> = ({
                     </div>
                   </div>
 
-                  <p className="text-[10px] sm:text-xs text-slate-600 dark:text-slate-400 font-mono italic leading-relaxed text-left px-1">
+                  <p className="text-[10px] sm:text-xs text-slate-300 font-mono italic leading-relaxed text-left px-1">
                     💡 <span className="text-cyan-300 font-bold">C++設計の狙い: </span>{evolution.cppArchitecturePoint}
                   </p>
                 </>
@@ -1973,16 +1973,16 @@ export const GameEmulator: React.FC<GameEmulatorProps> = ({
                     迫りくるインベーダー編隊（10機）を迎撃し、地球防衛ラインを死守せよ！
                   </p>
                   <div className="grid grid-cols-2 gap-2 text-[10px] sm:text-[11px] pt-0.5">
-                    <div className="bg-slate-950/80 p-1.5 rounded-lg border border-slate-800 text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
+                    <div className="bg-slate-950/80 p-1.5 rounded-lg border border-slate-800 text-slate-200 flex items-center gap-1.5">
                       <span className="text-cyan-400 font-bold px-1 py-0.5 rounded bg-cyan-950/80 border border-cyan-500/30">[←] [→]</span>
                       <span>左右移動</span>
                     </div>
-                    <div className="bg-slate-950/80 p-1.5 rounded-lg border border-slate-800 text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
+                    <div className="bg-slate-950/80 p-1.5 rounded-lg border border-slate-800 text-slate-200 flex items-center gap-1.5">
                       <span className="text-cyan-400 font-bold px-1 py-0.5 rounded bg-cyan-950/80 border border-cyan-500/30">[SPACE]</span>
                       <span>単発射撃</span>
                     </div>
                   </div>
-                  <p className="text-[10px] sm:text-[11px] text-slate-600 dark:text-slate-400 pt-0.5">
+                  <p className="text-[10px] sm:text-[11px] text-slate-300 pt-0.5">
                     💡 <span className="text-cyan-300 font-semibold">C++設計の狙い: </span>1ファイル・グローバル変数・単発弾による手続き型コードの限界を体感します。
                   </p>
                 </div>
@@ -1998,7 +1998,7 @@ export const GameEmulator: React.FC<GameEmulatorProps> = ({
               <h4 className="text-2xl font-bold text-amber-400 font-mono">
                 ⏸️ PAUSED
               </h4>
-              <p className="text-xs sm:text-sm text-slate-700 dark:text-slate-300 font-mono">
+              <p className="text-xs sm:text-sm text-slate-300 font-mono">
                 State パターンによりゲームループ更新が一時停止中
               </p>
               <div className="flex items-center justify-center gap-2.5 flex-wrap">
@@ -2011,7 +2011,7 @@ export const GameEmulator: React.FC<GameEmulatorProps> = ({
                 </button>
                 <button
                   onClick={initGame}
-                  className="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 active:scale-95 text-slate-700 dark:text-slate-300 hover:text-white font-bold text-xs sm:text-sm font-mono transition border border-slate-700 flex items-center gap-1.5 shadow"
+                  className="px-4 py-2.5 rounded-xl bg-slate-700 hover:bg-slate-600 active:scale-95 text-slate-100 hover:text-white font-bold text-xs sm:text-sm font-mono transition border border-slate-600 flex items-center gap-1.5 shadow"
                 >
                   <LogOut className="w-3.5 h-3.5" />
                   <span>終了する (Qキー)</span>
@@ -2036,7 +2036,7 @@ export const GameEmulator: React.FC<GameEmulatorProps> = ({
                 <h4 className="text-lg sm:text-xl font-bold text-emerald-400 font-mono mb-1 text-glow-green">
                   TARGET DETECTED! VICTORY!
                 </h4>
-                <p className="text-xs text-slate-700 dark:text-slate-300 font-mono mb-2.5">
+                <p className="text-xs text-slate-300 font-mono mb-2.5">
                   全インベーダーを撃破！シロクマ先生とハイタッチ！🎉
                 </p>
                 <div className="flex items-center justify-center gap-2.5 flex-wrap">
@@ -2049,7 +2049,7 @@ export const GameEmulator: React.FC<GameEmulatorProps> = ({
                   </button>
                   <button
                     onClick={initGame}
-                    className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-700 dark:text-slate-300 hover:text-white font-bold text-xs sm:text-sm font-mono transition border border-slate-700 active:scale-95 flex items-center gap-1.5 shadow"
+                    className="px-4 py-2 rounded-xl bg-slate-700 hover:bg-slate-600 text-slate-100 hover:text-white font-bold text-xs sm:text-sm font-mono transition border border-slate-600 active:scale-95 flex items-center gap-1.5 shadow"
                   >
                     <LogOut className="w-3.5 h-3.5" />
                     <span>終了する (Qキー)</span>
@@ -2066,7 +2066,7 @@ export const GameEmulator: React.FC<GameEmulatorProps> = ({
                   />
                 </div>
                 <h4 className="text-lg sm:text-xl font-bold text-rose-500 font-mono mb-1">GAME OVER</h4>
-                <p className="text-xs text-slate-700 dark:text-slate-300 font-mono mb-2.5">インベーダーに侵略されてしまいました</p>
+                <p className="text-xs text-slate-300 font-mono mb-2.5">インベーダーに侵略されてしまいました</p>
                 <div className="flex items-center justify-center gap-2.5 flex-wrap">
                   <button
                     onClick={restartGame}
@@ -2077,7 +2077,7 @@ export const GameEmulator: React.FC<GameEmulatorProps> = ({
                   </button>
                   <button
                     onClick={initGame}
-                    className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-700 dark:text-slate-300 hover:text-white font-bold text-xs sm:text-sm font-mono transition border border-slate-700 active:scale-95 flex items-center gap-1.5 shadow"
+                    className="px-4 py-2 rounded-xl bg-slate-700 hover:bg-slate-600 text-slate-100 hover:text-white font-bold text-xs sm:text-sm font-mono transition border border-slate-600 active:scale-95 flex items-center gap-1.5 shadow"
                   >
                     <LogOut className="w-3.5 h-3.5" />
                     <span>終了する (Qキー)</span>
@@ -2090,28 +2090,28 @@ export const GameEmulator: React.FC<GameEmulatorProps> = ({
       </div>
 
       {/* 操作ガイド ＆ モバイル対応バーチャルゲームパッド */}
-      <div className="mt-2.5 pt-2 border-t border-slate-800/80 space-y-2">
+      <div className="mt-2.5 pt-2 border-t border-slate-200 dark:border-slate-800/80 space-y-2">
         {/* キーボード案内 */}
         <div className="flex flex-col sm:flex-row items-center justify-between gap-1.5 text-[11px] sm:text-xs text-slate-700 dark:text-slate-300 font-mono">
           <div className="flex items-center gap-1.5 flex-wrap">
-            <Gamepad2 className="w-3.5 h-3.5 text-cyan-400" />
-            <span className="font-bold text-slate-200">操作方法:</span>
-            <kbd className="px-1.5 py-0.5 rounded bg-slate-800 border border-slate-700 text-slate-100 font-bold text-[10px] sm:text-xs">A / ←</kbd>
-            <kbd className="px-1.5 py-0.5 rounded bg-slate-800 border border-slate-700 text-slate-100 font-bold text-[10px] sm:text-xs">D / →</kbd>
+            <Gamepad2 className="w-3.5 h-3.5 text-cyan-600 dark:text-cyan-400" />
+            <span className="font-bold text-slate-800 dark:text-slate-200">操作方法:</span>
+            <kbd className="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-800 dark:text-slate-100 font-bold text-[10px] sm:text-xs">A / ←</kbd>
+            <kbd className="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-800 dark:text-slate-100 font-bold text-[10px] sm:text-xs">D / →</kbd>
             <span className="text-slate-600 dark:text-slate-400">移動</span>
-            <kbd className="px-1.5 py-0.5 rounded bg-slate-800 border border-slate-700 text-slate-100 font-bold text-[10px] sm:text-xs">Space</kbd>
+            <kbd className="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-800 dark:text-slate-100 font-bold text-[10px] sm:text-xs">Space</kbd>
             <span className="text-slate-600 dark:text-slate-400">発射</span>
-            <kbd className="px-1.5 py-0.5 rounded bg-slate-800 border border-slate-700 text-amber-300 font-bold text-[10px] sm:text-xs">P</kbd>
+            <kbd className="px-1.5 py-0.5 rounded bg-amber-50 dark:bg-slate-800 border border-amber-300 dark:border-slate-700 text-amber-900 dark:text-amber-300 font-bold text-[10px] sm:text-xs">P</kbd>
             <span className="text-slate-600 dark:text-slate-400">ポーズ</span>
-            <kbd className="px-1.5 py-0.5 rounded bg-slate-800 border border-slate-700 text-rose-300 font-bold text-[10px] sm:text-xs">R</kbd>
+            <kbd className="px-1.5 py-0.5 rounded bg-rose-50 dark:bg-slate-800 border border-rose-300 dark:border-slate-700 text-rose-900 dark:text-rose-300 font-bold text-[10px] sm:text-xs">R</kbd>
             <span className="text-slate-600 dark:text-slate-400">リトライ</span>
-            <kbd className="px-1.5 py-0.5 rounded bg-slate-800 border border-slate-700 text-slate-700 dark:text-slate-300 font-bold text-[10px] sm:text-xs">Q / Esc</kbd>
+            <kbd className="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-800 dark:text-slate-300 font-bold text-[10px] sm:text-xs">Q / Esc</kbd>
             <span className="text-slate-600 dark:text-slate-400">終了</span>
           </div>
 
           <button
             onClick={() => setShowVirtualPad((prev) => !prev)}
-            className="text-[11px] sm:text-xs text-cyan-400 hover:text-cyan-300 flex items-center gap-1 transition"
+            className="text-[11px] sm:text-xs text-cyan-700 dark:text-cyan-400 hover:text-cyan-900 dark:hover:text-cyan-300 flex items-center gap-1 transition font-bold cursor-pointer"
           >
             <Smartphone className="w-3 h-3" />
             <span>{showVirtualPad ? 'パッド非表示' : 'パッド表示'}</span>
@@ -2120,7 +2120,7 @@ export const GameEmulator: React.FC<GameEmulatorProps> = ({
 
         {/* モバイル＆タッチ端末対応バーチャルコントローラー */}
         {showVirtualPad && (
-          <div className="p-1.5 sm:p-2 rounded-xl bg-gradient-to-b from-slate-900/90 to-slate-950 border border-slate-800 shadow-xl select-none touch-none">
+          <div className="p-1.5 sm:p-2 rounded-xl bg-slate-100 dark:bg-gradient-to-b dark:from-slate-900/90 dark:to-slate-950 border border-slate-200 dark:border-slate-800 shadow-md select-none touch-none">
             <div className="flex items-center justify-between gap-2 max-w-md mx-auto">
               {/* 左手：移動 D-PAD（タップ＆長押し対応） */}
               <div className="flex items-center gap-1.5 sm:gap-2">
@@ -2137,7 +2137,7 @@ export const GameEmulator: React.FC<GameEmulatorProps> = ({
                     stopMove();
                   }}
                   onTouchCancel={stopMove}
-                  className="w-10 h-10 min-[380px]:w-11 min-[380px]:h-11 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-b from-slate-800 to-slate-900 border-2 border-slate-700 active:border-cyan-400 active:from-cyan-900 active:to-slate-900 text-white font-mono text-base sm:text-lg flex flex-col items-center justify-center transition shadow-lg active:scale-95 cursor-pointer touch-none"
+                  className="w-10 h-10 min-[380px]:w-11 min-[380px]:h-11 sm:w-12 sm:h-12 rounded-xl bg-white dark:bg-gradient-to-b dark:from-slate-800 dark:to-slate-900 border-2 border-slate-300 dark:border-slate-700 active:border-cyan-500 active:from-cyan-100 dark:active:from-cyan-900 text-slate-900 dark:text-white font-mono text-base sm:text-lg flex flex-col items-center justify-center transition shadow active:scale-95 cursor-pointer touch-none"
                   aria-label="左移動（長押し対応）"
                 >
                   <span>◀</span>
@@ -2157,7 +2157,7 @@ export const GameEmulator: React.FC<GameEmulatorProps> = ({
                     stopMove();
                   }}
                   onTouchCancel={stopMove}
-                  className="w-10 h-10 min-[380px]:w-11 min-[380px]:h-11 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-b from-slate-800 to-slate-900 border-2 border-slate-700 active:border-cyan-400 active:from-cyan-900 active:to-slate-900 text-white font-mono text-base sm:text-lg flex flex-col items-center justify-center transition shadow-lg active:scale-95 cursor-pointer touch-none"
+                  className="w-10 h-10 min-[380px]:w-11 min-[380px]:h-11 sm:w-12 sm:h-12 rounded-xl bg-white dark:bg-gradient-to-b dark:from-slate-800 dark:to-slate-900 border-2 border-slate-300 dark:border-slate-700 active:border-cyan-500 active:from-cyan-100 dark:active:from-cyan-900 text-slate-900 dark:text-white font-mono text-base sm:text-lg flex flex-col items-center justify-center transition shadow active:scale-95 cursor-pointer touch-none"
                   aria-label="右移動（長押し対応）"
                 >
                   <span>▶</span>
@@ -2169,26 +2169,26 @@ export const GameEmulator: React.FC<GameEmulatorProps> = ({
               <div className="flex flex-col items-center gap-1">
                 <button
                   onClick={togglePause}
-                  className="px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 active:bg-slate-600 border border-slate-700 text-slate-200 text-[11px] sm:text-xs font-mono font-bold flex items-center gap-1 transition active:scale-95 shadow"
+                  className="px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-lg bg-white hover:bg-slate-50 active:bg-slate-100 border border-slate-300 text-slate-800 dark:bg-slate-800 dark:hover:bg-slate-700 dark:active:bg-slate-600 dark:border-slate-700 dark:text-slate-200 text-[11px] sm:text-xs font-mono font-bold flex items-center gap-1 transition active:scale-95 shadow"
                 >
                   {scene === 'paused' ? (
                     <>
-                      <Play className="w-3 h-3 text-emerald-400 fill-emerald-400" />
+                      <Play className="w-3 h-3 text-emerald-600 dark:text-emerald-400 fill-emerald-600 dark:fill-emerald-400" />
                       <span>RESUME</span>
                     </>
                   ) : scene === 'title' ? (
                     <>
-                      <Play className="w-3 h-3 text-cyan-400 fill-cyan-400" />
+                      <Play className="w-3 h-3 text-cyan-600 dark:text-cyan-400 fill-cyan-600 dark:fill-cyan-400" />
                       <span>START</span>
                     </>
                   ) : scene === 'gameover' || scene === 'gameclear' ? (
                     <>
-                      <RotateCcw className="w-3 h-3 text-rose-400" />
+                      <RotateCcw className="w-3 h-3 text-rose-600 dark:text-rose-400" />
                       <span>RETRY</span>
                     </>
                   ) : (
                     <>
-                      <Pause className="w-3 h-3 text-amber-400" />
+                      <Pause className="w-3 h-3 text-amber-600 dark:text-amber-400" />
                       <span>PAUSE</span>
                     </>
                   )}
