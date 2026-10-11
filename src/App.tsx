@@ -60,11 +60,17 @@ const getSlugFromUrl = (): string => {
   if (path.startsWith('cpp/')) path = path.slice(4);
 
   if (STATIC_PAGE_SLUGS.includes(path as any)) return path;
-  if (path && getChapterBySlug(path)) return path;
+  if (path) {
+    const canonical = SLUG_REDIRECT_MAP[path] || path;
+    if (getChapterBySlug(canonical)) return canonical;
+  }
 
   const hash = window.location.hash.replace('#', '');
   if (STATIC_PAGE_SLUGS.includes(hash as any)) return hash;
-  if (hash && getChapterBySlug(hash)) return hash;
+  if (hash) {
+    const canonical = SLUG_REDIRECT_MAP[hash] || hash;
+    if (getChapterBySlug(canonical)) return canonical;
+  }
 
   return 'top';
 };
@@ -190,12 +196,13 @@ const AppContent: React.FC = () => {
   const activeChapter = currentChapter || ALL_CHAPTERS[0];
   const currentChapterId = currentSlug === 'top' ? 0 : activeChapter.id;
 
-  // 章選択時のクリーンURL遷移（HTML5 pushState、/cpp/ サブディレクトリを自動考慮）
+  // 章選択時のクリーンURL遷移（HTML5 pushState、/cpp/ サブディレクトリを自動考慮、旧スラグは即座に正規化）
   const handleSelectChapter = (slug: string) => {
-    setCurrentSlug(slug);
+    const canonicalSlug = SLUG_REDIRECT_MAP[slug] || slug;
+    setCurrentSlug(canonicalSlug);
     const isSub = window.location.pathname.startsWith('/cpp');
     const prefix = isSub ? '/cpp' : '';
-    const targetPath = slug === 'top' ? (prefix || '/') : `${prefix}/${slug}`;
+    const targetPath = canonicalSlug === 'top' ? (prefix || '/') : `${prefix}/${canonicalSlug}`;
     if (window.location.pathname !== targetPath) {
       window.history.pushState(null, '', targetPath);
     }

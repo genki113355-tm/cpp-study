@@ -1,5 +1,5 @@
 /**
- * 静的画像アセットのパス解決ユーティリティ (https://shirokuma-cpp.jp/)
+ * 静的画像アセットのパス解決ユーティリティ (https://shirokuma-tech.jp/cpp/)
  */
 export const getAssetUrl = (path: string): string => {
   if (!path) return '';

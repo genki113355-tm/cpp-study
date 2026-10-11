@@ -70,7 +70,7 @@ async function generateSEO() {
     appType: 'custom',
   });
 
-  const { ALL_ARTICLES, CLASSIC_CHAPTERS, MODERN_CHAPTERS, READING_CHAPTERS, SPECIAL_GUIDES } = await server.ssrLoadModule('./src/data/chapters.ts');
+  const { ALL_ARTICLES, CLASSIC_CHAPTERS, MODERN_CHAPTERS, READING_CHAPTERS, SPECIAL_GUIDES, SLUG_REDIRECT_MAP } = await server.ssrLoadModule('./src/data/chapters.ts');
   await server.close();
 
   console.log(`📚 Loaded ${ALL_ARTICLES.length} articles from curriculum data.`);
@@ -599,6 +599,47 @@ async function generateSEO() {
   }
 
   console.log('✅ Successfully prerendered all 4 essential static legal & utility pages!');
+
+  // 3-5. 旧スラグからの静的リダイレクトHTMLの自動生成 (dist/${oldSlug}/index.html および dist/cpp/${oldSlug}/index.html)
+  if (SLUG_REDIRECT_MAP && typeof SLUG_REDIRECT_MAP === 'object') {
+    let redirectCount = 0;
+    for (const [oldSlug, canonicalSlug] of Object.entries(SLUG_REDIRECT_MAP)) {
+      const canonicalUrl = `${baseUrl}/${canonicalSlug}`;
+      const redirectHtml = `<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <title>ページ移動のお知らせ | シロクマC++ラボ</title>
+  <meta name="robots" content="noindex, follow" />
+  <meta http-equiv="refresh" content="0;url=${canonicalUrl}" />
+  <link rel="canonical" href="${canonicalUrl}" />
+  <script>window.location.replace("${canonicalUrl}");</script>
+</head>
+<body style="font-family: sans-serif; text-align: center; padding: 40px; background: #070b14; color: #e2e8f0;">
+  <h2>ページが移動しました</h2>
+  <p>自動的に新しいページへ遷移します。移動しない場合は以下のリンクをクリックしてください：</p>
+  <p><a href="${canonicalUrl}" style="color: #38bdf8; font-weight: bold; text-decoration: underline;">${canonicalUrl}</a></p>
+</body>
+</html>`;
+
+      // dist/${oldSlug}/index.html
+      const oldDir = path.join(distDir, oldSlug);
+      if (!fs.existsSync(oldDir)) {
+        fs.mkdirSync(oldDir, { recursive: true });
+      }
+      fs.writeFileSync(path.join(oldDir, 'index.html'), redirectHtml, 'utf8');
+
+      // dist/cpp/${oldSlug}/index.html (サブディレクトリ配信配慮)
+      const oldCppDir = path.join(distDir, 'cpp', oldSlug);
+      if (!fs.existsSync(oldCppDir)) {
+        fs.mkdirSync(oldCppDir, { recursive: true });
+      }
+      fs.writeFileSync(path.join(oldCppDir, 'index.html'), redirectHtml, 'utf8');
+
+      redirectCount++;
+    }
+    console.log(`✅ Generated static redirect HTMLs for ${redirectCount} legacy slugs.`);
+  }
 
   // 4. RSS 2.0 フィード (feed.xml) の生成
   const now = new Date().toUTCString();

@@ -32,17 +32,29 @@
 /modern-2-move-and-modern-features /chapter-modern-2-move-semantics 301
 /cpp/modern-2-move-and-modern-features /cpp/chapter-modern-2-move-semantics 301
 /chapter-modern-4-modern-type-system /chapter-modern-7-modern-type-system 301
+/chapter-modern-4-modern-type-system/ /chapter-modern-7-modern-type-system 301
 /cpp/chapter-modern-4-modern-type-system /cpp/chapter-modern-7-modern-type-system 301
+/cpp/chapter-modern-4-modern-type-system/ /cpp/chapter-modern-7-modern-type-system 301
 /chapter-7-modern-cpp-ecs /chapter-modern-10-ecs 301
+/chapter-7-modern-cpp-ecs/ /chapter-modern-10-ecs 301
 /cpp/chapter-7-modern-cpp-ecs /cpp/chapter-modern-10-ecs 301
+/cpp/chapter-7-modern-cpp-ecs/ /cpp/chapter-modern-10-ecs 301
 /chapter-modern-6-concepts /chapter-modern-11-concepts 301
+/chapter-modern-6-concepts/ /chapter-modern-11-concepts 301
 /cpp/chapter-modern-6-concepts /cpp/chapter-modern-11-concepts 301
+/cpp/chapter-modern-6-concepts/ /cpp/chapter-modern-11-concepts 301
 /chapter-modern-5-coroutines /chapter-modern-12-coroutines 301
+/chapter-modern-5-coroutines/ /chapter-modern-12-coroutines 301
 /cpp/chapter-modern-5-coroutines /cpp/chapter-modern-12-coroutines 301
+/cpp/chapter-modern-5-coroutines/ /cpp/chapter-modern-12-coroutines 301
 /chapter-modern-7-ranges-views /chapter-modern-13-ranges-views 301
+/chapter-modern-7-ranges-views/ /chapter-modern-13-ranges-views 301
 /cpp/chapter-modern-7-ranges-views /cpp/chapter-modern-13-ranges-views 301
+/cpp/chapter-modern-7-ranges-views/ /cpp/chapter-modern-13-ranges-views 301
 /chapter-modern-8-modules /chapter-modern-14-modules 301
+/chapter-modern-8-modules/ /chapter-modern-14-modules 301
 /cpp/chapter-modern-8-modules /cpp/chapter-modern-14-modules 301
+/cpp/chapter-modern-8-modules/ /cpp/chapter-modern-14-modules 301
 
 # Subdirectory static assets rewrite
 /cpp/images/* /images/:splat 200
