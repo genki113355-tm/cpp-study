@@ -154,7 +154,7 @@ export const ShareButtons: React.FC<ShareButtonsProps> = ({
         href={xShareUrl}
         target="_blank"
         rel="noopener noreferrer"
-        className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-black/80 hover:bg-black text-white text-xs font-semibold border border-slate-700 transition"
+        className="inline-flex items-center gap-1.5 px-3 py-1.5 min-h-[32px] rounded-md bg-black/80 hover:bg-black text-white text-xs font-semibold border border-slate-700 transition"
       >
         <svg className="w-3 h-3 fill-current" viewBox="0 0 24 24">
           <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
@@ -165,7 +165,7 @@ export const ShareButtons: React.FC<ShareButtonsProps> = ({
         href={hatenaShareUrl}
         target="_blank"
         rel="noopener noreferrer"
-        className="inline-flex items-center px-2 py-1 rounded-md bg-[#00A4DE] hover:bg-[#0091c5] text-white text-xs font-bold transition"
+        className="inline-flex items-center px-3 py-1.5 min-h-[32px] rounded-md bg-[#00A4DE] hover:bg-[#0091c5] text-white text-xs font-bold transition"
         title="はてなブックマークに追加"
       >
         <span className="font-extrabold tracking-tighter">B! ブックマーク</span>
@@ -173,7 +173,7 @@ export const ShareButtons: React.FC<ShareButtonsProps> = ({
       <button
         type="button"
         onClick={handleCopy}
-        className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-xs transition border shadow-sm ${
+        className={`inline-flex items-center gap-1 px-3 py-1.5 min-h-[32px] rounded-md text-xs transition border shadow-sm cursor-pointer ${
           copied
             ? 'bg-emerald-100 text-emerald-900 border-emerald-300 dark:bg-emerald-950/60 dark:border-emerald-500 dark:text-emerald-300'
             : 'bg-slate-100 hover:bg-slate-200 border-slate-300 text-slate-700 dark:bg-slate-800/80 dark:hover:bg-slate-700 dark:border-slate-700 dark:text-slate-300'

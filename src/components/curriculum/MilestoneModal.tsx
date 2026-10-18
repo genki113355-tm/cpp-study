@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   X,
   Award,
@@ -55,6 +55,17 @@ export const MilestoneModal: React.FC<MilestoneModalProps> = ({
   const [backupMessage, setBackupMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
   const [showResetConfirm, setShowResetConfirm] = useState<boolean>(false);
   const [showCodePreview, setShowCodePreview] = useState<boolean>(false);
+
+  // モーダル表示時の背景スクロールロック
+  useEffect(() => {
+    if (isOpen) {
+      const original = document.body.style.overflow;
+      document.body.style.overflow = 'hidden';
+      return () => {
+        document.body.style.overflow = original;
+      };
+    }
+  }, [isOpen]);
 
   const validChapterIds = ALL_CHAPTERS.map((c) => c.id);
   const currentBackupCode = generateBackupCode(completedChapters, validChapterIds);
@@ -259,8 +270,9 @@ export const MilestoneModal: React.FC<MilestoneModalProps> = ({
 
           <button
             onClick={onClose}
-            className="p-1.5 rounded-xl text-slate-500 hover:text-slate-900 hover:bg-slate-100 dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-800 transition cursor-pointer"
+            className="min-w-[44px] min-h-[44px] flex items-center justify-center rounded-xl text-slate-500 hover:text-slate-900 hover:bg-slate-100 dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-800 transition cursor-pointer"
             title="閉じる"
+            aria-label="閉じる"
           >
             <X className="w-5 h-5" />
           </button>

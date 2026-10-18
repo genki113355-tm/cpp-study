@@ -27,97 +27,185 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
             <span className="text-slate-600 dark:text-slate-400 font-normal">〜ゲーム開発で学ぶオブジェクト指向開発 レガシー設計からモダン設計まで〜</span>
           </div>
 
-          {/* 姉妹メディア・相互リンク */}
-          <div className="pt-3 pb-2 max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-3">
-            {/* 1. シロクマC++自動化ラボ */}
+          {/* 総合ポータル ＆ 姉妹メディア・相互リンク */}
+          <div className="pt-3 pb-2 max-w-5xl mx-auto space-y-3">
+            {/* 総合ポータルバナー */}
             <a
-              href="https://shirokuma-tech.jp/auto/"
+              href="https://shirokuma-tech.jp/"
               target="_blank"
               rel="noopener noreferrer"
-              className="group flex items-center justify-between gap-3 p-3.5 rounded-2xl bg-white dark:bg-slate-900/90 hover:bg-slate-50 dark:hover:bg-slate-850 border border-slate-200 dark:border-slate-800 hover:border-cyan-400 dark:hover:border-cyan-500/40 transition-all shadow-sm dark:shadow-lg text-left"
+              className="group flex items-center justify-between p-4 rounded-2xl bg-gradient-to-r from-sky-50/90 via-cyan-50/80 to-blue-50/90 dark:from-[#0a1526] dark:via-[#0b1b33] dark:to-[#071324] border border-cyan-300/80 dark:border-cyan-500/40 hover:border-cyan-400 dark:hover:border-cyan-300 transition-all duration-300 shadow-sm dark:shadow-xl hover:shadow-[0_0_25px_rgba(34,211,238,0.2)] text-left"
             >
-              <div className="flex items-center gap-3 min-w-0 flex-1">
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-600 to-blue-500 flex items-center justify-center text-white text-xl flex-shrink-0 shadow-md">
-                  ⚡
+              <div className="flex items-center gap-3.5">
+                <div className="flex items-center -space-x-2 bg-white/90 dark:bg-slate-900/90 p-1.5 rounded-2xl border border-cyan-300 dark:border-cyan-500/40 shadow-inner flex-shrink-0">
+                  <img
+                    src={getAssetUrl('/images/characters/shirokuma_sensei.png')}
+                    alt="シロクマ先生"
+                    className="w-8 h-8 rounded-full object-cover border border-cyan-400 shadow-sm"
+                  />
+                  <img
+                    src={getAssetUrl('/images/characters/penguin_student.jpg')}
+                    alt="ペンギン生徒"
+                    className="w-8 h-8 rounded-full object-cover border border-amber-400 shadow-sm"
+                  />
                 </div>
-                <div className="min-w-0 flex-1">
-                  <div className="flex items-center gap-1.5 flex-wrap">
-                    <span className="text-xs uppercase font-mono px-1.5 py-0.5 rounded bg-cyan-100 dark:bg-cyan-950 text-cyan-800 dark:text-cyan-300 border border-cyan-300 dark:border-cyan-500/30 font-bold flex-shrink-0">
-                      姉妹サイト
+                <div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-cyan-100 dark:bg-cyan-950 text-cyan-800 dark:text-cyan-300 border border-cyan-300 dark:border-cyan-500/40">
+                      CAMPUS PORTAL
                     </span>
-                    <span className="font-bold text-slate-800 dark:text-slate-200 group-hover:text-cyan-600 dark:group-hover:text-cyan-300 transition text-sm font-sans truncate">
-                      シロクマC++自動化ラボ
-                    </span>
+                    <span className="text-xs font-mono text-cyan-700 dark:text-cyan-400">shirokuma-tech.jp</span>
                   </div>
-                  <p className="text-xs text-slate-500 dark:text-slate-400 font-sans mt-0.5 truncate">
-                    Docker / pybind11 / 自動評価
+                  <span className="font-bold text-slate-900 dark:text-white group-hover:text-cyan-700 dark:group-hover:text-cyan-300 transition text-sm sm:text-base font-sans mt-0.5 block">
+                    シロクマ技術総合ポータル（全ラボの学習記録を集約）
+                  </span>
+                  <p className="text-xs text-slate-600 dark:text-slate-400 font-sans mt-0.5">
+                    C++設計・開発自動化・Qt GUI・ソナー音響・ネスペ対策・AIパスポートの総合学習プラットフォーム
                   </p>
                 </div>
               </div>
-              <span className="text-slate-600 dark:text-slate-400 dark:text-slate-500 group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition font-mono text-sm pr-1 flex-shrink-0">
-                ↗
+              <span className="text-cyan-700 dark:text-cyan-400 text-sm font-bold font-mono group-hover:translate-x-1 transition hidden sm:inline-block">
+                キャンバストップ ➔
               </span>
             </a>
 
-            {/* 2. シロクマQt×C++ラボ */}
-            <a
-              href="https://shirokuma-tech.jp/qt/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group flex items-center justify-between gap-3 p-3.5 rounded-2xl bg-white dark:bg-slate-900/90 hover:bg-slate-50 dark:hover:bg-slate-850 border border-slate-200 dark:border-slate-800 hover:border-emerald-400 dark:hover:border-emerald-500/40 transition-all shadow-sm dark:shadow-lg text-left"
-            >
-              <div className="flex items-center gap-3 min-w-0 flex-1">
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-500 flex items-center justify-center text-white text-xl flex-shrink-0 shadow-md">
-                  🖥️
-                </div>
-                <div className="min-w-0 flex-1">
-                  <div className="flex items-center gap-1.5 flex-wrap">
-                    <span className="text-xs uppercase font-mono px-1.5 py-0.5 rounded bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-500/30 font-bold flex-shrink-0">
-                      姉妹サイト
+            {/* 5つの姉妹ラボカード */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-3">
+              {/* 1. シロクマC++自動化ラボ */}
+              <a
+                href="https://shirokuma-tech.jp/auto/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex items-center justify-between gap-3 p-3 rounded-2xl bg-white dark:bg-slate-900/90 hover:bg-slate-50 dark:hover:bg-slate-850 border border-slate-200 dark:border-slate-800 hover:border-amber-400 dark:hover:border-amber-500/40 transition-all shadow-sm dark:shadow-lg text-left"
+              >
+                <div className="flex items-center gap-2.5 min-w-0 flex-1">
+                  <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-amber-500 to-yellow-400 flex items-center justify-center text-white text-lg flex-shrink-0 shadow-md">
+                    ⚡
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-center gap-1 mb-0.5">
+                      <span className="text-[9px] uppercase font-mono px-1.5 py-0.2 rounded bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-300 border border-amber-300 dark:border-amber-500/30 font-bold flex-shrink-0">
+                        LAB 2
+                      </span>
+                    </div>
+                    <span className="font-bold text-slate-800 dark:text-slate-200 group-hover:text-amber-600 dark:group-hover:text-amber-300 transition text-xs font-sans truncate block">
+                      シロクマ自動化ラボ
                     </span>
-                    <span className="font-bold text-slate-800 dark:text-slate-200 group-hover:text-emerald-600 dark:group-hover:text-emerald-300 transition text-sm font-sans truncate">
+                    <p className="text-[10px] text-slate-500 dark:text-slate-400 font-sans mt-0.5 truncate">
+                      Docker / CI / 自動評価
+                    </p>
+                  </div>
+                </div>
+              </a>
+
+              {/* 2. シロクマQt×C++ラボ */}
+              <a
+                href="https://shirokuma-tech.jp/qt/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex items-center justify-between gap-3 p-3 rounded-2xl bg-white dark:bg-slate-900/90 hover:bg-slate-50 dark:hover:bg-slate-850 border border-slate-200 dark:border-slate-800 hover:border-emerald-400 dark:hover:border-emerald-500/40 transition-all shadow-sm dark:shadow-lg text-left"
+              >
+                <div className="flex items-center gap-2.5 min-w-0 flex-1">
+                  <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-500 flex items-center justify-center text-white text-lg flex-shrink-0 shadow-md">
+                    🖥️
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-center gap-1 mb-0.5">
+                      <span className="text-[9px] uppercase font-mono px-1.5 py-0.2 rounded bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-500/30 font-bold flex-shrink-0">
+                        LAB 3
+                      </span>
+                    </div>
+                    <span className="font-bold text-slate-800 dark:text-slate-200 group-hover:text-emerald-600 dark:group-hover:text-emerald-300 transition text-xs font-sans truncate block">
                       シロクマQt×C++ラボ
                     </span>
+                    <p className="text-[10px] text-slate-500 dark:text-slate-400 font-sans mt-0.5 truncate">
+                      Linux / Qt / 計器HMI
+                    </p>
                   </div>
-                  <p className="text-xs text-slate-500 dark:text-slate-400 font-sans mt-0.5 truncate">
-                    Linux / Qt / リアルタイム計器HMI
-                  </p>
                 </div>
-              </div>
-              <span className="text-slate-600 dark:text-slate-400 dark:text-slate-500 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition font-mono text-sm pr-1 flex-shrink-0">
-                ↗
-              </span>
-            </a>
+              </a>
 
-            {/* 3. 水中音響・ソナー技術入門 */}
-            <a
-              href="https://shirokuma-tech.jp/sonar/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group flex items-center justify-between gap-3 p-3.5 rounded-2xl bg-white dark:bg-slate-900/90 hover:bg-slate-50 dark:hover:bg-slate-850 border border-slate-200 dark:border-slate-800 hover:border-blue-400 dark:hover:border-blue-500/40 transition-all shadow-sm dark:shadow-lg text-left"
-            >
-              <div className="flex items-center gap-3 min-w-0 flex-1">
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 to-cyan-500 flex items-center justify-center text-white text-xl flex-shrink-0 shadow-md">
-                  🌊
-                </div>
-                <div className="min-w-0 flex-1">
-                  <div className="flex items-center gap-1.5 flex-wrap">
-                    <span className="text-xs uppercase font-mono px-1.5 py-0.5 rounded bg-blue-100 dark:bg-blue-950 text-blue-800 dark:text-blue-300 border border-blue-300 dark:border-blue-500/30 font-bold flex-shrink-0">
-                      姉妹サイト
-                    </span>
-                    <span className="font-bold text-slate-800 dark:text-slate-200 group-hover:text-cyan-600 dark:group-hover:text-cyan-300 transition text-sm font-sans truncate">
-                      水中音響・ソナー技術入門
-                    </span>
+              {/* 3. 水中音響・ソナー技術入門 */}
+              <a
+                href="https://shirokuma-tech.jp/sonar/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex items-center justify-between gap-3 p-3 rounded-2xl bg-white dark:bg-slate-900/90 hover:bg-slate-50 dark:hover:bg-slate-850 border border-slate-200 dark:border-slate-800 hover:border-blue-400 dark:hover:border-blue-500/40 transition-all shadow-sm dark:shadow-lg text-left"
+              >
+                <div className="flex items-center gap-2.5 min-w-0 flex-1">
+                  <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-blue-600 to-cyan-500 flex items-center justify-center text-white text-lg flex-shrink-0 shadow-md">
+                    🌊
                   </div>
-                  <p className="text-xs text-slate-500 dark:text-slate-400 font-sans mt-0.5 truncate">
-                    波の物理 / FFT / 音響シミュレータ
-                  </p>
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-center gap-1 mb-0.5">
+                      <span className="text-[9px] uppercase font-mono px-1.5 py-0.2 rounded bg-blue-100 dark:bg-blue-950 text-blue-800 dark:text-blue-300 border border-blue-300 dark:border-blue-500/30 font-bold flex-shrink-0">
+                        LAB 4
+                      </span>
+                    </div>
+                    <span className="font-bold text-slate-800 dark:text-slate-200 group-hover:text-cyan-600 dark:group-hover:text-cyan-300 transition text-xs font-sans truncate block">
+                      水中音響・ソナー入門
+                    </span>
+                    <p className="text-[10px] text-slate-500 dark:text-slate-400 font-sans mt-0.5 truncate">
+                      波の物理 / FFT / 解析
+                    </p>
+                  </div>
                 </div>
-              </div>
-              <span className="text-slate-600 dark:text-slate-400 dark:text-slate-500 group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition font-mono text-sm pr-1 flex-shrink-0">
-                ↗
-              </span>
-            </a>
+              </a>
+
+              {/* 4. ネスペ直前対策ナビ */}
+              <a
+                href="https://shirokuma-tech.jp/nw/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex items-center justify-between gap-3 p-3 rounded-2xl bg-white dark:bg-slate-900/90 hover:bg-slate-50 dark:hover:bg-slate-850 border border-slate-200 dark:border-slate-800 hover:border-sky-400 dark:hover:border-sky-500/40 transition-all shadow-sm dark:shadow-lg text-left"
+              >
+                <div className="flex items-center gap-2.5 min-w-0 flex-1">
+                  <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-sky-600 to-indigo-500 flex items-center justify-center text-white text-lg flex-shrink-0 shadow-md">
+                    🛡️
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-center gap-1 mb-0.5">
+                      <span className="text-[9px] uppercase font-mono px-1.5 py-0.2 rounded bg-sky-100 dark:bg-sky-950 text-sky-800 dark:text-sky-300 border border-sky-300 dark:border-sky-500/30 font-bold flex-shrink-0">
+                        LAB 5
+                      </span>
+                    </div>
+                    <span className="font-bold text-slate-800 dark:text-slate-200 group-hover:text-sky-600 dark:group-hover:text-sky-300 transition text-xs font-sans truncate block">
+                      ネスペ直前対策ナビ
+                    </span>
+                    <p className="text-[10px] text-slate-500 dark:text-slate-400 font-sans mt-0.5 truncate">
+                      午後記述 / DNS / 要点まとめ
+                    </p>
+                  </div>
+                </div>
+              </a>
+
+              {/* 5. AIパスポートラボ */}
+              <a
+                href="https://shirokuma-tech.jp/ai-passport/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex items-center justify-between gap-3 p-3 rounded-2xl bg-white dark:bg-slate-900/90 hover:bg-slate-50 dark:hover:bg-slate-850 border border-slate-200 dark:border-slate-800 hover:border-purple-400 dark:hover:border-purple-500/40 transition-all shadow-sm dark:shadow-lg text-left"
+              >
+                <div className="flex items-center gap-2.5 min-w-0 flex-1">
+                  <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-purple-600 to-pink-500 flex items-center justify-center text-white text-lg flex-shrink-0 shadow-md">
+                    🤖
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-center gap-1 mb-0.5">
+                      <span className="text-[9px] uppercase font-mono px-1.5 py-0.2 rounded bg-purple-100 dark:bg-purple-950 text-purple-800 dark:text-purple-300 border border-purple-300 dark:border-purple-500/30 font-bold flex-shrink-0">
+                        LAB 6
+                      </span>
+                    </div>
+                    <span className="font-bold text-slate-800 dark:text-slate-200 group-hover:text-purple-600 dark:group-hover:text-purple-300 transition text-xs font-sans truncate block">
+                      AIパスポートラボ
+                    </span>
+                    <p className="text-[10px] text-slate-500 dark:text-slate-400 font-sans mt-0.5 truncate">
+                      生成AIシラバス / 過去問演習
+                    </p>
+                  </div>
+                </div>
+              </a>
+            </div>
           </div>
 
           {/* 運営体制・技術監修（E-E-A-T）＆ 検証環境 */}
