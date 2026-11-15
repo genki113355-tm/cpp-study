@@ -15,7 +15,7 @@ export interface CharacterInfo {
 export const CHARACTERS: Record<CharacterId, CharacterInfo> = {
   shirokuma: {
     id: 'shirokuma',
-    name: 'シロクマ先生 (Ben)',
+    name: 'シロクマ先生',
     callsign: 'POLAR NAVY / ARCHITECT',
     role: '極地艦隊C++指導官',
     avatarColor: 'bg-cyan-500/20 text-cyan-400 border-cyan-500/40',
@@ -26,7 +26,7 @@ export const CHARACTERS: Record<CharacterId, CharacterInfo> = {
   },
   penguin: {
     id: 'penguin',
-    name: 'ペンギン生徒 (Pippin)',
+    name: 'ペンギン生徒',
     callsign: 'NAVY CREW / ROOKIE',
     role: '見習い通信プログラマー',
     avatarColor: 'bg-amber-500/20 text-amber-400 border-amber-500/40',

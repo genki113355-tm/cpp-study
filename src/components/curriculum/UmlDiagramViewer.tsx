@@ -207,11 +207,11 @@ export const UmlDiagramViewer: React.FC<UmlDiagramViewerProps> = ({
               <Sparkles className="w-4 h-4 text-cyan-400" />
               <span>プロの視点：この設計書をC++コードに落とし込む際の着眼点</span>
             </div>
-            <ul className="space-y-2 text-xs sm:text-sm text-slate-700 dark:text-slate-300 font-sans">
+            <ul className="space-y-2.5 text-xs sm:text-sm font-sans">
               {data.codeMappingNotes.map((note, nIdx) => (
                 <li key={nIdx} className="flex items-start gap-2.5 leading-relaxed">
                   <CheckCircle className="w-4 h-4 text-cyan-400 flex-shrink-0 mt-0.5" />
-                  <span>{note}</span>
+                  <span className="text-slate-100 font-medium">{note}</span>
                 </li>
               ))}
             </ul>

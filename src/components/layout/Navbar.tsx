@@ -40,11 +40,11 @@ export const Navbar: React.FC<NavbarProps> = ({
     }
   };
 
-  // 章切り替え時にアクティブボタンが中央に見えるようにスムーズスクロール
+  // 章切り替え時にアクティブボタンが中央に見えるようにスクロール
   useEffect(() => {
     if (activeItemRef.current && scrollContainerRef.current) {
       activeItemRef.current.scrollIntoView({
-        behavior: 'smooth',
+        behavior: 'auto',
         inline: 'center',
         block: 'nearest',
       });

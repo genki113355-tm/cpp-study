@@ -211,13 +211,13 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
     }
     setTimeout(() => {
       if (targetElementId) {
-        document.getElementById(targetElementId)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        document.getElementById(targetElementId)?.scrollIntoView({ behavior: 'auto', block: 'start' });
       } else {
         const stepBarEl = document.getElementById('chapter-step-bar');
         if (stepBarEl) {
-          stepBarEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          stepBarEl.scrollIntoView({ behavior: 'auto', block: 'start' });
         } else {
-          window.scrollTo({ top: 0, behavior: 'smooth' });
+          window.scrollTo(0, 0);
         }
       }
     }, 40);
@@ -580,7 +580,7 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
                     if (activeTab !== 'learn' && activeTab !== 'all') {
                       switchTab('learn', sec.id);
                     } else {
-                      document.getElementById(sec.id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                      document.getElementById(sec.id)?.scrollIntoView({ behavior: 'auto', block: 'start' });
                     }
                   }}
                   className="px-2.5 py-1 rounded-xl bg-slate-100 hover:bg-slate-200 border border-slate-300 hover:border-cyan-500 text-slate-700 hover:text-cyan-800 dark:bg-slate-950/80 dark:hover:bg-slate-800 dark:border-slate-800 dark:hover:border-cyan-500/50 dark:text-slate-300 dark:hover:text-cyan-300 text-xs font-mono transition flex items-center gap-1.5 cursor-pointer shadow-sm active:scale-95"
@@ -599,7 +599,7 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
                     switchTab('practice', hasLab ? 'chapter-step-lab' : 'chapter-code-challenge');
                   } else {
                     const targetId = hasLab ? 'chapter-step-lab' : 'chapter-code-challenge';
-                    document.getElementById(targetId)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    document.getElementById(targetId)?.scrollIntoView({ behavior: 'auto', block: 'start' });
                   }
                 }}
                 className="px-2.5 py-1 rounded-xl bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 hover:border-indigo-400 text-indigo-900 dark:bg-indigo-950/70 dark:hover:bg-indigo-900/80 dark:border-indigo-500/40 dark:hover:border-indigo-400 dark:text-indigo-300 text-xs font-mono transition flex items-center gap-1.5 cursor-pointer shadow-sm active:scale-95"
@@ -616,7 +616,7 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
                   if (activeTab !== 'quiz' && activeTab !== 'all') {
                     switchTab('quiz', 'chapter-quiz');
                   } else {
-                    document.getElementById('chapter-quiz')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    document.getElementById('chapter-quiz')?.scrollIntoView({ behavior: 'auto', block: 'start' });
                   }
                 }}
                 className="px-2.5 py-1 rounded-xl bg-purple-50 hover:bg-purple-100 border border-purple-200 hover:border-purple-400 text-purple-900 dark:bg-purple-950/60 dark:hover:bg-purple-900/70 dark:border-purple-500/40 dark:hover:border-purple-400 dark:text-purple-300 text-xs font-mono transition flex items-center gap-1.5 cursor-pointer shadow-sm active:scale-95 sm:ml-auto"
@@ -1449,9 +1449,7 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
                       spread: 60,
                       origin: { y: 0.7 },
                     });
-                    setTimeout(() => {
-                      onNavigate(chapter.nextChapterSlug!);
-                    }, 350);
+                    onNavigate(chapter.nextChapterSlug!);
                   }}
                   className="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-black font-mono text-xs sm:text-sm transition flex items-center justify-center gap-2 shadow-lg shadow-cyan-500/30 active:scale-95 cursor-pointer"
                 >

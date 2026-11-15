@@ -206,7 +206,7 @@ const AppContent: React.FC = () => {
     if (window.location.pathname !== targetPath) {
       window.history.pushState(null, '', targetPath);
     }
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo(0, 0);
   };
 
   return (

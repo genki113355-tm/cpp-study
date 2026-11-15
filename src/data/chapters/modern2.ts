@@ -38,7 +38,7 @@ export const chapterM2: Chapter = {
           id: 'dm2-4',
           speaker: 'shirokuma',
           emotion: 'smug',
-          text: '鋭いのう、ピピン！まさにその「どうせ消える一時オブジェクト（右辺値）」から、メモリの所有権ポインタだけをヒュッと奪い取る仕組みこそが【ムーブセマンティクス（Move Semantics）】じゃ！C++11で世界を変えた大発明なんじゃぞ！'
+          text: '鋭いのう、ペンギン！まさにその「どうせ消える一時オブジェクト（右辺値）」から、メモリの所有権ポインタだけをヒュッと奪い取る仕組みこそが【ムーブセマンティクス（Move Semantics）】じゃ！C++11で世界を変えた大発明なんじゃぞ！'
         }
       ],
       paradigmComparison: {

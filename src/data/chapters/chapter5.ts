@@ -113,7 +113,7 @@ export const chapter5: Chapter = {
           id: 'd5-2',
           speaker: 'shirokuma',
           emotion: 'shocked',
-          text: 'その緊張感こそが正しいエンジニアの直感じゃ、ピピン！まさに現場で起こる重大クラッシュの8割は、その「手動の delete」から生まれておる！もし途中で return したり、erase だけして delete を忘れたらどうなる？'
+          text: 'その緊張感こそが正しいエンジニアの直感じゃ、ペンギン！まさに現場で起こる重大クラッシュの8割は、その「手動の delete」から生まれておる！もし途中で return したり、erase だけして delete を忘れたらどうなる？'
         },
         {
           id: 'd5-3',

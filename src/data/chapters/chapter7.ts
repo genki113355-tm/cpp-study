@@ -185,7 +185,7 @@ player->addComponent<ShooterComponent>(3, true);            // 3WAY弾`,
           id: 'd7-6',
           speaker: 'shirokuma',
           emotion: 'smug',
-          text: '見事じゃ、ピピン！お主はついに成し遂げたのじゃ！第1章で「free() を忘れたらどうしよう」「ポインタの矢印が怖い」と震えておったC言語プログラマが、今やスマートポインタを操り、StateとObserverで疎結合にし、テンプレートECSまで実装したのじゃ！'
+          text: '見事じゃ、ペンギン！お主はついに成し遂げたのじゃ！第1章で「free() を忘れたらどうしよう」「ポインタの矢印が怖い」と震えておったC言語プログラマが、今やスマートポインタを操り、StateとObserverで疎結合にし、テンプレートECSまで実装したのじゃ！'
         },
         {
           id: 'd7-7',

@@ -35,6 +35,7 @@ import {
 import { Chapter } from '../../types/curriculum';
 import { getChapterMeta } from '../../data/chapterMetadata';
 import { AffiliatePromoBanner } from '../affiliate/AffiliatePromoBanner';
+import { NewsletterSection } from '../common/NewsletterSection';
 import { GameEvolutionRoadmap } from './GameEvolutionRoadmap';
 import { getAssetUrl } from '../../utils/assetPath';
 
@@ -592,7 +593,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
             />
             <div className="space-y-0.5">
               <div className="text-xs font-mono font-bold text-cyan-700 dark:text-cyan-400">
-                🐻‍❄️ シロクマ指導官の激励
+                <img src="/images/characters/shirokuma_sensei.png" alt="シロクマ先生" className="w-6 h-6 rounded-full object-cover border border-cyan-400 inline-block align-middle mr-1.5" />シロクマ指導官の激励
               </div>
               <p className="text-xs sm:text-sm text-slate-800 dark:text-slate-200 font-sans font-medium">
                 「C++でコンピュータの根本原理を味方につけたエンジニアは、将来どんな新しい言語が現れても決して迷子にならん！」
@@ -2097,6 +2098,9 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
           </div>
         </div>
       </section>
+
+      {/* 9.5 メルマガ＆学習サポートセクション */}
+      <NewsletterSection />
 
       {/* 10. 品質保証・技術監修体制（E-E-A-T）と商標に関する表示 */}
       <section className="rounded-3xl border border-sky-200 dark:border-slate-800 bg-white/90 dark:bg-slate-900/60 p-6 sm:p-8 space-y-4 shadow-sm">
