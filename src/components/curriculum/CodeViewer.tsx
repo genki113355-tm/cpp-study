@@ -266,7 +266,7 @@ export const CodeViewer: React.FC<CodeViewerProps> = ({ files, targetHighlight }
 
       {/* ファイルの簡易説明バー */}
       {currentFile.description && (
-        <div className="px-5 py-2.5 bg-slate-50 dark:bg-slate-900/40 border-b border-slate-200 dark:border-slate-800/60 text-xs sm:text-sm text-slate-700 dark:text-slate-300 flex items-center gap-2.5 font-sans">
+        <div className="px-5 py-2.5 bg-slate-50 dark:bg-slate-900/40 border-b border-slate-200 dark:border-slate-800/60 text-sm text-slate-700 dark:text-slate-300 flex items-center gap-2.5 font-sans">
           <span className="text-cyan-600 dark:text-cyan-400 font-mono font-bold">▸</span>
           <span>{currentFile.description}</span>
         </div>
@@ -274,7 +274,7 @@ export const CodeViewer: React.FC<CodeViewerProps> = ({ files, targetHighlight }
 
       {/* アンチパターン警告バナー（学習用コードの誤用・コピペ事故防止） */}
       {isAntiPatternFile && (
-        <div className="px-5 py-2.5 bg-rose-50 dark:bg-rose-950/80 border-b border-rose-300 dark:border-rose-500/50 text-xs sm:text-sm text-rose-800 dark:text-rose-200 flex items-center justify-between gap-3 font-sans shadow-inner">
+        <div className="px-5 py-3 bg-rose-50 dark:bg-rose-950/80 border-b border-rose-300 dark:border-rose-500/50 text-sm text-rose-900 dark:text-rose-200 flex items-center justify-between gap-3 font-sans shadow-inner">
           <div className="flex items-center gap-2.5 flex-wrap">
             <span className="px-2.5 py-0.5 rounded-full bg-rose-200 dark:bg-rose-900 text-rose-800 dark:text-rose-100 font-mono font-bold text-xs flex items-center gap-1 border border-rose-400 dark:border-rose-600/50 shadow-sm">
               <AlertTriangle className="w-3.5 h-3.5 text-rose-600 dark:text-rose-300" />
@@ -372,14 +372,14 @@ export const CodeViewer: React.FC<CodeViewerProps> = ({ files, targetHighlight }
                     {/* トークン分解 */}
                     {explanation.tokens && explanation.tokens.length > 0 && (
                       <div className="space-y-1.5 pt-1">
-                        <div className="text-xs font-mono font-bold text-slate-700 dark:text-slate-300">
+                        <div className="text-xs sm:text-sm font-mono font-bold text-slate-700 dark:text-slate-300">
                           単語・記号の役割：
                         </div>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                           {explanation.tokens.map((t: { token: string; explanation: string }, tIdx: number) => (
                             <div
                               key={tIdx}
-                              className="p-2.5 rounded-xl bg-white dark:bg-slate-950/90 border border-amber-200 dark:border-slate-800 font-mono text-xs sm:text-sm flex items-start gap-2.5 shadow-sm"
+                              className="p-2.5 rounded-xl bg-white dark:bg-slate-950/90 border border-amber-200 dark:border-slate-800 font-mono text-sm flex items-start gap-2.5 shadow-sm"
                             >
                               <code className="text-cyan-800 bg-cyan-100 border border-cyan-300 dark:text-cyan-300 dark:bg-cyan-950/90 dark:border-cyan-500/40 px-2 py-0.5 rounded shrink-0 font-bold text-xs">
                                 {t.token}
@@ -395,10 +395,10 @@ export const CodeViewer: React.FC<CodeViewerProps> = ({ files, targetHighlight }
 
                     {/* 落とし穴 */}
                     {explanation.pitfall && (
-                      <div className="p-3 rounded-xl bg-amber-950/40 border border-amber-500/40 text-xs sm:text-sm text-amber-200 flex items-start gap-2 font-sans leading-relaxed">
+                      <div className="p-3.5 rounded-xl bg-amber-50 dark:bg-amber-950/40 border border-amber-300 dark:border-amber-500/40 text-sm text-amber-950 dark:text-amber-200 flex items-start gap-2.5 font-sans leading-relaxed">
                         <span className="text-base shrink-0">⚠️</span>
                         <div>
-                          <strong className="text-amber-300 font-bold">もし書かないと起きる問題：</strong>
+                          <strong className="text-amber-800 dark:text-amber-300 font-bold">もし書かないと起きる問題：</strong>
                           <span>{explanation.pitfall}</span>
                         </div>
                       </div>

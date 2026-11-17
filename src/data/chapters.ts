@@ -163,29 +163,46 @@ export const UPCOMING_CHAPTERS: FutureChapterPreview[] = [];
 export const SLUG_REDIRECT_MAP: Record<string, string> = {
   // Classic
   'chapter-1-spaghetti-code': 'chapter-classic-1-spaghetti-code',
+  'chapter-1-spaghetti-to-oop': 'chapter-classic-1-spaghetti-code',
   'chapter-2-classes-and-files': 'chapter-classic-2-classes-and-files',
   'chapter-3-dynamic-lifecycle': 'chapter-classic-3-dynamic-lifecycle',
+  'chapter-3-memory-management': 'chapter-classic-3-dynamic-lifecycle',
+  'chapter-3-dynamic-memory': 'chapter-classic-3-dynamic-lifecycle',
   'chapter-4-inheritance-and-polymorphism': 'chapter-classic-4-inheritance-polymorphism',
   'chapter-4-inheritance-polymorphism': 'chapter-classic-4-inheritance-polymorphism',
   'chapter-6-design-patterns': 'chapter-classic-5-design-patterns',
+  'chapter-6-game-design-patterns': 'chapter-classic-5-design-patterns',
+  'chapter-6-observer-pattern': 'chapter-classic-5-design-patterns',
   'chapter-6-operator-overload-vector': 'chapter-classic-6-operator-overload',
   'chapter-7-pointer-alignment-endian': 'chapter-classic-7-pointer-alignment-endian',
   'chapter-8-function-pointers-callbacks': 'chapter-classic-8-function-pointers-callbacks',
   'chapter-9-multiple-inheritance-diamond': 'chapter-classic-9-multiple-inheritance-diamond',
   'chapter-10-static-polymorphism-crtp': 'chapter-classic-10-static-polymorphism-crtp',
   'chapter-11-memory-pool-allocator': 'chapter-classic-11-memory-pool-allocator',
+  'chapter-11-memory-pool': 'chapter-classic-11-memory-pool-allocator',
   'chapter-12-game-engine-architecture': 'chapter-classic-12-game-engine-architecture',
 
   // Modern
   'chapter-5-smart-pointers-raii': 'chapter-modern-1-smart-pointers-raii',
   'chapter-5': 'chapter-modern-1-smart-pointers-raii',
+  'chapter-17-modern-cpp-migration': 'chapter-modern-1-smart-pointers-raii',
   'modern-2-move-and-modern-features': 'chapter-modern-2-move-semantics',
   'chapter-modern-4-modern-type-system': 'chapter-modern-7-modern-type-system',
   'chapter-7-modern-cpp-ecs': 'chapter-modern-10-ecs',
+  'chapter-7-modern-architecture': 'chapter-modern-10-ecs',
+  'chapter-7-ecs-architecture': 'chapter-modern-10-ecs',
   'chapter-modern-6-concepts': 'chapter-modern-11-concepts',
   'chapter-modern-5-coroutines': 'chapter-modern-12-coroutines',
   'chapter-modern-7-ranges-views': 'chapter-modern-13-ranges-views',
   'chapter-modern-8-modules': 'chapter-modern-14-modules',
+
+  // Reading & Guides
+  'reading-step-3-crtp-static-polymorphism': 'reading-step-3',
+  'reading-step-4-multithread-datarace': 'reading-step-4',
+  'reading-step-6-uaf-address-sanitizer': 'reading-step-6',
+  'guide-tdd-googletest': 'guide-googletest-tdd',
+  'column-solid-principles': 'column-design-patterns',
+  'column-zero-overhead-principle': 'column-why-cpp-is-great',
 };
 
 export function getChapterBySlug(slug: string): Chapter | undefined {

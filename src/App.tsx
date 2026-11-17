@@ -195,6 +195,7 @@ const AppContent: React.FC = () => {
 
   const activeChapter = currentChapter || ALL_CHAPTERS[0];
   const currentChapterId = currentSlug === 'top' ? 0 : activeChapter.id;
+  const isTopOrStatic = currentSlug === 'top' || STATIC_PAGE_SLUGS.includes(currentSlug as any);
 
   // 章選択時のクリーンURL遷移（HTML5 pushState、/cpp/ サブディレクトリを自動考慮、旧スラグは即座に正規化）
   const handleSelectChapter = (slug: string) => {
@@ -222,6 +223,7 @@ const AppContent: React.FC = () => {
         onOpenSourceModal={() => setIsSourceModalOpen(true)}
         onOpenPlaygroundModal={() => setIsPlaygroundModalOpen(true)}
         onOpenGameModal={() => handleOpenGameModal('v2_classes', 'L2', 'クラス化とファイル分割')}
+        showSidebarToggleAlways={isTopOrStatic}
       />
 
       {/* メインエリア：サイドバー ＋ 広々としたカリキュラム本文 */}
@@ -234,6 +236,7 @@ const AppContent: React.FC = () => {
           completedChapters={completedChapters}
           onToggleComplete={handleToggleComplete}
           onOpenMilestoneModal={() => setIsMilestoneModalOpen(true)}
+          hideOnDesktop={isTopOrStatic}
         />
 
         <main className="flex-1 min-w-0 pb-20 px-4 sm:px-8 lg:px-12 overflow-x-hidden">

@@ -12,6 +12,7 @@ interface NavbarProps {
   onOpenSourceModal: () => void;
   onOpenPlaygroundModal?: () => void;
   onOpenGameModal?: () => void;
+  showSidebarToggleAlways?: boolean;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -21,6 +22,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   onOpenSourceModal,
   onOpenPlaygroundModal,
   onOpenGameModal,
+  showSidebarToggleAlways = false,
 }) => {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const activeItemRef = useRef<HTMLButtonElement>(null);
@@ -65,8 +67,9 @@ export const Navbar: React.FC<NavbarProps> = ({
         <div className="flex items-center gap-3.5 flex-shrink-0">
           <button
             onClick={onToggleSidebar}
-            className="md:hidden p-2 rounded-xl text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition"
+            className={`${showSidebarToggleAlways ? '' : 'md:hidden '}p-2 rounded-xl text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition cursor-pointer`}
             aria-label="メニューを開く"
+            title="カリキュラム目次を開く"
           >
             <Menu className="w-6 h-6" />
           </button>
@@ -84,7 +87,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 <span className="font-extrabold text-base sm:text-lg lg:text-xl text-slate-900 dark:text-white tracking-tight whitespace-nowrap">
                   シロクマC++ラボ
                 </span>
-                <span className="text-[10px] sm:text-xs uppercase font-mono px-1.5 py-0.5 rounded bg-cyan-100 dark:bg-cyan-950 text-cyan-800 dark:text-cyan-400 border border-cyan-300 dark:border-cyan-500/30 font-bold leading-none flex-shrink-0">
+                <span className="text-xs uppercase font-mono px-1.5 py-0.5 rounded bg-cyan-100 dark:bg-cyan-950 text-cyan-800 dark:text-cyan-400 border border-cyan-300 dark:border-cyan-500/30 font-bold leading-none flex-shrink-0">
                   Lab
                 </span>
               </div>
@@ -93,7 +96,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 〜ゲーム開発で学ぶオブジェクト指向開発〜
               </span>
               {/* スマホ向けコンパクトキャッチコピー（1行に収まり改行ゼロ） */}
-              <span className="block sm:hidden text-[10px] text-slate-500 dark:text-slate-400 whitespace-nowrap leading-none mt-0.5">
+              <span className="block sm:hidden text-xs text-slate-500 dark:text-slate-400 whitespace-nowrap leading-none mt-0.5">
                 ゲーム開発で学ぶOOP設計
               </span>
             </div>
@@ -121,7 +124,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
           {/* レガシーC++コースグループ */}
           <div className="flex items-center gap-1 pl-1.5 border-l border-slate-300 dark:border-slate-800 flex-shrink-0">
-            <span className="text-[10px] text-amber-600 dark:text-amber-400/80 font-bold px-1 select-none flex-shrink-0 whitespace-nowrap">🏛️ レガシー</span>
+            <span className="text-xs text-amber-700 dark:text-amber-400/80 font-bold px-1 select-none flex-shrink-0 whitespace-nowrap">🏛️ レガシー</span>
             {CLASSIC_CHAPTERS.map((ch) => {
               const isActive = ch.id === currentChapterId;
               const code = (ch.courseChapterCode || `C${ch.id}`).replace(/^C/, 'L');
@@ -145,7 +148,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
           {/* モダンコースグループ */}
           <div className="flex items-center gap-1 pl-1.5 border-l border-slate-300 dark:border-slate-800 flex-shrink-0">
-            <span className="text-[10px] text-cyan-700 dark:text-cyan-400/80 font-bold px-1 select-none flex-shrink-0 whitespace-nowrap">🚀 モダン</span>
+            <span className="text-xs text-cyan-700 dark:text-cyan-400/80 font-bold px-1 select-none flex-shrink-0 whitespace-nowrap">🚀 モダン</span>
             {MODERN_CHAPTERS.map((ch) => {
               const isActive = ch.id === currentChapterId;
               const code = ch.courseChapterCode || `M${ch.id}`;
@@ -169,7 +172,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
           {/* 読解演習トラックグループ */}
           <div className="flex items-center gap-1 pl-1.5 border-l border-slate-300 dark:border-slate-800 flex-shrink-0">
-            <span className="text-[10px] text-purple-700 dark:text-purple-400/80 font-bold px-1 select-none flex-shrink-0 whitespace-nowrap">🧭 読解</span>
+            <span className="text-xs text-purple-700 dark:text-purple-400/80 font-bold px-1 select-none flex-shrink-0 whitespace-nowrap">🧭 読解</span>
             {READING_CHAPTERS.map((ch) => {
               const isActive = ch.id === currentChapterId;
               const code = ch.courseChapterCode || `R${ch.id}`;
@@ -193,7 +196,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
           {/* 特集・品質保証グループ */}
           <div className="flex items-center gap-1 pl-1.5 border-l border-slate-300 dark:border-slate-800 flex-shrink-0">
-            <span className="text-[10px] text-emerald-700 dark:text-emerald-400/80 font-bold px-1 select-none flex-shrink-0 whitespace-nowrap">📚 特集</span>
+            <span className="text-xs text-emerald-700 dark:text-emerald-400/80 font-bold px-1 select-none flex-shrink-0 whitespace-nowrap">📚 特集</span>
             {SPECIAL_GUIDES.map((guide) => {
               const isActive = guide.id === currentChapterId;
               const isColumn = guide.category === 'column';
@@ -212,7 +215,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                   key={guide.id}
                   ref={isActive ? activeItemRef : undefined}
                   onClick={() => onSelectChapter(guide.slug)}
-                  className={`px-2 py-1 rounded-lg transition-all flex items-center justify-center flex-shrink-0 whitespace-nowrap text-[11px] font-sans font-bold cursor-pointer ${
+                  className={`px-2.5 py-1 rounded-lg transition-all flex items-center justify-center flex-shrink-0 whitespace-nowrap text-xs font-sans font-bold cursor-pointer ${
                     isActive
                       ? isColumn
                         ? 'bg-purple-600 text-white shadow-md shadow-purple-500/30'

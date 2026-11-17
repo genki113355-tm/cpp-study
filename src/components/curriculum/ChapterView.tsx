@@ -21,6 +21,7 @@ import {
   AlertCircle, 
   ArrowRight, 
   ArrowLeft, 
+  ChevronDown,
   Lightbulb, 
   HelpCircle, 
   GitCommit, 
@@ -128,6 +129,7 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
   const [codeHighlight, setCodeHighlight] = useState<CodeHighlightTarget | undefined>();
   const [isGameModalOpen, setIsGameModalOpen] = useState<boolean>(false);
   const [showInlineGame, setShowInlineGame] = useState<boolean>(false);
+  const [showToc, setShowToc] = useState<boolean>(false);
   // コーストラック・章コード
   const isClassic = chapter.courseTrack === 'classic';
   const isReading = chapter.courseTrack === 'reading';
@@ -170,8 +172,9 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
     return () => window.removeEventListener('scroll', handleScroll);
   }, [chapter.slug]);
 
-  // 章切り替え時にタブをデフォルト（ゲームがあれば 'game'、なければ 'learn'、またはURLハッシュ指定）にリセット
+  // 章切り替え時にタブと目次開閉をリセット
   useEffect(() => {
+    setShowToc(false);
     if (typeof window !== 'undefined') {
       const hash = window.location.hash.toLowerCase();
       if (hash === '#game' && hasGame) {
@@ -410,9 +413,9 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
                 <span>🏠</span>
                 <span>TOP</span>
               </button>
-              <span className="text-slate-600 dark:text-slate-400 dark:text-slate-600">/</span>
+              <span className="text-slate-400 dark:text-slate-600">/</span>
               {getTrackBadge()}
-              <span className="text-xs sm:text-sm font-mono text-slate-700 dark:text-slate-300 font-semibold px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-800/80 border border-slate-300 dark:border-slate-700 truncate max-w-[140px] sm:max-w-none" title={chapter.badge}>
+              <span className="text-xs sm:text-sm font-mono text-slate-700 dark:text-slate-300 font-semibold px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-800/80 border border-slate-300 dark:border-slate-700 truncate max-w-[160px] sm:max-w-none" title={chapter.badge}>
                 {chapter.badge}
               </span>
               <button
@@ -420,12 +423,12 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
                 onClick={() => onToggleComplete ? onToggleComplete(chapter.id) : onComplete(chapter.id)}
                 className={`inline-flex items-center gap-1.5 text-xs sm:text-sm font-mono px-3 py-1 rounded-full border font-bold transition cursor-pointer active:scale-95 ${
                   isCompleted
-                    ? 'bg-emerald-100 text-emerald-800 border-emerald-300 dark:bg-emerald-950/90 dark:text-emerald-300 dark:border-emerald-500/50 shadow-sm shadow-emerald-500/20 hover:bg-emerald-200 dark:hover:bg-emerald-900/60'
-                    : 'bg-slate-100 text-slate-600 border-slate-300 hover:bg-slate-200 dark:bg-slate-800/80 dark:text-slate-400 dark:border-slate-700 dark:hover:text-slate-200 dark:hover:bg-slate-700'
+                    ? 'bg-emerald-100 text-emerald-800 border-emerald-300 dark:bg-emerald-950/90 dark:text-emerald-300 dark:border-emerald-500/50 shadow-sm hover:bg-emerald-200 dark:hover:bg-emerald-900/60'
+                    : 'bg-slate-100 text-slate-700 border-slate-300 hover:bg-slate-200 dark:bg-slate-800/80 dark:text-slate-300 dark:border-slate-700 dark:hover:text-white dark:hover:bg-slate-700'
                 }`}
                 title={isCompleted ? '読了済み（クリックで未読了に戻す）' : '未読了（クリックで読了完了にする）'}
               >
-                <CheckCircle2 className={`w-3.5 h-3.5 ${isCompleted ? 'text-emerald-600 dark:text-emerald-400' : 'text-slate-600 dark:text-slate-400 dark:text-slate-500'}`} />
+                <CheckCircle2 className={`w-4 h-4 ${isCompleted ? 'text-emerald-600 dark:text-emerald-400' : 'text-slate-500 dark:text-slate-400'}`} />
                 <span>{isCompleted ? '読了完了' : '未読了（完了にする）'}</span>
               </button>
             </nav>
@@ -445,12 +448,12 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
                 {/* プレフィックスバッジ（章番号やトラック） */}
                 {heading.prefix && (
                   <div className="flex items-center gap-2 flex-wrap">
-                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono font-bold bg-cyan-100 dark:bg-cyan-950/80 text-cyan-800 dark:text-cyan-300 border border-cyan-300 dark:border-cyan-500/30 tracking-wide shadow-sm">
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs sm:text-sm font-mono font-bold bg-cyan-100 dark:bg-cyan-950/80 text-cyan-800 dark:text-cyan-300 border border-cyan-300 dark:border-cyan-500/30 tracking-wide shadow-sm">
                       <span>📖</span>
                       <span>{heading.prefix}</span>
                     </span>
                     {chapter.courseChapterCode && (
-                      <span className="text-xs font-mono font-bold text-slate-500 dark:text-slate-400">
+                      <span className="text-xs sm:text-sm font-mono font-bold text-slate-500 dark:text-slate-400">
                         [{chapter.courseChapterCode}]
                       </span>
                     )}
@@ -458,7 +461,7 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
                 )}
 
                 {/* 主見出し H1 */}
-                <h1 className="text-2xl min-[400px]:text-3xl sm:text-4xl md:text-5xl lg:text-[2.75rem] font-black text-slate-900 dark:text-white tracking-tight leading-snug [text-wrap:balance]">
+                <h1 className="text-2xl min-[400px]:text-3xl sm:text-4xl md:text-[2.6rem] font-black text-slate-900 dark:text-white tracking-tight leading-snug [text-wrap:balance]">
                   <span className="inline-block break-words sm:break-keep">{heading.cleanTitle}</span>
                   {heading.subNote && (
                     <span className="inline-block text-cyan-700 dark:text-cyan-300/90 text-lg sm:text-2xl md:text-3xl font-bold ml-0 sm:ml-3 mt-1 sm:mt-0 font-sans break-words sm:break-keep">
@@ -469,7 +472,7 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
 
                 {/* サブタイトル */}
                 {chapter.subtitle && (
-                  <p className="text-base sm:text-xl md:text-2xl text-cyan-800 dark:text-cyan-300 font-semibold leading-snug [text-wrap:pretty]">
+                  <p className="text-base sm:text-xl text-cyan-800 dark:text-cyan-300 font-semibold leading-snug [text-wrap:pretty]">
                     {chapter.subtitle}
                   </p>
                 )}
@@ -477,40 +480,53 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
             );
           })()}
 
-          {/* 学習メタデータ・ステータスバー（目安時間・重要度・難易度・到達目標） */}
-          <div className="p-3.5 sm:p-5 rounded-2xl bg-white/95 dark:bg-slate-950/80 border border-slate-200 dark:border-slate-800/90 space-y-3 shadow-sm dark:shadow-lg">
-            <div className="flex flex-wrap items-center gap-2 sm:gap-2.5 text-xs sm:text-sm font-mono">
-              {/* 読了・演習目安時間 */}
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-slate-100 dark:bg-slate-900 border border-slate-300 dark:border-slate-700/80 text-slate-700 dark:text-slate-200">
-                <Clock className="w-3.5 h-3.5 text-cyan-600 dark:text-cyan-400" />
+          {/* 学習メタデータ・ステータスバー（コンパクト＆文字大きめ） */}
+          <div className="p-4 sm:p-5 rounded-2xl bg-white/95 dark:bg-slate-950/80 border border-slate-200 dark:border-slate-800/90 space-y-3 shadow-sm">
+            <div className="flex flex-wrap items-center gap-2.5 text-xs sm:text-sm font-mono">
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-slate-100 dark:bg-slate-900 border border-slate-300 dark:border-slate-700/80 text-slate-800 dark:text-slate-200">
+                <Clock className="w-4 h-4 text-cyan-600 dark:text-cyan-400" />
                 <span>目安: <strong>{meta.readingTimeText}</strong></span>
               </div>
 
-              {/* 重要度 */}
               <div className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-lg border font-bold ${meta.badgeClasses.importance}`}>
-                <Flame className="w-3.5 h-3.5 text-current" />
-                <span>重要度: {meta.importanceStars}（{meta.importanceLabel}）</span>
+                <Flame className="w-4 h-4 text-current" />
+                <span>{meta.importanceLabel} ({meta.importanceStars})</span>
               </div>
 
-              {/* 難易度 */}
               <div className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-lg border font-semibold ${meta.badgeClasses.difficulty}`}>
-                <Target className="w-3.5 h-3.5 text-current" />
-                <span>難易度: {meta.difficulty}</span>
+                <Target className="w-4 h-4 text-current" />
+                <span>{meta.difficulty}</span>
               </div>
 
-              {/* クイズ有無 */}
               {chapter.quiz && chapter.quiz.length > 0 && (
-                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-purple-100 dark:bg-purple-950/80 border border-purple-300 dark:border-purple-500/40 text-purple-800 dark:text-purple-300 font-semibold">
-                  <HelpCircle className="w-3.5 h-3.5 text-purple-600 dark:text-purple-400" />
-                  <span>クイズ{chapter.quiz.length}問あり</span>
+                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-purple-100 dark:bg-purple-950/80 border border-purple-300 dark:border-purple-500/40 text-purple-900 dark:text-purple-300 font-semibold">
+                  <HelpCircle className="w-4 h-4 text-purple-600 dark:text-purple-400" />
+                  <span>クイズ{chapter.quiz.length}問</span>
                 </div>
               )}
+
+              {(() => {
+                const githubInfo = getGitHubCodeUrl(chapter.slug);
+                return (
+                  <a
+                    href={githubInfo.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="sm:ml-auto inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-cyan-50 hover:bg-cyan-100 text-cyan-900 border border-cyan-300 dark:bg-cyan-950/60 dark:hover:bg-cyan-900/70 dark:border-cyan-500/40 dark:text-cyan-300 font-bold transition shadow-sm cursor-pointer"
+                    title="GitHubで完成実機コードを参照する（新しいタブで開く）"
+                  >
+                    <FolderCode className="w-4 h-4 text-cyan-600 dark:text-cyan-400" />
+                    <span>{githubInfo.label}</span>
+                    <ExternalLink className="w-3.5 h-3.5" />
+                  </a>
+                );
+              })()}
             </div>
 
             {meta.keyTakeaway && (
-              <div className="text-xs sm:text-sm text-slate-700 dark:text-slate-300 flex items-start gap-2 pt-2 border-t border-slate-200 dark:border-slate-800/80">
-                <span className="text-amber-600 dark:text-amber-400 font-bold shrink-0 font-mono">🎯 到達目標:</span>
-                <span className="font-sans leading-relaxed text-slate-700 dark:text-slate-300">{meta.keyTakeaway}</span>
+              <div className="text-sm sm:text-base text-slate-800 dark:text-slate-200 flex items-start gap-2 pt-2.5 border-t border-slate-200 dark:border-slate-800/80">
+                <span className="text-amber-700 dark:text-amber-400 font-bold shrink-0 font-mono">🎯 到達目標:</span>
+                <span className="font-sans leading-relaxed">{meta.keyTakeaway}</span>
               </div>
             )}
           </div>
@@ -518,125 +534,92 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
           <p className="text-base sm:text-lg text-slate-700 dark:text-slate-300 leading-relaxed font-sans max-w-5xl [text-wrap:pretty]">
             {chapter.description}
           </p>
-
-          {/* 📂 GitHubコードスナップショット導線（タイポ時・ビルド確認用） */}
-          {(() => {
-            const githubInfo = getGitHubCodeUrl(chapter.slug);
-            return (
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3.5 sm:p-4 rounded-2xl bg-cyan-50 dark:bg-cyan-950/30 border border-cyan-200 dark:border-cyan-500/30 shadow-sm dark:shadow-md">
-                <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-xl bg-cyan-100 dark:bg-cyan-500/20 border border-cyan-300 dark:border-cyan-400/40 flex items-center justify-center text-cyan-700 dark:text-cyan-300 shrink-0">
-                    <FolderCode className="w-5 h-5 text-cyan-600 dark:text-cyan-400" />
-                  </div>
-                  <div className="space-y-0.5">
-                    <div className="text-xs font-mono font-bold text-cyan-800 dark:text-cyan-300 flex items-center gap-1.5">
-                      <span>GitHub ソースコード・完成状態</span>
-                      <span className="text-[10px] px-1.5 py-0.5 rounded bg-cyan-200 dark:bg-cyan-900/60 border border-cyan-300 dark:border-cyan-400/40 text-cyan-900 dark:text-cyan-200">公式リポジトリ</span>
-                    </div>
-                    <p className="text-xs text-slate-600 dark:text-slate-300 font-sans">
-                      「タイポしてビルドが通らない」「完成状態のコードと見比べたい」場合は、GitHubの実機コードを参照してください。
-                    </p>
-                  </div>
-                </div>
-
-                <a
-                  href={githubInfo.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="px-4 py-2 rounded-xl bg-cyan-100 hover:bg-cyan-200 text-cyan-900 border border-cyan-300 dark:bg-cyan-500/20 dark:hover:bg-cyan-500/30 dark:border-cyan-400/50 dark:hover:border-cyan-300 dark:text-cyan-200 dark:hover:text-white font-mono font-bold text-xs transition flex items-center justify-center gap-2 shrink-0 shadow-sm active:scale-95 cursor-pointer"
-                  title="GitHubでソースコードを閲覧（新しいタブで開く）"
-                >
-                  <ExternalLink className="w-3.5 h-3.5 text-cyan-600 dark:text-cyan-400" />
-                  <span>{githubInfo.label} →</span>
-                </a>
-              </div>
-            );
-          })()}
         </div>
       </div>
 
-      {/* 📌 目次（クイックジャンプナビゲーション） */}
+      {/* 📌 折りたたみ式 章内目次（デフォルトはスリムな1行） */}
       {chapter.sections && chapter.sections.length > 0 && (
-        <nav aria-label="章内目次" className="rounded-2xl bg-white/95 dark:bg-gradient-to-r dark:from-slate-900/90 dark:via-[#0a101d] dark:to-slate-900/90 border border-slate-200 dark:border-slate-800/90 p-3.5 sm:p-4 shadow-sm dark:shadow-lg backdrop-blur-sm -my-2">
-          <div className="flex items-center justify-between mb-2.5">
-            <span className="text-xs font-mono font-bold text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
+        <nav aria-label="章内目次" className="rounded-2xl bg-white/95 dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden -my-2">
+          <button
+            type="button"
+            onClick={() => setShowToc((prev) => !prev)}
+            className="w-full px-4 py-3 flex items-center justify-between gap-2 text-sm font-mono font-bold text-slate-700 dark:text-slate-300 hover:bg-sky-50/50 dark:hover:bg-slate-800/50 transition cursor-pointer"
+          >
+            <span className="flex items-center gap-2">
               <span className="text-cyan-600 dark:text-cyan-400">📌</span>
-              <span>この章の目次（クイックジャンプ）</span>
+              <span>章内目次・セクション一覧（全{chapter.sections.length}節{hasPractice ? ' ＋ 演習' : ''}{hasQuiz ? ' ＋ クイズ' : ''}）</span>
             </span>
-            <span className="text-[11px] font-mono text-slate-500">
-              全{chapter.sections.length}セクション {hasPractice ? '+ 実践演習' : ''} {hasQuiz && chapter.quiz ? `+ クイズ(${chapter.quiz.length}問)` : ''}
-            </span>
-          </div>
-          <div className="flex flex-wrap gap-2">
-            {chapter.sections.map((sec, idx) => {
-              const titleMatch = sec.title.match(/^(\d+\.\d+)\s*(.*)/);
-              const secNum = titleMatch ? titleMatch[1] : `${idx + 1}`;
-              const secTitle = titleMatch ? titleMatch[2] : sec.title;
-              return (
+            <ChevronDown className={`w-4 h-4 transition-transform ${showToc ? 'rotate-180' : ''}`} />
+          </button>
+
+          {showToc && (
+            <div className="px-4 pb-4 pt-2 border-t border-slate-200 dark:border-slate-800 flex flex-wrap gap-2">
+              {chapter.sections.map((sec, idx) => {
+                const titleMatch = sec.title.match(/^(\d+\.\d+)\s*(.*)/);
+                const secNum = titleMatch ? titleMatch[1] : `${idx + 1}`;
+                const secTitle = titleMatch ? titleMatch[2] : sec.title;
+                return (
+                  <button
+                    key={sec.id}
+                    type="button"
+                    onClick={() => {
+                      if (activeTab !== 'learn' && activeTab !== 'all') {
+                        switchTab('learn', sec.id);
+                      } else {
+                        document.getElementById(sec.id)?.scrollIntoView({ behavior: 'auto', block: 'start' });
+                      }
+                    }}
+                    className="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 border border-slate-300 hover:border-cyan-500 text-slate-800 hover:text-cyan-900 dark:bg-slate-950/80 dark:hover:bg-slate-800 dark:border-slate-800 dark:text-slate-200 text-xs sm:text-sm font-mono transition flex items-center gap-1.5 cursor-pointer shadow-sm"
+                  >
+                    <span className="text-cyan-700 dark:text-cyan-400 font-bold">{secNum}</span>
+                    <span className="font-sans">{secTitle}</span>
+                  </button>
+                );
+              })}
+              {hasPractice && (
                 <button
-                  key={sec.id}
                   type="button"
                   onClick={() => {
-                    if (activeTab !== 'learn' && activeTab !== 'all') {
-                      switchTab('learn', sec.id);
+                    if (activeTab !== 'practice' && activeTab !== 'all') {
+                      switchTab('practice', hasLab ? 'chapter-step-lab' : 'chapter-code-challenge');
                     } else {
-                      document.getElementById(sec.id)?.scrollIntoView({ behavior: 'auto', block: 'start' });
+                      const targetId = hasLab ? 'chapter-step-lab' : 'chapter-code-challenge';
+                      document.getElementById(targetId)?.scrollIntoView({ behavior: 'auto', block: 'start' });
                     }
                   }}
-                  className="px-2.5 py-1 rounded-xl bg-slate-100 hover:bg-slate-200 border border-slate-300 hover:border-cyan-500 text-slate-700 hover:text-cyan-800 dark:bg-slate-950/80 dark:hover:bg-slate-800 dark:border-slate-800 dark:hover:border-cyan-500/50 dark:text-slate-300 dark:hover:text-cyan-300 text-xs font-mono transition flex items-center gap-1.5 cursor-pointer shadow-sm active:scale-95"
-                  title={`${secNum} ${secTitle} へスクロール`}
+                  className="px-3 py-1.5 rounded-xl bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 text-indigo-900 dark:bg-indigo-950/70 dark:border-indigo-500/40 dark:text-indigo-300 text-xs sm:text-sm font-mono font-bold transition flex items-center gap-1.5 cursor-pointer shadow-sm"
                 >
-                  <span className="text-cyan-600 dark:text-cyan-400 font-bold">{secNum}</span>
-                  <span className="truncate max-w-[180px] sm:max-w-[240px] font-sans">{secTitle}</span>
+                  <span>🧪</span>
+                  <span>実践演習</span>
                 </button>
-              );
-            })}
-            {hasPractice && (
-              <button
-                type="button"
-                onClick={() => {
-                  if (activeTab !== 'practice' && activeTab !== 'all') {
-                    switchTab('practice', hasLab ? 'chapter-step-lab' : 'chapter-code-challenge');
-                  } else {
-                    const targetId = hasLab ? 'chapter-step-lab' : 'chapter-code-challenge';
-                    document.getElementById(targetId)?.scrollIntoView({ behavior: 'auto', block: 'start' });
-                  }
-                }}
-                className="px-2.5 py-1 rounded-xl bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 hover:border-indigo-400 text-indigo-900 dark:bg-indigo-950/70 dark:hover:bg-indigo-900/80 dark:border-indigo-500/40 dark:hover:border-indigo-400 dark:text-indigo-300 text-xs font-mono transition flex items-center gap-1.5 cursor-pointer shadow-sm active:scale-95"
-                title="実践演習へスクロール"
-              >
-                <span>🧪</span>
-                <span className="font-bold">実践演習</span>
-              </button>
-            )}
-            {hasQuiz ? (
-              <button
-                type="button"
-                onClick={() => {
-                  if (activeTab !== 'quiz' && activeTab !== 'all') {
-                    switchTab('quiz', 'chapter-quiz');
-                  } else {
-                    document.getElementById('chapter-quiz')?.scrollIntoView({ behavior: 'auto', block: 'start' });
-                  }
-                }}
-                className="px-2.5 py-1 rounded-xl bg-purple-50 hover:bg-purple-100 border border-purple-200 hover:border-purple-400 text-purple-900 dark:bg-purple-950/60 dark:hover:bg-purple-900/70 dark:border-purple-500/40 dark:hover:border-purple-400 dark:text-purple-300 text-xs font-mono transition flex items-center gap-1.5 cursor-pointer shadow-sm active:scale-95 sm:ml-auto"
-                title="理解度チェッククイズへスクロール"
-              >
-                <span>🎯</span>
-                <span className="font-bold">理解度クイズ ({chapter.quiz?.length || 0}問)</span>
-              </button>
-            ) : (
-              <button
-                type="button"
-                onClick={() => switchTab('quiz')}
-                className="px-2.5 py-1 rounded-xl bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 hover:border-emerald-400 text-emerald-900 dark:bg-emerald-950/60 dark:hover:bg-emerald-900/70 dark:border-emerald-500/40 dark:hover:border-emerald-400 dark:text-emerald-300 text-xs font-mono transition flex items-center gap-1.5 cursor-pointer shadow-sm active:scale-95 sm:ml-auto"
-                title="章の修了・次へ進むタブを表示"
-              >
-                <span>🏁</span>
-                <span className="font-bold">章の修了・次へ</span>
-              </button>
-            )}
-          </div>
+              )}
+              {hasQuiz ? (
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (activeTab !== 'quiz' && activeTab !== 'all') {
+                      switchTab('quiz', 'chapter-quiz');
+                    } else {
+                      document.getElementById('chapter-quiz')?.scrollIntoView({ behavior: 'auto', block: 'start' });
+                    }
+                  }}
+                  className="px-3 py-1.5 rounded-xl bg-purple-50 hover:bg-purple-100 border border-purple-200 text-purple-900 dark:bg-purple-950/60 dark:border-purple-500/40 dark:text-purple-300 text-xs sm:text-sm font-mono font-bold transition flex items-center gap-1.5 cursor-pointer shadow-sm"
+                >
+                  <span>🎯</span>
+                  <span>理解度クイズ ({chapter.quiz?.length || 0}問)</span>
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => switchTab('quiz')}
+                  className="px-3 py-1.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 text-emerald-900 dark:bg-emerald-950/60 dark:border-emerald-500/40 dark:text-emerald-300 text-xs sm:text-sm font-mono font-bold transition flex items-center gap-1.5 cursor-pointer shadow-sm"
+                >
+                  <span>🏁</span>
+                  <span>章の修了・次へ</span>
+                </button>
+              )}
+            </div>
+          )}
         </nav>
       )}
 
@@ -653,7 +636,7 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
                 <React.Fragment key={tab.id}>
                   {/* デスクトップ用ステップ矢印（allの手前を除く） */}
                   {idx > 0 && !isSpecialAll && (
-                    <span className="hidden md:inline-block text-slate-600 dark:text-slate-400 dark:text-slate-600 text-xs px-0.5 select-none" aria-hidden="true">
+                    <span className="hidden md:inline-block text-slate-400 dark:text-slate-600 text-xs px-0.5 select-none" aria-hidden="true">
                       ➔
                     </span>
                   )}
@@ -665,20 +648,20 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
                   <button
                     type="button"
                     onClick={() => switchTab(tab.id)}
-                    className={`group flex items-center gap-2 px-3 sm:px-3.5 py-1.5 rounded-xl cursor-pointer transition select-none shrink-0 text-xs font-mono ${
+                    className={`group flex items-center gap-2 px-3 sm:px-3.5 py-1.5 rounded-xl cursor-pointer transition select-none shrink-0 text-xs sm:text-sm font-mono ${
                       isSelected
-                        ? 'bg-cyan-50 dark:bg-gradient-to-r dark:from-cyan-500/25 dark:via-blue-500/20 dark:to-cyan-500/25 text-cyan-950 dark:text-white border-2 border-cyan-500 dark:border-cyan-400 shadow-sm dark:shadow-md dark:shadow-cyan-500/20 font-bold ring-2 ring-cyan-500/20'
-                        : 'bg-slate-100 dark:bg-slate-900/85 text-slate-700 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-800/80 border border-slate-300 dark:border-slate-800 font-medium'
+                        ? 'bg-cyan-50 dark:bg-gradient-to-r dark:from-cyan-500/25 dark:via-blue-500/20 dark:to-cyan-500/25 text-cyan-950 dark:text-white border-2 border-cyan-500 dark:border-cyan-400 shadow-sm font-bold ring-2 ring-cyan-500/20'
+                        : 'bg-slate-100 dark:bg-slate-900/85 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200 dark:hover:bg-slate-800/80 border border-slate-300 dark:border-slate-800 font-medium'
                     }`}
                     title={tab.description}
                   >
                     {/* ステップ丸バッジ */}
                     {tab.stepNum ? (
                       <span
-                        className={`w-5 h-5 rounded-full flex items-center justify-center text-[11px] font-bold shrink-0 transition ${
+                        className={`w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold shrink-0 transition ${
                           isSelected
                             ? 'bg-cyan-500 dark:bg-cyan-400 text-white dark:text-slate-950 font-black shadow-sm'
-                            : 'bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-400 group-hover:text-slate-900 dark:group-hover:text-slate-700 dark:text-slate-300'
+                            : 'bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 group-hover:text-slate-900 dark:group-hover:text-white'
                         }`}
                       >
                         {tab.stepNum}
@@ -692,10 +675,10 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
                       <span className="inline min-[480px]:hidden">{tab.shortLabel}</span>
                       {tab.countBadge && (
                         <span
-                          className={`text-[10px] px-1.5 py-0.2 rounded-md ${
+                          className={`text-xs px-1.5 py-0.2 rounded-md ${
                             isSelected
                               ? 'bg-cyan-200 text-cyan-900 dark:bg-cyan-950/80 dark:text-cyan-300 border border-cyan-300 dark:border-cyan-500/30'
-                              : 'bg-slate-200 text-slate-600 dark:bg-slate-800 dark:text-slate-500'
+                              : 'bg-slate-200 text-slate-700 dark:bg-slate-800 dark:text-slate-400'
                           }`}
                         >
                           {tab.countBadge}
@@ -709,24 +692,18 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
           </div>
 
           {/* 右側：ゲーム即時起動ボタン & 現在のモード説明 */}
-          <div className="text-xs font-mono text-slate-600 dark:text-slate-400 hidden sm:flex items-center gap-2.5">
+          <div className="text-xs sm:text-sm font-mono text-slate-600 dark:text-slate-400 hidden sm:flex items-center gap-2.5">
             {hasGame && (
               <button
                 type="button"
                 onClick={() => setIsGameModalOpen(true)}
-                className="px-2.5 py-1 rounded-lg bg-emerald-100 hover:bg-emerald-200 text-emerald-900 border border-emerald-300 dark:bg-emerald-950/80 dark:hover:bg-emerald-900 dark:border-emerald-500/50 dark:text-emerald-300 dark:hover:text-emerald-200 font-bold transition flex items-center gap-1.5 active:scale-95 cursor-pointer shadow-sm"
+                className="px-3 py-1.5 rounded-lg bg-emerald-100 hover:bg-emerald-200 text-emerald-900 border border-emerald-300 dark:bg-emerald-950/80 dark:hover:bg-emerald-900 dark:border-emerald-500/50 dark:text-emerald-300 dark:hover:text-emerald-200 font-bold transition flex items-center gap-1.5 active:scale-95 cursor-pointer shadow-sm"
                 title="この章のゲームを大画面で起動する"
               >
-                <Gamepad2 className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+                <Gamepad2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
                 <span>ゲーム即時起動</span>
               </button>
             )}
-            <div className="hidden xl:flex items-center gap-1.5">
-              <span className="text-slate-600 dark:text-slate-400 dark:text-slate-500">モード:</span>
-              <span className="text-cyan-700 dark:text-cyan-400 font-bold">
-                {stepTabs.find((t) => t.id === activeTab)?.description}
-              </span>
-            </div>
           </div>
         </div>
       </div>
@@ -1003,7 +980,7 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
                                 </h4>
                               </div>
                               {step.codeSnippet && (
-                                <code className="text-xs sm:text-sm font-mono px-2.5 py-1 rounded bg-slate-100 dark:bg-slate-950 text-cyan-800 dark:text-cyan-300 border border-slate-300 dark:border-slate-800">
+                                <code className="text-sm font-mono px-2.5 py-1 rounded bg-slate-100 dark:bg-slate-950 text-cyan-800 dark:text-cyan-300 border border-slate-300 dark:border-slate-800">
                                   {step.codeSnippet}
                                 </code>
                               )}
@@ -1012,14 +989,14 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
                               {step.description}
                             </p>
                             
-                            <div className="mt-3 pl-10 flex flex-col sm:flex-row gap-2.5 text-xs sm:text-sm font-mono">
+                            <div className="mt-3 pl-10 flex flex-col sm:flex-row gap-2.5 text-sm font-mono">
                               <div className="flex items-center gap-2 text-emerald-900 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/30 py-2 px-3 rounded-xl border border-emerald-200 dark:border-emerald-500/20 flex-1">
-                                <span className="text-slate-500 dark:text-slate-400 font-sans font-bold">動作効果:</span>
+                                <span className="text-slate-600 dark:text-slate-400 font-sans font-bold">動作効果:</span>
                                 <span>{step.impact}</span>
                               </div>
                               {step.designIntent && (
                                 <div className="flex items-center gap-2 text-cyan-900 dark:text-cyan-300 bg-cyan-50 dark:bg-cyan-950/30 py-2 px-3 rounded-xl border border-cyan-200 dark:border-cyan-500/20 flex-1">
-                                  <span className="text-slate-500 dark:text-slate-400 font-sans font-bold">設計意図:</span>
+                                  <span className="text-slate-600 dark:text-slate-400 font-sans font-bold">設計意図:</span>
                                   <span>{step.designIntent}</span>
                                 </div>
                               )}
@@ -1582,16 +1559,16 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
                 </button>
               ) : isReading ? (
                 <button
-                  onClick={() => onNavigate('chapter-1-spaghetti-to-oop')}
-                  className="flex items-center gap-2 px-5 py-3 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-bold font-mono text-xs sm:text-sm transition shadow-lg shadow-amber-500/20 active:scale-95 cursor-pointer"
+                  onClick={() => onNavigate('chapter-classic-1-spaghetti-code')}
+                  className="flex items-center gap-2 px-5 py-3 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-bold font-mono text-sm transition shadow-lg shadow-amber-500/20 active:scale-95 cursor-pointer"
                 >
                   <span>🏛️ レガシー【L】第1章へ挑戦する</span>
                   <ArrowRight className="w-4 h-4" />
                 </button>
               ) : (
                 <button
-                  onClick={() => onNavigate('chapter-1-spaghetti-to-oop')}
-                  className="flex items-center gap-2 px-5 py-3 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-bold font-mono text-xs sm:text-sm transition shadow-lg shadow-amber-500/20 active:scale-95 cursor-pointer"
+                  onClick={() => onNavigate('chapter-classic-1-spaghetti-code')}
+                  className="flex items-center gap-2 px-5 py-3 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-bold font-mono text-sm transition shadow-lg shadow-amber-500/20 active:scale-95 cursor-pointer"
                 >
                   <span>🏛️ レガシー【L】第1章へ挑戦する</span>
                   <ArrowRight className="w-4 h-4" />
@@ -1602,7 +1579,7 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
             {onOpenMilestoneModal && (
               <button
                 onClick={onOpenMilestoneModal}
-                className="flex items-center gap-2 px-5 py-3 rounded-xl bg-gradient-to-r from-amber-500 to-yellow-400 hover:from-amber-400 hover:to-yellow-300 text-slate-950 font-bold font-mono text-xs sm:text-sm transition shadow-lg shadow-amber-500/20 active:scale-95 cursor-pointer"
+                className="flex items-center gap-2 px-5 py-3 rounded-xl bg-gradient-to-r from-amber-500 to-yellow-400 hover:from-amber-400 hover:to-yellow-300 text-slate-950 font-bold font-mono text-sm transition shadow-lg shadow-amber-500/20 active:scale-95 cursor-pointer"
               >
                 <Trophy className="w-4 h-4 text-slate-950" />
                 <span>🏆 公式修了証を確認する</span>
@@ -1611,7 +1588,7 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
 
             <button
               onClick={() => onNavigate('top')}
-              className="flex items-center gap-2 px-5 py-3 rounded-xl bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 font-bold font-mono text-xs sm:text-sm transition border border-slate-300 dark:border-slate-700 active:scale-95 cursor-pointer"
+              className="flex items-center gap-2 px-5 py-3 rounded-xl bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 font-bold font-mono text-sm transition border border-slate-300 dark:border-slate-700 active:scale-95 cursor-pointer"
             >
               <span>TOPへ戻る</span>
             </button>
@@ -1623,30 +1600,30 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
 
       {/* 途中のタブ（ゲーム・解説・演習）でも即座に前後の章やクイズへ行けるミニナビゲーション */}
       {activeTab !== 'all' && activeTab !== 'quiz' && (
-        <div className="pt-6 border-t border-slate-200 dark:border-slate-800/80 flex items-center justify-between text-xs font-mono text-slate-500 dark:text-slate-400">
+        <div className="pt-6 border-t border-slate-200 dark:border-slate-800/80 flex items-center justify-between text-sm font-mono text-slate-500 dark:text-slate-400">
           {chapter.prevChapterSlug ? (
             <button
               type="button"
               onClick={() => onNavigate(chapter.prevChapterSlug!)}
-              className="text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200 transition flex items-center gap-1 cursor-pointer"
+              className="text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200 transition flex items-center gap-1.5 cursor-pointer"
             >
-              <ArrowLeft className="w-3.5 h-3.5" />
+              <ArrowLeft className="w-4 h-4" />
               <span>前の章へ</span>
             </button>
           ) : (
             <button
               type="button"
               onClick={() => onNavigate('top')}
-              className="text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200 transition flex items-center gap-1 cursor-pointer"
+              className="text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200 transition flex items-center gap-1.5 cursor-pointer"
             >
-              <ArrowLeft className="w-3.5 h-3.5" />
+              <ArrowLeft className="w-4 h-4" />
               <span>TOPへ戻る</span>
             </button>
           )}
           <button
             type="button"
             onClick={() => switchTab('quiz')}
-            className="text-purple-700 dark:text-purple-400 hover:text-purple-800 dark:hover:text-purple-300 transition flex items-center gap-1 cursor-pointer font-bold"
+            className="text-purple-700 dark:text-purple-400 hover:text-purple-800 dark:hover:text-purple-300 transition flex items-center gap-1.5 cursor-pointer font-bold"
           >
             <span>クイズ・章の完了へスキップ ➔</span>
           </button>

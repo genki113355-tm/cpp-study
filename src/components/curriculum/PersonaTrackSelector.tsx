@@ -124,39 +124,39 @@ export const PersonaTrackSelector: React.FC<PersonaTrackSelectorProps> = ({ onSe
             <div className="lg:col-span-5 p-5 rounded-2xl bg-slate-50/90 dark:bg-slate-950/90 border border-slate-200 dark:border-slate-800 space-y-3 shadow-sm">
               <div className="text-xs font-mono font-bold text-emerald-700 dark:text-emerald-400 uppercase tracking-wider mb-2 flex items-center justify-between">
                 <span>成長の6大ステップ</span>
-                <span className="text-[10px] text-slate-600 dark:text-slate-400">Step by Step</span>
+                <span className="text-xs text-slate-600 dark:text-slate-400">Step by Step</span>
               </div>
               
               <div className="space-y-2 font-mono text-xs">
                 <div className="p-2.5 rounded-xl bg-white dark:bg-slate-900 border border-emerald-300 dark:border-emerald-500/30 flex items-center gap-2.5 shadow-sm">
-                  <span className="w-5 h-5 rounded-full bg-emerald-100 text-emerald-900 border border-emerald-300 dark:bg-emerald-950 dark:text-emerald-300 flex items-center justify-center font-bold text-[10px]">1</span>
+                  <span className="w-6 h-6 rounded-full bg-emerald-100 text-emerald-900 border border-emerald-300 dark:bg-emerald-950 dark:text-emerald-300 flex items-center justify-center font-bold text-xs">1</span>
                   <span className="text-slate-800 dark:text-slate-200 font-semibold">動くゲーム作成 & 手続き型の限界 (Ch.1)</span>
                 </div>
                 <div className="p-2.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex items-center gap-2.5 shadow-sm">
-                  <span className="w-5 h-5 rounded-full bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-300 dark:border-slate-700 flex items-center justify-center font-bold text-[10px]">2</span>
+                  <span className="w-6 h-6 rounded-full bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-300 dark:border-slate-700 flex items-center justify-center font-bold text-xs">2</span>
                   <span className="text-slate-800 dark:text-slate-200">クラス化と責務のカプセル化 (Ch.2)</span>
                 </div>
                 <div className="p-2.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex items-center gap-2.5 shadow-sm">
-                  <span className="w-5 h-5 rounded-full bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-300 dark:border-slate-700 flex items-center justify-center font-bold text-[10px]">3</span>
+                  <span className="w-6 h-6 rounded-full bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-300 dark:border-slate-700 flex items-center justify-center font-bold text-xs">3</span>
                   <span className="text-slate-800 dark:text-slate-200">動的配列とオブジェクトの寿命 (Ch.3)</span>
                 </div>
                 <div className="p-2.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex items-center gap-2.5 shadow-sm">
-                  <span className="w-5 h-5 rounded-full bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-300 dark:border-slate-700 flex items-center justify-center font-bold text-[10px]">4</span>
+                  <span className="w-6 h-6 rounded-full bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-300 dark:border-slate-700 flex items-center justify-center font-bold text-xs">4</span>
                   <span className="text-slate-800 dark:text-slate-200">敵の多様化とポリモーフィズム (Ch.4)</span>
                 </div>
                 <div className="p-2.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex items-center gap-2.5 shadow-sm">
-                  <span className="w-5 h-5 rounded-full bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-300 dark:border-slate-700 flex items-center justify-center font-bold text-[10px]">5</span>
+                  <span className="w-6 h-6 rounded-full bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-300 dark:border-slate-700 flex items-center justify-center font-bold text-xs">5</span>
                   <span className="text-slate-800 dark:text-slate-200">ゲーム画面遷移とデザインパターン (Ch.5)</span>
                 </div>
                 <div className="p-2.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex items-center gap-2.5 shadow-sm">
-                  <span className="w-5 h-5 rounded-full bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-300 dark:border-slate-700 flex items-center justify-center font-bold text-[10px]">6</span>
+                  <span className="w-6 h-6 rounded-full bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-300 dark:border-slate-700 flex items-center justify-center font-bold text-xs">6</span>
                   <span className="text-slate-800 dark:text-slate-200">モダンC++のRAIIとスマートポインタ (Ch.6)</span>
                 </div>
               </div>
 
               <div className="pt-3">
                 <button
-                  onClick={() => onSelectChapter('chapter-1-spaghetti-to-oop')}
+                  onClick={() => onSelectChapter('chapter-classic-1-spaghetti-code')}
                   className="w-full py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-slate-950 font-bold font-mono text-sm flex items-center justify-center gap-2 transition shadow-lg shadow-emerald-500/20 active:scale-98"
                 >
                   <span>🚀 ゼロから設計を育てる旅を始める (Stage 1へ)</span>
@@ -210,7 +210,7 @@ export const PersonaTrackSelector: React.FC<PersonaTrackSelectorProps> = ({ onSe
               {/* 診断結果のX(Twitter)共有ボタン */}
               <div className="flex flex-wrap items-center gap-3 pt-1">
                 <button
-                  onClick={() => onSelectChapter('chapter-1-spaghetti-to-oop')}
+                  onClick={() => onSelectChapter('chapter-classic-1-spaghetti-code')}
                   className="flex-1 sm:flex-initial px-5 py-3 rounded-xl bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-slate-950 font-bold font-mono text-xs sm:text-sm flex items-center justify-center gap-2 transition shadow-lg shadow-amber-500/20 active:scale-98"
                 >
                   <span>🏛️ レガシー脱却の旅へ (Stage 1へ)</span>
@@ -243,7 +243,7 @@ export const PersonaTrackSelector: React.FC<PersonaTrackSelectorProps> = ({ onSe
             <div className="lg:col-span-6 p-5 sm:p-6 rounded-2xl bg-slate-50/90 dark:bg-slate-950/90 border border-slate-200 dark:border-slate-800 space-y-3 shadow-sm">
               <div className="text-xs font-mono font-bold text-amber-800 dark:text-amber-400 uppercase tracking-wider mb-2 flex items-center justify-between">
                 <span>こんなコードを書いていませんか？（クリックで診断）</span>
-                <span className="text-[10px] text-slate-500">コードスメル診断</span>
+                <span className="text-xs text-slate-600 dark:text-slate-400">コードスメル診断</span>
               </div>
 
               <div className="space-y-2.5">
@@ -292,11 +292,11 @@ export const PersonaTrackSelector: React.FC<PersonaTrackSelectorProps> = ({ onSe
                       >
                         {isChecked && <Check className="w-3.5 h-3.5 stroke-[3]" />}
                       </div>
-                      <div className="space-y-0.5">
-                        <div className={`text-xs font-bold font-sans ${isChecked ? 'text-amber-950 dark:text-amber-200 font-extrabold' : 'text-slate-800 dark:text-slate-300'}`}>
+                      <div className="space-y-1">
+                        <div className={`text-sm font-bold font-sans ${isChecked ? 'text-amber-950 dark:text-amber-200 font-extrabold' : 'text-slate-800 dark:text-slate-300'}`}>
                           {item.title}
                         </div>
-                        <div className="text-[11px] text-slate-600 dark:text-slate-400 font-sans leading-tight">
+                        <div className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 font-sans leading-relaxed">
                           {item.desc}
                         </div>
                       </div>
