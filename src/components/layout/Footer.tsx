@@ -51,7 +51,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                 </div>
                 <div>
                   <div className="flex items-center gap-2">
-                    <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-cyan-100 dark:bg-cyan-950 text-cyan-800 dark:text-cyan-300 border border-cyan-300 dark:border-cyan-500/40">
+                    <span className="text-xs font-mono font-bold px-2 py-0.5 rounded-full bg-cyan-100 dark:bg-cyan-950 text-cyan-800 dark:text-cyan-300 border border-cyan-300 dark:border-cyan-500/40">
                       CAMPUS PORTAL
                     </span>
                     <span className="text-xs font-mono text-cyan-700 dark:text-cyan-400">shirokuma-tech.jp</span>
@@ -70,7 +70,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
             </a>
 
             {/* 5つの姉妹ラボカード */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
               {/* 1. シロクマC++自動化ラボ */}
               <a
                 href="https://shirokuma-tech.jp/auto/"
@@ -84,14 +84,14 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                   </div>
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center gap-1 mb-0.5">
-                      <span className="text-[9px] uppercase font-mono px-1.5 py-0.2 rounded bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-300 border border-amber-300 dark:border-amber-500/30 font-bold flex-shrink-0">
+                      <span className="text-xs uppercase font-mono px-1.5 py-0.5 rounded bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-300 border border-amber-300 dark:border-amber-500/30 font-bold flex-shrink-0">
                         LAB 2
                       </span>
                     </div>
-                    <span className="font-bold text-slate-800 dark:text-slate-200 group-hover:text-amber-600 dark:group-hover:text-amber-300 transition text-xs font-sans truncate block">
+                    <span className="font-bold text-slate-800 dark:text-slate-200 group-hover:text-amber-600 dark:group-hover:text-amber-300 transition text-xs font-sans block">
                       シロクマ自動化ラボ
                     </span>
-                    <p className="text-[10px] text-slate-500 dark:text-slate-400 font-sans mt-0.5 truncate">
+                    <p className="text-xs text-slate-600 dark:text-slate-400 font-sans mt-0.5 truncate">
                       Docker / CI / 自動評価
                     </p>
                   </div>
@@ -111,14 +111,14 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                   </div>
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center gap-1 mb-0.5">
-                      <span className="text-[9px] uppercase font-mono px-1.5 py-0.2 rounded bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-500/30 font-bold flex-shrink-0">
+                      <span className="text-xs uppercase font-mono px-1.5 py-0.5 rounded bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-500/30 font-bold flex-shrink-0">
                         LAB 3
                       </span>
                     </div>
-                    <span className="font-bold text-slate-800 dark:text-slate-200 group-hover:text-emerald-600 dark:group-hover:text-emerald-300 transition text-xs font-sans truncate block">
+                    <span className="font-bold text-slate-800 dark:text-slate-200 group-hover:text-emerald-600 dark:group-hover:text-emerald-300 transition text-xs font-sans block">
                       シロクマQt×C++ラボ
                     </span>
-                    <p className="text-[10px] text-slate-500 dark:text-slate-400 font-sans mt-0.5 truncate">
+                    <p className="text-xs text-slate-600 dark:text-slate-400 font-sans mt-0.5 truncate">
                       Linux / Qt / 計器HMI
                     </p>
                   </div>
@@ -138,14 +138,14 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                   </div>
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center gap-1 mb-0.5">
-                      <span className="text-[9px] uppercase font-mono px-1.5 py-0.2 rounded bg-blue-100 dark:bg-blue-950 text-blue-800 dark:text-blue-300 border border-blue-300 dark:border-blue-500/30 font-bold flex-shrink-0">
+                      <span className="text-xs uppercase font-mono px-1.5 py-0.5 rounded bg-blue-100 dark:bg-blue-950 text-blue-800 dark:text-blue-300 border border-blue-300 dark:border-blue-500/30 font-bold flex-shrink-0">
                         LAB 4
                       </span>
                     </div>
-                    <span className="font-bold text-slate-800 dark:text-slate-200 group-hover:text-cyan-600 dark:group-hover:text-cyan-300 transition text-xs font-sans truncate block">
+                    <span className="font-bold text-slate-800 dark:text-slate-200 group-hover:text-cyan-600 dark:group-hover:text-cyan-300 transition text-xs font-sans block">
                       水中音響・ソナー入門
                     </span>
-                    <p className="text-[10px] text-slate-500 dark:text-slate-400 font-sans mt-0.5 truncate">
+                    <p className="text-xs text-slate-600 dark:text-slate-400 font-sans mt-0.5 truncate">
                       波の物理 / FFT / 解析
                     </p>
                   </div>
@@ -165,14 +165,14 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                   </div>
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center gap-1 mb-0.5">
-                      <span className="text-[9px] uppercase font-mono px-1.5 py-0.2 rounded bg-sky-100 dark:bg-sky-950 text-sky-800 dark:text-sky-300 border border-sky-300 dark:border-sky-500/30 font-bold flex-shrink-0">
+                      <span className="text-xs uppercase font-mono px-1.5 py-0.5 rounded bg-sky-100 dark:bg-sky-950 text-sky-800 dark:text-sky-300 border border-sky-300 dark:border-sky-500/30 font-bold flex-shrink-0">
                         LAB 5
                       </span>
                     </div>
-                    <span className="font-bold text-slate-800 dark:text-slate-200 group-hover:text-sky-600 dark:group-hover:text-sky-300 transition text-xs font-sans truncate block">
+                    <span className="font-bold text-slate-800 dark:text-slate-200 group-hover:text-sky-600 dark:group-hover:text-sky-300 transition text-xs font-sans block">
                       ネスペ直前対策ナビ
                     </span>
-                    <p className="text-[10px] text-slate-500 dark:text-slate-400 font-sans mt-0.5 truncate">
+                    <p className="text-xs text-slate-600 dark:text-slate-400 font-sans mt-0.5 truncate">
                       午後記述 / DNS / 要点まとめ
                     </p>
                   </div>
@@ -192,14 +192,14 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                   </div>
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center gap-1 mb-0.5">
-                      <span className="text-[9px] uppercase font-mono px-1.5 py-0.2 rounded bg-purple-100 dark:bg-purple-950 text-purple-800 dark:text-purple-300 border border-purple-300 dark:border-purple-500/30 font-bold flex-shrink-0">
+                      <span className="text-xs uppercase font-mono px-1.5 py-0.5 rounded bg-purple-100 dark:bg-purple-950 text-purple-800 dark:text-purple-300 border border-purple-300 dark:border-purple-500/30 font-bold flex-shrink-0">
                         LAB 6
                       </span>
                     </div>
-                    <span className="font-bold text-slate-800 dark:text-slate-200 group-hover:text-purple-600 dark:group-hover:text-purple-300 transition text-xs font-sans truncate block">
+                    <span className="font-bold text-slate-800 dark:text-slate-200 group-hover:text-purple-600 dark:group-hover:text-purple-300 transition text-xs font-sans block">
                       AIパスポートラボ
                     </span>
-                    <p className="text-[10px] text-slate-500 dark:text-slate-400 font-sans mt-0.5 truncate">
+                    <p className="text-xs text-slate-600 dark:text-slate-400 font-sans mt-0.5 truncate">
                       生成AIシラバス / 過去問演習
                     </p>
                   </div>
@@ -303,13 +303,13 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
 
           {/* 商標および免責事項 */}
           <div className="p-3.5 rounded-xl bg-white dark:bg-slate-950/80 border border-slate-200 dark:border-slate-800/80 max-w-2xl mx-auto text-left space-y-1 shadow-sm">
-            <div className="text-xs font-bold text-slate-700 dark:text-slate-400 font-sans flex items-center gap-1">
+            <div className="text-xs font-bold text-slate-800 dark:text-slate-300 font-sans flex items-center gap-1">
               <span>⚖️ 商標および学習用教材に関する免責事項</span>
             </div>
-            <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed font-sans">
+            <p className="text-xs text-slate-700 dark:text-slate-300 leading-relaxed font-sans">
               ※「スペースインベーダー（SPACE INVADERS）」は株式会社タイトーの登録商標です。当サイトで提供する教材および「RETRO SPACE SHOOTER」等のプログラムは、古典的な固定画面シューティングゲームのアルゴリズムやオブジェクト指向設計を自作・学習するための完全オリジナルの教育コンテンツであり、株式会社タイトーとは一切関係ありません。
             </p>
-            <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed font-sans">
+            <p className="text-xs text-slate-700 dark:text-slate-300 leading-relaxed font-sans">
               ※本カリキュラム内のクラシック基礎編等に含まれるレガシー/アンチパターンコードは、設計の破綻やメモリリークを体感するための教育用コードです。プロダクション環境へのコピペ転用はお控えください。
             </p>
           </div>

@@ -62,20 +62,20 @@ export const Navbar: React.FC<NavbarProps> = ({
 
   return (
     <header className="sticky top-0 z-40 w-full border-b border-slate-200 dark:border-slate-800 bg-white/95 dark:bg-[#090d16]/90 backdrop-blur-md shadow-sm transition-colors duration-200">
-      <div className="w-full px-3 sm:px-5 lg:px-6 h-16 sm:h-18 py-2.5 flex items-center justify-between gap-2 sm:gap-3">
+      <div className="w-full px-2.5 sm:px-5 lg:px-6 h-14 sm:h-18 py-2 flex items-center justify-between gap-1.5 sm:gap-3">
         {/* 左側：サイドバートグル & ロゴ */}
-        <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0 min-w-0">
+        <div className="flex items-center gap-1.5 sm:gap-3 flex-shrink-0 min-w-0">
           <button
             onClick={onToggleSidebar}
-            className={`${showSidebarToggleAlways ? '' : 'md:hidden '}p-2 rounded-xl text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition cursor-pointer shrink-0`}
+            className={`${showSidebarToggleAlways ? '' : 'md:hidden '}p-1.5 sm:p-2 rounded-xl text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition cursor-pointer shrink-0`}
             aria-label="メニューを開く"
             title="カリキュラム目次を開く"
           >
             <Menu className="w-5 h-5 sm:w-6 sm:h-6" />
           </button>
 
-          <div className="flex items-center gap-2 sm:gap-2.5 cursor-pointer select-none flex-shrink-0" onClick={() => onSelectChapter('top')}>
-            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full border-2 border-cyan-500 overflow-hidden bg-white shadow-md flex-shrink-0">
+          <div className="flex items-center gap-1.5 sm:gap-2.5 cursor-pointer select-none flex-shrink-0" onClick={() => onSelectChapter('top')}>
+            <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full border-2 border-cyan-500 overflow-hidden bg-white shadow-md flex-shrink-0">
               <img
                 src={getAssetUrl('/images/polar-bear-guide-pointing.png')}
                 alt="シロクマ先生"
@@ -230,11 +230,11 @@ export const Navbar: React.FC<NavbarProps> = ({
         </div>
 
         {/* 右側：テーマ切替 ＆ コード実行ラボ ＆ 音声切替 ＆ ソースコードダウンロード & ガイド */}
-        <div className="flex items-center gap-1.5 sm:gap-2 flex-shrink-0">
+        <div className="flex items-center gap-1 sm:gap-2 flex-shrink-0">
           {/* ☀️/🌙 ライト・ダークテーマ切り替えボタン */}
           <button
             onClick={toggleTheme}
-            className="p-2 rounded-xl border transition-all active:scale-95 cursor-pointer flex items-center justify-center bg-slate-100 hover:bg-slate-200 border-slate-300 text-amber-600 dark:bg-slate-900 dark:hover:bg-slate-800 dark:border-slate-700 dark:text-amber-400 shadow-sm"
+            className="p-1.5 sm:p-2 rounded-xl border transition-all active:scale-95 cursor-pointer flex items-center justify-center bg-slate-100 hover:bg-slate-200 border-slate-300 text-amber-600 dark:bg-slate-900 dark:hover:bg-slate-800 dark:border-slate-700 dark:text-amber-400 shadow-sm"
             title={theme === 'dark' ? 'ライトモードに切り替え（白基調ですっきり読む）' : 'ダークモードに切り替え（黒基調のIDEスタイル）'}
             aria-label={theme === 'dark' ? 'ライトモードに切り替え' : 'ダークモードに切り替え'}
           >
@@ -248,7 +248,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           {/* グローバル音量・ミュートボタン */}
           <button
             onClick={handleToggleMute}
-            className={`p-2 rounded-xl border transition-all active:scale-95 cursor-pointer flex items-center justify-center ${
+            className={`p-1.5 sm:p-2 rounded-xl border transition-all active:scale-95 cursor-pointer flex items-center justify-center ${
               isMuted
                 ? 'bg-slate-100 hover:bg-slate-200 border-slate-300 text-slate-500 dark:bg-slate-900 dark:border-slate-700 dark:text-slate-400 dark:hover:text-slate-200 dark:hover:border-slate-600'
                 : 'bg-cyan-100 border-cyan-400 text-cyan-800 dark:bg-cyan-950/80 dark:border-cyan-500/50 dark:text-cyan-300 shadow-sm'
@@ -267,12 +267,13 @@ export const Navbar: React.FC<NavbarProps> = ({
           {onOpenGameModal && (
             <button
               onClick={onOpenGameModal}
-              className="flex items-center gap-1.5 px-2.5 py-2 sm:px-3 rounded-xl bg-gradient-to-r from-emerald-500/15 via-teal-500/15 to-cyan-500/15 hover:from-emerald-500/25 hover:via-teal-500/25 hover:to-cyan-500/25 text-emerald-800 dark:text-emerald-300 border border-emerald-500/40 dark:border-emerald-500/50 text-xs sm:text-sm font-mono font-bold transition shadow-sm active:scale-95 cursor-pointer whitespace-nowrap"
+              className="flex items-center gap-1.5 p-1.5 sm:px-3 sm:py-2 rounded-xl bg-gradient-to-r from-emerald-500/15 via-teal-500/15 to-cyan-500/15 hover:from-emerald-500/25 hover:via-teal-500/25 hover:to-cyan-500/25 text-emerald-800 dark:text-emerald-300 border border-emerald-500/40 dark:border-emerald-500/50 text-xs sm:text-sm font-mono font-bold transition shadow-sm active:scale-95 cursor-pointer whitespace-nowrap"
               title="ブラウザでインベーダー風ゲーム（Webエミュレータ）を起動して遊ぶ"
+              aria-label="ゲームを起動"
             >
               <Gamepad2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
-              <span className="hidden lg:inline">ゲーム起動</span>
-              <span className="inline lg:hidden">ゲーム</span>
+              <span className="hidden 2xl:inline">ゲーム起動</span>
+              <span className="hidden sm:inline 2xl:hidden">ゲーム</span>
             </button>
           )}
 
@@ -280,22 +281,24 @@ export const Navbar: React.FC<NavbarProps> = ({
           {onOpenPlaygroundModal && (
             <button
               onClick={onOpenPlaygroundModal}
-              className="flex items-center gap-1.5 px-2.5 py-2 sm:px-3 rounded-xl bg-gradient-to-r from-cyan-500/15 to-blue-500/15 hover:from-cyan-500/25 hover:to-blue-500/25 text-cyan-800 dark:text-cyan-300 border border-cyan-500/40 text-xs sm:text-sm font-mono font-bold transition shadow-sm active:scale-95 cursor-pointer whitespace-nowrap"
+              className="flex items-center gap-1.5 p-1.5 sm:px-3 sm:py-2 rounded-xl bg-gradient-to-r from-cyan-500/15 to-blue-500/15 hover:from-cyan-500/25 hover:to-blue-500/25 text-cyan-800 dark:text-cyan-300 border border-cyan-500/40 text-xs sm:text-sm font-mono font-bold transition shadow-sm active:scale-95 cursor-pointer whitespace-nowrap"
               title="ブラウザでC++コードを書いて即時実行する"
+              aria-label="コード実行ラボを開く"
             >
-              <Play className="w-3.5 h-3.5 fill-current text-cyan-600 dark:text-cyan-400 shrink-0" />
-              <span className="hidden lg:inline">コード実行ラボ</span>
-              <span className="inline lg:hidden">実行</span>
+              <Play className="w-4 h-4 sm:w-3.5 sm:h-3.5 fill-current text-cyan-600 dark:text-cyan-400 shrink-0" />
+              <span className="hidden 2xl:inline">コード実行ラボ</span>
+              <span className="hidden sm:inline 2xl:hidden">実行</span>
             </button>
           )}
 
           <button
             onClick={onOpenSourceModal}
-            className="flex items-center gap-1.5 px-2.5 py-2 sm:px-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-300 dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-slate-200 dark:hover:text-white dark:border-slate-700 text-xs sm:text-sm font-mono font-bold transition active:scale-95 shadow-sm cursor-pointer whitespace-nowrap"
+            className="flex items-center gap-1.5 p-1.5 sm:px-3 sm:py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-300 dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-slate-200 dark:hover:text-white dark:border-slate-700 text-xs sm:text-sm font-mono font-bold transition active:scale-95 shadow-sm cursor-pointer whitespace-nowrap"
             title="C++実機ソースコードをダウンロード"
+            aria-label="C++実機ソースコードをダウンロード"
           >
             <Download className="w-4 h-4 text-cyan-600 dark:text-cyan-400 shrink-0" />
-            <span className="hidden md:inline">実機コード</span>
+            <span className="hidden 2xl:inline">実機コード</span>
           </button>
 
           <a

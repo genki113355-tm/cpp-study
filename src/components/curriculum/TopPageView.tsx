@@ -360,7 +360,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
               <Layers className="w-3.5 h-3.5 text-cyan-600 dark:text-cyan-400" />
               <span>4 LEARNING TRACKS</span>
             </div>
-            <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white font-sans">
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white font-sans" style={{ wordBreak: 'auto-phrase' }}>
               目的に合わせて選ぶ4つの学習トラック
             </h2>
             <p className="text-sm sm:text-base text-slate-600 dark:text-slate-400 font-sans">
@@ -913,7 +913,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="用語・章を検索 (例: RAII, ECS, メモリ)..."
+              placeholder="用語・章を検索 (RAII, ECS...)"
               className="w-full pl-10 pr-9 py-2.5 rounded-xl bg-white dark:bg-slate-950 border border-slate-300 dark:border-slate-700 text-sm font-mono text-slate-900 dark:text-white placeholder-slate-400 shadow-sm focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition"
             />
             {searchQuery && (
