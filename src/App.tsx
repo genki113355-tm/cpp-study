@@ -4,6 +4,7 @@ import { Navbar } from './components/layout/Navbar';
 import { Sidebar } from './components/layout/Sidebar';
 import { Footer } from './components/layout/Footer';
 import { ArcticBackground } from './components/layout/ArcticBackground';
+import { SideAffiliateRail } from './components/affiliate/SideAffiliateRail';
 import { useSEO } from './hooks/useSEO';
 import { loadCompletedChapters, saveCompletedChapters } from './utils/progressManager';
 import { ThemeProvider } from './context/ThemeContext';
@@ -239,36 +240,41 @@ const AppContent: React.FC = () => {
           hideOnDesktop={isTopOrStatic}
         />
 
-        <main className="flex-1 min-w-0 pb-20 px-4 sm:px-8 lg:px-12 overflow-x-hidden">
-          <React.Suspense fallback={<PageLoadingFallback />}>
-            {currentSlug === 'top' ? (
-              <TopPageView
-                onSelectChapter={handleSelectChapter}
-                completedChapters={completedChapters}
-                onOpenPlaygroundModal={() => setIsPlaygroundModalOpen(true)}
-                onOpenMilestoneModal={() => setIsMilestoneModalOpen(true)}
-                onOpenGameModal={handleOpenGameModal}
-              />
-            ) : currentSlug === 'privacy' ? (
-              <PrivacyPolicyPage onNavigate={handleSelectChapter} />
-            ) : currentSlug === 'about' ? (
-              <AboutPage onNavigate={handleSelectChapter} />
-            ) : currentSlug === 'contact' ? (
-              <ContactPage onNavigate={handleSelectChapter} />
-            ) : currentSlug === 'sitemap' ? (
-              <SiteMapPage onNavigate={handleSelectChapter} />
-            ) : (
-              <ChapterView
-                chapter={activeChapter}
-                onNavigate={handleSelectChapter}
-                onComplete={handleMarkComplete}
-                onToggleComplete={handleToggleComplete}
-                isCompleted={completedChapters.includes(activeChapter.id)}
-                onOpenMilestoneModal={() => setIsMilestoneModalOpen(true)}
-              />
-            )}
-          </React.Suspense>
-        </main>
+        <div className="flex-1 min-w-0 flex flex-col xl:flex-row items-stretch">
+          <main className="flex-1 min-w-0 pb-12 xl:pb-20 px-4 sm:px-8 lg:px-10 xl:px-8 overflow-x-hidden">
+            <React.Suspense fallback={<PageLoadingFallback />}>
+              {currentSlug === 'top' ? (
+                <TopPageView
+                  onSelectChapter={handleSelectChapter}
+                  completedChapters={completedChapters}
+                  onOpenPlaygroundModal={() => setIsPlaygroundModalOpen(true)}
+                  onOpenMilestoneModal={() => setIsMilestoneModalOpen(true)}
+                  onOpenGameModal={handleOpenGameModal}
+                />
+              ) : currentSlug === 'privacy' ? (
+                <PrivacyPolicyPage onNavigate={handleSelectChapter} />
+              ) : currentSlug === 'about' ? (
+                <AboutPage onNavigate={handleSelectChapter} />
+              ) : currentSlug === 'contact' ? (
+                <ContactPage onNavigate={handleSelectChapter} />
+              ) : currentSlug === 'sitemap' ? (
+                <SiteMapPage onNavigate={handleSelectChapter} />
+              ) : (
+                <ChapterView
+                  chapter={activeChapter}
+                  onNavigate={handleSelectChapter}
+                  onComplete={handleMarkComplete}
+                  onToggleComplete={handleToggleComplete}
+                  isCompleted={completedChapters.includes(activeChapter.id)}
+                  onOpenMilestoneModal={() => setIsMilestoneModalOpen(true)}
+                />
+              )}
+            </React.Suspense>
+          </main>
+
+          {/* サイト右端の縦長スポンサー枠 (xl以上は右端sticky、未満はページ下部) */}
+          <SideAffiliateRail />
+        </div>
       </div>
 
       {/* フッター */}
