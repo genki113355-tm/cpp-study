@@ -157,21 +157,21 @@ export const Sidebar: React.FC<SidebarProps> = ({
           {onOpenMilestoneModal && (
             <button
               onClick={onOpenMilestoneModal}
-              className="mt-3 w-full py-1.5 px-2.5 rounded-xl bg-gradient-to-r from-amber-500/20 to-yellow-500/20 hover:from-amber-500/30 hover:to-yellow-500/30 text-amber-700 dark:text-amber-300 border border-amber-500/40 text-xs font-mono font-bold transition flex items-center justify-center gap-1.5 shadow-sm active:scale-95 cursor-pointer"
+              className="mt-3 w-full py-1.5 px-2.5 rounded-xl bg-gradient-to-r from-amber-500/20 to-yellow-500/20 hover:from-amber-500/30 hover:to-yellow-500/30 text-amber-800 dark:text-amber-300 border border-amber-500/40 text-xs font-mono font-bold transition flex items-center justify-center gap-1.5 shadow-sm active:scale-95 cursor-pointer"
             >
-              <Trophy className="w-3.5 h-3.5 text-amber-500 dark:text-amber-400" />
-              <span>🏆 修了証・進捗引継ぎ</span>
+              <Trophy className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
+              <span>修了証・進捗引継ぎ</span>
             </button>
           )}
         </div>
 
         {/* カリキュラム章リスト */}
         <div className="p-3 space-y-2">
-          {/* コース切り替えタブボタン */}
-          <div className="grid grid-cols-5 gap-1 p-1 bg-slate-100 dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 text-xs font-mono whitespace-nowrap select-none">
+          {/* コース切り替えタブボタン（文字重なり防止のため折り返し2段レイアウト） */}
+          <div className="grid grid-cols-3 gap-1 p-1 bg-slate-100 dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 text-xs font-mono select-none">
             <button
               onClick={() => setActiveTab('all')}
-              className={`py-1 rounded-lg font-bold transition text-center whitespace-nowrap px-0.5 cursor-pointer ${
+              className={`py-1.5 px-1 rounded-lg font-bold transition text-center whitespace-nowrap cursor-pointer ${
                 activeTab === 'all'
                   ? 'bg-white text-slate-900 border border-slate-300 dark:bg-slate-700 dark:text-white dark:border-transparent shadow-sm'
                   : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
@@ -181,7 +181,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
             </button>
             <button
               onClick={() => setActiveTab('classic')}
-              className={`py-1 rounded-lg font-bold transition text-center whitespace-nowrap px-0.5 cursor-pointer ${
+              className={`py-1.5 px-1 rounded-lg font-bold transition text-center whitespace-nowrap cursor-pointer ${
                 activeTab === 'classic'
                   ? 'bg-amber-500 text-slate-950 shadow-sm'
                   : 'text-slate-600 dark:text-slate-400 hover:text-amber-700 dark:hover:text-amber-300'
@@ -191,7 +191,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
             </button>
             <button
               onClick={() => setActiveTab('modern')}
-              className={`py-1 rounded-lg font-bold transition text-center whitespace-nowrap px-0.5 cursor-pointer ${
+              className={`py-1.5 px-1 rounded-lg font-bold transition text-center whitespace-nowrap cursor-pointer ${
                 activeTab === 'modern'
                   ? 'bg-cyan-500 text-slate-950 shadow-sm'
                   : 'text-slate-600 dark:text-slate-400 hover:text-cyan-700 dark:hover:text-cyan-300'
@@ -201,7 +201,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
             </button>
             <button
               onClick={() => setActiveTab('reading')}
-              className={`py-1 rounded-lg font-bold transition text-center whitespace-nowrap px-0.5 cursor-pointer ${
+              className={`py-1.5 px-1 rounded-lg font-bold transition text-center whitespace-nowrap cursor-pointer ${
                 activeTab === 'reading'
                   ? 'bg-purple-600 text-white dark:bg-purple-500 dark:text-slate-950 shadow-sm'
                   : 'text-slate-600 dark:text-slate-400 hover:text-purple-700 dark:hover:text-purple-300'
@@ -211,13 +211,13 @@ export const Sidebar: React.FC<SidebarProps> = ({
             </button>
             <button
               onClick={() => setActiveTab('guide')}
-              className={`py-1 rounded-lg font-bold transition text-center whitespace-nowrap px-0.5 cursor-pointer ${
+              className={`col-span-2 py-1.5 px-1 rounded-lg font-bold transition text-center whitespace-nowrap cursor-pointer ${
                 activeTab === 'guide'
                   ? 'bg-emerald-500 text-slate-950 shadow-sm'
                   : 'text-slate-600 dark:text-slate-400 hover:text-emerald-700 dark:hover:text-emerald-300'
               }`}
             >
-              📚 特集
+              📚 特集・ガイド
             </button>
           </div>
 

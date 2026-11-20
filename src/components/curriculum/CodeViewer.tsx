@@ -297,7 +297,7 @@ export const CodeViewer: React.FC<CodeViewerProps> = ({ files, targetHighlight }
       </div>
 
       {/* コード表示エリア（行番号 ＆ 核心行ハイライト付き） */}
-      <div className="relative overflow-x-auto max-h-[700px] scrollbar-thin py-3">
+      <div className="relative overflow-x-auto max-h-[480px] scrollbar-thin py-3">
         <pre className="!m-0 !p-0 !bg-transparent text-sm sm:text-[15px] md:text-base font-mono leading-relaxed text-slate-800 dark:text-slate-100">
           {processedLines.map((line) => {
             const isHighlighted = highlightCoreLines && line.isCore;

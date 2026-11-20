@@ -5,10 +5,8 @@ import {
   Layers,
   Sparkles,
   CheckCircle2,
-  ExternalLink,
   ChevronRight,
   ChevronDown,
-  Shield,
   Trophy,
   Play,
   Clock,
@@ -82,6 +80,9 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [showKeywords, setShowKeywords] = useState<boolean>(false);
   const [showDiagnosis, setShowDiagnosis] = useState<boolean>(false);
+  const [showWalls, setShowWalls] = useState<boolean>(false);
+  const [showRoadmap, setShowRoadmap] = useState<boolean>(false);
+  const [showAllChapters, setShowAllChapters] = useState<boolean>(false);
   const [diagnosisStep, setDiagnosisStep] = useState<number>(1);
   const [diagnosisResult, setDiagnosisResult] = useState<{
     slug: string;
@@ -90,6 +91,11 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
     reason: string;
     track: 'classic' | 'modern' | 'reading';
   } | null>(null);
+
+  const handleSelectTrackTab = (tab: 'classic' | 'modern' | 'reading' | 'guides') => {
+    setActiveTab(tab);
+    setShowAllChapters(false);
+  };
 
   const handleSelectExperience = (exp: 'c_beginner' | 'c_ok' | 'cpp_ok') => {
     if (exp === 'c_beginner') {
@@ -209,7 +215,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
   const readingCompleted = READING_CHAPTERS.filter((c) => completedChapters.includes(c.id)).length;
 
   return (
-    <div className="w-full max-w-6xl mx-auto py-6 sm:py-10 px-2 sm:px-4 space-y-12 sm:space-y-16">
+    <div className="w-full max-w-6xl mx-auto py-5 sm:py-8 px-2 sm:px-4 space-y-8 sm:space-y-10">
       {/* 1. ヒーローセクション（シンプル＆余白のあるファーストビュー） */}
       <section className="relative rounded-3xl border border-cyan-500/30 bg-gradient-to-b from-white/95 via-sky-50/70 to-white/90 dark:bg-gradient-to-b dark:from-slate-900/90 dark:via-[#070b14] dark:to-[#040810] p-6 sm:p-10 shadow-xl overflow-hidden">
         <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
@@ -594,7 +600,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
               <button
                 type="button"
                 onClick={() => {
-                  setActiveTab('classic');
+                  handleSelectTrackTab('classic');
                   document.getElementById('curriculum-directory')?.scrollIntoView({ behavior: 'auto' });
                 }}
                 className="py-3.5 px-4 rounded-xl bg-slate-50 hover:bg-sky-50 dark:bg-slate-800 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-700 text-slate-800 dark:text-slate-200 font-mono font-semibold text-sm text-center transition cursor-pointer"
@@ -642,7 +648,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
               <button
                 type="button"
                 onClick={() => {
-                  setActiveTab('modern');
+                  handleSelectTrackTab('modern');
                   document.getElementById('curriculum-directory')?.scrollIntoView({ behavior: 'auto' });
                 }}
                 className="py-3.5 px-4 rounded-xl bg-slate-50 hover:bg-sky-50 dark:bg-slate-800 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-700 text-slate-800 dark:text-slate-200 font-mono font-semibold text-sm text-center transition cursor-pointer"
@@ -690,7 +696,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
               <button
                 type="button"
                 onClick={() => {
-                  setActiveTab('reading');
+                  handleSelectTrackTab('reading');
                   document.getElementById('curriculum-directory')?.scrollIntoView({ behavior: 'auto' });
                 }}
                 className="py-3.5 px-4 rounded-xl bg-slate-50 hover:bg-sky-50 dark:bg-slate-800 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-700 text-slate-800 dark:text-slate-200 font-mono font-semibold text-sm text-center transition cursor-pointer"
@@ -738,7 +744,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
               <button
                 type="button"
                 onClick={() => {
-                  setActiveTab('guides');
+                  handleSelectTrackTab('guides');
                   document.getElementById('curriculum-directory')?.scrollIntoView({ behavior: 'auto' });
                 }}
                 className="py-3.5 px-4 rounded-xl bg-slate-50 hover:bg-sky-50 dark:bg-slate-800 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-700 text-slate-800 dark:text-slate-200 font-mono font-semibold text-sm text-center transition cursor-pointer"
@@ -750,160 +756,141 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
         </div>
       </section>
 
-      {/* 3. 【課題提起】なぜ設計が必要なのか？（4つの現場の壁：読みやすいサイズ） */}
-      <section className="space-y-5">
-        <div className="border-l-4 border-amber-400 pl-4 space-y-1.5">
-          <div className="inline-flex items-center gap-2 px-3 py-0.5 rounded-full bg-amber-100 dark:bg-amber-950/80 border border-amber-300 dark:border-amber-500/40 text-amber-900 dark:text-amber-300 font-mono text-xs font-semibold">
-            <AlertTriangle className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
-            <span>WHY ARCHITECTURE MATTERS</span>
-          </div>
-          <h2 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white font-sans tracking-tight">
-            最初に、この「4つの現場の壁」に答えられますか？
-          </h2>
+      {/* 3. オプション深掘りエリア（初期は1行バーに格納し、トップの縦長を抑制） */}
+      <section className="space-y-3">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+          {/* アコーディオントグル 1: 4つの現場の壁 */}
+          <button
+            type="button"
+            onClick={() => setShowWalls((prev) => !prev)}
+            className={`p-4 rounded-2xl border text-left transition flex items-center justify-between gap-3 cursor-pointer shadow-sm ${
+              showWalls
+                ? 'bg-amber-50/90 dark:bg-amber-950/40 border-amber-400 text-slate-900 dark:text-white'
+                : 'bg-white/95 dark:bg-slate-900/90 border-slate-200 dark:border-slate-800 hover:border-amber-400 text-slate-800 dark:text-slate-200'
+            }`}
+          >
+            <div className="flex items-center gap-3 min-w-0">
+              <span className="w-9 h-9 rounded-xl bg-amber-100 dark:bg-amber-500/20 border border-amber-300 dark:border-amber-500/40 flex items-center justify-center shrink-0">
+                <AlertTriangle className="w-4 h-4 text-amber-700 dark:text-amber-400" />
+              </span>
+              <div className="min-w-0">
+                <div className="text-xs font-mono font-bold text-amber-800 dark:text-amber-400">WHY ARCHITECTURE</div>
+                <div className="text-sm sm:text-base font-bold truncate">設計が必須になる「4つの現場の壁」</div>
+              </div>
+            </div>
+            <ChevronDown className={`w-5 h-5 text-slate-500 shrink-0 transition-transform ${showWalls ? 'rotate-180' : ''}`} />
+          </button>
+
+          {/* アコーディオントグル 2: 10段階設計進化マップ */}
+          <button
+            type="button"
+            onClick={() => setShowRoadmap((prev) => !prev)}
+            className={`p-4 rounded-2xl border text-left transition flex items-center justify-between gap-3 cursor-pointer shadow-sm ${
+              showRoadmap
+                ? 'bg-cyan-50/90 dark:bg-cyan-950/40 border-cyan-400 text-slate-900 dark:text-white'
+                : 'bg-white/95 dark:bg-slate-900/90 border-slate-200 dark:border-slate-800 hover:border-cyan-400 text-slate-800 dark:text-slate-200'
+            }`}
+          >
+            <div className="flex items-center gap-3 min-w-0">
+              <span className="w-9 h-9 rounded-xl bg-cyan-100 dark:bg-cyan-500/20 border border-cyan-300 dark:border-cyan-500/40 flex items-center justify-center shrink-0">
+                <Workflow className="w-4 h-4 text-cyan-700 dark:text-cyan-400" />
+              </span>
+              <div className="min-w-0">
+                <div className="text-xs font-mono font-bold text-cyan-800 dark:text-cyan-400">EVOLUTION MAP</div>
+                <div className="text-sm sm:text-base font-bold truncate">10段階リファクタリング進化マップ</div>
+              </div>
+            </div>
+            <ChevronDown className={`w-5 h-5 text-slate-500 shrink-0 transition-transform ${showRoadmap ? 'rotate-180' : ''}`} />
+          </button>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-          {/* Q1 */}
-          <div
-            onClick={() => onSelectChapter('chapter-classic-4-inheritance-polymorphism')}
-            className="p-6 rounded-2xl bg-white/95 hover:bg-amber-50/50 dark:bg-slate-900/90 dark:hover:bg-slate-800/90 border border-amber-200 dark:border-slate-800 hover:border-amber-400 transition-all cursor-pointer group shadow-sm hover:shadow-md flex flex-col justify-between gap-4"
-          >
-            <div className="space-y-2.5">
-              <div className="flex items-center justify-between">
-                <span className="text-xs font-mono font-bold px-2.5 py-1 rounded bg-amber-100 dark:bg-amber-500/15 text-amber-900 dark:text-amber-300 border border-amber-300 dark:border-amber-500/30">
-                  Q1. 拡張性の壁
-                </span>
-                <span className="text-xs sm:text-sm font-mono text-slate-500 dark:text-slate-400">L4</span>
+        {/* 展開時: 4つの現場の壁 */}
+        {showWalls && (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 sm:p-5 rounded-2xl bg-amber-50/40 dark:bg-slate-900/70 border border-amber-200 dark:border-amber-500/30">
+            <div
+              onClick={() => onSelectChapter('chapter-classic-4-inheritance-polymorphism')}
+              className="p-4 rounded-xl bg-white dark:bg-slate-900 border border-amber-200 dark:border-slate-800 hover:border-amber-400 transition cursor-pointer group flex flex-col justify-between gap-2.5 shadow-sm"
+            >
+              <div className="space-y-1.5">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-mono font-bold px-2 py-0.5 rounded bg-amber-100 dark:bg-amber-500/15 text-amber-900 dark:text-amber-300">Q1. 拡張性の壁</span>
+                  <span className="text-xs font-mono text-slate-500 dark:text-slate-400">L4</span>
+                </div>
+                <h3 className="text-base font-bold text-slate-900 dark:text-white group-hover:text-amber-700 dark:group-hover:text-amber-300">
+                  「敵を10種類に増やしたら、巨大 switch 文が壊れる」
+                </h3>
+                <p className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed font-sans">
+                  仮想関数（vtable）と動的多態性で、既存コードを壊さず新種を追加できる開閉原則を学びます。
+                </p>
               </div>
-              <h3 className="text-lg font-bold text-slate-900 dark:text-white group-hover:text-amber-700 dark:group-hover:text-amber-300 transition-colors">
-                「敵の種類を10種類に増やしたら、何が壊れる？」
-              </h3>
-              <p className="text-sm sm:text-base text-slate-700 dark:text-slate-300 leading-relaxed font-sans">
-                更新・描画・判定に巨大な <code className="text-amber-800 dark:text-amber-300 font-mono bg-amber-50 dark:bg-slate-950 border border-amber-200 dark:border-slate-800 px-1.5 py-0.5 rounded text-sm">switch(type)</code> が出現し、1体追加するたびに全箇所が壊れる地獄を解消します。
-              </p>
+              <span className="text-xs sm:text-sm font-mono font-bold text-amber-700 dark:text-amber-400">解説（L4）へ →</span>
             </div>
-            <div className="pt-3 flex items-center justify-between text-sm font-mono font-bold text-amber-700 dark:text-amber-400 border-t border-slate-200 dark:border-slate-800">
-              <span>解決策：vtableと動的多態性</span>
-              <span className="group-hover:translate-x-1 transition-transform">解説へ →</span>
-            </div>
-          </div>
 
-          {/* Q2 */}
-          <div
-            onClick={() => onSelectChapter('chapter-modern-1-smart-pointers-raii')}
-            className="p-6 rounded-2xl bg-white/95 hover:bg-sky-50/50 dark:bg-slate-900/90 dark:hover:bg-slate-800/90 border border-sky-200 dark:border-slate-800 hover:border-cyan-400 transition-all cursor-pointer group shadow-sm hover:shadow-md flex flex-col justify-between gap-4"
-          >
-            <div className="space-y-2.5">
-              <div className="flex items-center justify-between">
-                <span className="text-xs font-mono font-bold px-2.5 py-1 rounded bg-cyan-100 dark:bg-cyan-500/15 text-cyan-900 dark:text-cyan-300 border border-cyan-300 dark:border-cyan-500/30">
-                  Q2. メモリ所有権の壁
-                </span>
-                <span className="text-xs sm:text-sm font-mono text-slate-500 dark:text-slate-400">M1</span>
+            <div
+              onClick={() => onSelectChapter('chapter-modern-1-smart-pointers-raii')}
+              className="p-4 rounded-xl bg-white dark:bg-slate-900 border border-sky-200 dark:border-slate-800 hover:border-cyan-400 transition cursor-pointer group flex flex-col justify-between gap-2.5 shadow-sm"
+            >
+              <div className="space-y-1.5">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-mono font-bold px-2 py-0.5 rounded bg-cyan-100 dark:bg-cyan-500/15 text-cyan-900 dark:text-cyan-300">Q2. 所有権の壁</span>
+                  <span className="text-xs font-mono text-slate-500 dark:text-slate-400">M1</span>
+                </div>
+                <h3 className="text-base font-bold text-slate-900 dark:text-white group-hover:text-cyan-700 dark:group-hover:text-cyan-300">
+                  「誰が delete すべきか分からず二重解放で落ちる」
+                </h3>
+                <p className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed font-sans">
+                  生ポインタ起因のメモリリークや二重解放クラッシュを unique_ptr と RAII で根絶します。
+                </p>
               </div>
-              <h3 className="text-lg font-bold text-slate-900 dark:text-white group-hover:text-cyan-700 dark:group-hover:text-cyan-300 transition-colors">
-                「誰が delete すべきか分からず二重解放で落ちる」
-              </h3>
-              <p className="text-sm sm:text-base text-slate-700 dark:text-slate-300 leading-relaxed font-sans">
-                生ポインタを複数クラスで共有した結果起きる二重解放クラッシュやメモリリークを、<code className="text-cyan-800 dark:text-cyan-300 font-mono bg-cyan-50 dark:bg-slate-950 border border-cyan-200 dark:border-slate-800 px-1.5 py-0.5 rounded text-sm">unique_ptr</code> と RAII で根絶します。
-              </p>
+              <span className="text-xs sm:text-sm font-mono font-bold text-cyan-700 dark:text-cyan-400">解説（M1）へ →</span>
             </div>
-            <div className="pt-3 flex items-center justify-between text-sm font-mono font-bold text-cyan-700 dark:text-cyan-400 border-t border-slate-200 dark:border-slate-800">
-              <span>解決策：スマートポインタと所有権</span>
-              <span className="group-hover:translate-x-1 transition-transform">解説へ →</span>
-            </div>
-          </div>
 
-          {/* Q3 */}
-          <div
-            onClick={() => onSelectChapter('chapter-classic-5-design-patterns')}
-            className="p-6 rounded-2xl bg-white/95 hover:bg-purple-50/50 dark:bg-slate-900/90 dark:hover:bg-slate-800/90 border border-purple-200 dark:border-slate-800 hover:border-purple-400 transition-all cursor-pointer group shadow-sm hover:shadow-md flex flex-col justify-between gap-4"
-          >
-            <div className="space-y-2.5">
-              <div className="flex items-center justify-between">
-                <span className="text-xs font-mono font-bold px-2.5 py-1 rounded bg-purple-100 dark:bg-purple-500/15 text-purple-900 dark:text-purple-300 border border-purple-300 dark:border-purple-500/30">
-                  Q3. 結合度の壁
-                </span>
-                <span className="text-xs sm:text-sm font-mono text-slate-500 dark:text-slate-400">L5</span>
+            <div
+              onClick={() => onSelectChapter('chapter-classic-5-design-patterns')}
+              className="p-4 rounded-xl bg-white dark:bg-slate-900 border border-purple-200 dark:border-slate-800 hover:border-purple-400 transition cursor-pointer group flex flex-col justify-between gap-2.5 shadow-sm"
+            >
+              <div className="space-y-1.5">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-mono font-bold px-2 py-0.5 rounded bg-purple-100 dark:bg-purple-500/15 text-purple-900 dark:text-purple-300">Q3. 結合度の壁</span>
+                  <span className="text-xs font-mono text-slate-500 dark:text-slate-400">L5</span>
+                </div>
+                <h3 className="text-base font-bold text-slate-900 dark:text-white group-hover:text-purple-700 dark:group-hover:text-purple-300">
+                  「撃破時のSEとスコア更新、どこに書けばいい？」
+                </h3>
+                <p className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed font-sans">
+                  EnemyクラスがUIや音声に直接依存する密結合を State &amp; Observer パターンで切り離します。
+                </p>
               </div>
-              <h3 className="text-lg font-bold text-slate-900 dark:text-white group-hover:text-purple-700 dark:group-hover:text-purple-300 transition-colors">
-                「敵を倒した瞬間の音とスコア、どこに書けばいい？」
-              </h3>
-              <p className="text-sm sm:text-base text-slate-700 dark:text-slate-300 leading-relaxed font-sans">
-                EnemyクラスがUIや音声エンジンに直接依存して単体テスト不能になる密結合を、Observerパターンで切り離します。
-              </p>
+              <span className="text-xs sm:text-sm font-mono font-bold text-purple-700 dark:text-purple-400">解説（L5）へ →</span>
             </div>
-            <div className="pt-3 flex items-center justify-between text-sm font-mono font-bold text-purple-700 dark:text-purple-400 border-t border-slate-200 dark:border-slate-800">
-              <span>解決策：State & Observer パターン</span>
-              <span className="group-hover:translate-x-1 transition-transform">解説へ →</span>
-            </div>
-          </div>
 
-          {/* Q4 */}
-          <div
-            onClick={() => onSelectChapter('chapter-classic-11-memory-pool-allocator')}
-            className="p-6 rounded-2xl bg-white/95 hover:bg-emerald-50/50 dark:bg-slate-900/90 dark:hover:bg-slate-800/90 border border-emerald-200 dark:border-slate-800 hover:border-emerald-400 transition-all cursor-pointer group shadow-sm hover:shadow-md flex flex-col justify-between gap-4"
-          >
-            <div className="space-y-2.5">
-              <div className="flex items-center justify-between">
-                <span className="text-xs font-mono font-bold px-2.5 py-1 rounded bg-emerald-100 dark:bg-emerald-500/15 text-emerald-900 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-500/30">
-                  Q4. リアルタイム性能の壁
-                </span>
-                <span className="text-xs sm:text-sm font-mono text-slate-500 dark:text-slate-400">L11</span>
+            <div
+              onClick={() => onSelectChapter('chapter-classic-11-memory-pool-allocator')}
+              className="p-4 rounded-xl bg-white dark:bg-slate-900 border border-emerald-200 dark:border-slate-800 hover:border-emerald-400 transition cursor-pointer group flex flex-col justify-between gap-2.5 shadow-sm"
+            >
+              <div className="space-y-1.5">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-mono font-bold px-2 py-0.5 rounded bg-emerald-100 dark:bg-emerald-500/15 text-emerald-900 dark:text-emerald-300">Q4. 性能の壁</span>
+                  <span className="text-xs font-mono text-slate-500 dark:text-slate-400">L11</span>
+                </div>
+                <h3 className="text-base font-bold text-slate-900 dark:text-white group-hover:text-emerald-700 dark:group-hover:text-emerald-300">
+                  「弾を毎秒1000発撃ったら、なぜ急にカクつく？」
+                </h3>
+                <p className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed font-sans">
+                  毎フレームの new/delete によるヒープ断片化を固定長メモリプールで O(1) 定数時間化します。
+                </p>
               </div>
-              <h3 className="text-lg font-bold text-slate-900 dark:text-white group-hover:text-emerald-700 dark:group-hover:text-emerald-300 transition-colors">
-                「弾を毎秒1000発撃ったら、なぜ急にカクつく？」
-              </h3>
-              <p className="text-sm sm:text-base text-slate-700 dark:text-slate-300 leading-relaxed font-sans">
-                毎フレームの <code className="text-emerald-800 dark:text-emerald-300 font-mono bg-emerald-50 dark:bg-slate-950 border border-emerald-200 dark:border-slate-800 px-1.5 py-0.5 rounded text-sm">new / delete</code> によるヒープ断片化を、固定長メモリプールでO(1)定数時間化します。
-              </p>
-            </div>
-            <div className="pt-3 flex items-center justify-between text-sm font-mono font-bold text-emerald-700 dark:text-emerald-400 border-t border-slate-200 dark:border-slate-800">
-              <span>解決策：独自メモリプールアロケータ</span>
-              <span className="group-hover:translate-x-1 transition-transform">解説へ →</span>
+              <span className="text-xs sm:text-sm font-mono font-bold text-emerald-700 dark:text-emerald-400">解説（L11）へ →</span>
             </div>
           </div>
-        </div>
-      </section>
+        )}
 
-      {/* 4. 主線：10段階のゲーム設計進化ロードマップ */}
-      <section className="space-y-5">
-        <div className="border-l-4 border-cyan-400 pl-4 space-y-1.5">
-          <div className="inline-flex items-center gap-2 px-3 py-0.5 rounded-full bg-cyan-100 dark:bg-cyan-950/80 border border-cyan-400/50 text-cyan-900 dark:text-cyan-300 font-mono text-xs font-semibold">
-            <Workflow className="w-3.5 h-3.5 text-cyan-600 dark:text-cyan-400" />
-            <span>GAME REFACTORING STORY</span>
+        {/* 展開時: 10段階設計進化マップ */}
+        {showRoadmap && (
+          <div className="pt-2">
+            <GameEvolutionRoadmap onSelectChapter={onSelectChapter} onOpenGameModal={onOpenGameModal} />
           </div>
-          <h2 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white font-sans tracking-tight">
-            1本のゲームを10段階で進化させる「設計進化マップ」
-          </h2>
-          <p className="text-sm sm:text-base text-slate-600 dark:text-slate-400 font-sans">
-            泥臭いベタ書きコードから現代のECSアーキテクチャへ。各ステージのコード進化とゲーム画面を体験できます。
-          </p>
-        </div>
-
-        <GameEvolutionRoadmap onSelectChapter={onSelectChapter} onOpenGameModal={onOpenGameModal} />
-      </section>
-
-      {/* 特別コラム案内（コンパクトバナー） */}
-      <section className="rounded-2xl border border-sky-300/70 dark:border-cyan-500/40 bg-gradient-to-r from-white via-sky-50/70 to-cyan-50/50 dark:from-slate-900 dark:via-[#070e1c] dark:to-slate-950 p-6 sm:p-7 shadow-md flex flex-col md:flex-row items-start md:items-center justify-between gap-5">
-        <div className="space-y-2 max-w-3xl">
-          <div className="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full bg-sky-100 dark:bg-cyan-950/90 border border-sky-300 dark:border-cyan-500/40 text-sky-900 dark:text-cyan-300 font-mono text-xs font-bold">
-            <span>🔥 特別コラム</span>
-          </div>
-          <h2 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white font-sans">
-            なぜ世界は今もC++で動いているのか？ 〜ゼロオーバーヘッドの美学〜
-          </h2>
-          <p className="text-sm sm:text-base text-slate-700 dark:text-slate-300 font-sans leading-relaxed">
-            Unreal Engine 5、NASA探査機、PyTorch、Chrome基盤——ハードウェアの極限を引き出す40年王者の秘密を紐解きます。
-          </p>
-        </div>
-        <button
-          type="button"
-          onClick={() => onSelectChapter('column-why-cpp-is-great')}
-          className="shrink-0 px-5 py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-mono font-bold text-sm sm:text-base transition flex items-center gap-2 cursor-pointer shadow-md active:scale-95"
-        >
-          <span>📖 コラムを読む</span>
-          <ArrowRight className="w-4 h-4" />
-        </button>
+        )}
       </section>
 
       {/* 5. カリキュラム全目次 ＆ キーワード検索（スッキリ統合） */}
@@ -991,8 +978,8 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 p-1.5 rounded-2xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
               <button
                 type="button"
-                onClick={() => setActiveTab('classic')}
-                className={`py-3 px-4 rounded-xl text-sm font-mono font-bold transition flex items-center justify-center gap-2 cursor-pointer ${
+                onClick={() => handleSelectTrackTab('classic')}
+                className={`py-2.5 px-3 rounded-xl text-sm font-mono font-bold transition flex items-center justify-center gap-2 cursor-pointer ${
                   activeTab === 'classic'
                     ? 'bg-white dark:bg-amber-950/70 text-amber-900 dark:text-amber-200 border-2 border-amber-400 shadow-sm'
                     : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
@@ -1002,8 +989,8 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
               </button>
               <button
                 type="button"
-                onClick={() => setActiveTab('modern')}
-                className={`py-3 px-4 rounded-xl text-sm font-mono font-bold transition flex items-center justify-center gap-2 cursor-pointer ${
+                onClick={() => handleSelectTrackTab('modern')}
+                className={`py-2.5 px-3 rounded-xl text-sm font-mono font-bold transition flex items-center justify-center gap-2 cursor-pointer ${
                   activeTab === 'modern'
                     ? 'bg-white dark:bg-cyan-950/70 text-cyan-900 dark:text-cyan-200 border-2 border-cyan-500 shadow-sm'
                     : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
@@ -1013,8 +1000,8 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
               </button>
               <button
                 type="button"
-                onClick={() => setActiveTab('reading')}
-                className={`py-3 px-4 rounded-xl text-sm font-mono font-bold transition flex items-center justify-center gap-2 cursor-pointer ${
+                onClick={() => handleSelectTrackTab('reading')}
+                className={`py-2.5 px-3 rounded-xl text-sm font-mono font-bold transition flex items-center justify-center gap-2 cursor-pointer ${
                   activeTab === 'reading'
                     ? 'bg-white dark:bg-purple-950/70 text-purple-900 dark:text-purple-200 border-2 border-purple-500 shadow-sm'
                     : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
@@ -1024,8 +1011,8 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
               </button>
               <button
                 type="button"
-                onClick={() => setActiveTab('guides')}
-                className={`py-3 px-4 rounded-xl text-sm font-mono font-bold transition flex items-center justify-center gap-2 cursor-pointer ${
+                onClick={() => handleSelectTrackTab('guides')}
+                className={`py-2.5 px-3 rounded-xl text-sm font-mono font-bold transition flex items-center justify-center gap-2 cursor-pointer ${
                   activeTab === 'guides'
                     ? 'bg-white dark:bg-emerald-950/70 text-emerald-900 dark:text-emerald-200 border-2 border-emerald-500 shadow-sm'
                     : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
@@ -1040,7 +1027,7 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
               <button
                 type="button"
                 onClick={() => setShowKeywords((prev) => !prev)}
-                className="w-full px-5 py-3 flex items-center justify-between text-sm font-mono font-bold text-slate-700 dark:text-slate-300 hover:bg-sky-50/50 dark:hover:bg-slate-800/50 transition cursor-pointer"
+                className="w-full px-5 py-2.5 flex items-center justify-between text-sm font-mono font-bold text-slate-700 dark:text-slate-300 hover:bg-sky-50/50 dark:hover:bg-slate-800/50 transition cursor-pointer"
               >
                 <span className="flex items-center gap-2">
                   <Tag className="w-4 h-4 text-cyan-600 dark:text-cyan-400" />
@@ -1072,252 +1059,106 @@ export const TopPageView: React.FC<TopPageViewProps> = ({
               )}
             </div>
 
-            {/* 章リスト表示（読みやすいサイズ感） */}
-            <div className="space-y-3">
-              {currentList.map((ch) => {
-                const isCompleted = completedChapters.includes(ch.id);
-                const chapterCode = getChapterCode(ch);
+            {/* 章リスト表示（コンパクト2カラム・初期6件＋もっと見る展開） */}
+            {(() => {
+              const INITIAL_COUNT = 6;
+              const visibleChapters = showAllChapters ? currentList : currentList.slice(0, INITIAL_COUNT);
+              const hiddenCount = Math.max(0, currentList.length - INITIAL_COUNT);
 
-                const isClassic = ch.courseTrack === 'classic';
-                const isModern = ch.courseTrack === 'modern';
-                const isReading = ch.courseTrack === 'reading';
+              return (
+                <div className="space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    {visibleChapters.map((ch) => {
+                      const isCompleted = completedChapters.includes(ch.id);
+                      const chapterCode = getChapterCode(ch);
 
-                const badgeStyle = isClassic
-                  ? 'bg-amber-500 text-white dark:bg-amber-950 dark:text-amber-300 border-amber-600 dark:border-amber-500/40'
-                  : isModern
-                  ? 'bg-cyan-600 text-white dark:bg-cyan-950 dark:text-cyan-300 border-cyan-700 dark:border-cyan-500/40'
-                  : isReading
-                  ? 'bg-purple-600 text-white dark:bg-purple-950 dark:text-purple-300 border-purple-700 dark:border-purple-500/40'
-                  : 'bg-emerald-600 text-white dark:bg-emerald-950 dark:text-emerald-300 border-emerald-700 dark:border-emerald-500/40';
+                      const isClassic = ch.courseTrack === 'classic';
+                      const isModern = ch.courseTrack === 'modern';
+                      const isReading = ch.courseTrack === 'reading';
 
-                const meta = getChapterMeta(ch);
+                      const badgeStyle = isClassic
+                        ? 'bg-amber-500 text-white dark:bg-amber-950 dark:text-amber-300 border-amber-600 dark:border-amber-500/40'
+                        : isModern
+                        ? 'bg-cyan-600 text-white dark:bg-cyan-950 dark:text-cyan-300 border-cyan-700 dark:border-cyan-500/40'
+                        : isReading
+                        ? 'bg-purple-600 text-white dark:bg-purple-950 dark:text-purple-300 border-purple-700 dark:border-purple-500/40'
+                        : 'bg-emerald-600 text-white dark:bg-emerald-950 dark:text-emerald-300 border-emerald-700 dark:border-emerald-500/40';
 
-                return (
-                  <a
-                    key={`${activeTab}-${ch.id}-${ch.slug}`}
-                    href={`/${ch.slug}`}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      onSelectChapter(ch.slug);
-                    }}
-                    className="group flex items-center justify-between gap-4 p-4 sm:p-5 rounded-2xl bg-white/95 dark:bg-slate-900/70 border border-slate-200 dark:border-slate-800 hover:border-cyan-400 hover:bg-sky-50/50 dark:hover:bg-slate-800/80 transition-all cursor-pointer no-underline text-inherit shadow-sm"
-                  >
-                    <div className="flex items-start sm:items-center gap-4 min-w-0 flex-1">
-                      <span className={`w-11 h-11 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center font-mono text-sm font-black border shrink-0 shadow-sm ${badgeStyle}`}>
-                        {chapterCode}
-                      </span>
-                      <div className="min-w-0 flex-1 space-y-1">
-                        <div className="flex items-center gap-2.5 flex-wrap">
-                          <h3 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white group-hover:text-cyan-700 dark:group-hover:text-cyan-300 transition-colors">
-                            {ch.title}
-                          </h3>
-                          {isCompleted && (
-                            <span className="inline-flex items-center gap-1 text-xs font-mono font-bold text-emerald-800 dark:text-emerald-300 bg-emerald-100 dark:bg-emerald-950/80 border border-emerald-300 dark:border-emerald-500/30 px-2 py-0.5 rounded-full">
-                              <CheckCircle2 className="w-3.5 h-3.5" />
-                              完了
+                      const meta = getChapterMeta(ch);
+
+                      return (
+                        <a
+                          key={`${activeTab}-${ch.id}-${ch.slug}`}
+                          href={`/${ch.slug}`}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            onSelectChapter(ch.slug);
+                          }}
+                          className="group flex items-center justify-between gap-3 p-3.5 sm:p-4 rounded-2xl bg-white/95 dark:bg-slate-900/70 border border-slate-200 dark:border-slate-800 hover:border-cyan-400 hover:bg-sky-50/50 dark:hover:bg-slate-800/80 transition-all cursor-pointer no-underline text-inherit shadow-sm"
+                        >
+                          <div className="flex items-center gap-3.5 min-w-0 flex-1">
+                            <span className={`w-10 h-10 rounded-xl flex items-center justify-center font-mono text-xs sm:text-sm font-black border shrink-0 shadow-sm ${badgeStyle}`}>
+                              {chapterCode}
                             </span>
-                          )}
-                        </div>
-                        <p className="text-sm text-slate-600 dark:text-slate-400 line-clamp-1 font-sans">
-                          {ch.subtitle || ch.description}
-                        </p>
+                            <div className="min-w-0 flex-1 space-y-1">
+                              <div className="flex items-center gap-2 flex-wrap">
+                                <h3 className="text-sm sm:text-base font-bold text-slate-900 dark:text-white group-hover:text-cyan-700 dark:group-hover:text-cyan-300 transition-colors line-clamp-1">
+                                  {ch.title}
+                                </h3>
+                                {isCompleted && (
+                                  <span className="inline-flex items-center gap-1 text-xs font-mono font-bold text-emerald-800 dark:text-emerald-300 bg-emerald-100 dark:bg-emerald-950/80 border border-emerald-300 dark:border-emerald-500/30 px-2 py-0.5 rounded-full shrink-0">
+                                    <CheckCircle2 className="w-3 h-3" />
+                                    完了
+                                  </span>
+                                )}
+                              </div>
+                              <div className="flex items-center gap-2 flex-wrap text-xs font-mono">
+                                <span className="inline-flex items-center gap-1 text-slate-600 dark:text-slate-400">
+                                  <Clock className="w-3 h-3" />
+                                  <span>{meta.readingTimeText}</span>
+                                </span>
+                                <span className="text-slate-300 dark:text-slate-700">•</span>
+                                <span className={`font-semibold ${meta.badgeClasses.difficulty} px-1.5 py-0.2 rounded border`}>
+                                  {meta.difficulty}
+                                </span>
+                              </div>
+                            </div>
+                          </div>
 
-                        <div className="flex items-center gap-2 pt-1 flex-wrap text-xs font-mono">
-                          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-slate-100 dark:bg-slate-950 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300">
-                            <Clock className="w-3.5 h-3.5 text-slate-500 dark:text-slate-400" />
-                            <span>{meta.readingTimeText}</span>
-                          </span>
-                          <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-md border font-semibold ${meta.badgeClasses.importance}`}>
-                            <span>{meta.importanceLabel}</span>
-                          </span>
-                          <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-md border font-medium ${meta.badgeClasses.difficulty}`}>
-                            <span>{meta.difficulty}</span>
-                          </span>
-                        </div>
-                      </div>
-                    </div>
+                          <ChevronRight className="w-4 h-4 shrink-0 text-slate-400 group-hover:text-cyan-600 dark:group-hover:text-cyan-300 group-hover:translate-x-0.5 transition-all" />
+                        </a>
+                      );
+                    })}
+                  </div>
 
-                    <div className="flex items-center gap-1.5 shrink-0 text-slate-500 dark:text-slate-400 group-hover:text-cyan-700 dark:group-hover:text-cyan-300">
-                      <span className="hidden sm:inline text-sm font-mono font-bold">読む</span>
-                      <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                  {hiddenCount > 0 && (
+                    <div className="flex justify-center pt-1">
+                      <button
+                        type="button"
+                        onClick={() => setShowAllChapters((prev) => !prev)}
+                        className="px-6 py-2.5 rounded-xl bg-white hover:bg-sky-50 dark:bg-slate-900 dark:hover:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-800 dark:text-slate-200 font-mono text-sm font-bold shadow-sm transition flex items-center gap-2 cursor-pointer"
+                      >
+                        <ChevronDown className={`w-4 h-4 transition-transform ${showAllChapters ? 'rotate-180' : ''}`} />
+                        <span>
+                          {showAllChapters
+                            ? `リストを折りたたむ（先頭${INITIAL_COUNT}章のみ表示）`
+                            : `残りの ${hiddenCount} 章をすべて表示する（全${currentList.length}章）`}
+                        </span>
+                      </button>
                     </div>
-                  </a>
-                );
-              })}
-            </div>
+                  )}
+                </div>
+              );
+            })()}
           </div>
         )}
       </section>
 
-      {/* 6. ナビゲーター紹介（サイトテーマに沿った簡潔な紹介） */}
-      <section className="space-y-5 pt-2">
-        <div className="text-center">
-          <h2 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white font-sans">
-            ガイドキャラクター
-          </h2>
-          <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
-            対話形式で「なぜそう設計するのか」を一緒に深掘りします
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-          <div className="bg-white/95 dark:bg-slate-900/60 border border-sky-200 dark:border-slate-800 rounded-2xl p-6 flex items-center gap-5 shadow-sm">
-            <img
-              src={getAssetUrl('/images/polar-bear-guide-pointing.png')}
-              alt="シロクマ先生"
-              className="w-20 h-20 rounded-full border-2 border-cyan-500 bg-cyan-50 dark:bg-slate-900 object-cover shrink-0 shadow-sm"
-            />
-            <div className="space-y-1.5">
-              <h3 className="text-lg font-bold text-cyan-800 dark:text-cyan-300">シロクマ先生</h3>
-              <p className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed font-sans">
-                低レイヤ・メモリ設計・オブジェクト指向アーキテクチャの専門家。「動かしながら本質を掴む」実践指導を担当。
-              </p>
-            </div>
-          </div>
-
-          <div className="bg-white/95 dark:bg-slate-900/60 border border-amber-200 dark:border-slate-800 rounded-2xl p-6 flex items-center gap-5 shadow-sm">
-            <img
-              src={getAssetUrl('/images/penguin-guide-simple.jpg')}
-              alt="ペンギンくん"
-              className="w-20 h-20 rounded-full border-2 border-amber-400 bg-amber-50 dark:bg-slate-900 object-cover shrink-0 shadow-sm"
-            />
-            <div className="space-y-1.5">
-              <h3 className="text-lg font-bold text-slate-900 dark:text-amber-300">ペンギンくん</h3>
-              <p className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed font-sans">
-                「動くけど変更がつらいコード」に悩む学習者代表。読者が疑問に思うポイントをストレートに質問します。
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 7. 姉妹メディア（1ブロックへ統合・重複解消） */}
-      <section className="space-y-5">
-        <div className="space-y-1">
-          <h2 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white font-sans">
-            🌐 シロクマ技術学習エコシステム（姉妹ラボ）
-          </h2>
-          <p className="text-sm sm:text-base text-slate-600 dark:text-slate-400 font-sans">
-            C++設計の基礎を固めた後は、実務GUI・自動化・信号処理へステップアップできます。
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-          <a
-            href="https://shirokuma-tech.jp/qt/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="rounded-2xl border border-emerald-200 dark:border-emerald-500/30 bg-white/95 dark:bg-slate-900 p-6 shadow-sm hover:border-emerald-400 transition-all flex flex-col justify-between gap-4 no-underline text-inherit group"
-          >
-            <div className="space-y-2">
-              <div className="flex items-center justify-between">
-                <span className="text-2xl">🖥️</span>
-                <span className="text-xs font-mono font-bold px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-900 dark:bg-emerald-950 dark:text-emerald-300">
-                  Qt / GUI
-                </span>
-              </div>
-              <h3 className="text-lg font-bold text-slate-900 dark:text-white group-hover:text-emerald-700 dark:group-hover:text-emerald-300">
-                シロクマQt×C++ラボ
-              </h3>
-              <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed font-sans">
-                Linux環境で動く産業用計器HMIやリアルタイム波形描画ダッシュボードをQt/QMLで構築します。
-              </p>
-            </div>
-            <span className="text-sm font-mono font-bold text-emerald-700 dark:text-emerald-400 flex items-center gap-1.5">
-              <span>サイトを見る</span>
-              <ExternalLink className="w-4 h-4" />
-            </span>
-          </a>
-
-          <a
-            href="https://shirokuma-tech.jp/auto/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="rounded-2xl border border-cyan-200 dark:border-cyan-500/30 bg-white/95 dark:bg-slate-900 p-6 shadow-sm hover:border-cyan-400 transition-all flex flex-col justify-between gap-4 no-underline text-inherit group"
-          >
-            <div className="space-y-2">
-              <div className="flex items-center justify-between">
-                <span className="text-2xl">⚡</span>
-                <span className="text-xs font-mono font-bold px-2.5 py-0.5 rounded-full bg-cyan-100 text-cyan-900 dark:bg-cyan-950 dark:text-cyan-300">
-                  CI / 自動化
-                </span>
-              </div>
-              <h3 className="text-lg font-bold text-slate-900 dark:text-white group-hover:text-cyan-700 dark:group-hover:text-cyan-300">
-                シロクマC++自動化ラボ
-              </h3>
-              <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed font-sans">
-                Python・Docker・CMake・CI/CDを活用してビルドと数理アルゴリズムの自動評価環境を構築します。
-              </p>
-            </div>
-            <span className="text-sm font-mono font-bold text-cyan-700 dark:text-cyan-400 flex items-center gap-1.5">
-              <span>サイトを見る</span>
-              <ExternalLink className="w-4 h-4" />
-            </span>
-          </a>
-
-          <a
-            href="https://shirokuma-tech.jp/sonar/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="rounded-2xl border border-indigo-200 dark:border-indigo-500/30 bg-white/95 dark:bg-slate-900 p-6 shadow-sm hover:border-indigo-400 transition-all flex flex-col justify-between gap-4 no-underline text-inherit group"
-          >
-            <div className="space-y-2">
-              <div className="flex items-center justify-between">
-                <span className="text-2xl">🌊</span>
-                <span className="text-xs font-mono font-bold px-2.5 py-0.5 rounded-full bg-indigo-100 text-indigo-900 dark:bg-indigo-950 dark:text-indigo-300">
-                  音響・信号処理
-                </span>
-              </div>
-              <h3 className="text-lg font-bold text-slate-900 dark:text-white group-hover:text-indigo-700 dark:group-hover:text-indigo-300">
-                水中音響・ソナー技術入門
-              </h3>
-              <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed font-sans">
-                波の物理からFFT・LOFAR・TMA信号処理まで、対話グラフとシミュレーターで直感的に学びます。
-              </p>
-            </div>
-            <span className="text-sm font-mono font-bold text-indigo-700 dark:text-indigo-400 flex items-center gap-1.5">
-              <span>サイトを見る</span>
-              <ExternalLink className="w-4 h-4" />
-            </span>
-          </a>
-        </div>
-      </section>
-
-      {/* 8. 学習サポート（メルマガ＆推奨書籍） ＆ PR */}
-      <div className="space-y-8">
+      {/* 5. 学習サポート（メルマガ＆推奨書籍） ＆ コンパクトPR */}
+      <div className="space-y-4">
         <NewsletterSection />
-        <AffiliatePromoBanner defaultCategory="school" limit={3} showTabs={true} />
+        <AffiliatePromoBanner defaultCategory="school" limit={2} showTabs={true} defaultExpanded={false} />
       </div>
-
-      {/* 9. 品質保証（E-E-A-T）・商標に関する表示（文字サイズ引き上げ） */}
-      <section className="rounded-2xl border border-sky-200 dark:border-slate-800 bg-white/90 dark:bg-slate-900/60 p-6 space-y-4 shadow-sm">
-        <div className="flex items-center gap-2">
-          <Shield className="w-5 h-5 text-cyan-600 dark:text-cyan-400" />
-          <h3 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white font-sans">
-            品質保証・技術監修（E-E-A-T）および商標に関する表示
-          </h3>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-slate-700 dark:text-slate-300 font-sans leading-relaxed">
-          <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 space-y-1.5">
-            <div className="font-bold text-cyan-800 dark:text-cyan-300 font-mono text-sm">
-              🛠️ 現役エンジニア監修 ＆ 動作検証環境
-            </div>
-            <p>
-              当サイトの全教材コードは、組込み・制御ソフトウェア開発に従事する現役C++エンジニアが監修し、GCC 13+ / Clang 17+ / MSVC 2022（C++11〜C++20）にて動作検証済みです。
-            </p>
-          </div>
-
-          <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 space-y-1.5">
-            <div className="font-bold text-amber-800 dark:text-amber-300 font-mono text-sm">
-              ⚖️ 商標・教材コードに関する注意
-            </div>
-            <p>
-              「スペースインベーダー」は株式会社タイトーの登録商標です。本サイト内のゲームは教育用の独自実装であり関係はありません。また初期章の悪い例コードの商用転用はお控えください。
-            </p>
-          </div>
-        </div>
-      </section>
     </div>
   );
 };

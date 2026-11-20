@@ -7,19 +7,6 @@ import {
 } from '../../data/affiliateBanners';
 import { GraduationCap, Briefcase, Plane, Sparkles, X, ChevronDown, ChevronUp, ExternalLink } from 'lucide-react';
 
-// ポータブルな画像パス解決（/cpp, /qt などのリバースプロキシ環境にも自動対応）
-const resolveAssetUrl = (path: string): string => {
-  if (typeof window !== 'undefined') {
-    const p = window.location.pathname;
-    if (p.startsWith('/cpp') && !path.startsWith('/cpp')) return `/cpp${path}`;
-    if (p.startsWith('/qt') && !path.startsWith('/qt')) return `/qt${path}`;
-    if (p.startsWith('/auto') && !path.startsWith('/auto')) return `/auto${path}`;
-    if (p.startsWith('/sonar') && !path.startsWith('/sonar')) return `/sonar${path}`;
-    if (p.startsWith('/nw') && !path.startsWith('/nw')) return `/nw${path}`;
-  }
-  return path;
-};
-
 export interface AffiliatePromoBannerProps {
   category?: AffiliateCategory | 'all';
   type?: string; // 後方互換用 ('busy' | 'reward')
@@ -27,6 +14,7 @@ export interface AffiliatePromoBannerProps {
   className?: string;
   limit?: number; // 1ジャンルあたりの初期表示件数（デフォルト: 3）
   showTabs?: boolean; // タブを表示するか（デフォルト: true）
+  defaultExpanded?: boolean; // 初期展開するか（デフォルト: true）
 }
 
 export const AffiliatePromoBanner: React.FC<AffiliatePromoBannerProps> = ({
@@ -36,6 +24,7 @@ export const AffiliatePromoBanner: React.FC<AffiliatePromoBannerProps> = ({
   className = '',
   limit = 3,
   showTabs = true,
+  defaultExpanded = true,
 }) => {
   // 後方互換マッピング
   const resolveInitialCategory = (): AffiliateCategory => {
@@ -48,6 +37,7 @@ export const AffiliatePromoBanner: React.FC<AffiliatePromoBannerProps> = ({
 
   const [activeTab, setActiveTab] = useState<AffiliateCategory>(resolveInitialCategory);
   const [isClosed, setIsClosed] = useState<boolean>(false);
+  const [isBannerExpanded, setIsBannerExpanded] = useState<boolean>(defaultExpanded);
   const [showAllInTab, setShowAllInTab] = useState<Record<AffiliateCategory, boolean>>({
     school: false,
     career: false,
@@ -118,19 +108,14 @@ export const AffiliatePromoBanner: React.FC<AffiliatePromoBannerProps> = ({
   return (
     <aside
       aria-label="スポンサー広告・おすすめ情報"
-      className={`my-10 rounded-3xl border bg-slate-50/95 dark:bg-gradient-to-b dark:from-[#0b1322]/95 dark:via-[#070c18]/95 dark:to-[#050811] p-4 sm:p-7 shadow-xl dark:shadow-2xl backdrop-blur-md relative overflow-hidden transition-all duration-300 ${themeClasses.accentBorder} ${className}`}
+      className={`my-6 rounded-2xl border bg-slate-50/95 dark:bg-gradient-to-b dark:from-[#0b1322]/95 dark:via-[#070c18]/95 dark:to-[#050811] p-4 sm:p-5 shadow-md dark:shadow-xl backdrop-blur-md relative overflow-hidden transition-all duration-300 ${themeClasses.accentBorder} ${className}`}
     >
-      {/* 背景装飾アクセントグロー */}
-      <div
-        className={`absolute top-0 right-0 w-80 h-80 rounded-full blur-3xl pointer-events-none transition-colors duration-500 ${themeClasses.glow}`}
-      />
-
-      {/* ヘッダーエリア：PR表記 ＆ タブ切り替え ＆ 閉じるボタン */}
-      <div className="relative z-10 space-y-4 pb-5 border-b border-slate-200 dark:border-slate-800/80">
-        <div className="flex items-center justify-between gap-3 flex-wrap">
+      {/* ヘッダーエリア：PR表記 ＆ 折りたたみ切替 ＆ タブ切り替え ＆ 閉じるボタン */}
+      <div className={`relative z-10 space-y-3 ${isBannerExpanded ? 'pb-4 border-b border-slate-200 dark:border-slate-800/80' : ''}`}>
+        <div className="flex items-center justify-between gap-2.5 flex-wrap">
           {/* PRラベル＆ジャンルバッジ */}
           <div className="flex items-center gap-2 flex-wrap">
-            <span className="text-[10px] sm:text-xs font-mono font-bold tracking-wider text-slate-600 dark:text-slate-400 px-2.5 py-1 rounded-full bg-slate-200/80 dark:bg-slate-900 border border-slate-300 dark:border-slate-800 shadow-sm">
+            <span className="text-xs font-mono font-bold tracking-wider text-slate-600 dark:text-slate-400 px-2.5 py-0.5 rounded-full bg-slate-200/80 dark:bg-slate-900 border border-slate-300 dark:border-slate-800 shadow-sm">
               [PR] スポンサーリンク
             </span>
             <span
@@ -141,23 +126,34 @@ export const AffiliatePromoBanner: React.FC<AffiliatePromoBannerProps> = ({
             </span>
           </div>
 
-          {/* 閉じるボタン */}
-          <button
-            type="button"
-            onClick={handleClose}
-            className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-sans text-slate-500 hover:text-rose-600 dark:text-slate-400 dark:hover:text-rose-300 bg-white/80 dark:bg-slate-900/90 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-300 dark:border-slate-800 hover:border-rose-400 dark:hover:border-rose-500/40 transition active:scale-95 cursor-pointer shadow-sm group"
-            title="このセクションを閉じる"
-            aria-label="広告セクションを閉じる"
-          >
-            <X className="w-3.5 h-3.5 text-slate-600 dark:text-slate-400 group-hover:text-rose-500 transition-colors" />
-            <span className="text-[11px] group-hover:text-rose-600 dark:group-hover:text-rose-200 transition-colors">
-              広告を閉じる
-            </span>
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => setIsBannerExpanded((prev) => !prev)}
+              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-mono font-bold text-cyan-900 dark:text-cyan-300 bg-cyan-50 hover:bg-cyan-100 dark:bg-cyan-950/60 dark:hover:bg-cyan-900/70 border border-cyan-300 dark:border-cyan-500/40 transition cursor-pointer shadow-sm"
+            >
+              <span>{isBannerExpanded ? '折りたたむ' : `おすすめ情報を見る (${displayedBanners.length}件)`}</span>
+              {isBannerExpanded ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
+            </button>
+
+            {/* 閉じるボタン */}
+            <button
+              type="button"
+              onClick={handleClose}
+              className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-sans text-slate-500 hover:text-rose-600 dark:text-slate-400 dark:hover:text-rose-300 bg-white/80 dark:bg-slate-900/90 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-300 dark:border-slate-800 hover:border-rose-400 dark:hover:border-rose-500/40 transition active:scale-95 cursor-pointer shadow-sm group"
+              title="このセクションを閉じる"
+              aria-label="広告セクションを閉じる"
+            >
+              <X className="w-3.5 h-3.5 text-slate-600 dark:text-slate-400 group-hover:text-rose-500 transition-colors" />
+              <span className="text-xs hidden sm:inline group-hover:text-rose-600 dark:group-hover:text-rose-200 transition-colors">
+                閉じる
+              </span>
+            </button>
+          </div>
         </div>
 
-        {/* 3ジャンル切り替えタブ */}
-        {showTabs && (
+        {/* 3ジャンル切り替えタブ（展開時のみ、またはコンパクト表示） */}
+        {isBannerExpanded && showTabs && (
           <div className="flex items-center gap-2 pt-1 flex-wrap">
             <button
               type="button"
@@ -170,7 +166,7 @@ export const AffiliatePromoBanner: React.FC<AffiliatePromoBannerProps> = ({
             >
               <GraduationCap className="w-4 h-4 shrink-0" />
               <span>🎓 スクール・学習</span>
-              <span className="text-[10px] opacity-80 font-mono">(3)</span>
+              <span className="text-xs opacity-80 font-mono">(3)</span>
             </button>
 
             <button
@@ -184,7 +180,7 @@ export const AffiliatePromoBanner: React.FC<AffiliatePromoBannerProps> = ({
             >
               <Briefcase className="w-4 h-4 shrink-0" />
               <span>💼 転職・キャリア</span>
-              <span className="text-[10px] opacity-80 font-mono">(2)</span>
+              <span className="text-xs opacity-80 font-mono">(2)</span>
             </button>
 
             <button
@@ -198,43 +194,29 @@ export const AffiliatePromoBanner: React.FC<AffiliatePromoBannerProps> = ({
             >
               <Plane className="w-4 h-4 shrink-0" />
               <span>🏖️ 週末旅行・宿泊</span>
-              <span className="text-[10px] opacity-80 font-mono">(10)</span>
+              <span className="text-xs opacity-80 font-mono">(10)</span>
             </button>
           </div>
         )}
 
         {/* タイトル ＆ サブタイトル */}
-        <div className="space-y-1">
-          <h3 className="text-base sm:text-lg md:text-xl font-extrabold text-slate-900 dark:text-white font-sans tracking-tight">
-            {currentGroup.title}
-          </h3>
-          <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 font-sans leading-relaxed">
-            {currentGroup.subtitle}
-          </p>
-        </div>
-
-        {/* マスコットキャラクターの応援ひとこと */}
-        <div className="flex items-center gap-3 p-3 rounded-2xl bg-white/90 dark:bg-slate-900/70 border border-slate-200 dark:border-slate-800 text-xs text-slate-700 dark:text-slate-300 shadow-sm">
-          <div className="w-9 h-9 rounded-xl overflow-hidden border border-slate-300 dark:border-slate-700 flex-shrink-0 shadow-sm">
-            <img
-              src={resolveAssetUrl('/images/characters_mission.jpg')}
-              alt={isSchool ? 'シロクマ指導官' : 'ペンギン通信士'}
-              className={`w-full h-full object-cover ${
-                isSchool ? 'object-[20%_35%]' : 'object-[85%_55%]'
-              }`}
-            />
-          </div>
-          <div className="flex-1 min-w-0">
-            <span className={`font-mono font-bold mr-1.5 ${themeClasses.speakerColor}`}>
-              {isSchool ? 'シロクマ指導官 :' : 'ペンギン通信士 :'}
-            </span>
-            <span className="font-sans leading-relaxed">{currentGroup.mascotComment}</span>
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+          <div>
+            <h3 className="text-sm sm:text-base font-extrabold text-slate-900 dark:text-white font-sans tracking-tight">
+              {currentGroup.title}
+            </h3>
+            {isBannerExpanded && (
+              <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 font-sans leading-relaxed mt-0.5">
+                {currentGroup.subtitle}
+              </p>
+            )}
           </div>
         </div>
       </div>
 
-      {/* バナー一覧グリッド（300x250 レクタングルサイズ） */}
-      <div className="relative z-10 pt-6">
+      {/* バナー一覧グリッド（展開時のみ描画して高さ削減） */}
+      {isBannerExpanded && (
+      <div className="relative z-10 pt-5">
         <div className="flex flex-wrap items-center justify-center gap-5 sm:gap-6">
           {displayedBanners.map((banner) => (
             <div
@@ -282,11 +264,11 @@ export const AffiliatePromoBanner: React.FC<AffiliatePromoBannerProps> = ({
 
               {/* バナー説明文 ＆ リンク案内 */}
               <div className="w-full pt-2.5 px-1 space-y-1.5">
-                <p className="text-[11px] text-slate-600 dark:text-slate-400 font-sans leading-relaxed line-clamp-2">
+                <p className="text-xs text-slate-600 dark:text-slate-400 font-sans leading-relaxed line-clamp-2">
                   {banner.description}
                 </p>
-                <div className="flex items-center justify-between text-[11px] font-mono pt-1 border-t border-slate-100 dark:border-slate-800/80">
-                  <span className="text-slate-600 dark:text-slate-400 dark:text-slate-500">外部公式サイト</span>
+                <div className="flex items-center justify-between text-xs font-mono pt-1 border-t border-slate-100 dark:border-slate-800/80">
+                  <span className="text-slate-500 dark:text-slate-400">外部公式サイト</span>
                   <a
                     href={banner.linkUrl}
                     target="_blank"
@@ -304,7 +286,7 @@ export const AffiliatePromoBanner: React.FC<AffiliatePromoBannerProps> = ({
 
         {/* 旅行などで3件以上ある場合の「もっと見る」トグル */}
         {hasMore && (
-          <div className="mt-6 flex justify-center">
+          <div className="mt-5 flex justify-center">
             <button
               type="button"
               onClick={() => toggleShowAll(activeTab)}
@@ -326,7 +308,7 @@ export const AffiliatePromoBanner: React.FC<AffiliatePromoBannerProps> = ({
         )}
 
         {/* 最下部：広告を閉じるリンク */}
-        <div className="mt-5 pt-3 border-t border-slate-200 dark:border-slate-800/60 flex items-center justify-between text-xs font-mono text-slate-600 dark:text-slate-400 dark:text-slate-500">
+        <div className="mt-4 pt-3 border-t border-slate-200 dark:border-slate-800/60 flex items-center justify-between text-xs font-mono text-slate-500 dark:text-slate-400">
           <span>掲載広告は A8.net 提携プログラムです</span>
           <button
             type="button"
@@ -335,10 +317,11 @@ export const AffiliatePromoBanner: React.FC<AffiliatePromoBannerProps> = ({
             title="このセクションを閉じる"
           >
             <X className="w-3.5 h-3.5 group-hover:text-rose-500 transition-colors" />
-            <span className="text-[11px] group-hover:underline">広告枠を閉じる</span>
+            <span className="text-xs group-hover:underline">広告枠を閉じる</span>
           </button>
         </div>
       </div>
+      )}
     </aside>
   );
 };

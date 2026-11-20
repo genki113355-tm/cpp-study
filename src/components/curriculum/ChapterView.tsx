@@ -142,6 +142,8 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
   const hasChallenge = Boolean(CODING_CHALLENGES[chapter.slug]);
   const hasPractice = hasLab || hasChallenge;
   const hasQuiz = Boolean(chapter.quiz && chapter.quiz.length > 0);
+  const [practiceMode, setPracticeMode] = useState<'lab' | 'challenge'>(() => (hasLab ? 'lab' : 'challenge'));
+  const [expandedSteps, setExpandedSteps] = useState<Record<string, boolean>>({});
 
   // 初期タブ（URLハッシュ尊重、ゲーム対応章は 'game'（① ゲーム体験）からスタート）
   const [activeTab, setActiveTab] = useState<ChapterTab>(() => {
@@ -175,6 +177,8 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
   // 章切り替え時にタブと目次開閉をリセット
   useEffect(() => {
     setShowToc(false);
+    setExpandedSteps({});
+    setPracticeMode(hasLab ? 'lab' : 'challenge');
     if (typeof window !== 'undefined') {
       const hash = window.location.hash.toLowerCase();
       if (hash === '#game' && hasGame) {
@@ -199,11 +203,16 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
       }
     }
     setActiveTab(hasGame ? 'game' : 'learn');
-  }, [chapter.slug, hasGame, hasPractice, hasQuiz]);
+  }, [chapter.slug, hasGame, hasPractice, hasQuiz, hasLab]);
 
-  // タブ切り替え＆スムーズスクロールヘルパー
+  // タブ切り替え＆スクロールヘルパー
   const switchTab = (tab: ChapterTab, targetElementId?: string) => {
     setActiveTab(tab);
+    if (targetElementId === 'chapter-code-challenge') {
+      setPracticeMode('challenge');
+    } else if (targetElementId === 'chapter-step-lab') {
+      setPracticeMode('lab');
+    }
     if (typeof window !== 'undefined') {
       const defaultTab = hasGame ? 'game' : 'learn';
       if (tab !== defaultTab) {
@@ -345,8 +354,8 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
     }
     if (isGuide) {
       return (
-        <span className="text-xs sm:text-sm font-mono font-bold uppercase tracking-widest px-3.5 py-1.5 rounded-full border flex items-center gap-2 shadow-sm bg-emerald-950/80 text-emerald-300 border-emerald-500/40">
-          <span className="w-2.5 h-2.5 rounded-full animate-ping inline-block bg-emerald-400" />
+        <span className="text-xs sm:text-sm font-mono font-bold uppercase tracking-widest px-3.5 py-1.5 rounded-full border flex items-center gap-2 shadow-sm bg-emerald-100 text-emerald-900 border-emerald-300 dark:bg-emerald-950/80 dark:text-emerald-300 dark:border-emerald-500/40">
+          <span className="w-2.5 h-2.5 rounded-full animate-ping inline-block bg-emerald-500 dark:bg-emerald-400" />
           🧭 実践手引き・現場ガイド
         </span>
       );
@@ -624,31 +633,31 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
       )}
 
       {/* 🧭 学習進捗ステップバー（①ゲーム ➔ ②解説 ➔ ③演習 ➔ ④クイズ/修了 ＋ すべて表示） */}
-      <div id="chapter-step-bar" className="sticky top-18 z-30 -my-4 py-3 bg-white/95 dark:bg-[#090d16]/95 backdrop-blur-md border-y border-slate-200 dark:border-slate-800/80 scroll-mt-24 transition-colors duration-200">
-        <div className="flex items-center justify-between gap-3 flex-wrap">
-          {/* ステップ切り替えタブ群（横スクロール対応） */}
-          <div className="flex items-center gap-1.5 sm:gap-2 overflow-x-auto no-scrollbar py-1 max-w-full">
+      <div id="chapter-step-bar" className="sticky top-16 sm:top-18 z-30 -my-4 py-2.5 bg-white/95 dark:bg-[#090d16]/95 backdrop-blur-md border-y border-slate-200 dark:border-slate-800/80 scroll-mt-24 transition-colors duration-200">
+        <div className="flex items-center justify-between gap-2.5 flex-wrap">
+          {/* ステップ切り替えタブ群（見切れ防止のため折り返し対応） */}
+          <div className="flex flex-wrap items-center gap-1.5 py-0.5 max-w-full">
             {stepTabs.map((tab, idx) => {
               const isSelected = activeTab === tab.id;
               const isSpecialAll = tab.id === 'all';
 
               return (
                 <React.Fragment key={tab.id}>
-                  {/* デスクトップ用ステップ矢印（allの手前を除く） */}
+                  {/* 大画面用ステップ矢印（allの手前を除く） */}
                   {idx > 0 && !isSpecialAll && (
-                    <span className="hidden md:inline-block text-slate-400 dark:text-slate-600 text-xs px-0.5 select-none" aria-hidden="true">
+                    <span className="hidden xl:inline-block text-slate-400 dark:text-slate-600 text-xs select-none" aria-hidden="true">
                       ➔
                     </span>
                   )}
                   {/* 'all'の手前にある区切り線 */}
                   {isSpecialAll && (
-                    <span className="hidden sm:inline-block w-px h-5 bg-slate-200 dark:bg-slate-800 mx-1" aria-hidden="true" />
+                    <span className="hidden sm:inline-block w-px h-5 bg-slate-200 dark:bg-slate-800 mx-0.5" aria-hidden="true" />
                   )}
 
                   <button
                     type="button"
                     onClick={() => switchTab(tab.id)}
-                    className={`group flex items-center gap-2 px-3 sm:px-3.5 py-1.5 rounded-xl cursor-pointer transition select-none shrink-0 text-xs sm:text-sm font-mono ${
+                    className={`group flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-xl cursor-pointer transition select-none shrink-0 text-xs sm:text-sm font-mono ${
                       isSelected
                         ? 'bg-cyan-50 dark:bg-gradient-to-r dark:from-cyan-500/25 dark:via-blue-500/20 dark:to-cyan-500/25 text-cyan-950 dark:text-white border-2 border-cyan-500 dark:border-cyan-400 shadow-sm font-bold ring-2 ring-cyan-500/20'
                         : 'bg-slate-100 dark:bg-slate-900/85 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200 dark:hover:bg-slate-800/80 border border-slate-300 dark:border-slate-800 font-medium'
@@ -670,9 +679,9 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
                       <span className="text-sm shrink-0">{tab.icon}</span>
                     )}
 
-                    <span className="flex items-center gap-1.5">
-                      <span className="hidden min-[480px]:inline">{tab.label}</span>
-                      <span className="inline min-[480px]:hidden">{tab.shortLabel}</span>
+                    <span className="flex items-center gap-1">
+                      <span className="hidden sm:inline">{tab.label}</span>
+                      <span className="inline sm:hidden">{tab.shortLabel}</span>
                       {tab.countBadge && (
                         <span
                           className={`text-xs px-1.5 py-0.2 rounded-md ${
@@ -691,8 +700,8 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
             })}
           </div>
 
-          {/* 右側：ゲーム即時起動ボタン & 現在のモード説明 */}
-          <div className="text-xs sm:text-sm font-mono text-slate-600 dark:text-slate-400 hidden sm:flex items-center gap-2.5">
+          {/* 右側：ゲーム即時起動ボタン（大画面で余白がある時のみ表示し折り返し抑制） */}
+          <div className="text-xs font-mono text-slate-600 dark:text-slate-400 hidden xl:flex items-center gap-2 shrink-0">
             {hasGame && (
               <button
                 type="button"
@@ -701,7 +710,7 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
                 title="この章のゲームを大画面で起動する"
               >
                 <Gamepad2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-                <span>ゲーム即時起動</span>
+                <span>ゲーム起動</span>
               </button>
             )}
           </div>
@@ -791,11 +800,11 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
                   </button>
 
                   <div className="flex items-center gap-3 text-xs text-slate-600 dark:text-slate-400 font-mono pt-1 flex-wrap justify-center">
-                    <span className="flex items-center gap-1 text-emerald-400">
+                    <span className="flex items-center gap-1 text-emerald-700 dark:text-emerald-400 font-semibold">
                       <span>🎨 2Dグラフィック</span>
                     </span>
                     <span>•</span>
-                    <span className="flex items-center gap-1 text-cyan-400">
+                    <span className="flex items-center gap-1 text-cyan-700 dark:text-cyan-400 font-semibold">
                       <span>📟 CUI文字切替</span>
                     </span>
                     <span>•</span>
@@ -957,55 +966,70 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
                     <VariableInspector variables={section.variables} />
                   )}
 
-                  {/* 処理フロー（ステップバイステップ実況解説＆設計意図） */}
-                  {section.processSteps && section.processSteps.length > 0 && (
-                    <div className="space-y-4 my-6">
-                      <div className="flex items-center gap-2 text-sm font-mono font-bold text-emerald-700 dark:text-emerald-400 px-1">
-                        <GitCommit className="w-5 h-5" />
-                        <span>1フレーム内の実行順序と設計の意図</span>
-                      </div>
-                      <div className="grid grid-cols-1 gap-3.5">
-                        {section.processSteps.map((step) => (
-                          <div
-                            key={step.stepNumber}
-                            className="p-5 rounded-2xl bg-white dark:bg-slate-900/70 border border-slate-200 dark:border-slate-800 hover:border-cyan-400 dark:hover:border-cyan-500/40 transition-all shadow-sm dark:shadow-md"
-                          >
-                            <div className="flex items-start justify-between gap-3 mb-2.5 flex-wrap">
-                              <div className="flex items-center gap-3">
-                                <span className="w-7 h-7 rounded-full bg-cyan-100 dark:bg-cyan-500/20 text-cyan-800 dark:text-cyan-400 border border-cyan-300 dark:border-cyan-500/40 flex items-center justify-center font-mono font-bold text-sm">
-                                  {step.stepNumber}
-                                </span>
-                                <h4 className="font-bold text-base sm:text-lg text-slate-900 dark:text-slate-100 font-sans [text-wrap:balance]">
-                                  {step.title}
-                                </h4>
-                              </div>
-                              {step.codeSnippet && (
-                                <code className="text-sm font-mono px-2.5 py-1 rounded bg-slate-100 dark:bg-slate-950 text-cyan-800 dark:text-cyan-300 border border-slate-300 dark:border-slate-800">
-                                  {step.codeSnippet}
-                                </code>
-                              )}
-                            </div>
-                            <p className="text-base text-slate-700 dark:text-slate-300 leading-relaxed pl-10 font-sans [text-wrap:pretty]">
-                              {step.description}
-                            </p>
-                            
-                            <div className="mt-3 pl-10 flex flex-col sm:flex-row gap-2.5 text-sm font-mono">
-                              <div className="flex items-center gap-2 text-emerald-900 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/30 py-2 px-3 rounded-xl border border-emerald-200 dark:border-emerald-500/20 flex-1">
-                                <span className="text-slate-600 dark:text-slate-400 font-sans font-bold">動作効果:</span>
-                                <span>{step.impact}</span>
-                              </div>
-                              {step.designIntent && (
-                                <div className="flex items-center gap-2 text-cyan-900 dark:text-cyan-300 bg-cyan-50 dark:bg-cyan-950/30 py-2 px-3 rounded-xl border border-cyan-200 dark:border-cyan-500/20 flex-1">
-                                  <span className="text-slate-600 dark:text-slate-400 font-sans font-bold">設計意図:</span>
-                                  <span>{step.designIntent}</span>
-                                </div>
-                              )}
-                            </div>
+                  {/* 処理フロー（折りたたみ式ステップバイステップ解説） */}
+                  {section.processSteps && section.processSteps.length > 0 && (() => {
+                    const isStepsOpen = expandedSteps[section.id] ?? (section.processSteps.length <= 2);
+                    return (
+                      <div className="my-6 rounded-2xl border border-emerald-200 dark:border-emerald-500/30 bg-white/95 dark:bg-slate-900/60 overflow-hidden shadow-sm">
+                        <button
+                          type="button"
+                          onClick={() => setExpandedSteps((prev) => ({ ...prev, [section.id]: !isStepsOpen }))}
+                          className="w-full px-4 sm:px-5 py-3.5 flex items-center justify-between gap-2 text-left bg-emerald-50/70 hover:bg-emerald-100/70 dark:bg-emerald-950/30 dark:hover:bg-emerald-950/50 transition cursor-pointer"
+                        >
+                          <div className="flex items-center gap-2 text-sm font-mono font-bold text-emerald-800 dark:text-emerald-400">
+                            <GitCommit className="w-5 h-5 shrink-0" />
+                            <span>1フレーム内の実行順序と設計の意図（全{section.processSteps.length}ステップ）</span>
                           </div>
-                        ))}
+                          <span className="inline-flex items-center gap-1 text-xs font-mono font-bold text-emerald-700 dark:text-emerald-300 shrink-0">
+                            <span>{isStepsOpen ? '折りたたむ' : '詳しく見る'}</span>
+                            <ChevronDown className={`w-4 h-4 transition-transform ${isStepsOpen ? 'rotate-180' : ''}`} />
+                          </span>
+                        </button>
+                        {isStepsOpen && (
+                          <div className="p-4 grid grid-cols-1 gap-3 border-t border-emerald-200 dark:border-emerald-500/20">
+                            {section.processSteps.map((step) => (
+                              <div
+                                key={step.stepNumber}
+                                className="p-4 sm:p-5 rounded-2xl bg-slate-50/70 dark:bg-slate-900/70 border border-slate-200 dark:border-slate-800 hover:border-cyan-400 dark:hover:border-cyan-500/40 transition-all"
+                              >
+                                <div className="flex items-start justify-between gap-3 mb-2 flex-wrap">
+                                  <div className="flex items-center gap-3">
+                                    <span className="w-7 h-7 rounded-full bg-cyan-100 dark:bg-cyan-500/20 text-cyan-800 dark:text-cyan-400 border border-cyan-300 dark:border-cyan-500/40 flex items-center justify-center font-mono font-bold text-sm">
+                                      {step.stepNumber}
+                                    </span>
+                                    <h4 className="font-bold text-base sm:text-lg text-slate-900 dark:text-slate-100 font-sans [text-wrap:balance]">
+                                      {step.title}
+                                    </h4>
+                                  </div>
+                                  {step.codeSnippet && (
+                                    <code className="text-sm font-mono px-2.5 py-1 rounded bg-white dark:bg-slate-950 text-cyan-800 dark:text-cyan-300 border border-slate-300 dark:border-slate-800">
+                                      {step.codeSnippet}
+                                    </code>
+                                  )}
+                                </div>
+                                <p className="text-base text-slate-700 dark:text-slate-300 leading-relaxed pl-10 font-sans [text-wrap:pretty]">
+                                  {step.description}
+                                </p>
+
+                                <div className="mt-3 pl-10 flex flex-col sm:flex-row gap-2.5 text-sm font-mono">
+                                  <div className="flex items-center gap-2 text-emerald-900 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/30 py-2 px-3 rounded-xl border border-emerald-200 dark:border-emerald-500/20 flex-1">
+                                    <span className="text-slate-600 dark:text-slate-400 font-sans font-bold">動作効果:</span>
+                                    <span>{step.impact}</span>
+                                  </div>
+                                  {step.designIntent && (
+                                    <div className="flex items-center gap-2 text-cyan-900 dark:text-cyan-300 bg-cyan-50 dark:bg-cyan-950/30 py-2 px-3 rounded-xl border border-cyan-200 dark:border-cyan-500/20 flex-1">
+                                      <span className="text-slate-600 dark:text-slate-400 font-sans font-bold">設計意図:</span>
+                                      <span>{step.designIntent}</span>
+                                    </div>
+                                  )}
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        )}
                       </div>
-                    </div>
-                  )}
+                    );
+                  })()}
 
                   {/* 概念図解 */}
                   {section.diagramType && (
@@ -1143,14 +1167,43 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
         </>
       )}
 
-      {/* 🧪 実践演習（対話型設計ラボ ＆ GCC演習道場） */}
-      {(activeTab === 'all' || activeTab === 'practice') && (
-        <section className="space-y-12">
-          {/* ステップバイステップ設計演習（対話型ハンズオン） */}
-          <StepByStepLab chapterSlug={chapter.slug} />
+      {/* 🧪 実践演習（対話型設計ラボ ＆ GCC演習道場 — 両方ある章はサブタブで切替） */}
+      {(activeTab === 'all' || activeTab === 'practice') && hasPractice && (
+        <section className="space-y-6">
+          {hasLab && hasChallenge && (
+            <div className="p-2 rounded-2xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 grid grid-cols-1 sm:grid-cols-2 gap-2">
+              <button
+                type="button"
+                onClick={() => setPracticeMode('lab')}
+                className={`py-2.5 px-4 rounded-xl text-xs sm:text-sm font-mono font-bold transition flex items-center justify-center gap-2 cursor-pointer ${
+                  practiceMode === 'lab'
+                    ? 'bg-white dark:bg-indigo-950 text-indigo-900 dark:text-indigo-200 border-2 border-indigo-400 shadow-sm'
+                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+                }`}
+              >
+                <span>💻 演習1: 対話型設計ターミナル</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => setPracticeMode('challenge')}
+                className={`py-2.5 px-4 rounded-xl text-xs sm:text-sm font-mono font-bold transition flex items-center justify-center gap-2 cursor-pointer ${
+                  practiceMode === 'challenge'
+                    ? 'bg-white dark:bg-cyan-950 text-cyan-900 dark:text-cyan-200 border-2 border-cyan-500 shadow-sm'
+                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+                }`}
+              >
+                <span>⚡ 演習2: 本物GCC コーディング道場</span>
+              </button>
+            </div>
+          )}
 
-          {/* 実践ハンズオン演習道場（コーディング課題が定義されている章で自動表示） */}
-          {CODING_CHALLENGES[chapter.slug] && (
+          {/* ステップバイステップ設計演習（対話型ハンズオン） */}
+          {hasLab && (!hasChallenge || practiceMode === 'lab') && (
+            <StepByStepLab chapterSlug={chapter.slug} />
+          )}
+
+          {/* 実践ハンズオン演習道場（コーディング課題が定義されている章で表示） */}
+          {hasChallenge && (!hasLab || practiceMode === 'challenge') && (
             <div id="chapter-code-challenge" className="scroll-mt-24">
               <CodeChallengeRunner challenge={CODING_CHALLENGES[chapter.slug]} />
             </div>
@@ -1365,9 +1418,6 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
         variant="card"
       />
 
-      {/* 学習完了・達成のご褒美＆次のステップPRバナー */}
-      <AffiliatePromoBanner defaultCategory="travel" limit={3} showTabs={true} />
-
       {/* 読了・進捗完了アクションバー */}
       <div className="p-6 sm:p-8 rounded-3xl bg-gradient-to-r from-slate-50 via-white to-slate-100 dark:from-slate-900 dark:via-[#0a1222] dark:to-slate-900 border-2 border-cyan-400/50 dark:border-cyan-500/40 shadow-xl dark:shadow-2xl flex flex-col sm:flex-row items-center justify-between gap-5 my-8 animate-fadeIn">
         <div className="flex items-center gap-4">
@@ -1451,6 +1501,8 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
             </div>
           )}
         </div>
+      </div>
+
       {/* 4ラボ循環バトンタッチカード（最終章・コース読破時） */}
       {!chapter.nextChapterSlug && (
         <div className="my-8 p-6 sm:p-7 rounded-2xl bg-gradient-to-r from-amber-50/90 via-orange-50/60 to-white dark:from-amber-950/80 dark:via-slate-900 dark:to-[#1a1205] border border-amber-300 dark:border-amber-500/40 flex flex-col md:flex-row items-center justify-between gap-5 shadow-xl relative overflow-hidden">
@@ -1478,7 +1530,6 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
           </a>
         </div>
       )}
-      </div>
 
       {/* 章ナビゲーションフッター */}
       <div className="pt-8 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between gap-4 flex-wrap">
@@ -1595,6 +1646,9 @@ export const ChapterView: React.FC<ChapterViewProps> = ({
           </div>
         )}
       </div>
+
+      {/* 章完了後の学習サポート＆PR（初期折りたたみで学習導線を邪魔しない） */}
+      <AffiliatePromoBanner defaultCategory="school" limit={2} showTabs={true} defaultExpanded={false} />
         </>
       )}
 

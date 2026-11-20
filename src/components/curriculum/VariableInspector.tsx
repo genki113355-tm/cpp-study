@@ -1,92 +1,77 @@
 import React, { useState } from 'react';
 import { VariableDoc } from '../../types/curriculum';
-import { LayoutGrid, Table as TableIcon, Code2, AlertTriangle, ShieldCheck } from 'lucide-react';
+import { LayoutGrid, Table as TableIcon, Code2, AlertTriangle, ShieldCheck, ChevronDown } from 'lucide-react';
 
 interface VariableInspectorProps {
   variables: VariableDoc[];
 }
 
 export const VariableInspector: React.FC<VariableInspectorProps> = ({ variables }) => {
-  const [viewMode, setViewMode] = useState<'cards' | 'table'>('cards');
+  const [viewMode, setViewMode] = useState<'cards' | 'table'>('table');
+  const [isOpen, setIsOpen] = useState<boolean>(variables.length <= 3);
 
   return (
-    <div className="rounded-3xl border border-sky-100 dark:border-slate-800 bg-white/95 dark:bg-[#0c1222] shadow-xl overflow-hidden my-8 w-full">
+    <div className="rounded-2xl border border-sky-200 dark:border-slate-800 bg-white/95 dark:bg-[#0c1222] shadow-md overflow-hidden my-6 w-full">
       {/* ツールバーヘッダー */}
-      <div className="px-6 py-4 bg-white/95 dark:bg-slate-900/95 border-b border-slate-200 dark:border-slate-800/80 flex flex-wrap items-center justify-between gap-4">
-        <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-xl bg-cyan-500/15 border border-cyan-500/40 flex items-center justify-center text-cyan-400 shadow-sm">
-            <Code2 className="w-5 h-5" />
+      <div className="px-4 sm:px-5 py-3.5 bg-slate-50/90 dark:bg-slate-900/95 border-b border-slate-200 dark:border-slate-800/80 flex flex-wrap items-center justify-between gap-3">
+        <button
+          type="button"
+          onClick={() => setIsOpen((prev) => !prev)}
+          className="flex items-center gap-3 text-left flex-1 min-w-0 cursor-pointer group"
+        >
+          <div className="w-8 h-8 rounded-xl bg-cyan-500/15 border border-cyan-500/40 flex items-center justify-center text-cyan-700 dark:text-cyan-400 shrink-0">
+            <Code2 className="w-4 h-4" />
           </div>
-          <div>
-            <h4 className="text-lg sm:text-xl font-bold text-slate-900 dark:text-white font-mono tracking-tight flex items-center gap-2.5">
+          <div className="min-w-0 flex-1">
+            <h4 className="text-sm sm:text-base font-bold text-slate-900 dark:text-white font-mono tracking-tight flex items-center gap-2 flex-wrap group-hover:text-cyan-700 dark:group-hover:text-cyan-300 transition-colors">
               <span>データ構造 &amp; 変数インスペクター</span>
-              <span className="text-xs sm:text-sm px-2.5 py-0.5 rounded-full bg-cyan-100 text-cyan-900 border border-cyan-300 dark:bg-cyan-950 dark:text-cyan-300 dark:border-cyan-500/30 font-semibold font-sans">
+              <span className="text-xs px-2 py-0.5 rounded-full bg-cyan-100 text-cyan-900 border border-cyan-300 dark:bg-cyan-950 dark:text-cyan-300 dark:border-cyan-500/30 font-semibold font-sans">
                 {variables.length} 件の定義
               </span>
+              <span className="inline-flex items-center gap-1 text-xs font-sans font-semibold text-cyan-700 dark:text-cyan-400">
+                <span>{isOpen ? '閉じる' : '詳細を見る'}</span>
+                <ChevronDown className={`w-4 h-4 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+              </span>
             </h4>
-            <p className="text-xs sm:text-sm text-slate-700 dark:text-slate-300 mt-1">
-              各データの型・スコープ・役割、およびC言語の構造化設計との対比
-            </p>
           </div>
-        </div>
+        </button>
 
-        {/* 表示モード切り替え（選択式ラジオボタングループ） */}
-        <div role="radiogroup" aria-label="変数表示形式選択" className="flex items-center bg-slate-100 dark:bg-slate-950 p-1.5 rounded-2xl border border-slate-200 dark:border-slate-800 font-mono text-xs sm:text-sm shadow-inner">
-          <button
-            role="radio"
-            aria-checked={viewMode === 'cards'}
-            onClick={() => setViewMode('cards')}
-            className={`flex items-center gap-2 px-3.5 py-1.5 rounded-xl transition-all cursor-pointer select-none ${
-              viewMode === 'cards'
-                ? 'bg-cyan-100 text-cyan-900 border-cyan-400 dark:bg-cyan-500/20 dark:text-cyan-200 dark:border-cyan-500/50 font-bold shadow-sm'
-                : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 border border-transparent'
-            }`}
-          >
-            {/* ラジオボタン円 */}
-            <span
-              className={`w-3.5 h-3.5 rounded-full border flex items-center justify-center transition shrink-0 ${
-                viewMode === 'cards'
-                  ? 'border-cyan-500 bg-white dark:bg-slate-950 dark:border-cyan-400 ring-1 ring-cyan-500/40'
-                  : 'border-slate-300 bg-slate-100 dark:border-slate-500 dark:bg-slate-800'
-              }`}
-            >
-              {viewMode === 'cards' && (
-                <span className="w-1.5 h-1.5 rounded-full bg-cyan-500 dark:bg-cyan-400 shadow-sm shadow-cyan-400" />
-              )}
-            </span>
-            <LayoutGrid className="w-4 h-4" />
-            <span>カード表示 (推奨)</span>
-          </button>
+        {/* 表示モード切り替え（展開時のみ表示） */}
+        {isOpen && (
+        <div role="radiogroup" aria-label="変数表示形式選択" className="flex items-center bg-white dark:bg-slate-950 p-1 rounded-xl border border-slate-200 dark:border-slate-800 font-mono text-xs shadow-xs">
           <button
             role="radio"
             aria-checked={viewMode === 'table'}
             onClick={() => setViewMode('table')}
-            className={`flex items-center gap-2 px-3.5 py-1.5 rounded-xl transition-all cursor-pointer select-none ${
+            className={`flex items-center gap-1.5 px-2.5 py-1 rounded-lg transition-all cursor-pointer select-none ${
               viewMode === 'table'
-                ? 'bg-cyan-100 text-cyan-900 border-cyan-400 dark:bg-cyan-500/20 dark:text-cyan-200 dark:border-cyan-500/50 font-bold shadow-sm'
-                : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 border border-transparent'
+                ? 'bg-cyan-100 text-cyan-900 dark:bg-cyan-500/20 dark:text-cyan-200 font-bold'
+                : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
             }`}
           >
-            {/* ラジオボタン円 */}
-            <span
-              className={`w-3.5 h-3.5 rounded-full border flex items-center justify-center transition shrink-0 ${
-                viewMode === 'table'
-                  ? 'border-cyan-500 bg-white dark:bg-slate-950 dark:border-cyan-400 ring-1 ring-cyan-500/40'
-                  : 'border-slate-300 bg-slate-100 dark:border-slate-500 dark:bg-slate-800'
-              }`}
-            >
-              {viewMode === 'table' && (
-                <span className="w-1.5 h-1.5 rounded-full bg-cyan-500 dark:bg-cyan-400 shadow-sm shadow-cyan-400" />
-              )}
-            </span>
-            <TableIcon className="w-4 h-4" />
-            <span>テーブル表示</span>
+            <TableIcon className="w-3.5 h-3.5" />
+            <span>一覧表</span>
+          </button>
+          <button
+            role="radio"
+            aria-checked={viewMode === 'cards'}
+            onClick={() => setViewMode('cards')}
+            className={`flex items-center gap-1.5 px-2.5 py-1 rounded-lg transition-all cursor-pointer select-none ${
+              viewMode === 'cards'
+                ? 'bg-cyan-100 text-cyan-900 dark:bg-cyan-500/20 dark:text-cyan-200 font-bold'
+                : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
+            }`}
+          >
+            <LayoutGrid className="w-3.5 h-3.5" />
+            <span>カード</span>
           </button>
         </div>
+        )}
       </div>
 
-      {/* カード表示モード（広々とした2カラム・大文字・高可読性） */}
-      {viewMode === 'cards' ? (
+      {/* 本体（展開時のみ描画） */}
+      {isOpen && (
+      viewMode === 'cards' ? (
         <div className="p-6 grid grid-cols-1 xl:grid-cols-2 gap-6 bg-slate-50/50 dark:bg-gradient-to-b dark:from-[#090d18] dark:to-[#0c1222]">
           {variables.map((v, idx) => (
             <div
@@ -139,38 +124,38 @@ export const VariableInspector: React.FC<VariableInspectorProps> = ({ variables 
           ))}
         </div>
       ) : (
-        /* テーブル表示モード（大文字・折れ防止・均等幅配分） */
+        /* テーブル表示モード（重なり防止・折り返し許可） */
         <div className="w-full max-w-full overflow-x-auto">
-          <table className="w-full text-left border-collapse table-fixed min-w-[900px]">
+          <table className="w-full text-left border-collapse min-w-[780px]">
             <thead>
               <tr className="border-b border-slate-200 dark:border-slate-800 bg-slate-100 dark:bg-slate-950 text-slate-800 dark:text-slate-300 font-mono text-sm">
-                <th className="py-4 px-4 w-[22%] font-bold">変数・メンバ名</th>
-                <th className="py-4 px-4 w-[16%] font-bold">型</th>
-                <th className="py-4 px-4 w-[18%] font-bold">スコープ / 状態</th>
-                <th className="py-4 px-4 w-[24%] font-bold">役割と動作の解説</th>
-                <th className="py-4 px-4 w-[20%] font-bold text-amber-800 dark:text-amber-300">C言語との対比</th>
+                <th className="py-3.5 px-4 w-[18%] font-bold">変数・メンバ名</th>
+                <th className="py-3.5 px-4 w-[14%] font-bold">型</th>
+                <th className="py-3.5 px-4 w-[20%] font-bold">スコープ / 状態</th>
+                <th className="py-3.5 px-4 w-[26%] font-bold">役割と動作の解説</th>
+                <th className="py-3.5 px-4 w-[22%] font-bold text-amber-800 dark:text-amber-300">C言語との対比</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-800/70 font-sans text-sm sm:text-base">
+            <tbody className="divide-y divide-slate-200 dark:divide-slate-800/70 font-sans text-sm">
               {variables.map((v, vIdx) => (
-                <tr key={vIdx} className="hover:bg-white/80 dark:bg-slate-900/60 transition">
-                  <td className="py-4 px-4 font-mono font-bold text-cyan-800 dark:text-cyan-300 break-words align-top text-base">
+                <tr key={vIdx} className="hover:bg-slate-50/80 dark:hover:bg-slate-900/60 transition">
+                  <td className="py-3.5 px-4 font-mono font-bold text-cyan-800 dark:text-cyan-300 break-words align-top text-sm sm:text-base">
                     {v.name}
                   </td>
-                  <td className="py-4 px-4 font-mono text-amber-800 dark:text-amber-300 align-top">
-                    <span className="inline-block px-2.5 py-1 rounded-lg bg-amber-100 text-amber-900 border border-amber-300 dark:bg-amber-950/50 dark:border-amber-500/30 dark:text-amber-300 text-xs sm:text-sm whitespace-nowrap font-semibold">
+                  <td className="py-3.5 px-4 font-mono text-amber-800 dark:text-amber-300 align-top">
+                    <span className="inline-block px-2 py-0.5 rounded-lg bg-amber-100 text-amber-900 border border-amber-300 dark:bg-amber-950/50 dark:border-amber-500/30 dark:text-amber-300 text-xs font-semibold break-words">
                       {v.type}
                     </span>
                   </td>
-                  <td className="py-4 px-4 font-mono text-slate-800 dark:text-slate-200 align-top">
-                    <span className="inline-block px-2.5 py-1 rounded-lg bg-slate-100 text-slate-800 dark:bg-slate-800/90 dark:text-slate-200 border border-slate-200 dark:border-slate-700 text-xs sm:text-sm whitespace-nowrap">
+                  <td className="py-3.5 px-4 font-mono text-slate-800 dark:text-slate-200 align-top">
+                    <span className="inline-block px-2 py-0.5 rounded-lg bg-slate-100 text-slate-800 dark:bg-slate-800/90 dark:text-slate-200 border border-slate-200 dark:border-slate-700 text-xs break-words">
                       {v.scope}
                     </span>
                   </td>
-                  <td className="py-4 px-4 text-slate-800 dark:text-slate-200 leading-relaxed align-top text-base">
+                  <td className="py-3.5 px-4 text-slate-800 dark:text-slate-200 leading-relaxed align-top text-sm sm:text-base">
                     {v.description}
                   </td>
-                  <td className="py-4 px-4 text-amber-950 dark:text-amber-100/90 leading-relaxed text-sm sm:text-base bg-amber-50/50 dark:bg-amber-950/15 border-l border-slate-200 dark:border-slate-800 align-top font-sans">
+                  <td className="py-3.5 px-4 text-amber-950 dark:text-amber-100/90 leading-relaxed text-sm bg-amber-50/50 dark:bg-amber-950/15 border-l border-slate-200 dark:border-slate-800 align-top font-sans">
                     {v.cComparison || '—'}
                   </td>
                 </tr>
@@ -178,6 +163,7 @@ export const VariableInspector: React.FC<VariableInspectorProps> = ({ variables 
             </tbody>
           </table>
         </div>
+      )
       )}
     </div>
   );

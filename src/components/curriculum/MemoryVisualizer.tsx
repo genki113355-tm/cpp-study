@@ -33,8 +33,8 @@ export const MemoryVisualizer: React.FC<MemoryVisualizerProps> = ({ memoryMap })
             onClick={() => setViewMode('visual')}
             className={`flex items-center gap-2 px-3 py-1.5 rounded-lg transition-all cursor-pointer select-none ${
               viewMode === 'visual'
-                ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/50 font-bold shadow-sm shadow-emerald-500/10'
-                : 'text-slate-600 dark:text-slate-400 hover:text-slate-800 dark:text-slate-200 border border-transparent'
+                ? 'bg-emerald-100 text-emerald-900 border border-emerald-400 dark:bg-emerald-500/20 dark:text-emerald-300 dark:border-emerald-500/50 font-bold shadow-sm'
+                : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 border border-transparent'
             }`}
           >
             {/* ラジオボタン円 */}

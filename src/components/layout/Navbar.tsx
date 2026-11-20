@@ -62,20 +62,20 @@ export const Navbar: React.FC<NavbarProps> = ({
 
   return (
     <header className="sticky top-0 z-40 w-full border-b border-slate-200 dark:border-slate-800 bg-white/95 dark:bg-[#090d16]/90 backdrop-blur-md shadow-sm transition-colors duration-200">
-      <div className="w-full px-4 sm:px-8 lg:px-12 h-18 py-3 flex items-center justify-between gap-4">
+      <div className="w-full px-3 sm:px-5 lg:px-6 h-16 sm:h-18 py-2.5 flex items-center justify-between gap-2 sm:gap-3">
         {/* 左側：サイドバートグル & ロゴ */}
-        <div className="flex items-center gap-3.5 flex-shrink-0">
+        <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0 min-w-0">
           <button
             onClick={onToggleSidebar}
-            className={`${showSidebarToggleAlways ? '' : 'md:hidden '}p-2 rounded-xl text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition cursor-pointer`}
+            className={`${showSidebarToggleAlways ? '' : 'md:hidden '}p-2 rounded-xl text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition cursor-pointer shrink-0`}
             aria-label="メニューを開く"
             title="カリキュラム目次を開く"
           >
-            <Menu className="w-6 h-6" />
+            <Menu className="w-5 h-5 sm:w-6 sm:h-6" />
           </button>
 
-          <div className="flex items-center gap-2.5 sm:gap-3 cursor-pointer select-none flex-shrink-0" onClick={() => onSelectChapter('top')}>
-            <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-full border-2 border-cyan-500 overflow-hidden bg-white shadow-md flex-shrink-0">
+          <div className="flex items-center gap-2 sm:gap-2.5 cursor-pointer select-none flex-shrink-0" onClick={() => onSelectChapter('top')}>
+            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full border-2 border-cyan-500 overflow-hidden bg-white shadow-md flex-shrink-0">
               <img
                 src={getAssetUrl('/images/polar-bear-guide-pointing.png')}
                 alt="シロクマ先生"
@@ -83,21 +83,17 @@ export const Navbar: React.FC<NavbarProps> = ({
               />
             </div>
             <div className="flex flex-col justify-center min-w-0">
-              <div className="flex items-center gap-1.5 sm:gap-2 whitespace-nowrap leading-tight">
-                <span className="font-extrabold text-base sm:text-lg lg:text-xl text-slate-900 dark:text-white tracking-tight whitespace-nowrap">
+              <div className="flex items-center gap-1.5 whitespace-nowrap leading-tight">
+                <span className="font-extrabold text-sm sm:text-base lg:text-lg text-slate-900 dark:text-white tracking-tight whitespace-nowrap">
                   シロクマC++ラボ
                 </span>
-                <span className="text-xs uppercase font-mono px-1.5 py-0.5 rounded bg-cyan-100 dark:bg-cyan-950 text-cyan-800 dark:text-cyan-400 border border-cyan-300 dark:border-cyan-500/30 font-bold leading-none flex-shrink-0">
+                <span className="hidden sm:inline-block text-xs uppercase font-mono px-1.5 py-0.5 rounded bg-cyan-100 dark:bg-cyan-950 text-cyan-800 dark:text-cyan-400 border border-cyan-300 dark:border-cyan-500/30 font-bold leading-none flex-shrink-0">
                   Lab
                 </span>
               </div>
-              {/* PC・タブレット向けフルタイトル（改行なし） */}
-              <span className="hidden sm:block text-xs text-slate-500 dark:text-slate-400 whitespace-nowrap leading-none mt-1">
+              {/* 大画面向けフルタイトル */}
+              <span className="hidden lg:block text-xs text-slate-500 dark:text-slate-400 whitespace-nowrap leading-none mt-1">
                 〜ゲーム開発で学ぶオブジェクト指向開発〜
-              </span>
-              {/* スマホ向けコンパクトキャッチコピー（1行に収まり改行ゼロ） */}
-              <span className="block sm:hidden text-xs text-slate-500 dark:text-slate-400 whitespace-nowrap leading-none mt-0.5">
-                ゲーム開発で学ぶOOP設計
               </span>
             </div>
           </div>
@@ -107,7 +103,7 @@ export const Navbar: React.FC<NavbarProps> = ({
         <div
           ref={scrollContainerRef}
           onWheel={handleWheel}
-          className="hidden xl:flex items-center gap-1.5 bg-slate-100 dark:bg-slate-900/90 p-1.5 rounded-2xl border border-slate-200 dark:border-slate-800 font-mono text-xs overflow-x-auto no-scrollbar min-w-0 flex-1 max-w-[calc(100vw-540px)] whitespace-nowrap select-none"
+          className="hidden xl:flex items-center gap-1.5 bg-slate-100 dark:bg-slate-900/90 p-1.5 rounded-2xl border border-slate-200 dark:border-slate-800 font-mono text-xs overflow-x-auto no-scrollbar min-w-0 flex-1 whitespace-nowrap select-none"
         >
           <button
             ref={currentChapterId === 0 ? activeItemRef : undefined}
@@ -234,7 +230,7 @@ export const Navbar: React.FC<NavbarProps> = ({
         </div>
 
         {/* 右側：テーマ切替 ＆ コード実行ラボ ＆ 音声切替 ＆ ソースコードダウンロード & ガイド */}
-        <div className="flex items-center gap-2 sm:gap-2.5 flex-shrink-0">
+        <div className="flex items-center gap-1.5 sm:gap-2 flex-shrink-0">
           {/* ☀️/🌙 ライト・ダークテーマ切り替えボタン */}
           <button
             onClick={toggleTheme}
@@ -271,12 +267,12 @@ export const Navbar: React.FC<NavbarProps> = ({
           {onOpenGameModal && (
             <button
               onClick={onOpenGameModal}
-              className="flex items-center gap-1.5 px-3 py-2 sm:px-3.5 sm:py-2 rounded-xl bg-gradient-to-r from-emerald-500/15 via-teal-500/15 to-cyan-500/15 hover:from-emerald-500/25 hover:via-teal-500/25 hover:to-cyan-500/25 text-emerald-800 dark:text-emerald-300 border border-emerald-500/40 dark:border-emerald-500/50 text-xs sm:text-sm font-mono font-bold transition shadow-sm active:scale-95 cursor-pointer"
+              className="flex items-center gap-1.5 px-2.5 py-2 sm:px-3 rounded-xl bg-gradient-to-r from-emerald-500/15 via-teal-500/15 to-cyan-500/15 hover:from-emerald-500/25 hover:via-teal-500/25 hover:to-cyan-500/25 text-emerald-800 dark:text-emerald-300 border border-emerald-500/40 dark:border-emerald-500/50 text-xs sm:text-sm font-mono font-bold transition shadow-sm active:scale-95 cursor-pointer whitespace-nowrap"
               title="ブラウザでインベーダー風ゲーム（Webエミュレータ）を起動して遊ぶ"
             >
-              <Gamepad2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-emerald-600 dark:text-emerald-400 animate-pulse" />
-              <span className="hidden min-[480px]:inline">ゲーム起動</span>
-              <span className="inline min-[480px]:hidden">ゲーム</span>
+              <Gamepad2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
+              <span className="hidden lg:inline">ゲーム起動</span>
+              <span className="inline lg:hidden">ゲーム</span>
             </button>
           )}
 
@@ -284,28 +280,29 @@ export const Navbar: React.FC<NavbarProps> = ({
           {onOpenPlaygroundModal && (
             <button
               onClick={onOpenPlaygroundModal}
-              className="flex items-center gap-1.5 px-3 py-2 sm:px-3.5 sm:py-2 rounded-xl bg-gradient-to-r from-cyan-500/15 to-blue-500/15 hover:from-cyan-500/25 hover:to-blue-500/25 text-cyan-800 dark:text-cyan-300 border border-cyan-500/40 text-xs sm:text-sm font-mono font-bold transition shadow-sm active:scale-95 cursor-pointer"
+              className="flex items-center gap-1.5 px-2.5 py-2 sm:px-3 rounded-xl bg-gradient-to-r from-cyan-500/15 to-blue-500/15 hover:from-cyan-500/25 hover:to-blue-500/25 text-cyan-800 dark:text-cyan-300 border border-cyan-500/40 text-xs sm:text-sm font-mono font-bold transition shadow-sm active:scale-95 cursor-pointer whitespace-nowrap"
               title="ブラウザでC++コードを書いて即時実行する"
             >
-              <Play className="w-3.5 h-3.5 fill-current text-cyan-600 dark:text-cyan-400" />
-              <span className="hidden min-[420px]:inline">コード実行ラボ</span>
-              <span className="inline min-[420px]:hidden">実行</span>
+              <Play className="w-3.5 h-3.5 fill-current text-cyan-600 dark:text-cyan-400 shrink-0" />
+              <span className="hidden lg:inline">コード実行ラボ</span>
+              <span className="inline lg:hidden">実行</span>
             </button>
           )}
 
           <button
             onClick={onOpenSourceModal}
-            className="flex items-center gap-2 px-3 py-2 sm:px-4 sm:py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-300 dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-slate-200 dark:hover:text-white dark:border-slate-700 text-xs sm:text-sm font-mono font-bold transition active:scale-95 shadow-sm cursor-pointer"
+            className="flex items-center gap-1.5 px-2.5 py-2 sm:px-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-300 dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-slate-200 dark:hover:text-white dark:border-slate-700 text-xs sm:text-sm font-mono font-bold transition active:scale-95 shadow-sm cursor-pointer whitespace-nowrap"
+            title="C++実機ソースコードをダウンロード"
           >
-            <Download className="w-4 h-4 text-cyan-600 dark:text-cyan-400" />
-            <span className="hidden sm:inline">C++実機コード</span>
+            <Download className="w-4 h-4 text-cyan-600 dark:text-cyan-400 shrink-0" />
+            <span className="hidden md:inline">実機コード</span>
           </button>
 
           <a
             href="https://isocpp.org/"
             target="_blank"
             rel="noopener noreferrer"
-            className="p-2 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-slate-100 dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-800 text-sm flex items-center gap-1 transition"
+            className="hidden sm:flex p-2 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-slate-100 dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-800 text-sm items-center gap-1 transition"
             title="ISO C++ Standard"
           >
             <BookOpen className="w-5 h-5" />
